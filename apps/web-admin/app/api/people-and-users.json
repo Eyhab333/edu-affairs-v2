@@ -1,0 +1,398 @@
+{
+  "people": [
+    {
+      "id": "p-chairman",
+      "displayName": "رئيس مجلس الإدارة",
+      "nationalId": "1000000001",
+      "phone": "0500000001",
+      "email": "chairman@takween.local"
+    },
+    {
+      "id": "p-ceo",
+      "displayName": "المدير التنفيذي",
+      "nationalId": "1000000002",
+      "phone": "0500000002",
+      "email": "ceo@takween.local"
+    },
+    {
+      "id": "p-ceo-assist",
+      "displayName": "مساعدة المدير التنفيذي",
+      "nationalId": "1000000003",
+      "phone": "0500000003",
+      "email": "assistant.ceo@takween.local"
+    },
+    {
+      "id": "p-boys-supervision-head",
+      "displayName": "رئيس قسم الإشراف",
+      "nationalId": "1000000010",
+      "phone": "0500000010",
+      "email": "boys.supervision.head@takween.local"
+    },
+    {
+      "id": "p-boys-principal",
+      "displayName": "مدير مدرسة منار الريادة بنين",
+      "nationalId": "1000000011",
+      "phone": "0500000011",
+      "email": "boys.principal@takween.local"
+    },
+    {
+      "id": "p-boys-edu-vp",
+      "displayName": "وكيل الشؤون التعليمية",
+      "nationalId": "1000000012",
+      "phone": "0500000012",
+      "email": "boys.edu.vp@takween.local"
+    },
+    {
+      "id": "p-boys-student-guide",
+      "displayName": "الموجه الطلابي",
+      "nationalId": "1000000013",
+      "phone": "0500000013",
+      "email": "boys.student.guide@takween.local"
+    },
+    {
+      "id": "p-boys-students-vp",
+      "displayName": "وكيل شؤون الطلاب",
+      "nationalId": "1000000014",
+      "phone": "0500000014",
+      "email": "boys.students.vp@takween.local"
+    },
+    {
+      "id": "p-boys-teachers-vp",
+      "displayName": "وكيل المعلمين",
+      "nationalId": "1000000015",
+      "phone": "0500000015",
+      "email": "boys.teachers.vp@takween.local"
+    },
+    {
+      "id": "p-sayyed",
+      "displayName": "المشرف التعليمي السيد",
+      "nationalId": "1000000016",
+      "phone": "0500000016",
+      "email": "sayyed@takween.local"
+    },
+    {
+      "id": "p-tariqi",
+      "displayName": "المشرف التعليمي الطريقي",
+      "nationalId": "1000000017",
+      "phone": "0500000017",
+      "email": "tariqi@takween.local"
+    },
+    {
+      "id": "p-shayae",
+      "displayName": "المشرف التعليمي الشايع",
+      "nationalId": "1000000018",
+      "phone": "0500000018",
+      "email": "shayae@takween.local"
+    },
+    {
+      "id": "p-boys-clerk",
+      "displayName": "كاتب المدرسة",
+      "nationalId": "1000000019",
+      "phone": "0500000019",
+      "email": "boys.clerk@takween.local"
+    },
+    {
+      "id": "p-boys-activity",
+      "displayName": "رائد النشاط",
+      "nationalId": "1000000020",
+      "phone": "0500000020",
+      "email": "boys.activity@takween.local"
+    },
+    {
+      "id": "p-teacher-ahmed",
+      "displayName": "أحمد علي السلمي",
+      "nationalId": "1000000101",
+      "phone": "0500000101",
+      "email": "a.sulami@takween.local"
+    },
+    {
+      "id": "p-teacher-khaled",
+      "displayName": "خالد فهد القحطاني",
+      "nationalId": "1000000102",
+      "phone": "0500000102",
+      "email": "k.qahtani@takween.local"
+    },
+    {
+      "id": "p-teacher-saad",
+      "displayName": "سعد ناصر الحربي",
+      "nationalId": "1000000103",
+      "phone": "0500000103",
+      "email": "s.harbi@takween.local"
+    },
+    {
+      "id": "p-teacher-yasser",
+      "displayName": "ياسر محمد الشهري",
+      "nationalId": "1000000104",
+      "phone": "0500000104",
+      "email": "y.shahri@takween.local"
+    },
+    {
+      "id": "p-girls-principal",
+      "displayName": "مديرة مدرسة منار الريادة بنات",
+      "nationalId": "1000000201",
+      "phone": "0500000201",
+      "email": "girls.principal@takween.local"
+    },
+    {
+      "id": "p-girls-vp",
+      "displayName": "الوكيلة",
+      "nationalId": "1000000202",
+      "phone": "0500000202",
+      "email": "girls.vp@takween.local"
+    },
+    {
+      "id": "p-girls-counselor",
+      "displayName": "الموجهة الطلابية",
+      "nationalId": "1000000203",
+      "phone": "0500000203",
+      "email": "girls.counselor@takween.local"
+    },
+    {
+      "id": "p-girls-supervisor",
+      "displayName": "المشرف التعليمي",
+      "nationalId": "1000000204",
+      "phone": "0500000204",
+      "email": "girls.supervisor@takween.local"
+    },
+    {
+      "id": "p-girls-admin-supervisor",
+      "displayName": "المشرفة الإدارية",
+      "nationalId": "1000000205",
+      "phone": "0500000205",
+      "email": "girls.admin.supervisor@takween.local"
+    },
+    {
+      "id": "p-girls-monitor",
+      "displayName": "المراقبة",
+      "nationalId": "1000000206",
+      "phone": "0500000206",
+      "email": "girls.monitor@takween.local"
+    },
+    {
+      "id": "p-girls-designer",
+      "displayName": "المصممة",
+      "nationalId": "1000000207",
+      "phone": "0500000207",
+      "email": "girls.designer@takween.local"
+    },
+    {
+      "id": "p-girls-activity",
+      "displayName": "رائدة النشاط",
+      "nationalId": "1000000208",
+      "phone": "0500000208",
+      "email": "girls.activity@takween.local"
+    },
+    {
+      "id": "p-girls-admin-assist",
+      "displayName": "المساعدة الإدارية",
+      "nationalId": "1000000209",
+      "phone": "0500000209",
+      "email": "girls.admin.assist@takween.local"
+    },
+    {
+      "id": "p-girls-teacher-1",
+      "displayName": "نورة عبدالله المطيري",
+      "nationalId": "1000000210",
+      "phone": "0500000210",
+      "email": "n.mutairi@takween.local"
+    },
+    {
+      "id": "p-kg-edu-supervisor",
+      "displayName": "المشرفة التعليمية",
+      "nationalId": "1000000301",
+      "phone": "0500000301",
+      "email": "kg.edu.supervisor@takween.local"
+    },
+    {
+      "id": "p-kg-values",
+      "displayName": "منسقة القيم",
+      "nationalId": "1000000302",
+      "phone": "0500000302",
+      "email": "kg.values@takween.local"
+    },
+    {
+      "id": "p-kg-admin-supervisor",
+      "displayName": "المشرفة الإدارية",
+      "nationalId": "1000000303",
+      "phone": "0500000303",
+      "email": "kg.admin.supervisor@takween.local"
+    },
+    {
+      "id": "p-kg-tech-supervisor",
+      "displayName": "المشرف التعليمي",
+      "nationalId": "1000000304",
+      "phone": "0500000304",
+      "email": "kg.tech.supervisor@takween.local"
+    },
+    {
+      "id": "p-kg1-principal",
+      "displayName": "مديرة الروضة الأولى",
+      "nationalId": "1000000305",
+      "phone": "0500000305",
+      "email": "kg1.principal@takween.local"
+    },
+    {
+      "id": "p-kg1-vp",
+      "displayName": "وكيلة الروضة الأولى",
+      "nationalId": "1000000306",
+      "phone": "0500000306",
+      "email": "kg1.vp@takween.local"
+    },
+    {
+      "id": "p-kg-teacher-class",
+      "displayName": "معلمة صف الروضة",
+      "nationalId": "1000000307",
+      "phone": "0500000307",
+      "email": "kg.class.teacher@takween.local"
+    },
+    {
+      "id": "p-kg-teacher-values",
+      "displayName": "معلمة القيم",
+      "nationalId": "1000000308",
+      "phone": "0500000308",
+      "email": "kg.values.teacher@takween.local"
+    },
+    {
+      "id": "p-kg-teacher-corners",
+      "displayName": "معلمة الأركان",
+      "nationalId": "1000000309",
+      "phone": "0500000309",
+      "email": "kg.corners.teacher@takween.local"
+    },
+    {
+      "id": "p-father-omar",
+      "displayName": "وليد عمر الحربي",
+      "nationalId": "2000000001",
+      "phone": "0551000001",
+      "email": "wali.omar@example.com"
+    },
+    {
+      "id": "p-mother-omar",
+      "displayName": "سارة خالد الحربي",
+      "nationalId": "2000000002",
+      "phone": "0551000002",
+      "email": "sara.omar@example.com"
+    },
+    {
+      "id": "p-father-yousef",
+      "displayName": "محمد يوسف المطيري",
+      "nationalId": "2000000003",
+      "phone": "0551000003",
+      "email": "m.yousef@example.com"
+    },
+    {
+      "id": "p-mother-yousef",
+      "displayName": "هند محمد المطيري",
+      "nationalId": "2000000004",
+      "phone": "0551000004",
+      "email": "hind.yousef@example.com"
+    },
+    {
+      "id": "p-parent-chairman",
+      "displayName": "رئيس المجلس - كولي أمر",
+      "nationalId": "2000000010",
+      "phone": "0551000010",
+      "email": "chairman.parent@example.com"
+    },
+    {
+      "id": "p-bus-supervisor-teacher",
+      "displayName": "فهد عبدالله السبيعي",
+      "nationalId": "2000000020",
+      "phone": "0551000020",
+      "email": "f.subaie@takween.local"
+    },
+    {
+      "id": "p-stu-omar",
+      "displayName": "عمر وليد الحربي",
+      "nationalId": "3010000001",
+      "phone": "",
+      "email": ""
+    },
+    {
+      "id": "p-stu-yousef",
+      "displayName": "يوسف محمد المطيري",
+      "nationalId": "3010000002",
+      "phone": "",
+      "email": ""
+    },
+    {
+      "id": "p-stu-saad",
+      "displayName": "سعد فهد السبيعي",
+      "nationalId": "3010000003",
+      "phone": "",
+      "email": ""
+    },
+    {
+      "id": "p-stu-chairman-son",
+      "displayName": "عبدالله رئيس المجلس",
+      "nationalId": "3010000004",
+      "phone": "",
+      "email": ""
+    },
+    {
+      "id": "p-stu-kg-child",
+      "displayName": "ليان محمد الغانم",
+      "nationalId": "3010000005",
+      "phone": "",
+      "email": ""
+    }
+  ],
+  "users": [
+    {
+      "uid": "u-chairman",
+      "personId": "p-chairman",
+      "orgId": "takween",
+      "roles": ["ORG_CHAIR", "GUARDIAN"],
+      "schoolIds": ["mrb-boys"],
+      "isOrgAdmin": true
+    },
+    {
+      "uid": "u-ceo",
+      "personId": "p-ceo",
+      "orgId": "takween",
+      "roles": ["ORG_CEO"],
+      "schoolIds": ["mrb-boys", "mrb-girls", "kg-01", "kg-02", "kg-03", "kg-04"],
+      "isOrgAdmin": true
+    },
+    {
+      "uid": "u-boys-principal",
+      "personId": "p-boys-principal",
+      "orgId": "takween",
+      "roles": ["BOYS_PRINCIPAL"],
+      "schoolIds": ["mrb-boys"],
+      "isOrgAdmin": false
+    },
+    {
+      "uid": "u-teacher-ahmed",
+      "personId": "p-teacher-ahmed",
+      "orgId": "takween",
+      "roles": ["BOYS_TEACHER"],
+      "schoolIds": ["mrb-boys"],
+      "isOrgAdmin": false
+    },
+    {
+      "uid": "u-bus-supervisor-teacher",
+      "personId": "p-bus-supervisor-teacher",
+      "orgId": "takween",
+      "roles": ["BOYS_TEACHER", "BUS_SUPERVISOR", "GUARDIAN"],
+      "schoolIds": ["mrb-boys"],
+      "isOrgAdmin": false
+    },
+    {
+      "uid": "u-parent-omar-father",
+      "personId": "p-father-omar",
+      "orgId": "takween",
+      "roles": ["GUARDIAN"],
+      "schoolIds": [],
+      "isOrgAdmin": false
+    },
+    {
+      "uid": "u-parent-omar-mother",
+      "personId": "p-mother-omar",
+      "orgId": "takween",
+      "roles": ["GUARDIAN"],
+      "schoolIds": [],
+      "isOrgAdmin": false
+    }
+  ]
+}

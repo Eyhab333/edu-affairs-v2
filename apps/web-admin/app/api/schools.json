@@ -1,0 +1,135 @@
+[
+  {
+    "id": "mrb-boys",
+    "orgId": "takween",
+    "name": "مدرسة منار الريادة بنين",
+    "profile": {
+      "schoolType": "PRIMARY",
+      "track": "BOYS",
+      "enabledModules": [
+        "CORE",
+        "COMMS",
+        "ATTENDANCE",
+        "STUDENT_CASES",
+        "TEACHER_EVAL",
+        "CLASSROOM_DISPLAY",
+        "GAMIFICATION",
+        "PARENT_NOTIFICATIONS",
+        "PRIMARY_ASSESSMENTS",
+        "TRANSPORT"
+      ]
+    },
+    "isArchived": false,
+    "createdAt": 1764613200000
+  },
+  {
+    "id": "mrb-girls",
+    "orgId": "takween",
+    "name": "مدرسة منار الريادة بنات",
+    "profile": {
+      "schoolType": "PRIMARY",
+      "track": "GIRLS",
+      "enabledModules": [
+        "CORE",
+        "COMMS",
+        "ATTENDANCE",
+        "STUDENT_CASES",
+        "TEACHER_EVAL",
+        "CLASSROOM_DISPLAY",
+        "GAMIFICATION",
+        "PARENT_NOTIFICATIONS",
+        "PRIMARY_ASSESSMENTS"
+      ]
+    },
+    "isArchived": false,
+    "createdAt": 1764613200000
+  },
+  {
+    "id": "kg-01",
+    "orgId": "takween",
+    "name": "روضة واحة الرياحين الأولى",
+    "profile": {
+      "schoolType": "KG",
+      "track": "MIXED",
+      "enabledModules": [
+        "CORE",
+        "COMMS",
+        "ATTENDANCE",
+        "STUDENT_CASES",
+        "TEACHER_EVAL",
+        "CLASSROOM_DISPLAY",
+        "GAMIFICATION",
+        "PARENT_NOTIFICATIONS",
+        "KG_DAILY"
+      ]
+    },
+    "isArchived": false,
+    "createdAt": 1764613200000
+  },
+  {
+    "id": "kg-02",
+    "orgId": "takween",
+    "name": "روضة واحة الرياحين الثانية",
+    "profile": {
+      "schoolType": "KG",
+      "track": "MIXED",
+      "enabledModules": [
+        "CORE",
+        "COMMS",
+        "ATTENDANCE",
+        "STUDENT_CASES",
+        "TEACHER_EVAL",
+        "CLASSROOM_DISPLAY",
+        "GAMIFICATION",
+        "PARENT_NOTIFICATIONS",
+        "KG_DAILY"
+      ]
+    },
+    "isArchived": false,
+    "createdAt": 1764613200000
+  },
+  {
+    "id": "kg-03",
+    "orgId": "takween",
+    "name": "روضة واحة الرياحين الثالثة",
+    "profile": {
+      "schoolType": "KG",
+      "track": "MIXED",
+      "enabledModules": [
+        "CORE",
+        "COMMS",
+        "ATTENDANCE",
+        "STUDENT_CASES",
+        "TEACHER_EVAL",
+        "CLASSROOM_DISPLAY",
+        "GAMIFICATION",
+        "PARENT_NOTIFICATIONS",
+        "KG_DAILY"
+      ]
+    },
+    "isArchived": false,
+    "createdAt": 1764613200000
+  },
+  {
+    "id": "kg-04",
+    "orgId": "takween",
+    "name": "روضة واحة الرياحين الرابعة",
+    "profile": {
+      "schoolType": "KG",
+      "track": "MIXED",
+      "enabledModules": [
+        "CORE",
+        "COMMS",
+        "ATTENDANCE",
+        "STUDENT_CASES",
+        "TEACHER_EVAL",
+        "CLASSROOM_DISPLAY",
+        "GAMIFICATION",
+        "PARENT_NOTIFICATIONS",
+        "KG_DAILY"
+      ]
+    },
+    "isArchived": false,
+    "createdAt": 1764613200000
+  }
+]

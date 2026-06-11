@@ -1,0 +1,292 @@
+{
+  "evaluationFrameworks": [
+    {
+      "id": "eval-fw-boys-primary",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "title": "إطار تقييم معلمي مدرسة منار الريادة بنين",
+      "targetRoleKey": "BOYS_TEACHER",
+      "status": "ACTIVE",
+      "version": 1
+    },
+    {
+      "id": "eval-fw-girls-primary",
+      "orgId": "takween",
+      "schoolId": "mrb-girls",
+      "title": "إطار تقييم معلمات مدرسة منار الريادة بنات",
+      "targetRoleKey": "GIRLS_TEACHER",
+      "status": "ACTIVE",
+      "version": 1
+    },
+    {
+      "id": "eval-fw-kg",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "title": "إطار تقييم كادر الروضات",
+      "targetRoleKey": "KG_TEACHER",
+      "status": "ACTIVE",
+      "version": 1
+    }
+  ],
+  "evaluationRubricItems": [
+    {
+      "id": "rb-boys-weekly-1",
+      "frameworkId": "eval-fw-boys-primary",
+      "templateKey": "boys_weekly_general",
+      "title": "التهيئة للدرس",
+      "category": "التخطيط والتنفيذ",
+      "order": 1,
+      "maxScore": 2,
+      "weight": 1
+    },
+    {
+      "id": "rb-boys-weekly-2",
+      "frameworkId": "eval-fw-boys-primary",
+      "templateKey": "boys_weekly_general",
+      "title": "إدارة الصف",
+      "category": "الإدارة الصفية",
+      "order": 2,
+      "maxScore": 2,
+      "weight": 1
+    },
+    {
+      "id": "rb-boys-weekly-3",
+      "frameworkId": "eval-fw-boys-primary",
+      "templateKey": "boys_weekly_general",
+      "title": "تنوع الاستراتيجيات",
+      "category": "التنفيذ",
+      "order": 3,
+      "maxScore": 2,
+      "weight": 1
+    },
+    {
+      "id": "rb-boys-diagnostic-1",
+      "frameworkId": "eval-fw-boys-primary",
+      "templateKey": "boys_diagnostic_supervisor",
+      "title": "تحليل نواتج التعلم",
+      "category": "التشخيص",
+      "order": 1,
+      "maxScore": 5,
+      "weight": 2
+    },
+    {
+      "id": "rb-boys-written-1",
+      "frameworkId": "eval-fw-boys-primary",
+      "templateKey": "boys_written_work",
+      "title": "الأعمال الكتابية",
+      "category": "توثيق وأعمال",
+      "order": 1,
+      "maxScore": 5,
+      "weight": 1
+    },
+    {
+      "id": "rb-girls-weekly-1",
+      "frameworkId": "eval-fw-girls-primary",
+      "templateKey": "girls_weekly_general",
+      "title": "إدارة الحصة",
+      "category": "الأداء التعليمي",
+      "order": 1,
+      "maxScore": 3,
+      "weight": 1
+    },
+    {
+      "id": "rb-kg-class-1",
+      "frameworkId": "eval-fw-kg",
+      "templateKey": "kg_class_teacher",
+      "title": "إدارة البيئة الصفية",
+      "category": "بيئة التعلم",
+      "order": 1,
+      "maxScore": 4,
+      "weight": 1
+    }
+  ],
+  "evaluationPlans": [
+    {
+      "id": "plan-boys-principal-weekly",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_PRINCIPAL",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_weekly_general",
+      "frequencyType": "WEEKLY",
+      "weeksCount": 19,
+      "visitsCount": 0,
+      "title": "تقييم المدير الأسبوعي للمعلمين - 19 أسبوع"
+    },
+    {
+      "id": "plan-boys-principal-diagnostic",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_PRINCIPAL",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_principal_diagnostic",
+      "frequencyType": "VISITS",
+      "weeksCount": 0,
+      "visitsCount": 3,
+      "title": "التقييم التشخيصي للمدير - 3 زيارات"
+    },
+    {
+      "id": "plan-boys-edu-vp-weekly",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_EDU_VP",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_weekly_general",
+      "frequencyType": "WEEKLY",
+      "weeksCount": 19,
+      "visitsCount": 0,
+      "title": "تقييم وكيل الشؤون التعليمية الأسبوعي - 19 أسبوع"
+    },
+    {
+      "id": "plan-boys-student-guide-weekly",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_STUDENT_GUIDE",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_weekly_general",
+      "frequencyType": "WEEKLY",
+      "weeksCount": 19,
+      "visitsCount": 0,
+      "title": "تقييم الموجه الطلابي الأسبوعي - 19 أسبوع"
+    },
+    {
+      "id": "plan-boys-teachers-vp-weekly",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_TEACHERS_VP",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_weekly_general",
+      "frequencyType": "WEEKLY",
+      "weeksCount": 19,
+      "visitsCount": 0,
+      "title": "تقييم وكيل المعلمين الأسبوعي - 19 أسبوع"
+    },
+    {
+      "id": "plan-boys-supervisor-written",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_EDU_SUPERVISOR",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_written_work",
+      "frequencyType": "VISITS",
+      "weeksCount": 0,
+      "visitsCount": 4,
+      "title": "تقييم الأعمال الكتابية للمشرف - 4 زيارات"
+    },
+    {
+      "id": "plan-boys-supervisor-diagnostic",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_EDU_SUPERVISOR",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_diagnostic_supervisor",
+      "frequencyType": "VISITS",
+      "weeksCount": 0,
+      "visitsCount": 3,
+      "title": "التقييم التشخيصي للمشرف - 3 زيارات"
+    },
+    {
+      "id": "plan-boys-supervisor-analysis",
+      "frameworkId": "eval-fw-boys-primary",
+      "schoolId": "mrb-boys",
+      "evaluatorRoleKey": "BOYS_EDU_SUPERVISOR",
+      "targetRoleKey": "BOYS_TEACHER",
+      "templateKey": "boys_results_analysis",
+      "frequencyType": "PERIODIC_ANALYSIS",
+      "weeksCount": 0,
+      "visitsCount": 5,
+      "title": "تحليل نتائج الطلاب - 3 اختبارات فترية + 2 قياسات مركزية"
+    },
+    {
+      "id": "plan-girls-principal-general",
+      "frameworkId": "eval-fw-girls-primary",
+      "schoolId": "mrb-girls",
+      "evaluatorRoleKey": "GIRLS_PRINCIPAL",
+      "targetRoleKey": "GIRLS_TEACHER",
+      "templateKey": "girls_weekly_general",
+      "frequencyType": "WEEKLY",
+      "weeksCount": 19,
+      "visitsCount": 0,
+      "title": "الخطة العامة لتقييم المعلمات"
+    },
+    {
+      "id": "plan-kg-general",
+      "frameworkId": "eval-fw-kg",
+      "schoolId": "kg-01",
+      "evaluatorRoleKey": "KG_EDU_SUPERVISOR",
+      "targetRoleKey": "KG_TEACHER",
+      "templateKey": "kg_class_teacher",
+      "frequencyType": "VISITS",
+      "weeksCount": 0,
+      "visitsCount": 6,
+      "title": "الخطة العامة لتقييم معلمات الروضة"
+    }
+  ],
+  "evaluationSubmissions": [
+    {
+      "id": "esub-001",
+      "planId": "plan-boys-principal-weekly",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "evaluatorPersonId": "p-boys-principal",
+      "targetTeacherPersonId": "p-teacher-ahmed",
+      "cycleLabel": "الأسبوع الأول",
+      "status": "SUBMITTED",
+      "submittedAt": 1759500000000,
+      "totalScore": 5,
+      "maxScore": 6
+    },
+    {
+      "id": "esub-002",
+      "planId": "plan-boys-supervisor-written",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "evaluatorPersonId": "p-sayyed",
+      "targetTeacherPersonId": "p-teacher-ahmed",
+      "cycleLabel": "زيارة 1",
+      "status": "APPROVED",
+      "submittedAt": 1760100000000,
+      "totalScore": 4,
+      "maxScore": 5
+    }
+  ],
+  "promotionPolicies": [
+    {
+      "id": "promo-primary-default",
+      "orgId": "takween",
+      "schoolType": "PRIMARY",
+      "mappings": [
+        { "fromGradeCode": "G1", "toGradeCode": "G2" },
+        { "fromGradeCode": "G2", "toGradeCode": "G3" },
+        { "fromGradeCode": "G3", "toGradeCode": "G4" },
+        { "fromGradeCode": "G4", "toGradeCode": "G5" },
+        { "fromGradeCode": "G5", "toGradeCode": "G6" }
+      ]
+    },
+    {
+      "id": "promo-kg-default",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "mappings": [
+        { "fromGradeCode": "KG1", "toGradeCode": "KG2" },
+        { "fromGradeCode": "KG2", "toGradeCode": "KG3" }
+      ]
+    }
+  ],
+  "promotionRuns": [
+    {
+      "id": "pr-mrb-boys-1446-1447",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "fromAcademicYearId": "ay-1446",
+      "toAcademicYearId": "ay-1447",
+      "status": "EXECUTED",
+      "createdByPersonId": "p-boys-principal",
+      "approvedByPersonId": "p-ceo",
+      "executedByPersonId": "p-boys-principal",
+      "createdAt": 1756500000000,
+      "approvedAt": 1756600000000,
+      "executedAt": 1756700000000
+    }
+  ]
+}

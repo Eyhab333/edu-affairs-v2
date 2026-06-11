@@ -1,0 +1,232 @@
+[
+  {
+    "id": "m-chairman-org",
+    "personId": "p-chairman",
+    "orgId": "takween",
+    "roleKey": "ORG_CHAIR",
+    "scopeType": "ORG",
+    "scopeId": "takween",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-ceo-org",
+    "personId": "p-ceo",
+    "orgId": "takween",
+    "roleKey": "ORG_CEO",
+    "scopeType": "ORG",
+    "scopeId": "takween",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-ceo-assist-org",
+    "personId": "p-ceo-assist",
+    "orgId": "takween",
+    "roleKey": "ORG_CEO_ASSIST",
+    "scopeType": "ORG",
+    "scopeId": "takween",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-boys-supervision-head",
+    "personId": "p-boys-supervision-head",
+    "orgId": "takween",
+    "roleKey": "BOYS_SUPERVISION_HEAD",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-boys-principal",
+    "personId": "p-boys-principal",
+    "orgId": "takween",
+    "roleKey": "BOYS_PRINCIPAL",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-boys-edu-vp",
+    "personId": "p-boys-edu-vp",
+    "orgId": "takween",
+    "roleKey": "BOYS_EDU_VP",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-boys-student-guide",
+    "personId": "p-boys-student-guide",
+    "orgId": "takween",
+    "roleKey": "BOYS_STUDENT_GUIDE",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-boys-students-vp",
+    "personId": "p-boys-students-vp",
+    "orgId": "takween",
+    "roleKey": "BOYS_STUDENTS_VP",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-boys-teachers-vp",
+    "personId": "p-boys-teachers-vp",
+    "orgId": "takween",
+    "roleKey": "BOYS_TEACHERS_VP",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-sayyed",
+    "personId": "p-sayyed",
+    "orgId": "takween",
+    "roleKey": "BOYS_EDU_SUPERVISOR",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-tariqi",
+    "personId": "p-tariqi",
+    "orgId": "takween",
+    "roleKey": "BOYS_EDU_SUPERVISOR",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-shayae",
+    "personId": "p-shayae",
+    "orgId": "takween",
+    "roleKey": "BOYS_EDU_SUPERVISOR",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-teacher-ahmed",
+    "personId": "p-teacher-ahmed",
+    "orgId": "takween",
+    "roleKey": "BOYS_TEACHER",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-teacher-khaled",
+    "personId": "p-teacher-khaled",
+    "orgId": "takween",
+    "roleKey": "BOYS_TEACHER",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-teacher-saad",
+    "personId": "p-teacher-saad",
+    "orgId": "takween",
+    "roleKey": "BOYS_TEACHER",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-bus-supervisor-teacher",
+    "personId": "p-bus-supervisor-teacher",
+    "orgId": "takween",
+    "roleKey": "BUS_SUPERVISOR",
+    "scopeType": "ROUTE",
+    "scopeId": "route-01",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-bus-supervisor-teacher-2",
+    "personId": "p-bus-supervisor-teacher",
+    "orgId": "takween",
+    "roleKey": "BOYS_TEACHER",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-boys",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-girls-principal",
+    "personId": "p-girls-principal",
+    "orgId": "takween",
+    "roleKey": "GIRLS_PRINCIPAL",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-girls",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-girls-vp",
+    "personId": "p-girls-vp",
+    "orgId": "takween",
+    "roleKey": "GIRLS_VP",
+    "scopeType": "SCHOOL",
+    "scopeId": "mrb-girls",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-kg-edu-supervisor",
+    "personId": "p-kg-edu-supervisor",
+    "orgId": "takween",
+    "roleKey": "KG_EDU_SUPERVISOR",
+    "scopeType": "SCHOOL",
+    "scopeId": "kg-01",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-kg-values",
+    "personId": "p-kg-values",
+    "orgId": "takween",
+    "roleKey": "KG_VALUES_COORD",
+    "scopeType": "SCHOOL",
+    "scopeId": "kg-01",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-kg1-principal",
+    "personId": "p-kg1-principal",
+    "orgId": "takween",
+    "roleKey": "KG_PRINCIPAL",
+    "scopeType": "SCHOOL",
+    "scopeId": "kg-01",
+    "active": true,
+    "startAt": 1756771200000
+  },
+  {
+    "id": "m-kg1-vp",
+    "personId": "p-kg1-vp",
+    "orgId": "takween",
+    "roleKey": "KG_VP",
+    "scopeType": "SCHOOL",
+    "scopeId": "kg-01",
+    "active": true,
+    "startAt": 1756771200000
+  }
+]

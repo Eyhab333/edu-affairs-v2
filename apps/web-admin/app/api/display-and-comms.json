@@ -1,0 +1,160 @@
+{
+  "classroomDisplayPolicies": [
+    {
+      "id": "display-policy-primary-boys",
+      "schoolId": "mrb-boys",
+      "defaultMode": "CLASS_AND_STUDENT",
+      "privacyLevel": "NICKNAME",
+      "allowFullName": false,
+      "allowStudentLeaderboard": true,
+      "allowTeamMode": true,
+      "allowClassMode": true
+    },
+    {
+      "id": "display-policy-kg",
+      "schoolId": "kg-01",
+      "defaultMode": "CLASS_AND_STUDENT",
+      "privacyLevel": "AVATARS_ONLY",
+      "allowFullName": false,
+      "allowStudentLeaderboard": true,
+      "allowTeamMode": true,
+      "allowClassMode": true
+    }
+  ],
+  "gamificationSettings": [
+    {
+      "id": "game-mrb-boys",
+      "schoolId": "mrb-boys",
+      "enabled": true,
+      "octalysis": {
+        "meaning": true,
+        "accomplishment": true,
+        "empowerment": true,
+        "ownership": true,
+        "socialInfluence": true,
+        "scarcity": true,
+        "unpredictability": true,
+        "avoidance": true
+      },
+      "features": {
+        "classXP": true,
+        "studentXP": true,
+        "badges": true,
+        "quests": true,
+        "streaks": true,
+        "teams": true,
+        "mysteryRewards": true,
+        "leaderboard": true
+      }
+    }
+  ],
+  "classSessions": [
+    {
+      "id": "session-g4a-2026-04-03-1",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "classId": "g4-a",
+      "teacherPersonId": "p-teacher-ahmed",
+      "startedAt": 1775163600000,
+      "status": "ACTIVE",
+      "displayPolicyId": "display-policy-primary-boys"
+    }
+  ],
+  "gamificationEvents": [
+    {
+      "id": "ge-001",
+      "sessionId": "session-g4a-2026-04-03-1",
+      "schoolId": "mrb-boys",
+      "classId": "g4-a",
+      "type": "CLASS_XP_ADD",
+      "value": 10,
+      "createdByPersonId": "p-teacher-ahmed",
+      "createdAt": 1775163660000,
+      "note": "إجابة جماعية ممتازة"
+    },
+    {
+      "id": "ge-002",
+      "sessionId": "session-g4a-2026-04-03-1",
+      "schoolId": "mrb-boys",
+      "classId": "g4-a",
+      "studentId": "stu-omar",
+      "type": "STUDENT_XP_ADD",
+      "value": 5,
+      "createdByPersonId": "p-teacher-ahmed",
+      "createdAt": 1775163720000,
+      "note": "حل صحيح سريع"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "noti-001",
+      "orgId": "takween",
+      "recipientType": "GUARDIAN",
+      "recipientPersonId": "p-father-omar",
+      "title": "استدعاء ولي أمر",
+      "body": "تم إنشاء استدعاء ولي أمر للطالب عمر وليد الحربي",
+      "channel": "PUSH",
+      "status": "SENT",
+      "createdAt": 1771001000000
+    },
+    {
+      "id": "noti-002",
+      "orgId": "takween",
+      "recipientType": "GUARDIAN",
+      "recipientPersonId": "p-mother-omar",
+      "title": "استدعاء ولي أمر",
+      "body": "تم إنشاء استدعاء ولي أمر للطالب عمر وليد الحربي",
+      "channel": "PUSH",
+      "status": "SENT",
+      "createdAt": 1771001000000
+    }
+  ],
+  "messagePolicies": [
+    {
+      "id": "msg-policy-guardian-staff",
+      "orgId": "takween",
+      "title": "سياسة مراسلة ولي الأمر",
+      "guardianCanMessageRoles": [
+        "BOYS_TEACHER",
+        "BOYS_PRINCIPAL",
+        "BOYS_EDU_VP",
+        "BOYS_STUDENT_GUIDE",
+        "BOYS_STUDENTS_VP",
+        "GIRLS_PRINCIPAL",
+        "GIRLS_VP",
+        "GIRLS_STUDENT_COUNSELOR",
+        "KG_PRINCIPAL",
+        "KG_VP",
+        "KG_EDU_SUPERVISOR"
+      ]
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-001",
+      "orgId": "takween",
+      "type": "STUDENT_CONTEXT",
+      "studentId": "stu-omar",
+      "participantPersonIds": ["p-father-omar", "p-teacher-ahmed", "p-boys-edu-vp"],
+      "lastMessageSummary": "تم استقبال الرسالة وسيتم الرد",
+      "lastMessageAt": 1771205000000
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-001",
+      "threadId": "thread-001",
+      "senderPersonId": "p-father-omar",
+      "body": "السلام عليكم، أود الاستفسار عن سبب الاستدعاء.",
+      "createdAt": 1771204000000
+    },
+    {
+      "id": "msg-002",
+      "threadId": "thread-001",
+      "senderPersonId": "p-boys-edu-vp",
+      "body": "وعليكم السلام، سيتم توضيح التفاصيل خلال اليوم.",
+      "createdAt": 1771205000000
+    }
+  ]
+}

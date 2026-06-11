@@ -1,0 +1,185 @@
+{
+  "guardians": [
+    {
+      "id": "gdn-omar-father",
+      "personId": "p-father-omar",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "gdn-omar-mother",
+      "personId": "p-mother-omar",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "gdn-yousef-father",
+      "personId": "p-father-yousef",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "gdn-yousef-mother",
+      "personId": "p-mother-yousef",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "gdn-chairman-parent",
+      "personId": "p-parent-chairman",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "gdn-bus-supervisor-teacher",
+      "personId": "p-bus-supervisor-teacher",
+      "orgId": "takween",
+      "isArchived": false
+    }
+  ],
+  "students": [
+    {
+      "id": "stu-omar",
+      "personId": "p-stu-omar",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "stu-yousef",
+      "personId": "p-stu-yousef",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "stu-saad",
+      "personId": "p-stu-saad",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "stu-chairman-son",
+      "personId": "p-stu-chairman-son",
+      "orgId": "takween",
+      "isArchived": false
+    },
+    {
+      "id": "stu-kg-child",
+      "personId": "p-stu-kg-child",
+      "orgId": "takween",
+      "isArchived": false
+    }
+  ],
+  "guardianLinks": [
+    {
+      "id": "gl-omar-father",
+      "orgId": "takween",
+      "studentId": "stu-omar",
+      "guardianId": "gdn-omar-father",
+      "relationType": "FATHER",
+      "active": true,
+      "startAt": 1756771200000
+    },
+    {
+      "id": "gl-omar-mother",
+      "orgId": "takween",
+      "studentId": "stu-omar",
+      "guardianId": "gdn-omar-mother",
+      "relationType": "MOTHER",
+      "active": true,
+      "startAt": 1756771200000
+    },
+    {
+      "id": "gl-yousef-father",
+      "orgId": "takween",
+      "studentId": "stu-yousef",
+      "guardianId": "gdn-yousef-father",
+      "relationType": "FATHER",
+      "active": true,
+      "startAt": 1756771200000
+    },
+    {
+      "id": "gl-yousef-mother",
+      "orgId": "takween",
+      "studentId": "stu-yousef",
+      "guardianId": "gdn-yousef-mother",
+      "relationType": "MOTHER",
+      "active": true,
+      "startAt": 1756771200000
+    },
+    {
+      "id": "gl-chairman-parent",
+      "orgId": "takween",
+      "studentId": "stu-chairman-son",
+      "guardianId": "gdn-chairman-parent",
+      "relationType": "FATHER",
+      "active": true,
+      "startAt": 1756771200000
+    },
+    {
+      "id": "gl-bus-supervisor-teacher",
+      "orgId": "takween",
+      "studentId": "stu-saad",
+      "guardianId": "gdn-bus-supervisor-teacher",
+      "relationType": "FATHER",
+      "active": true,
+      "startAt": 1756771200000
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "enr-omar-1447",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-omar",
+      "gradeId": "g4",
+      "classId": "g4-a",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    },
+    {
+      "id": "enr-yousef-1447",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-yousef",
+      "gradeId": "g5",
+      "classId": "g5-a",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    },
+    {
+      "id": "enr-saad-1447",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-saad",
+      "gradeId": "g6",
+      "classId": "g6-a",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    },
+    {
+      "id": "enr-chairman-son-1447",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-chairman-son",
+      "gradeId": "g5",
+      "classId": "g5-b",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    },
+    {
+      "id": "enr-kg-child-1447",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-kg-child",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    }
+  ]
+}

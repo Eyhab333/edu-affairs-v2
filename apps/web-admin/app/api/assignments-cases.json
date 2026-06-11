@@ -1,0 +1,195 @@
+{
+  "teacherAssignments": [
+    {
+      "id": "ta-ahmed-g4a",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "teacherPersonId": "p-teacher-ahmed",
+      "classId": "g4-a",
+      "subjectKey": "GENERAL",
+      "roleInAssignment": "MAIN",
+      "supervisorPersonId": "p-sayyed",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    },
+    {
+      "id": "ta-khaled-g5a-old",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "teacherPersonId": "p-teacher-khaled",
+      "classId": "g5-a",
+      "subjectKey": "GENERAL",
+      "roleInAssignment": "MAIN",
+      "supervisorPersonId": "p-tariqi",
+      "status": "ENDED",
+      "startAt": 1756771200000,
+      "endAt": 1768000000000
+    },
+    {
+      "id": "ta-yasser-g5a-new",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "teacherPersonId": "p-teacher-yasser",
+      "classId": "g5-a",
+      "subjectKey": "GENERAL",
+      "roleInAssignment": "MAIN",
+      "supervisorPersonId": "p-tariqi",
+      "status": "ACTIVE",
+      "startAt": 1768000000001
+    },
+    {
+      "id": "ta-saad-g6a",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "teacherPersonId": "p-teacher-saad",
+      "classId": "g6-a",
+      "subjectKey": "GENERAL",
+      "roleInAssignment": "MAIN",
+      "supervisorPersonId": "p-shayae",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    },
+    {
+      "id": "ta-kg-class",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1447",
+      "teacherPersonId": "p-kg-teacher-class",
+      "classId": "kg2-a",
+      "subjectKey": "CLASS",
+      "roleInAssignment": "MAIN",
+      "supervisorPersonId": "p-kg-edu-supervisor",
+      "status": "ACTIVE",
+      "startAt": 1756771200000
+    }
+  ],
+  "transportRoutes": [
+    {
+      "id": "route-01",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "title": "خط شمال 1",
+      "busSupervisorPersonId": "p-bus-supervisor-teacher",
+      "isActive": true
+    }
+  ],
+  "studentCaseTypes": [
+    {
+      "id": "case-absence-followup",
+      "title": "متابعة غياب",
+      "schoolType": "PRIMARY",
+      "defaultOwnerRoleKey": "BOYS_STUDENTS_VP",
+      "allowedForwardToRoleKeys": ["BOYS_STUDENT_GUIDE", "BOYS_EDU_VP"],
+      "notifyGuardianOnCreate": true,
+      "notifyGuardianOnClose": false
+    },
+    {
+      "id": "case-behavior-violation",
+      "title": "مخالفة سلوكية",
+      "schoolType": "PRIMARY",
+      "defaultOwnerRoleKey": "BOYS_STUDENTS_VP",
+      "allowedForwardToRoleKeys": ["BOYS_STUDENT_GUIDE", "BOYS_EDU_VP"],
+      "notifyGuardianOnCreate": true,
+      "notifyGuardianOnClose": true
+    },
+    {
+      "id": "case-parent-summon",
+      "title": "استدعاء ولي أمر",
+      "schoolType": "PRIMARY",
+      "defaultOwnerRoleKey": "BOYS_EDU_VP",
+      "allowedForwardToRoleKeys": ["BOYS_STUDENT_GUIDE", "BOYS_STUDENTS_VP"],
+      "notifyGuardianOnCreate": true,
+      "notifyGuardianOnClose": true
+    },
+    {
+      "id": "case-undertaking",
+      "title": "تعهد",
+      "schoolType": "PRIMARY",
+      "defaultOwnerRoleKey": "BOYS_EDU_VP",
+      "allowedForwardToRoleKeys": ["BOYS_STUDENT_GUIDE"],
+      "notifyGuardianOnCreate": true,
+      "notifyGuardianOnClose": true
+    },
+    {
+      "id": "case-teacher-referral",
+      "title": "تحويل من المعلم",
+      "schoolType": "PRIMARY",
+      "defaultOwnerRoleKey": "BOYS_STUDENTS_VP",
+      "allowedForwardToRoleKeys": ["BOYS_STUDENT_GUIDE", "BOYS_EDU_VP"],
+      "notifyGuardianOnCreate": false,
+      "notifyGuardianOnClose": false
+    },
+    {
+      "id": "case-counseling-session",
+      "title": "جلسة إرشادية",
+      "schoolType": "PRIMARY",
+      "defaultOwnerRoleKey": "BOYS_STUDENT_GUIDE",
+      "allowedForwardToRoleKeys": ["BOYS_EDU_VP"],
+      "notifyGuardianOnCreate": false,
+      "notifyGuardianOnClose": true
+    },
+    {
+      "id": "case-excuse-request",
+      "title": "استئذان",
+      "schoolType": "PRIMARY",
+      "defaultOwnerRoleKey": "BOYS_STUDENTS_VP",
+      "allowedForwardToRoleKeys": ["BOYS_EDU_VP"],
+      "notifyGuardianOnCreate": false,
+      "notifyGuardianOnClose": true
+    }
+  ],
+  "studentCases": [
+    {
+      "id": "sc-001",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-omar",
+      "caseTypeId": "case-parent-summon",
+      "title": "استدعاء ولي أمر بسبب تكرار الغياب",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "ownerRoleKey": "BOYS_EDU_VP",
+      "assignedPersonId": "p-boys-edu-vp",
+      "createdByPersonId": "p-teacher-ahmed",
+      "createdAt": 1771000000000,
+      "latestNote": "تم إشعار ولي الأمر عبر التطبيق"
+    },
+    {
+      "id": "sc-002",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-yousef",
+      "caseTypeId": "case-teacher-referral",
+      "title": "تحويل من المعلم للموجه الطلابي",
+      "status": "REFERRED",
+      "priority": "MEDIUM",
+      "ownerRoleKey": "BOYS_STUDENT_GUIDE",
+      "assignedPersonId": "p-boys-student-guide",
+      "createdByPersonId": "p-teacher-yasser",
+      "createdAt": 1771200000000,
+      "latestNote": "بانتظار جلسة إرشادية"
+    },
+    {
+      "id": "sc-003",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "studentId": "stu-saad",
+      "caseTypeId": "case-behavior-violation",
+      "title": "مخالفة سلوكية داخل الفصل",
+      "status": "IN_PROGRESS",
+      "priority": "MEDIUM",
+      "ownerRoleKey": "BOYS_STUDENTS_VP",
+      "assignedPersonId": "p-boys-students-vp",
+      "createdByPersonId": "p-teacher-saad",
+      "createdAt": 1771300000000,
+      "latestNote": "تم تحويل الحالة للموجه الطلابي"
+    }
+  ]
+}

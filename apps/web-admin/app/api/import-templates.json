@@ -1,0 +1,26 @@
+{
+  "students": {
+    "requiredColumns": [
+      "studentNationalId",
+      "studentName",
+      "schoolId",
+      "academicYearId",
+      "gradeCode",
+      "classTitle",
+      "guardianPhone1"
+    ],
+    "optionalColumns": [
+      "guardianName1",
+      "guardianRelation1",
+      "guardianPhone2",
+      "guardianName2",
+      "guardianRelation2"
+    ],
+    "mode": "CREATE_OR_UPDATE_ONLY"
+  },
+  "staff": {
+    "requiredColumns": ["name", "email", "roleKey", "schoolId"],
+    "optionalColumns": ["nationalId", "phone", "scopeType", "scopeId"],
+    "mode": "CREATE_OR_UPDATE_ONLY"
+  }
+}

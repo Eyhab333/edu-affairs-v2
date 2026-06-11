@@ -1,0 +1,16 @@
+{
+  "org": {
+    "id": "takween",
+    "name": "تكوين",
+    "isArchived": false,
+    "createdAt": 1764613200000
+  },
+  "meta": {
+    "projectKey": "edu-affairs",
+    "generatedAt": "2026-04-03T00:00:00+03:00",
+    "notes": [
+      "Mock data مؤقت للفرونت",
+      "بعض الأسماء والأرقام افتراضية لاستكمال السيناريو"
+    ]
+  }
+}

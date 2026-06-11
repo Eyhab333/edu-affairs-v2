@@ -1,0 +1,222 @@
+{
+  "academicYears": [
+    {
+      "id": "ay-1446",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "title": "1446 هـ",
+      "startsAt": 1725148800000,
+      "endsAt": 1756598400000,
+      "isActive": false
+    },
+    {
+      "id": "ay-1447",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "title": "1447 هـ",
+      "startsAt": 1756771200000,
+      "endsAt": 1788220800000,
+      "isActive": true
+    },
+    {
+      "id": "ay-1446",
+      "orgId": "takween",
+      "schoolId": "mrb-girls",
+      "title": "1446 هـ",
+      "startsAt": 1725148800000,
+      "endsAt": 1756598400000,
+      "isActive": false
+    },
+    {
+      "id": "ay-1447",
+      "orgId": "takween",
+      "schoolId": "mrb-girls",
+      "title": "1447 هـ",
+      "startsAt": 1756771200000,
+      "endsAt": 1788220800000,
+      "isActive": true
+    },
+    {
+      "id": "ay-1446",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "title": "1446 هـ",
+      "startsAt": 1725148800000,
+      "endsAt": 1756598400000,
+      "isActive": false
+    },
+    {
+      "id": "ay-1447",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "title": "1447 هـ",
+      "startsAt": 1756771200000,
+      "endsAt": 1788220800000,
+      "isActive": true
+    }
+  ],
+  "grades": [
+    {
+      "id": "g1",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "code": "G1",
+      "title": "أول ابتدائي",
+      "order": 1,
+      "isArchived": false
+    },
+    {
+      "id": "g2",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "code": "G2",
+      "title": "ثاني ابتدائي",
+      "order": 2,
+      "isArchived": false
+    },
+    {
+      "id": "g3",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "code": "G3",
+      "title": "ثالث ابتدائي",
+      "order": 3,
+      "isArchived": false
+    },
+    {
+      "id": "g4",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "code": "G4",
+      "title": "رابع ابتدائي",
+      "order": 4,
+      "isArchived": false
+    },
+    {
+      "id": "g5",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "code": "G5",
+      "title": "خامس ابتدائي",
+      "order": 5,
+      "isArchived": false
+    },
+    {
+      "id": "g6",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "code": "G6",
+      "title": "سادس ابتدائي",
+      "order": 6,
+      "isArchived": false
+    },
+    {
+      "id": "kg1",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1447",
+      "code": "KG1",
+      "title": "المستوى الأول",
+      "order": 1,
+      "isArchived": false
+    },
+    {
+      "id": "kg2",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1447",
+      "code": "KG2",
+      "title": "المستوى الثاني",
+      "order": 2,
+      "isArchived": false
+    },
+    {
+      "id": "kg3",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1447",
+      "code": "KG3",
+      "title": "المستوى الثالث",
+      "order": 3,
+      "isArchived": false
+    }
+  ],
+  "classes": [
+    {
+      "id": "g4-a",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "gradeId": "g4",
+      "title": "4/أ",
+      "order": 1,
+      "isArchived": false
+    },
+    {
+      "id": "g4-b",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "gradeId": "g4",
+      "title": "4/ب",
+      "order": 2,
+      "isArchived": false
+    },
+    {
+      "id": "g5-a",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "gradeId": "g5",
+      "title": "5/أ",
+      "order": 1,
+      "isArchived": false
+    },
+    {
+      "id": "g5-b",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "gradeId": "g5",
+      "title": "5/ب",
+      "order": 2,
+      "isArchived": false
+    },
+    {
+      "id": "g6-a",
+      "orgId": "takween",
+      "schoolId": "mrb-boys",
+      "academicYearId": "ay-1447",
+      "gradeId": "g6",
+      "title": "6/أ",
+      "order": 1,
+      "isArchived": false
+    },
+    {
+      "id": "kg2-a",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1447",
+      "gradeId": "kg2",
+      "title": "KG2 / أ",
+      "order": 1,
+      "isArchived": false
+    },
+    {
+      "id": "kg3-a",
+      "orgId": "takween",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1447",
+      "gradeId": "kg3",
+      "title": "KG3 / أ",
+      "order": 1,
+      "isArchived": false
+    }
+  ]
+}
