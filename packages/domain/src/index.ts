@@ -8,7 +8,6 @@ export * from "./student-transport/index";
 export * from "./student-notes/index";
 export * from "./student-measurements/index";
 export * from "./learning-loss/index";
-export * from "./staff-evaluations/index";
 export * from "./student-cases/index";
 export * from "./student-gamification/index";
 export * from "./student-homework/index";

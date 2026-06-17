@@ -15,6 +15,7 @@ import {
   School,
   Star,
   Users,
+  MessageSquare,
 } from "lucide-react";
 import { signOut } from "firebase/auth";
 
@@ -116,6 +117,18 @@ const navItems: Array<{
     label: "تقييماتي",
     icon: GraduationCap,
     moduleKey: "EVALUATIONS",
+  },
+  {
+    href: "/staff/my-evaluations",
+    label: "التقييمات",
+    icon: GraduationCap,
+    moduleKey: "MY_EVALUATIONS",
+  },
+  {
+    href: "/staff/messages",
+    label: "رسائل",
+    icon: MessageSquare,
+    moduleKey: "MESSAGES",
   },
 ];
 

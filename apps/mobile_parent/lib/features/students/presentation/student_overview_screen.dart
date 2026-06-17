@@ -16,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
 class StudentOverviewScreen extends StatefulWidget {
   const StudentOverviewScreen({super.key, required this.studentId});
 
@@ -29,6 +30,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
   late Future<ParentStudentSummary?> _future;
 
   final _service = GuardianChildrenService();
+
 
   @override
   void initState() {
@@ -117,7 +119,15 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
       length: 6,
       child: Column(
         children: [
-          _StudentHeader(student: student),
+          _StudentHeader(
+            student: student,
+            onCommunicationPressed: () {
+              context.push(
+                '/students/${Uri.encodeComponent(student.studentId)}/communication',
+              );
+            },
+          ),
+
           const TabBar(
             isScrollable: true,
             tabs: [
@@ -156,9 +166,13 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
 }
 
 class _StudentHeader extends StatelessWidget {
-  const _StudentHeader({required this.student});
+  const _StudentHeader({
+    required this.student,
+    required this.onCommunicationPressed,
+  });
 
   final ParentStudentSummary student;
+  final VoidCallback onCommunicationPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -173,70 +187,85 @@ class _StudentHeader extends StatelessWidget {
         AppSpacing.md,
       ),
       child: AppCard(
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              width: 62,
-              height: 62,
-              decoration: BoxDecoration(
-                color: colorScheme.primary.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(AppRadius.xl),
-              ),
-              child: Icon(
-                Icons.child_care_rounded,
-                color: colorScheme.primary,
-                size: 34,
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    student.studentName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.titleLarge?.copyWith(
+            Row(
+              children: [
+                Container(
+                  width: 62,
+                  height: 62,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                  ),
+                  child: Icon(
+                    Icons.child_care_rounded,
+                    color: colorScheme.primary,
+                    size: 34,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        student.studentName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        student.schoolName.isEmpty
+                            ? 'لم يتم تحديد المدرسة'
+                            : student.schoolName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: AppColors.text,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        student.classLine,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: AppColors.mutedText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.soft,
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                  ),
+                  child: Text(
+                    student.relationLabel,
+                    style: textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    student.schoolName.isEmpty
-                        ? 'لم يتم تحديد المدرسة'
-                        : student.schoolName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: AppColors.text,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    student.classLine,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: AppColors.mutedText,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-              decoration: BoxDecoration(
-                color: AppColors.soft,
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-              ),
-              child: Text(
-                student.relationLabel,
-                style: textTheme.labelSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
                 ),
-              ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
+
+            FilledButton.icon(
+              onPressed: onCommunicationPressed,
+              icon: const Icon(Icons.forum_rounded),
+              label: const Text('التواصل'),
             ),
           ],
         ),

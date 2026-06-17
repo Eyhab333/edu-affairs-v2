@@ -77,7 +77,7 @@ class ForegroundNotificationService {
         return '/notifications';
 
       case 'CHAT_CONVERSATION':
-        return '/notifications';
+        return '/messages';
 
       case 'VIRTUAL_CLASS_SESSION':
         return '/notifications';

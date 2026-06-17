@@ -707,6 +707,8 @@ function resolveVisibleModules(params: {
       "GAMIFICATION",
       "TRANSPORT",
       "EVALUATIONS",
+      "MY_EVALUATIONS",
+      "MESSAGES"
     ];
   }
 

@@ -10,7 +10,13 @@
     "build": "pnpm --filter @takween/contracts build && pnpm --filter web-admin build",
     "build:web": "pnpm --filter web-admin build",
     "build:contracts": "pnpm --filter @takween/contracts build",
-    "lint": "pnpm --filter web-admin lint"
+    "lint": "pnpm --filter web-admin lint",
+    "dev:staff": "pnpm --filter web-staff dev",
+    "build:staff": "pnpm --filter web-staff build",
+    "lint:staff": "pnpm --filter web-staff lint",
+    "build:functions": "pnpm --filter functions build",
+    "deploy:functions": "pnpm --filter functions deploy",
+    "build:all": "pnpm --filter @takween/contracts build && pnpm --filter web-admin build && pnpm --filter web-staff build && pnpm --filter functions build"
   },
   "keywords": [],
   "author": "",

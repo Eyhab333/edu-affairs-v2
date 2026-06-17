@@ -172,9 +172,6 @@ importers:
 
   functions:
     dependencies:
-      '@takween/contracts':
-        specifier: workspace:*
-        version: link:../packages/contracts
       firebase-admin:
         specifier: ^13.7.0
         version: 13.7.0

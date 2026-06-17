@@ -3955,6 +3955,7 @@ export type StudentCaseLogEntry = z.infer<typeof StudentCaseLogEntrySchema>;
  * تقييمات المعلمين والإداريين
  */
 
+/*
 export const EvaluationFrameworkStatus = z.enum([
   "DRAFT",
   "ACTIVE",
@@ -4012,6 +4013,8 @@ export const EvaluationTargetKind = z.enum([
 ]);
 export type EvaluationTargetKind = z.infer<typeof EvaluationTargetKind>;
 
+
+
 export const EvaluationFrameworkSchema = AuditFieldsSchema.merge(
   z.object({
     id: NonEmptyStringSchema,
@@ -4045,7 +4048,7 @@ export const EvaluationRubricItemSchema = AuditFieldsSchema.merge(
     /**
      * يحدد إن كان هذا البند يظهر في تقييمات فئة معينة فقط
      * مثل: أسبوعي / فصلي / أعمال كتابية / تشخيصي
-     */
+    
     tags: z.array(z.string()).default([]),
 
     isRequired: z.boolean().default(true),
@@ -4067,7 +4070,7 @@ export const EvaluatorPolicySchema = AuditFieldsSchema.merge(
      * مثال:
      * SCHOOL / ORG
      * ويمكن لاحقًا توسيعه إلى GRADE / CLASS إن احتجنا
-     */
+    
     scopeType: MembershipScopeType.default("SCHOOL"),
     scopeId: z.string().optional().default(""),
 
@@ -4078,7 +4081,7 @@ export const EvaluatorPolicySchema = AuditFieldsSchema.merge(
      * مثال:
      * المدير يقيّم الوكيل ومن تحته
      * المشرفة الإدارية تقيّم المديرات
-     */
+     
     notes: z.string().optional().default(""),
 
     isActive: z.boolean().default(true),
@@ -4112,7 +4115,7 @@ export const EvaluationPlanSchema = AuditFieldsSchema.merge(
 
     /**
      * لتفريق الخطة الأسبوعية عن الفترية عن التحليل عن الأعمال الكتابية...
-     */
+    
     tags: z.array(z.string()).default([]),
 
     isActive: z.boolean().default(true),
@@ -4138,7 +4141,7 @@ export const EvaluationCycleSchema = AuditFieldsSchema.merge(
      * - زيارة 1
      * - الشهر الأول
      * - الفصل الدراسي الأول
-     */
+     
     order: z.number().int().min(0).default(0),
 
     startsAt: TimestampMsSchema.optional(),
@@ -4166,7 +4169,7 @@ export const EvaluationSubmissionSchema = AuditFieldsSchema.merge(
     /**
      * أبقينا targetTeacherPersonId للتوافق مع البيانات الحالية
      * وأضافنا targetPersonId ليعمل للمعلمين والإداريين معًا
-     */
+     
     targetPersonId: z.string().optional().default(""),
     targetTeacherPersonId: z.string().optional().default(""),
     targetRoleKey: MembershipRole.optional(),
@@ -4246,6 +4249,9 @@ export const EvaluationSummaryReadModelSchema = AuditFieldsSchema.merge(
 export type EvaluationSummaryReadModel = z.infer<
   typeof EvaluationSummaryReadModelSchema
 >;
+
+
+*/
 
 /**
  * Promotion / year close
@@ -5853,8 +5859,6 @@ export const NotificationSchema = AuditFieldsSchema.merge(
 );
 export type Notification = z.infer<typeof NotificationSchema>;
 
-
-
 export const MessageParticipantKind = z.enum([
   "GUARDIAN",
   "STAFF",
@@ -5863,13 +5867,7 @@ export const MessageParticipantKind = z.enum([
 ]);
 export type MessageParticipantKind = z.infer<typeof MessageParticipantKind>;
 
-export const MessageType = z.enum([
-  "TEXT",
-  "SYSTEM",
-  "IMAGE",
-  "FILE",
-  "VOICE",
-]);
+export const MessageType = z.enum(["TEXT", "SYSTEM", "IMAGE", "FILE", "VOICE"]);
 export type MessageType = z.infer<typeof MessageType>;
 
 export const ThreadStatus = z.enum([
@@ -6051,13 +6049,6 @@ export const MessageSchema = AuditFieldsSchema.merge(
 );
 export type Message = z.infer<typeof MessageSchema>;
 
-
-
-
-
-
-
-
 /**
  * Import templates
  */
@@ -6075,3 +6066,5 @@ export const ImportTemplatesSchema = z.object({
   staff: ImportTemplateDefinitionSchema.optional(),
 });
 export type ImportTemplates = z.infer<typeof ImportTemplatesSchema>;
+
+export * from "./staff-evaluations";

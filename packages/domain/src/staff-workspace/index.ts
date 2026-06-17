@@ -24,7 +24,9 @@ export type StaffHomeVisibleModule =
   | "CASES"
   | "GAMIFICATION"
   | "TRANSPORT"
-  | "EVALUATIONS";
+  | "EVALUATIONS"
+  | "MY_EVALUATIONS"
+  | "MESSAGES";
 
 export type StaffHomeSummaryCard = {
   key: string;
@@ -567,9 +569,10 @@ export function buildStaffHome(params: {
     resolveModulesFromAssignments(activeAssignments);
 
   const rawVisibleModules: StaffHomeVisibleModule[] = [
-    ...modulesFromAssignments,
-    ...(params.visibleModulesOverride ?? []),
-  ];
+  "MY_EVALUATIONS",
+  ...modulesFromAssignments,
+  ...(params.visibleModulesOverride ?? []),
+];
 
   if (visibleClasses.length > 0) {
     rawVisibleModules.push("CLASSES", "STUDENTS");

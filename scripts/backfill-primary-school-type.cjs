@@ -14,6 +14,12 @@ const orgId = process.env.ORG_ID || "takween";
 const academicYearId = process.env.ACADEMIC_YEAR_ID || "ay-1448";
 const dryRun = process.argv.includes("--dry-run");
 
+
+
+
+
+
+
 const startedAt = Date.now();
 
 const PRIMARY_SCHOOLS = [
