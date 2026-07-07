@@ -1338,6 +1338,24 @@ export const VirtualClassProvider = z.enum([
 ]);
 export type VirtualClassProvider = z.infer<typeof VirtualClassProvider>;
 
+export const VirtualClassProvisioningStatus = z.enum([
+  "NOT_REQUESTED",
+  "PENDING",
+  "READY",
+  "FAILED",
+]);
+export type VirtualClassProvisioningStatus = z.infer<
+  typeof VirtualClassProvisioningStatus
+>;
+
+export const VirtualClassGoogleMeetProvisioningMode = z.enum([
+  "TEACHER_CALENDAR",
+  "FALLBACK_ORG_CALENDAR",
+]);
+export type VirtualClassGoogleMeetProvisioningMode = z.infer<
+  typeof VirtualClassGoogleMeetProvisioningMode
+>;
+
 export const VirtualClassSessionStatus = z.enum([
   "DRAFT",
   "SCHEDULED",
@@ -1430,12 +1448,46 @@ export const VirtualClassSessionSchema = AuditFieldsSchema.merge(
     provider: VirtualClassProvider.default("GOOGLE_MEET"),
 
     /**
+     * حالة إنشاء وتجهيز رابط المزود الخارجي.
+     * لا تخلط بينها وبين status؛
+     * status = حالة الحصة نفسها
+     * providerProvisioningStatus = حالة إنشاء الرابط/الاجتماع
+     */
+    providerProvisioningStatus:
+      VirtualClassProvisioningStatus.default("NOT_REQUESTED"),
+
+    providerProvisioningErrorCode: z.string().optional().default(""),
+    providerProvisioningErrorMessage: z.string().optional().default(""),
+    providerProvisionedAt: TimestampMsSchema.optional(),
+    providerProvisioningUpdatedAt: TimestampMsSchema.optional(),
+
+    /**
      * Google Meet / provider fields.
      */
     providerMeetingCode: z.string().optional().default(""),
     providerSpaceName: z.string().optional().default(""),
     providerConferenceRecordName: z.string().optional().default(""),
+
+    /**
+     * Google Calendar fields.
+     */
     providerCalendarEventId: z.string().optional().default(""),
+    providerCalendarId: z.string().optional().default(""),
+    providerCalendarHtmlLink: z.string().optional().default(""),
+    providerCalendarOwnerEmail: EmailStringSchema.optional().default(""),
+    providerOrganizerEmail: EmailStringSchema.optional().default(""),
+
+    /**
+     * Idempotency key المستخدم عند طلب إنشاء Google Meet من Calendar API.
+     */
+    providerConferenceRequestId: z.string().optional().default(""),
+
+    /**
+     * كيف تم إنشاء Google Meet.
+     */
+    googleMeetProvisioningMode:
+      VirtualClassGoogleMeetProvisioningMode.optional(),
+    googleMeetFallbackReason: z.string().optional().default(""),
 
     joinUrl: UrlStringSchema.default(""),
 
@@ -1554,6 +1606,8 @@ export const VirtualClassNotificationLogSchema = AuditFieldsSchema.merge(
 export type VirtualClassNotificationLog = z.infer<
   typeof VirtualClassNotificationLogSchema
 >;
+
+// ********************
 
 export const StudentMeasurementBatchKind = z.enum([
   "ASSESSMENT",
@@ -4049,6 +4103,7 @@ export const StudentGamificationEventVisibility = z.enum([
   "GUARDIAN_VISIBLE",
   "STUDENT_AND_GUARDIAN_VISIBLE",
   "PUBLIC_LEADERBOARD",
+  "EVERYONE",
 ]);
 export type StudentGamificationEventVisibility = z.infer<
   typeof StudentGamificationEventVisibility
@@ -4436,6 +4491,7 @@ export const GamificationCatalogVisibility = z.enum([
   "STUDENT_DISPLAY",
   "GUARDIAN_VISIBLE",
   "PUBLIC_LEADERBOARD",
+  "EVERYONE",
 ]);
 export type GamificationCatalogVisibility = z.infer<
   typeof GamificationCatalogVisibility

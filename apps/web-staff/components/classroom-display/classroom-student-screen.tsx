@@ -59,6 +59,10 @@ type FeedRow = LooseRecord & {
   badgeTitle?: string;
   value?: number;
   points?: number;
+  pointsDelta?: number;
+  deltaPoints?: number;
+  awardedPoints?: number;
+  scoreDelta?: number;
   occurredAt?: number;
 };
 
@@ -83,6 +87,17 @@ function readNumber(source: LooseRecord, key: string, fallback = 0): number {
   const value = source[key];
 
   if (typeof value === "number" && Number.isFinite(value)) return value;
+
+  if (typeof value === "string") {
+    const normalized = value
+      .replace(/[٠-٩]/g, (digit) => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
+      .replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)))
+      .replace(/[^\d.-]/g, "");
+
+    const parsed = Number(normalized);
+
+    if (Number.isFinite(parsed)) return parsed;
+  }
 
   return fallback;
 }
@@ -144,7 +159,14 @@ function getFeedStudentName(row: FeedRow) {
 }
 
 function getFeedPoints(row: FeedRow) {
-  return readNumber(row, "points") || readNumber(row, "value");
+  return (
+    readNumber(row, "points") ||
+    readNumber(row, "pointsDelta") ||
+    readNumber(row, "deltaPoints") ||
+    readNumber(row, "awardedPoints") ||
+    readNumber(row, "scoreDelta") ||
+    readNumber(row, "value")
+  );
 }
 
 function getRankIcon(index: number) {
@@ -335,29 +357,37 @@ export function ClassroomStudentScreen({
 }: ClassroomStudentScreenProps) {
   const model = view as unknown as LooseRecord;
   const theme = resolveClassroomDisplayTheme(themeKey);
+  const header = asRecord(model.header);
+  const settings = asRecord(model.settings);
   const previousLatestFeedIdRef = useRef<string | null>(null);
   const [celebrating, setCelebrating] = useState(false);
 
   const [soundNeedsActivation, setSoundNeedsActivation] = useState(false);
   const [soundUnlocked, setSoundUnlocked] = useState(false);
 
-  const schoolName = readString(model, "schoolName", "مدرستنا الجميلة");
-  const classTitle = readString(model, "classTitle", "فصل الأبطال");
+  const schoolName = readString(header, "schoolName", "مدرستنا الجميلة");
+  const classTitle = readString(header, "classTitle", "فصل الأبطال");
   const subjectTitle =
-    readString(model, "subjectTitle") ||
+    readString(header, "subjectTitle") ||
     readString(model, "subjectKey", "المادة");
 
   const status = readString(model, "status", "ACTIVE");
+
+  const lessonGoal = readString(header, "lessonGoal");
+  const encouragementMessage =
+    readString(header, "encouragementMessage") ||
+    "كل نجمة تقرّبك من إنجاز جديد ✨";
+
+  const showLeaderboard = readBoolean(settings, "showLeaderboard", true);
+  const showGamificationFeed = readBoolean(
+    settings,
+    "showGamificationFeed",
+    true,
+  );
+
   const isPaused = status === "PAUSED";
   const isEnded =
     status === "ENDED" || status === "CANCELLED" || status === "EXPIRED";
-  const lessonGoal = readString(model, "lessonGoal");
-  const encouragementMessage =
-    readString(model, "encouragementMessage") ||
-    "كل نجمة تقرّبك من إنجاز جديد ✨";
-
-  const showLeaderboard = readBoolean(model, "showLeaderboard", true);
-  const showGamificationFeed = readBoolean(model, "showGamificationFeed", true);
 
   const leaderboard = readArray<LeaderboardRow>(model.leaderboard).slice(0, 5);
   const feedItems = readArray<FeedRow>(model.feedItems).slice(0, 8);

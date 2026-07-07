@@ -343,8 +343,69 @@ export function toStudentInputs(params: {
   });
 }
 
+
+function readGamificationPointsDelta(data: Record<string, unknown>) {
+  const candidates = [
+    data.pointsDelta,
+    data.deltaPoints,
+    data.awardedPoints,
+    data.pointsAwarded,
+    data.scoreDelta,
+    data.points,
+    data.value,
+  ];
+
+  for (const value of candidates) {
+    if (typeof value === "number" && Number.isFinite(value)) {
+      return value;
+    }
+
+    if (typeof value === "string") {
+      const normalized = value
+        .replace(/[٠-٩]/g, (digit) =>
+          String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)),
+        )
+        .replace(/[۰-۹]/g, (digit) =>
+          String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)),
+        )
+        .replace(/[^\d.-]/g, "");
+
+      const parsed = Number(normalized);
+
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+    }
+  }
+
+  return 0;
+}
+
+function toNumberValue(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const normalized = value
+      .replace(/[٠-٩]/g, (digit) => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
+      .replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)))
+      .replace(/[^\d.-]/g, "");
+
+    const parsed = Number(normalized);
+
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+
+  return 0;
+}
+
 export function toFeedInputs(events: StudentGamificationEvent[]) {
   return events.map((event): ClassroomDisplayFeedItemInput => {
+    const pointsDelta = toNumberValue(event.value);
+
     return {
       id: event.id,
       studentId: event.studentId,
@@ -355,6 +416,10 @@ export function toFeedInputs(events: StudentGamificationEvent[]) {
         `${event.value} ${event.valueKind}`,
       createdAt: event.occurredAt ?? event.createdAt ?? Date.now(),
       visibility: event.visibility,
+
+      points: pointsDelta,
+      pointsDelta,
+      value: pointsDelta,
     };
   });
 }

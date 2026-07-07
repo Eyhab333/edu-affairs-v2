@@ -484,10 +484,10 @@ export function filterGamificationEventsForGuardian(
   return events.filter((event) => {
     if (event.status !== "ACTIVE") return false;
 
-    return (
-      event.visibility === "GUARDIAN_VISIBLE" ||
-      event.visibility === "PUBLIC_LEADERBOARD"
-    );
+    return isGamificationVisibleToAudience({
+      visibility: event.visibility,
+      audience: "GUARDIAN",
+    });
   });
 }
 
@@ -497,11 +497,10 @@ export function filterGamificationEventsForStudentDisplay(
   return events.filter((event) => {
     if (event.status !== "ACTIVE") return false;
 
-    return (
-      event.visibility === "STUDENT_DISPLAY" ||
-      event.visibility === "GUARDIAN_VISIBLE" ||
-      event.visibility === "PUBLIC_LEADERBOARD"
-    );
+    return isGamificationVisibleToAudience({
+      visibility: event.visibility,
+      audience: "CLASSROOM_DISPLAY",
+    });
   });
 }
 
@@ -1285,8 +1284,6 @@ export function buildStudentGamificationLeaderboard(
   }));
 }
 
-
-
 export type StudentGamificationPublicViewContext = {
   orgId: string;
   schoolId: string;
@@ -1367,42 +1364,41 @@ function publicEventMatchesContext(params: {
 }
 
 export function filterEventsForStudentView(
-  events: StudentGamificationEvent[]
+  events: StudentGamificationEvent[],
 ): StudentGamificationEvent[] {
   return events.filter((event) => {
     if (event.status !== "ACTIVE") return false;
 
-    return (
-      event.visibility === "STUDENT_DISPLAY" ||
-      event.visibility === "GUARDIAN_VISIBLE" ||
-      event.visibility === "PUBLIC_LEADERBOARD"
-    );
+    return isGamificationVisibleToAudience({
+      visibility: event.visibility,
+      audience: "STUDENT",
+    });
   });
 }
 
 export function filterEventsForGuardianView(
-  events: StudentGamificationEvent[]
+  events: StudentGamificationEvent[],
 ): StudentGamificationEvent[] {
   return events.filter((event) => {
     if (event.status !== "ACTIVE") return false;
 
-    return (
-      event.visibility === "GUARDIAN_VISIBLE" ||
-      event.visibility === "PUBLIC_LEADERBOARD"
-    );
+    return isGamificationVisibleToAudience({
+      visibility: event.visibility,
+      audience: "GUARDIAN",
+    });
   });
 }
 
 export function filterEventsForClassroomDisplayView(
-  events: StudentGamificationEvent[]
+  events: StudentGamificationEvent[],
 ): StudentGamificationEvent[] {
   return events.filter((event) => {
     if (event.status !== "ACTIVE") return false;
 
-    return (
-      event.visibility === "STUDENT_DISPLAY" ||
-      event.visibility === "PUBLIC_LEADERBOARD"
-    );
+    return isGamificationVisibleToAudience({
+      visibility: event.visibility,
+      audience: "CLASSROOM_DISPLAY",
+    });
   });
 }
 
@@ -1495,7 +1491,7 @@ function createPublicSubjectSummary(params: {
 
 function addPublicEventToSubjectSummary(
   summary: StudentGamificationPublicSubjectSummary,
-  event: StudentGamificationEvent
+  event: StudentGamificationEvent,
 ) {
   summary.totalEvents += 1;
 
@@ -1545,7 +1541,7 @@ function buildPublicSubjectSummaries(params: {
             subjectTitlesByKey: params.subjectTitlesByKey,
           }),
           classSubjectOfferingId: event.classSubjectOfferingId,
-        })
+        }),
       );
     }
 
@@ -1553,7 +1549,7 @@ function buildPublicSubjectSummaries(params: {
   }
 
   return Array.from(map.values()).sort((a, b) =>
-    a.subjectKey.localeCompare(b.subjectKey)
+    a.subjectKey.localeCompare(b.subjectKey),
   );
 }
 
@@ -1617,12 +1613,12 @@ function getRecentPublicEvents(params: {
         event,
         context: params.context,
         subjectTitlesByKey: params.subjectTitlesByKey,
-      })
+      }),
     );
 }
 
 export function buildStudentGamificationStudentView(
-  input: BuildStudentGamificationStudentViewInput
+  input: BuildStudentGamificationStudentViewInput,
 ): StudentGamificationStudentView {
   assertNonEmpty(input.studentId, "studentId");
   assertNonEmpty(input.context.orgId, "context.orgId");
@@ -1640,7 +1636,7 @@ export function buildStudentGamificationStudentView(
         event,
         context: input.context,
       });
-    }
+    },
   );
 
   const totals = buildPublicTotals(visibleEvents);
@@ -1711,7 +1707,7 @@ export function buildStudentGamificationStudentView(
 }
 
 export function buildStudentGamificationGuardianView(
-  input: BuildStudentGamificationGuardianViewInput
+  input: BuildStudentGamificationGuardianViewInput,
 ): StudentGamificationGuardianView {
   assertNonEmpty(input.studentId, "studentId");
   assertNonEmpty(input.context.orgId, "context.orgId");
@@ -1729,7 +1725,7 @@ export function buildStudentGamificationGuardianView(
         event,
         context: input.context,
       });
-    }
+    },
   );
 
   const totals = buildPublicTotals(visibleEvents);
@@ -1805,7 +1801,7 @@ export function buildStudentGamificationGuardianView(
 }
 
 export function buildStudentGamificationClassroomDisplayView(
-  input: BuildStudentGamificationClassroomDisplayViewInput
+  input: BuildStudentGamificationClassroomDisplayViewInput,
 ): StudentGamificationClassroomDisplayView {
   assertNonEmpty(input.context.orgId, "context.orgId");
   assertNonEmpty(input.context.schoolId, "context.schoolId");
@@ -1814,12 +1810,13 @@ export function buildStudentGamificationClassroomDisplayView(
   const computedAt = input.computedAt ?? Date.now();
   const recentEventsLimit = input.recentEventsLimit ?? 20;
 
-  const visibleEvents = filterEventsForClassroomDisplayView(input.events).filter(
-    (event) =>
-      publicEventMatchesContext({
-        event,
-        context: input.context,
-      })
+  const visibleEvents = filterEventsForClassroomDisplayView(
+    input.events,
+  ).filter((event) =>
+    publicEventMatchesContext({
+      event,
+      context: input.context,
+    }),
   );
 
   const id =
@@ -1873,8 +1870,6 @@ export function buildStudentGamificationClassroomDisplayView(
     updatedAt: computedAt,
   };
 }
-
-
 
 export type ClassroomDisplayGamificationFeedItem = {
   id: string;
@@ -2048,7 +2043,7 @@ function toClassroomDisplayFeedItem(params: {
 }
 
 export function buildClassroomDisplayGamificationFeed(
-  input: BuildClassroomDisplayGamificationFeedInput
+  input: BuildClassroomDisplayGamificationFeedInput,
 ): ClassroomDisplayGamificationFeed {
   assertNonEmpty(input.context.orgId, "context.orgId");
   assertNonEmpty(input.context.schoolId, "context.schoolId");
@@ -2062,7 +2057,7 @@ export function buildClassroomDisplayGamificationFeed(
       publicEventMatchesContext({
         event,
         context: input.context,
-      })
+      }),
     )
     .filter((event) => {
       if (!input.maxAgeMs) return true;
@@ -2071,16 +2066,14 @@ export function buildClassroomDisplayGamificationFeed(
     })
     .sort((a, b) => b.occurredAt - a.occurredAt);
 
-  const items = visibleEvents
-    .slice(0, limit)
-    .map((event) =>
-      toClassroomDisplayFeedItem({
-        event,
-        context: input.context,
-        studentDisplayNamesById: input.studentDisplayNamesById,
-        subjectTitlesByKey: input.subjectTitlesByKey,
-      })
-    );
+  const items = visibleEvents.slice(0, limit).map((event) =>
+    toClassroomDisplayFeedItem({
+      event,
+      context: input.context,
+      studentDisplayNamesById: input.studentDisplayNamesById,
+      subjectTitlesByKey: input.subjectTitlesByKey,
+    }),
+  );
 
   const id =
     input.id ??
@@ -2278,10 +2271,7 @@ function progressRuleMatchesContext(params: {
 
   if (rule.schoolId && rule.schoolId !== context.schoolId) return false;
 
-  if (
-    rule.academicYearId &&
-    rule.academicYearId !== context.academicYearId
-  ) {
+  if (rule.academicYearId && rule.academicYearId !== context.academicYearId) {
     return false;
   }
 
@@ -2675,7 +2665,10 @@ function achievementRuleMatchesRequiredSubject(params: {
 }) {
   const { rule, context } = params;
 
-  if (rule.requiredSubjectKey && rule.requiredSubjectKey !== context.subjectKey) {
+  if (
+    rule.requiredSubjectKey &&
+    rule.requiredSubjectKey !== context.subjectKey
+  ) {
     return false;
   }
 
@@ -2792,7 +2785,10 @@ export function resolveUnlockedGamificationAchievements(params: {
         rule.thresholdValue > 0
           ? Math.max(
               0,
-              Math.min(100, Math.round((currentValue / rule.thresholdValue) * 100)),
+              Math.min(
+                100,
+                Math.round((currentValue / rule.thresholdValue) * 100),
+              ),
             )
           : 0,
     });
@@ -2805,8 +2801,6 @@ export function resolveUnlockedGamificationAchievements(params: {
     pending,
   };
 }
-
-
 
 export type BuildUnlockedAchievementRewardEventsInput = {
   student: StudentGamificationTarget;
@@ -2982,3 +2976,50 @@ export function buildUnlockedAchievementRewardEvents(
   return rewardEvents;
 }
 
+export type GamificationVisibilityAudience =
+  | "STAFF"
+  | "STUDENT"
+  | "GUARDIAN"
+  | "CLASSROOM_DISPLAY"
+  | "PUBLIC_LEADERBOARD";
+
+export function isGamificationVisibleToAudience(params: {
+  visibility?: string;
+  audience: GamificationVisibilityAudience;
+}) {
+  const visibility = params.visibility || "STAFF_ONLY";
+
+  if (visibility === "EVERYONE") return true;
+
+  /**
+   * الموظفون داخل web-staff يرون السجل التشغيلي كاملًا.
+   * أما باقي الواجهات فتحتاج سياسة ظهور صريحة.
+   */
+  if (params.audience === "STAFF") return true;
+
+  if (params.audience === "STUDENT") {
+    return (
+      visibility === "STUDENT_DISPLAY" ||
+      visibility === "GUARDIAN_VISIBLE" ||
+      visibility === "PUBLIC_LEADERBOARD"
+    );
+  }
+
+  if (params.audience === "GUARDIAN") {
+    return (
+      visibility === "GUARDIAN_VISIBLE" || visibility === "PUBLIC_LEADERBOARD"
+    );
+  }
+
+  if (params.audience === "CLASSROOM_DISPLAY") {
+    return (
+      visibility === "STUDENT_DISPLAY" || visibility === "PUBLIC_LEADERBOARD"
+    );
+  }
+
+  if (params.audience === "PUBLIC_LEADERBOARD") {
+    return visibility === "PUBLIC_LEADERBOARD";
+  }
+
+  return false;
+}

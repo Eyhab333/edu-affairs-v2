@@ -19,7 +19,10 @@ import type {
   StudentEnrollment,
   StudentGamificationEvent,
 } from "@takween/contracts";
-import { buildClassroomDisplayGamificationFeed } from "@takween/domain";
+import {
+  buildClassroomDisplayGamificationFeed,
+  filterEventsForClassroomDisplayView,
+} from "@takween/domain";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { Badge } from "@/components/ui/badge";
@@ -51,14 +54,36 @@ function getErrorMessage(error: unknown) {
   return "حدث خطأ غير متوقع";
 }
 
+function getTextField(source: unknown, keys: string[]) {
+  if (!source || typeof source !== "object") return "";
+
+  const record = source as Record<string, unknown>;
+
+  for (const key of keys) {
+    const value = record[key];
+
+    if (typeof value === "string" && value.trim().length > 0) {
+      return value.trim();
+    }
+  }
+
+  return "";
+}
+
 function getStudentDisplayName(params: {
   person: Person | null;
   student: Student | null;
   studentId: string;
 }) {
   return (
-    params.person?.displayName ||
-    params.student?.id ||
+    getTextField(params.person, ["displayName", "fullName", "nameAr", "name"]) ||
+    getTextField(params.student, [
+      "displayName",
+      "fullName",
+      "nameAr",
+      "name",
+      "studentName",
+    ]) ||
     params.studentId ||
     "طالب"
   );
@@ -125,7 +150,7 @@ async function loadClassStudents(params: {
 
       const person =
         personId.length > 0
-          ? await getDoc(doc(db, `orgs/${params.orgId}/persons/${personId}`))
+          ? await getDoc(doc(db, `orgs/${params.orgId}/people/${personId}`))
           : null;
 
       const personData =
@@ -215,28 +240,25 @@ export default function SubjectGamificationDisplayPreviewPage() {
   const subjectTitle =
     getSearchValue(searchParams, "subjectTitle") || subjectKey || "المادة";
 
-
-
   // const termId = getSearchValue(searchParams, "termId");
   // const termTitle = getSearchValue(searchParams, "termTitle");
   // const termShortTitle = getSearchValue(searchParams, "termShortTitle");
 
-const currentTermForDisplay =
-  actor?.currentTermsByAcademicYear?.[academicYearId] ?? null;
+  const currentTermForDisplay =
+    actor?.currentTermsByAcademicYear?.[academicYearId] ?? null;
 
-const termId =
-  getSearchValue(searchParams, "termId") || currentTermForDisplay?.id || "";
+  const termId =
+    getSearchValue(searchParams, "termId") || currentTermForDisplay?.id || "";
 
-const termTitle =
-  getSearchValue(searchParams, "termTitle") ||
-  currentTermForDisplay?.title ||
-  "";
+  const termTitle =
+    getSearchValue(searchParams, "termTitle") ||
+    currentTermForDisplay?.title ||
+    "";
 
-const termShortTitle =
-  getSearchValue(searchParams, "termShortTitle") ||
-  currentTermForDisplay?.shortTitle ||
-  "";
-
+  const termShortTitle =
+    getSearchValue(searchParams, "termShortTitle") ||
+    currentTermForDisplay?.shortTitle ||
+    "";
 
   const [students, setStudents] = useState<StudentDisplayRow[]>([]);
   const [events, setEvents] = useState<StudentGamificationEvent[]>([]);
@@ -303,8 +325,10 @@ const termShortTitle =
   }, [students]);
 
   const feed = useMemo(() => {
+    const displayEvents = filterEventsForClassroomDisplayView(events);
+
     return buildClassroomDisplayGamificationFeed({
-      events,
+      events: displayEvents,
       studentDisplayNamesById,
       subjectTitlesByKey: subjectKey
         ? {

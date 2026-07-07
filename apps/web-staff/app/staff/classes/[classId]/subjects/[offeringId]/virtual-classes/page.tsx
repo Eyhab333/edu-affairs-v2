@@ -43,6 +43,11 @@ type VirtualClassSessionRow = {
   provider?: string;
   joinUrl?: string;
 
+  providerProvisioningStatus?: string;
+  providerProvisioningErrorMessage?: string;
+  providerCalendarOwnerEmail?: string;
+  googleMeetProvisioningMode?: string;
+
   startsAt?: number;
   endsAt?: number;
 
@@ -108,6 +113,21 @@ function getProviderLabel(provider?: string) {
   }
 }
 
+function getProvisioningStatusLabel(status?: string) {
+  switch (status) {
+    case "NOT_REQUESTED":
+      return "لم يبدأ إنشاء الرابط";
+    case "PENDING":
+      return "جاري تجهيز الرابط";
+    case "READY":
+      return "الرابط جاهز";
+    case "FAILED":
+      return "فشل إنشاء الرابط";
+    default:
+      return status || "غير محدد";
+  }
+}
+
 function buildNewVirtualClassHref(params: {
   classId: string;
   offeringId: string;
@@ -141,6 +161,11 @@ function mapSessionDoc(id: string, data: DocumentData): VirtualClassSessionRow {
 
     provider: data.provider,
     joinUrl: data.joinUrl,
+
+    providerProvisioningStatus: data.providerProvisioningStatus,
+    providerProvisioningErrorMessage: data.providerProvisioningErrorMessage,
+    providerCalendarOwnerEmail: data.providerCalendarOwnerEmail,
+    googleMeetProvisioningMode: data.googleMeetProvisioningMode,
 
     startsAt: data.startsAt,
     endsAt: data.endsAt,
@@ -290,7 +315,8 @@ export default function SubjectVirtualClassesPage() {
                 المادة: {subjectKey || "غير محددة"}
               </span>
               <span className="rounded-full border px-3 py-1">
-                الفصل الدراسي: {termShortTitle || termTitle || termId || "غير محدد"}
+                الفصل الدراسي:{" "}
+                {termShortTitle || termTitle || termId || "غير محدد"}
               </span>
               {gradeId ? (
                 <span className="rounded-full border px-3 py-1">
@@ -397,8 +423,19 @@ export default function SubjectVirtualClassesPage() {
                       <span className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
                         {getProviderLabel(session.provider)}
                       </span>
-                    </div>
 
+                      <span className="rounded-full border px-3 py-1 text-xs text-muted-foreground">
+                        {getProvisioningStatusLabel(
+                          session.providerProvisioningStatus,
+                        )}
+                      </span>
+                    </div>
+                    {session.providerProvisioningStatus === "FAILED" ? (
+                      <p className="text-sm leading-7 text-red-600 dark:text-red-300">
+                        {session.providerProvisioningErrorMessage ||
+                          "تعذر إنشاء رابط Google Meet."}
+                      </p>
+                    ) : null}
                     {session.description ? (
                       <p className="text-sm leading-7 text-muted-foreground">
                         {session.description}

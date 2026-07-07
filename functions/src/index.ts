@@ -9,6 +9,9 @@ export { onThreadMessageCreated } from "./messaging/on-thread-message-created";
 export { createOrGetStudentContextThread } from "./messaging/create-or-get-student-context-thread";
 export { markThreadRead } from "./messaging/mark-thread-read";
 export { getStudentCommunicationTargets } from "./messaging/get-student-communication-targets";
+export { createVirtualClassSessionWithMeet } from "./virtual-classes/create-virtual-class-session-with-meet";
+export { importGoogleMeetAttendance } from "./virtual-classes/import-google-meet-attendance";
+
 
 export const functionsHealth = onRequest(
   {

@@ -26,12 +26,16 @@ export type ClassroomDisplayFeedItemInput = {
   title: string;
   description?: string;
   createdAt: number;
+  points?: number;
+  pointsDelta?: number;
+  value?: number;
   visibility:
     | "STAFF_ONLY"
     | "STUDENT_DISPLAY"
     | "GUARDIAN_VISIBLE"
     | "STUDENT_AND_GUARDIAN_VISIBLE"
-    | "PUBLIC_LEADERBOARD";
+    | "PUBLIC_LEADERBOARD"
+    | "EVERYONE";
 };
 
 export type ClassroomDisplayStudentView = {
@@ -139,6 +143,10 @@ function canShowFeedItem(item: ClassroomDisplayFeedItemInput) {
   );
 }
 
+function resolveFeedItemPoints(item: ClassroomDisplayFeedItemInput) {
+  return item.points ?? item.pointsDelta ?? item.value ?? 0;
+}
+
 export function buildClassroomDisplayView(
   input: BuildClassroomDisplayViewInput,
 ): ClassroomDisplayView {
@@ -163,14 +171,23 @@ export function buildClassroomDisplayView(
     .filter(canShowFeedItem)
     .filter((item) => studentMap.has(item.studentId))
     .slice(0, 10)
-    .map((item) => ({
-      id: item.id,
-      studentId: item.studentId,
-      studentDisplayName: studentMap.get(item.studentId)?.displayName || "طالب",
-      title: item.title,
-      description: item.description || "",
-      createdAt: item.createdAt,
-    }));
+    .map((item) => {
+      const pointsDelta = resolveFeedItemPoints(item);
+
+      return {
+        id: item.id,
+        studentId: item.studentId,
+        studentDisplayName:
+          studentMap.get(item.studentId)?.displayName || "طالب",
+        title: item.title,
+        description: item.description || "",
+        createdAt: item.createdAt,
+
+        points: pointsDelta,
+        pointsDelta,
+        value: pointsDelta,
+      };
+    });
 
   return {
     sessionId: input.session.id,

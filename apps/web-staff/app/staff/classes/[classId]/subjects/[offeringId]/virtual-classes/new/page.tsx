@@ -4,17 +4,9 @@ import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, CalendarClock, Save, Video } from "lucide-react";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-  writeBatch,
-} from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 
-import { db } from "@/lib/firebase";
+import { functions } from "@/lib/firebase";
 import { getOrgId } from "@/lib/org";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import { Button } from "@/components/ui/button";
@@ -61,6 +53,15 @@ function getErrorMessage(error: unknown) {
   if (typeof error === "string") return error;
   return "حدث خطأ غير متوقع";
 }
+
+type CreateVirtualClassSessionWithMeetResult = {
+  ok: boolean;
+  sessionId: string;
+  targetCount: number;
+  providerProvisioningStatus: "PENDING" | "READY" | "FAILED";
+  joinUrl?: string;
+  errorMessage?: string;
+};
 
 function readString(searchParams: URLSearchParams, key: string) {
   return searchParams.get(key)?.trim() ?? "";
@@ -161,126 +162,6 @@ function buildSessionNotificationBody(params: {
   return `تم جدولة حصة افتراضية في ${subjectLabel}، موعدها ${startsAtText}.`;
 }
 
-async function loadTargetStudentIds(params: {
-  orgId: string;
-  schoolId: string;
-  academicYearId: string;
-  classId: string;
-}) {
-  const enrollmentsRef = collection(
-    db,
-    `orgs/${params.orgId}/studentEnrollments`,
-  );
-
-  /**
-   * فلتر واحد فقط لتجنب Composite Index الآن.
-   * ثم نفلتر المدرسة والسنة والحالة في الذاكرة.
-   */
-  const enrollmentsQuery = query(
-    enrollmentsRef,
-    where("classId", "==", params.classId),
-  );
-
-  const snap = await getDocs(enrollmentsQuery);
-
-  return uniqueStrings(
-    snap.docs
-      .map((docSnap) => {
-        return {
-          id: docSnap.id,
-          ...(docSnap.data() as Omit<StudentEnrollmentRow, "id">),
-        };
-      })
-      .filter((item) => item.schoolId === params.schoolId)
-      .filter((item) => item.academicYearId === params.academicYearId)
-      .filter((item) => !item.status || item.status === "ACTIVE")
-      .map((item) => item.studentId ?? ""),
-  );
-}
-
-async function loadGuardianRefsByStudentId(
-  orgId: string,
-  studentIds: string[],
-): Promise<GuardianRefsByStudentId> {
-  const result: GuardianRefsByStudentId = {};
-  const guardianUidCache: Record<string, string> = {};
-
-  if (studentIds.length === 0) return result;
-
-  const guardianLinksRef = collection(db, `orgs/${orgId}/guardianLinks`);
-
-  for (const chunk of chunkArray(studentIds, 30)) {
-    const guardianLinksQuery = query(
-      guardianLinksRef,
-      where("studentId", "in", chunk),
-    );
-
-    const snap = await getDocs(guardianLinksQuery);
-
-    for (const docSnap of snap.docs) {
-      const row = {
-        id: docSnap.id,
-        ...(docSnap.data() as Omit<GuardianLinkRow, "id">),
-      };
-
-      if (!row.studentId || !row.guardianId) continue;
-      if (row.active === false) continue;
-
-      const current = result[row.studentId] ?? {
-        guardianIds: [],
-        guardianUids: [],
-      };
-
-      current.guardianIds = uniqueStrings([
-        ...current.guardianIds,
-        row.guardianId,
-      ]);
-
-      const directUid = readGuardianUid(row);
-
-      if (directUid) {
-        current.guardianUids = uniqueStrings([
-          ...current.guardianUids,
-          directUid,
-        ]);
-
-        result[row.studentId] = current;
-        continue;
-      }
-
-      if (!(row.guardianId in guardianUidCache)) {
-        const guardianSnap = await getDoc(
-          doc(db, `orgs/${orgId}/guardians/${row.guardianId}`),
-        );
-
-        if (guardianSnap.exists()) {
-          const guardianData = {
-            id: guardianSnap.id,
-            ...(guardianSnap.data() as Omit<GuardianRow, "id">),
-          };
-
-          guardianUidCache[row.guardianId] = readGuardianUid(guardianData);
-        } else {
-          guardianUidCache[row.guardianId] = "";
-        }
-      }
-
-      const guardianUid = guardianUidCache[row.guardianId];
-
-      if (guardianUid) {
-        current.guardianUids = uniqueStrings([
-          ...current.guardianUids,
-          guardianUid,
-        ]);
-      }
-
-      result[row.studentId] = current;
-    }
-  }
-
-  return result;
-}
-
 function buildListHref(params: {
   classId: string;
   offeringId: string;
@@ -326,7 +207,7 @@ export default function NewSubjectVirtualClassPage() {
     subjectTitle ? `حصة ${subjectTitle}` : "حصة افتراضية",
   );
   const [description, setDescription] = useState("");
-  const [joinUrl, setJoinUrl] = useState("");
+
   const [startsAtInput, setStartsAtInput] = useState(getDefaultStartTime);
   const [endsAtInput, setEndsAtInput] = useState(getDefaultEndTime);
 
@@ -360,7 +241,6 @@ export default function NewSubjectVirtualClassPage() {
     }
 
     const cleanTitle = title.trim();
-    const cleanJoinUrl = normalizeUrl(joinUrl);
 
     const startsAt = parseDatetimeLocal(startsAtInput);
     const endsAt = parseDatetimeLocal(endsAtInput);
@@ -380,16 +260,6 @@ export default function NewSubjectVirtualClassPage() {
       return;
     }
 
-    if (!cleanJoinUrl) {
-      setError("أضف رابط Google Meet.");
-      return;
-    }
-
-    if (!/^https?:\/\//i.test(cleanJoinUrl)) {
-      setError("رابط Google Meet غير صحيح.");
-      return;
-    }
-
     if (!startsAt || !endsAt) {
       setError("حدد وقت البداية والنهاية بشكل صحيح.");
       return;
@@ -404,35 +274,12 @@ export default function NewSubjectVirtualClassPage() {
     setError("");
 
     try {
-      const targetStudentIds = await loadTargetStudentIds({
-        orgId,
-        schoolId,
-        academicYearId,
-        classId,
-      });
-
-      const guardianRefsByStudentId = await loadGuardianRefsByStudentId(
-        orgId,
-        targetStudentIds,
+      const createSessionWithMeet = httpsCallable(
+        functions,
+        "createVirtualClassSessionWithMeet",
       );
 
-      const sessionRef = doc(
-        collection(db, `orgs/${orgId}/virtualClassSessions`),
-      );
-      const batch = writeBatch(db);
-      const now = Date.now();
-
-      const notificationTitle = "تم جدولة حصة افتراضية";
-      const notificationBody = buildSessionNotificationBody({
-        studentCount: targetStudentIds.length,
-        subjectTitle,
-        subjectKey,
-        startsAt,
-      });
-
-      batch.set(sessionRef, {
-        id: sessionRef.id,
-
+      const result = await createSessionWithMeet({
         orgId,
         schoolId,
         academicYearId,
@@ -452,120 +299,25 @@ export default function NewSubjectVirtualClassPage() {
         title: cleanTitle,
         description: description.trim(),
 
-        provider: "GOOGLE_MEET",
-
-        providerMeetingCode: "",
-        providerSpaceName: "",
-        providerConferenceRecordName: "",
-        providerCalendarEventId: "",
-
-        joinUrl: cleanJoinUrl,
-
         startsAt,
         endsAt,
 
-        status: "SCHEDULED",
+        teacherEmail: user.email ?? "",
 
         /**
          * مؤقتًا نستخدم uid إلى أن نربطها بـ personId من actor.
          */
         createdByPersonId: user.uid,
-        // createdByRoleKey: "",
-
-        /**
-         * سيتم تعبئتها في 15C عند إنشاء المشاركين تلقائيًا.
-         */
-        targetStudentIds,
-        targetCount: targetStudentIds.length,
-
-        attendanceImportStatus: "PENDING",
-        attendanceReviewedByPersonId: "",
-
-        recordingUrl: "",
-        summaryText: "",
-
-        isArchived: false,
-
-        createdAt: now,
-        updatedAt: now,
       });
 
-      targetStudentIds.forEach((studentId) => {
-        const participantRef = doc(
-          collection(db, `orgs/${orgId}/virtualClassParticipants`),
+      const data = result.data as CreateVirtualClassSessionWithMeetResult;
+
+      if (!data.ok) {
+        throw new Error(
+          data.errorMessage ||
+            "تم إنشاء الحصة لكن تعذر إنشاء رابط Google Meet.",
         );
-
-        batch.set(participantRef, {
-          id: participantRef.id,
-
-          orgId,
-          sessionId: sessionRef.id,
-
-          studentId,
-          guardianIds: guardianRefsByStudentId[studentId]?.guardianIds ?? [],
-          guardianUids: guardianRefsByStudentId[studentId]?.guardianUids ?? [],
-
-          joinToken: createJoinToken(),
-          joinClickedByGuardianId: "",
-          joinClickedDeviceId: "",
-
-          providerParticipantName: "",
-          providerParticipantEmail: "",
-          providerParticipantId: "",
-
-          platformJoinStatus: "SCHEDULED",
-          providerAttendanceStatus: "UNKNOWN",
-          finalAttendanceStatus: "UNKNOWN",
-
-          reviewedByPersonId: "",
-          teacherNote: "",
-
-          createdAt: now,
-          updatedAt: now,
-        });
-
-        const guardianIds =
-          guardianRefsByStudentId[studentId]?.guardianIds ?? [];
-
-        const guardianUids =
-          guardianRefsByStudentId[studentId]?.guardianUids ?? [];
-
-        guardianIds.forEach((guardianId, index) => {
-          const notificationRef = doc(
-            collection(db, `orgs/${orgId}/virtualClassNotificationLogs`),
-          );
-
-          batch.set(notificationRef, {
-            id: notificationRef.id,
-
-            orgId,
-            sessionId: sessionRef.id,
-
-            studentId,
-            guardianId,
-            guardianUid: guardianUids[index] ?? "",
-
-            type: "SESSION_SCHEDULED",
-            title: notificationTitle,
-            body: notificationBody,
-
-            status: "PENDING",
-
-            /**
-             * هذه الحقول ستفيد تطبيق ولي الأمر لاحقًا لفتح الحصة مباشرة.
-             */
-            targetRoute: "STUDENT_VIRTUAL_CLASSES",
-            targetStudentId: studentId,
-            targetSessionId: sessionRef.id,
-
-            sentAt: now,
-            createdAt: now,
-            updatedAt: now,
-          });
-        });
-      });
-
-      await batch.commit();
+      }
 
       router.push(listHref);
     } catch (saveError: unknown) {
@@ -661,22 +413,8 @@ export default function NewSubjectVirtualClassPage() {
               />
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="joinUrl" className="text-sm font-semibold">
-                رابط Google Meet
-              </label>
-              <input
-                id="joinUrl"
-                value={joinUrl}
-                onChange={(event) => setJoinUrl(event.target.value)}
-                className="w-full rounded-2xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary"
-                placeholder="https://meet.google.com/xxx-xxxx-xxx"
-                dir="ltr"
-              />
-              <p className="text-xs leading-6 text-muted-foreground">
-                مؤقتًا نضع رابط Google Meet يدويًا. لاحقًا سننشئ الرابط آليًا من
-                Google API.
-              </p>
+            <div className="rounded-2xl border bg-muted/40 p-4 text-sm leading-7 text-muted-foreground">
+              سيتم إنشاء رابط Google Meet تلقائيًا عند حفظ الحصة.
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">

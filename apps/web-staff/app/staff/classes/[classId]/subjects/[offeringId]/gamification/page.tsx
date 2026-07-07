@@ -98,6 +98,11 @@ const VISIBILITY_OPTIONS: Array<{
   description: string;
 }> = [
   {
+    value: "EVERYONE",
+    label: "يظهر للجميع",
+    description: ".",
+  },
+  {
     value: "STAFF_ONLY",
     label: "للموظفين فقط",
     description: "لا تظهر للطالب أو ولي الأمر.",
@@ -280,7 +285,7 @@ async function loadClassStudents(params: {
 
       const person =
         personId.length > 0
-          ? await getDoc(doc(db, `orgs/${params.orgId}/persons/${personId}`))
+          ? await getDoc(doc(db, `orgs/${params.orgId}/people/${personId}`))
           : null;
 
       const personData =
@@ -498,7 +503,7 @@ export default function SubjectGamificationPage() {
   const [eventType, setEventType] =
     useState<StudentGamificationEventType>("POINTS_ADD");
   const [visibility, setVisibility] =
-    useState<StudentGamificationEventVisibility>("STUDENT_DISPLAY");
+    useState<StudentGamificationEventVisibility>("EVERYONE");
   const [valueText, setValueText] = useState("5");
   const [reasonTitle, setReasonTitle] = useState("مشاركة مميزة");
   const [note, setNote] = useState("");

@@ -26,10 +26,12 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 
-import { db } from "@/lib/firebase";
+import { db, functions } from "@/lib/firebase";
 import { getOrgId } from "@/lib/org";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import { Button } from "@/components/ui/button";
+
+import { httpsCallable } from "firebase/functions";
 
 type VirtualClassSessionRow = {
   id: string;
@@ -55,6 +57,16 @@ type VirtualClassSessionRow = {
   provider?: string;
   joinUrl?: string;
 
+  providerProvisioningStatus?: string;
+  providerProvisioningErrorMessage?: string;
+  providerCalendarOwnerEmail?: string;
+  googleMeetProvisioningMode?: string;
+  providerCalendarEventId?: string;
+  providerMeetingCode?: string;
+  attendanceImportStatus?: string;
+  providerAttendanceParticipantCount?: number;
+  providerAttendanceMatchedCount?: number;
+  providerAttendanceUnmatchedCount?: number;
   startsAt?: number;
   endsAt?: number;
 
@@ -98,9 +110,26 @@ type VirtualClassParticipantRow = {
   reviewedAt?: number;
 
   teacherNote?: string;
+  studentDisplayName?: string;
 
+  providerParticipantKind?: string;
+  providerUserResourceName?: string;
+  providerFirstJoinAt?: number;
+  providerLastLeaveAt?: number;
+  providerSessionCount?: number;
+  providerMatchConfidence?: string;
+  providerMatchReason?: string;
   createdAt?: number;
   updatedAt?: number;
+};
+
+type ImportGoogleMeetAttendanceResult = {
+  ok: boolean;
+  importId: string;
+  conferenceRecordName: string;
+  participantCount: number;
+  matchedCount: number;
+  unmatchedCount: number;
 };
 
 function getErrorMessage(error: unknown) {
@@ -240,6 +269,16 @@ function mapSessionDoc(id: string, data: DocumentData): VirtualClassSessionRow {
     provider: data.provider,
     joinUrl: data.joinUrl,
 
+    providerProvisioningStatus: data.providerProvisioningStatus,
+    providerProvisioningErrorMessage: data.providerProvisioningErrorMessage,
+    providerCalendarOwnerEmail: data.providerCalendarOwnerEmail,
+    googleMeetProvisioningMode: data.googleMeetProvisioningMode,
+    providerCalendarEventId: data.providerCalendarEventId,
+    providerMeetingCode: data.providerMeetingCode,
+    attendanceImportStatus: data.attendanceImportStatus,
+    providerAttendanceParticipantCount: data.providerAttendanceParticipantCount,
+    providerAttendanceMatchedCount: data.providerAttendanceMatchedCount,
+    providerAttendanceUnmatchedCount: data.providerAttendanceUnmatchedCount,
     startsAt: data.startsAt,
     endsAt: data.endsAt,
 
@@ -288,10 +327,33 @@ function mapParticipantDoc(
     reviewedAt: data.reviewedAt,
 
     teacherNote: data.teacherNote,
+    studentDisplayName: data.studentDisplayName,
 
+    providerParticipantKind: data.providerParticipantKind,
+    providerUserResourceName: data.providerUserResourceName,
+    providerFirstJoinAt: data.providerFirstJoinAt,
+    providerLastLeaveAt: data.providerLastLeaveAt,
+    providerSessionCount: data.providerSessionCount,
+    providerMatchConfidence: data.providerMatchConfidence,
+    providerMatchReason: data.providerMatchReason,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
   };
+}
+
+function getProvisioningStatusLabel(status?: string) {
+  switch (status) {
+    case "NOT_REQUESTED":
+      return "لم يبدأ إنشاء الرابط";
+    case "PENDING":
+      return "جاري تجهيز الرابط";
+    case "READY":
+      return "الرابط جاهز";
+    case "FAILED":
+      return "فشل إنشاء الرابط";
+    default:
+      return status || "غير محدد";
+  }
 }
 
 export default function SubjectVirtualClassDetailsPage() {
@@ -321,6 +383,9 @@ export default function SubjectVirtualClassDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [savingParticipantId, setSavingParticipantId] = useState("");
+
+  const [importingAttendance, setImportingAttendance] = useState(false);
+  const [attendanceImportMessage, setAttendanceImportMessage] = useState("");
 
   const [reviewingAttendance, setReviewingAttendance] = useState(false);
 
@@ -515,6 +580,34 @@ export default function SubjectVirtualClassDetailsPage() {
     );
   }
 
+  async function importGoogleAttendance() {
+    if (!session) return;
+
+    setImportingAttendance(true);
+    setAttendanceImportMessage("");
+
+    try {
+      const callable = httpsCallable(functions, "importGoogleMeetAttendance");
+
+      const result = await callable({
+        orgId,
+        sessionId,
+      });
+
+      const data = result.data as ImportGoogleMeetAttendanceResult;
+
+      setAttendanceImportMessage(
+        `تم جلب حضور Google Meet: ${data.participantCount} مشارك، تم ربط ${data.matchedCount} طالب.`,
+      );
+    } catch (error) {
+      setAttendanceImportMessage(
+        error instanceof Error ? error.message : "تعذر جلب حضور Google Meet.",
+      );
+    } finally {
+      setImportingAttendance(false);
+    }
+  }
+
   return (
     <main className="space-y-6 p-6">
       <section className="rounded-3xl border bg-card p-6 shadow-sm">
@@ -532,7 +625,21 @@ export default function SubjectVirtualClassDetailsPage() {
               <Video className="h-4 w-4" />
               تفاصيل الحصة الافتراضية
             </div>
-
+            <Button
+              type="button"
+              variant="outline"
+              disabled={importingAttendance || !session?.providerMeetingCode}
+              onClick={() => void importGoogleAttendance()}
+            >
+              {importingAttendance
+                ? "جاري جلب الحضور..."
+                : "جلب حضور Google Meet"}
+            </Button>
+            {attendanceImportMessage ? (
+              <p className="text-sm text-muted-foreground">
+                {attendanceImportMessage}
+              </p>
+            ) : null}
             <div>
               <h1 className="text-2xl font-bold">
                 {session?.title || "حصة افتراضية"}
@@ -631,7 +738,7 @@ export default function SubjectVirtualClassDetailsPage() {
 
       {!loading && session ? (
         <>
-          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
             <div className="rounded-3xl border bg-card p-5 shadow-sm">
               <div className="text-sm text-muted-foreground">حالة الحصة</div>
               <div className="mt-2 text-xl font-bold">
@@ -643,6 +750,15 @@ export default function SubjectVirtualClassDetailsPage() {
               <div className="text-sm text-muted-foreground">المزوّد</div>
               <div className="mt-2 text-xl font-bold">
                 {getProviderLabel(session.provider)}
+              </div>
+            </div>
+
+            <div className="rounded-3xl border bg-card p-5 shadow-sm">
+              <div className="text-sm text-muted-foreground">
+                حالة رابط Meet
+              </div>
+              <div className="mt-2 text-xl font-bold">
+                {getProvisioningStatusLabel(session.providerProvisioningStatus)}
               </div>
             </div>
 
@@ -660,6 +776,16 @@ export default function SubjectVirtualClassDetailsPage() {
               </div>
             </div>
           </section>
+
+          {session.providerProvisioningStatus === "FAILED" ? (
+            <section className="rounded-3xl border border-red-200 bg-red-50 p-5 text-sm leading-7 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-200">
+              <div className="font-bold">تعذر إنشاء رابط Google Meet</div>
+              <div className="mt-1">
+                {session.providerProvisioningErrorMessage ||
+                  "حدث خطأ غير معروف."}
+              </div>
+            </section>
+          ) : null}
 
           {session.description ? (
             <section className="rounded-3xl border bg-card p-6 shadow-sm">
@@ -758,9 +884,13 @@ export default function SubjectVirtualClassDetailsPage() {
                       >
                         <div className="space-y-1">
                           <div className="font-bold">
-                            {participant.studentId || "طالب غير محدد"}
+                            {participant.studentDisplayName ||
+                              participant.studentId ||
+                              "طالب غير محدد"}
                           </div>
-
+                          <div className="text-xs text-muted-foreground">
+                            {participant.studentId}
+                          </div>
                           <div className="text-xs text-muted-foreground">
                             أولياء الأمور:{" "}
                             {(
@@ -852,6 +982,16 @@ export default function SubjectVirtualClassDetailsPage() {
                               participant.providerDurationMinutes,
                             )}
                           </div>
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            الثقة:{" "}
+                            {participant.providerMatchConfidence || "NONE"}
+                          </div>
+
+                          {participant.providerMatchReason ? (
+                            <div className="mt-1 text-xs leading-5 text-muted-foreground">
+                              {participant.providerMatchReason}
+                            </div>
+                          ) : null}
                           <div className="text-xs text-muted-foreground">
                             {participant.reviewedAt
                               ? `روجع: ${formatDateTime(participant.reviewedAt)}`
