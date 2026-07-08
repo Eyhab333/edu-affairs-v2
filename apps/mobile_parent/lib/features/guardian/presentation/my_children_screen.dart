@@ -123,6 +123,14 @@ class _MyChildrenScreenState extends State<MyChildrenScreen> {
                     email: user?.email ?? '',
                     childrenCount: children.length,
                   ),
+
+
+                  _AnnouncementsCard(
+                    onTap: () => context.go('/announcements'),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+
                   const SizedBox(height: AppSpacing.lg),
                   const AppSectionTitle(
                     title: 'اختر أحد الأبناء للمتابعة',
@@ -360,3 +368,70 @@ class _NotificationIconWithBadge extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+class _AnnouncementsCard extends StatelessWidget {
+  const _AnnouncementsCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return AppCard(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: colorScheme.primary.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+            ),
+            child: Icon(
+              Icons.campaign_rounded,
+              color: colorScheme.primary,
+              size: 30,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'الإعلانات والأنشطة',
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  'كل جديد يخص أبناءك في مكان واحد.',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.mutedText,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          const Icon(Icons.chevron_left_rounded),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
+

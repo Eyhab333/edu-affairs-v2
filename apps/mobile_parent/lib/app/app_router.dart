@@ -10,6 +10,7 @@ import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/messages/presentation/messages_screen.dart';
 import '../features/messages/presentation/message_thread_screen.dart';
 import '../features/students/presentation/student_communication_screen.dart';
+import '../features/announcements/presentation/parent_announcements_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/splash',
@@ -23,6 +24,12 @@ final appRouter = GoRouter(
       path: '/children',
       builder: (context, state) => const MyChildrenScreen(),
     ),
+
+    GoRoute(
+      path: '/announcements',
+      builder: (context, state) => const ParentAnnouncementsScreen(),
+    ),
+
     GoRoute(
       path: '/students/:studentId',
       builder: (context, state) {

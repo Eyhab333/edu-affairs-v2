@@ -16,7 +16,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class StudentOverviewScreen extends StatefulWidget {
   const StudentOverviewScreen({super.key, required this.studentId});
 
@@ -30,7 +29,6 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
   late Future<ParentStudentSummary?> _future;
 
   final _service = GuardianChildrenService();
-
 
   @override
   void initState() {
@@ -126,6 +124,11 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
                 '/students/${Uri.encodeComponent(student.studentId)}/communication',
               );
             },
+            onActivitiesPressed: () {
+              context.push(
+                '/students/${Uri.encodeComponent(student.studentId)}/activities',
+              );
+            },
           ),
 
           const TabBar(
@@ -169,10 +172,12 @@ class _StudentHeader extends StatelessWidget {
   const _StudentHeader({
     required this.student,
     required this.onCommunicationPressed,
+    required this.onActivitiesPressed,
   });
 
   final ParentStudentSummary student;
   final VoidCallback onCommunicationPressed;
+  final VoidCallback onActivitiesPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -262,10 +267,24 @@ class _StudentHeader extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.md),
 
-            FilledButton.icon(
-              onPressed: onCommunicationPressed,
-              icon: const Icon(Icons.forum_rounded),
-              label: const Text('التواصل'),
+            Row(
+              children: [
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: onActivitiesPressed,
+                    icon: const Icon(Icons.emoji_events_rounded),
+                    label: const Text('الأنشطة'),
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: onCommunicationPressed,
+                    icon: const Icon(Icons.forum_rounded),
+                    label: const Text('التواصل'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

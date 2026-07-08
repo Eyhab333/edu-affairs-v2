@@ -11,6 +11,7 @@ export { markThreadRead } from "./messaging/mark-thread-read";
 export { getStudentCommunicationTargets } from "./messaging/get-student-communication-targets";
 export { createVirtualClassSessionWithMeet } from "./virtual-classes/create-virtual-class-session-with-meet";
 export { importGoogleMeetAttendance } from "./virtual-classes/import-google-meet-attendance";
+export { registerStudentInActivity } from "./activities/register-student-in-activity";
 
 
 export const functionsHealth = onRequest(

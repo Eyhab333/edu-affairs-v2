@@ -1142,6 +1142,7 @@ export const OperationKind = z.enum([
   "STUDENT_CASE_REFERRAL",
   "STUDENT_CASE_HANDLING",
   "STUDENT_GAMIFICATION",
+  "STUDENT_ACTIVITY_MANAGEMENT",
   "VIRTUAL_CLASS",
   "TRANSPORT_ATTENDANCE",
   "STAFF_EVALUATION",
@@ -3282,6 +3283,7 @@ export const StaffTaskModuleKey = z.enum([
   "NOTES",
   "CASES",
   "GAMIFICATION",
+  "ACTIVITIES",
   "TRANSPORT",
   "EVALUATIONS",
   "CUSTOM",
@@ -5736,3 +5738,5 @@ export type ImportTemplates = z.infer<typeof ImportTemplatesSchema>;
 export * from "./staff-evaluations";
 export * from "./student-cases";
 export * from "./transport";
+export * from "./school-activities";
+

@@ -1,0 +1,557 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../shared/theme/app_tokens.dart';
+import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_empty_state.dart';
+import '../../../shared/widgets/app_error_state.dart';
+import '../../../shared/widgets/app_loading_state.dart';
+import '../data/parent_announcements_service.dart';
+import '../data/parent_school_activity.dart';
+import '../../guardian/models/parent_student_summary.dart';
+
+class ParentAnnouncementsScreen extends StatefulWidget {
+  const ParentAnnouncementsScreen({super.key});
+
+  @override
+  State<ParentAnnouncementsScreen> createState() =>
+      _ParentAnnouncementsScreenState();
+}
+
+class _ParentAnnouncementsScreenState extends State<ParentAnnouncementsScreen> {
+  final _service = ParentAnnouncementsService();
+
+  late Future<List<ParentAnnouncementEntry>> _future;
+
+  String _registeringKey = '';
+
+  Future<void> _registerInActivity(ParentAnnouncementEntry entry) async {
+    final activity = entry.activity;
+
+    ParentStudentSummary? selectedStudent;
+
+    if (entry.students.length == 1) {
+      selectedStudent = entry.students.first;
+    } else {
+      selectedStudent = await _chooseStudent(entry.students);
+    }
+
+    if (selectedStudent == null) return;
+
+    final consentAccepted = await _confirmRegistration(entry);
+
+    if (!consentAccepted) return;
+
+    final key = '${activity.id}_${selectedStudent.studentId}';
+
+    setState(() {
+      _registeringKey = key;
+    });
+
+    try {
+      final status = await _service.registerStudentInActivity(
+        orgId: selectedStudent.orgId,
+        activityId: activity.id,
+        studentId: selectedStudent.studentId,
+        guardianConsentAccepted: true,
+      );
+
+      if (!mounted) return;
+
+      final message = status == 'WAITLISTED'
+          ? 'تم تسجيل الطلب في قائمة الانتظار'
+          : 'تم تسجيل الطالب في النشاط بنجاح';
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+
+      _reload();
+    } catch (error) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('تعذر التسجيل: $error')));
+    } finally {
+      if (mounted) {
+        setState(() {
+          _registeringKey = '';
+        });
+      }
+    }
+  }
+
+  Future<ParentStudentSummary?> _chooseStudent(
+    List<ParentStudentSummary> students,
+  ) async {
+    return showModalBottomSheet<ParentStudentSummary>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            itemCount: students.length,
+            separatorBuilder: (_, _) => const Divider(),
+            itemBuilder: (context, index) {
+              final student = students[index];
+
+              return ListTile(
+                leading: const CircleAvatar(
+                  child: Icon(Icons.child_care_rounded),
+                ),
+                title: Text(student.studentName),
+                subtitle: Text(student.classLine),
+                onTap: () => Navigator.of(context).pop(student),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Future<bool> _confirmRegistration(ParentAnnouncementEntry entry) async {
+    final activity = entry.activity;
+
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('تأكيد التسجيل'),
+              content: Text(
+                activity.requiresGuardianConsent
+                    ? activity.consentText
+                    : 'هل تريد تسجيل الطالب في هذا النشاط؟',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('إلغاء'),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('تأكيد التسجيل'),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _future = _service.loadAnnouncements();
+  }
+
+  void _reload() {
+    setState(() {
+      _future = _service.loadAnnouncements();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<ParentAnnouncementEntry>>(
+      future: _future,
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('الإعلانات والأنشطة'),
+            leading: IconButton(
+              onPressed: () => context.go('/children'),
+              icon: const Icon(Icons.arrow_back_rounded),
+            ),
+            actions: [
+              IconButton(
+                tooltip: 'تحديث',
+                onPressed: _reload,
+                icon: const Icon(Icons.refresh_rounded),
+              ),
+            ],
+          ),
+          body: SafeArea(child: _buildBody(snapshot)),
+        );
+      },
+    );
+  }
+
+  Widget _buildBody(AsyncSnapshot<List<ParentAnnouncementEntry>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const AppLoadingState(message: 'جاري تحميل الإعلانات والأنشطة...');
+    }
+
+    if (snapshot.hasError) {
+      return AppErrorState(
+        title: 'تعذر تحميل الإعلانات والأنشطة',
+        message: snapshot.error.toString(),
+        onRetry: _reload,
+      );
+    }
+
+    final entries = snapshot.data ?? [];
+
+    if (entries.isEmpty) {
+      return AppEmptyState(
+        icon: Icons.campaign_outlined,
+        title: 'لا توجد إعلانات أو أنشطة',
+        message: 'لا توجد أنشطة مفتوحة أو إعلانات متاحة حاليًا.',
+        action: OutlinedButton.icon(
+          onPressed: _reload,
+          icon: const Icon(Icons.refresh_rounded),
+          label: const Text('تحديث'),
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () async => _reload(),
+      child: ListView.separated(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        itemCount: entries.length + 1,
+        separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return const _PageIntroCard();
+          }
+
+          final entry = entries[index - 1];
+
+          return _AnnouncementActivityCard(
+            entry: entry,
+            registeringKey: _registeringKey,
+            onRegister: () => _registerInActivity(entry),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _PageIntroCard extends StatelessWidget {
+  const _PageIntroCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return AppCard(
+      child: Row(
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: colorScheme.primary.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+            ),
+            child: Icon(
+              Icons.campaign_rounded,
+              color: colorScheme.primary,
+              size: 30,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'كل جديد في مكان واحد',
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'هنا تظهر الأنشطة المفتوحة والإعلانات العامة الخاصة بأبنائك.',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.mutedText,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AnnouncementActivityCard extends StatelessWidget {
+  const _AnnouncementActivityCard({
+    required this.entry,
+    required this.registeringKey,
+    required this.onRegister,
+  });
+
+  final ParentAnnouncementEntry entry;
+  final String registeringKey;
+  final VoidCallback onRegister;
+
+  @override
+  Widget build(BuildContext context) {
+    final activity = entry.activity;
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    final studentNames = entry.students.map((student) => student.studentName);
+    final schools = entry.students
+        .map((student) => student.schoolName)
+        .where((name) => name.isNotEmpty)
+        .toSet()
+        .toList();
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: colorScheme.secondary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                ),
+                child: Icon(
+                  _activityIcon(activity.activityKind),
+                  color: colorScheme.secondary,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      activity.title.isEmpty ? 'نشاط مدرسي' : activity.title,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _activityKindLabel(activity.activityKind),
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.mutedText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const _StatusChip(label: 'التسجيل مفتوح'),
+            ],
+          ),
+          if (activity.shortDescription.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            Text(activity.shortDescription, style: textTheme.bodyMedium),
+          ],
+          if (activity.description.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              activity.description,
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.bodySmall?.copyWith(color: AppColors.mutedText),
+            ),
+          ],
+          const SizedBox(height: AppSpacing.md),
+          _InfoRow(
+            icon: Icons.child_care_rounded,
+            label: 'متاح لـ',
+            value: studentNames.join('، '),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.school_rounded,
+            label: 'المدرسة',
+            value: schools.isEmpty ? 'غير محددة' : schools.join('، '),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.schedule_rounded,
+            label: 'بداية النشاط',
+            value: _formatDateTime(activity.startsAt),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.event_available_rounded,
+            label: 'نهاية التسجيل',
+            value: _formatDateTime(activity.registrationClosesAt),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.place_rounded,
+            label: 'المكان',
+            value: activity.locationTitle.isEmpty
+                ? 'غير محدد'
+                : activity.locationTitle,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.groups_rounded,
+            label: 'المقاعد',
+            value: _seatsText(activity),
+          ),
+          if (activity.requiresGuardianConsent) ...[
+            const SizedBox(height: AppSpacing.md),
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: AppColors.soft,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              child: Text(
+                activity.consentText.isEmpty
+                    ? 'يتطلب هذا النشاط موافقة ولي الأمر عند التسجيل.'
+                    : activity.consentText,
+                style: textTheme.bodySmall,
+              ),
+            ),
+          ],
+          const SizedBox(height: AppSpacing.md),
+          FilledButton.icon(
+            onPressed: registeringKey.isEmpty ? onRegister : null,
+            icon: registeringKey.isEmpty
+                ? const Icon(Icons.how_to_reg_rounded)
+                : const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+            label: Text(
+              registeringKey.isEmpty ? 'تسجيل في النشاط' : 'جاري التسجيل...',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _seatsText(ParentSchoolActivity activity) {
+    final capacity = activity.capacity;
+
+    if (capacity == null) {
+      return 'غير محددة';
+    }
+
+    final remaining = capacity - activity.registeredCount;
+
+    return 'المتبقي ${remaining < 0 ? 0 : remaining} من $capacity';
+  }
+}
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(label: Text(label), visualDensity: VisualDensity.compact);
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 18),
+        const SizedBox(width: 8),
+        SizedBox(width: 90, child: Text(label, style: textTheme.bodySmall)),
+        Expanded(
+          child: Text(
+            value.isEmpty ? 'غير محدد' : value,
+            style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+String _activityKindLabel(String value) {
+  switch (value) {
+    case 'COMPETITION':
+      return 'مسابقة';
+    case 'EVENT':
+      return 'فعالية';
+    case 'TRIP':
+      return 'رحلة';
+    case 'CLUB':
+      return 'نادي';
+    case 'WORKSHOP':
+      return 'ورشة';
+    case 'CAMPAIGN':
+      return 'حملة';
+    case 'SPORTS':
+      return 'رياضي';
+    case 'CULTURAL':
+      return 'ثقافي';
+    case 'VOLUNTEERING':
+      return 'تطوعي';
+    case 'CEREMONY':
+      return 'حفل';
+    case 'OTHER':
+      return 'أخرى';
+    default:
+      return value.isEmpty ? 'نشاط' : value;
+  }
+}
+
+IconData _activityIcon(String value) {
+  switch (value) {
+    case 'COMPETITION':
+      return Icons.emoji_events_rounded;
+    case 'TRIP':
+      return Icons.directions_bus_rounded;
+    case 'SPORTS':
+      return Icons.sports_soccer_rounded;
+    case 'CULTURAL':
+      return Icons.theater_comedy_rounded;
+    case 'VOLUNTEERING':
+      return Icons.volunteer_activism_rounded;
+    case 'CEREMONY':
+      return Icons.celebration_rounded;
+    default:
+      return Icons.campaign_rounded;
+  }
+}
+
+String _formatDateTime(int? value) {
+  if (value == null || value <= 0) {
+    return 'غير محدد';
+  }
+
+  final date = DateTime.fromMillisecondsSinceEpoch(value);
+
+  final dateText =
+      '${date.year}/${_twoDigits(date.month)}/${_twoDigits(date.day)}';
+  final timeText = '${_twoDigits(date.hour)}:${_twoDigits(date.minute)}';
+
+  return '$dateText - $timeText';
+}
+
+String _twoDigits(int value) {
+  return value.toString().padLeft(2, '0');
+}

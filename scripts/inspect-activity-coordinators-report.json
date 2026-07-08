@@ -1,0 +1,208 @@
+{
+  "orgId": "takween",
+  "operationKind": "STUDENT_ACTIVITY_MANAGEMENT",
+  "inspectedAt": "2026-07-08T08:39:25.379Z",
+  "targets": [
+    {
+      "target": {
+        "membershipId": "op-boys-activity",
+        "personId": "p-f-alqashami",
+        "expectedRoleKey": "ACTIVITY_COORD",
+        "expectedSchoolIds": [
+          "mrb-boys-sayh",
+          "mrb-boys-faleh"
+        ]
+      },
+      "membership": {
+        "exists": true,
+        "path": "orgs/takween/operationalMemberships/op-boys-activity",
+        "id": "op-boys-activity",
+        "data": {
+          "createdAt": 1775433600000,
+          "scopeId": "takween",
+          "scopeType": "ORG",
+          "roleKey": "ACTIVITY_COORD",
+          "personId": "p-f-alqashami",
+          "id": "op-boys-activity",
+          "isActive": true,
+          "orgId": "takween",
+          "startAt": 1785542400000,
+          "updatedAt": 1775433600000
+        }
+      },
+      "person": {
+        "exists": true,
+        "path": "orgs/takween/people/p-f-alqashami",
+        "id": "p-f-alqashami",
+        "data": {
+          "createdAt": 1775433600000,
+          "nationalId": "",
+          "phone": "",
+          "displayName": "فهد محمد عبدالله القشعمي",
+          "id": "p-f-alqashami",
+          "email": "f.alqashami@qz.org.sa",
+          "updatedAt": 1775433600000
+        }
+      },
+      "expectedSchools": [
+        {
+          "exists": true,
+          "path": "orgs/takween/schools/mrb-boys-sayh",
+          "id": "mrb-boys-sayh",
+          "data": {
+            "createdAt": 1775433600000,
+            "isArchived": false,
+            "profile": {
+              "schoolType": "PRIMARY",
+              "enabledModules": [
+                "CORE",
+                "COMMS",
+                "ATTENDANCE",
+                "STUDENT_CASES",
+                "TEACHER_EVAL",
+                "CLASSROOM_DISPLAY",
+                "GAMIFICATION",
+                "PARENT_NOTIFICATIONS",
+                "KG_DAILY",
+                "PRIMARY_ASSESSMENTS",
+                "TRANSPORT"
+              ],
+              "track": "BOYS"
+            },
+            "name": "مدرسة منار الريادة بنين السيح",
+            "id": "mrb-boys-sayh",
+            "orgId": "takween",
+            "slug": "mrb-boys-sayh",
+            "updatedAt": 1775433600000
+          }
+        },
+        {
+          "exists": true,
+          "path": "orgs/takween/schools/mrb-boys-faleh",
+          "id": "mrb-boys-faleh",
+          "data": {
+            "createdAt": 1775433600000,
+            "isArchived": false,
+            "profile": {
+              "schoolType": "PRIMARY",
+              "enabledModules": [
+                "CORE",
+                "COMMS",
+                "ATTENDANCE",
+                "STUDENT_CASES",
+                "TEACHER_EVAL",
+                "CLASSROOM_DISPLAY",
+                "GAMIFICATION",
+                "PARENT_NOTIFICATIONS",
+                "KG_DAILY",
+                "PRIMARY_ASSESSMENTS",
+                "TRANSPORT"
+              ],
+              "track": "BOYS"
+            },
+            "name": "مدرسة منار الريادة بنين الفالح",
+            "id": "mrb-boys-faleh",
+            "orgId": "takween",
+            "slug": "mrb-boys-faleh",
+            "updatedAt": 1775433600000
+          }
+        }
+      ],
+      "existingAssignmentsCount": 0,
+      "existingActivityAssignmentsCount": 0,
+      "existingActivityAssignments": [],
+      "checks": {
+        "membershipExists": true,
+        "personExists": true,
+        "allExpectedSchoolsExist": true,
+        "membershipPersonMatches": true,
+        "membershipRoleMatches": true
+      }
+    },
+    {
+      "target": {
+        "membershipId": "op-girls-activity",
+        "personId": "p-m-alfrraj",
+        "expectedRoleKey": "ACTIVITY_COORD",
+        "expectedSchoolIds": [
+          "mrb-girls"
+        ]
+      },
+      "membership": {
+        "exists": true,
+        "path": "orgs/takween/operationalMemberships/op-girls-activity",
+        "id": "op-girls-activity",
+        "data": {
+          "createdAt": 1775433600000,
+          "scopeId": "mrb-girls",
+          "scopeType": "SCHOOL",
+          "roleKey": "ACTIVITY_COORD",
+          "personId": "p-m-alfrraj",
+          "id": "op-girls-activity",
+          "isActive": true,
+          "orgId": "takween",
+          "startAt": 1785542400000,
+          "updatedAt": 1775433600000
+        }
+      },
+      "person": {
+        "exists": true,
+        "path": "orgs/takween/people/p-m-alfrraj",
+        "id": "p-m-alfrraj",
+        "data": {
+          "createdAt": 1775433600000,
+          "nationalId": "",
+          "phone": "",
+          "displayName": "مرام صالح جوير الفراج",
+          "id": "p-m-alfrraj",
+          "email": "m.alfrraj@qz.org.sa",
+          "updatedAt": 1775433600000
+        }
+      },
+      "expectedSchools": [
+        {
+          "exists": true,
+          "path": "orgs/takween/schools/mrb-girls",
+          "id": "mrb-girls",
+          "data": {
+            "createdAt": 1775433600000,
+            "isArchived": false,
+            "profile": {
+              "schoolType": "PRIMARY",
+              "enabledModules": [
+                "CORE",
+                "COMMS",
+                "ATTENDANCE",
+                "STUDENT_CASES",
+                "TEACHER_EVAL",
+                "CLASSROOM_DISPLAY",
+                "GAMIFICATION",
+                "PARENT_NOTIFICATIONS",
+                "KG_DAILY",
+                "PRIMARY_ASSESSMENTS",
+                "TRANSPORT"
+              ],
+              "track": "GIRLS"
+            },
+            "name": "مدرسة منار الريادة بنات",
+            "id": "mrb-girls",
+            "orgId": "takween",
+            "slug": "mrb-girls",
+            "updatedAt": 1775433600000
+          }
+        }
+      ],
+      "existingAssignmentsCount": 0,
+      "existingActivityAssignmentsCount": 0,
+      "existingActivityAssignments": [],
+      "checks": {
+        "membershipExists": true,
+        "personExists": true,
+        "allExpectedSchoolsExist": true,
+        "membershipPersonMatches": true,
+        "membershipRoleMatches": true
+      }
+    }
+  ],
+  "recommendation": "READY_FOR_ACTIVITY_ASSIGNMENT_SEED"
+}

@@ -15,7 +15,7 @@ export * from "./gamification-catalog/index";
 export * from "./classroom-display/index";
 export * from "./subject-lesson-prep/index";
 
-
+export * from "./school-activities";
 
 
 

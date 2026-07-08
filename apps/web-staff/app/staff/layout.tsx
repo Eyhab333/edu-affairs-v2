@@ -16,6 +16,10 @@ import {
   Star,
   Users,
   MessageSquare,
+  CalendarDays,
+  Ruler,
+  TrendingDown,
+  UserCheck,
 } from "lucide-react";
 import { signOut } from "firebase/auth";
 
@@ -75,20 +79,20 @@ const navItems: Array<{
   {
     href: "/staff/measurements",
     label: "القياسات",
-    icon: Users,
+    icon: Ruler,
     moduleKey: "MEASUREMENTS",
   },
   {
     href: "/staff/learning-loss",
     label: "الفاقد التعليمي",
-    icon: Users,
+    icon: TrendingDown,
     moduleKey: "LEARNING_LOSS",
   },
 
   {
     href: "/staff/attendance",
     label: "الحضور",
-    icon: Users,
+    icon: UserCheck,
     moduleKey: "ATTENDANCE",
   },
   {
@@ -129,6 +133,12 @@ const navItems: Array<{
     label: "رسائل",
     icon: MessageSquare,
     moduleKey: "MESSAGES",
+  },
+  {
+    href: "/staff/activities",
+    label: "الأنشطة",
+    icon: CalendarDays,
+    moduleKey: "ACTIVITIES",
   },
 ];
 

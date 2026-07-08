@@ -705,6 +705,7 @@ function resolveVisibleModules(params: {
       "NOTES",
       "CASES",
       "GAMIFICATION",
+      "ACTIVITIES",
       "TRANSPORT",
       "EVALUATIONS",
       "MY_EVALUATIONS",

@@ -53,6 +53,7 @@ const TASK_KIND_LABELS: Record<StaffTask["taskKind"], string> = {
   STUDENT_CASE_REFERRAL: "الإحالات",
   STUDENT_CASE_HANDLING: "القضايا",
   STUDENT_GAMIFICATION: "التحفيز",
+  STUDENT_ACTIVITY_MANAGEMENT: "الأنشطة",
   VIRTUAL_CLASS: "حصص افتراضية",
   TRANSPORT_ATTENDANCE: "النقل",
   STAFF_EVALUATION: "تقييم الموظفين",

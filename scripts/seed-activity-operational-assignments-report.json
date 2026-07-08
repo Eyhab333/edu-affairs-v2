@@ -1,0 +1,51 @@
+{
+  "orgId": "takween",
+  "operationKind": "STUDENT_ACTIVITY_MANAGEMENT",
+  "dryRun": false,
+  "seededAt": "2026-07-08T08:43:35.407Z",
+  "count": 3,
+  "results": [
+    {
+      "action": "create",
+      "dryRun": false,
+      "assignmentId": "activity-p-f-alqashami-mrb-boys-sayh",
+      "assignmentPath": "orgs/takween/operationalAssignments/activity-p-f-alqashami-mrb-boys-sayh",
+      "actorPersonId": "p-f-alqashami",
+      "actorRoleKey": "ACTIVITY_COORD",
+      "operationKind": "STUDENT_ACTIVITY_MANAGEMENT",
+      "scopeType": "SCHOOL",
+      "scopeId": "mrb-boys-sayh",
+      "coverageMode": "ALL_CLASSES_IN_SCOPE",
+      "targetKind": "STUDENT",
+      "title": "رائد النشاط - مدرسة منار الريادة بنين السيح"
+    },
+    {
+      "action": "create",
+      "dryRun": false,
+      "assignmentId": "activity-p-f-alqashami-mrb-boys-faleh",
+      "assignmentPath": "orgs/takween/operationalAssignments/activity-p-f-alqashami-mrb-boys-faleh",
+      "actorPersonId": "p-f-alqashami",
+      "actorRoleKey": "ACTIVITY_COORD",
+      "operationKind": "STUDENT_ACTIVITY_MANAGEMENT",
+      "scopeType": "SCHOOL",
+      "scopeId": "mrb-boys-faleh",
+      "coverageMode": "ALL_CLASSES_IN_SCOPE",
+      "targetKind": "STUDENT",
+      "title": "رائد النشاط - مدرسة منار الريادة بنين الفالح"
+    },
+    {
+      "action": "create",
+      "dryRun": false,
+      "assignmentId": "activity-p-m-alfrraj-mrb-girls",
+      "assignmentPath": "orgs/takween/operationalAssignments/activity-p-m-alfrraj-mrb-girls",
+      "actorPersonId": "p-m-alfrraj",
+      "actorRoleKey": "ACTIVITY_COORD",
+      "operationKind": "STUDENT_ACTIVITY_MANAGEMENT",
+      "scopeType": "SCHOOL",
+      "scopeId": "mrb-girls",
+      "coverageMode": "ALL_CLASSES_IN_SCOPE",
+      "targetKind": "STUDENT",
+      "title": "رائد النشاط - مدرسة منار الريادة بنات"
+    }
+  ]
+}

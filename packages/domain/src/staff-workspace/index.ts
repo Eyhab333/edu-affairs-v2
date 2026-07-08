@@ -26,7 +26,8 @@ export type StaffHomeVisibleModule =
   | "TRANSPORT"
   | "EVALUATIONS"
   | "MY_EVALUATIONS"
-  | "MESSAGES";
+  | "MESSAGES"
+  | "ACTIVITIES";
 
 export type StaffHomeSummaryCard = {
   key: string;
@@ -121,6 +122,10 @@ function resolveModulesFromAssignments(
         modules.push("GAMIFICATION", "STUDENTS");
         break;
 
+      case "STUDENT_ACTIVITY_MANAGEMENT":
+        modules.push("ACTIVITIES", "STUDENTS");
+        break;
+
       case "TRANSPORT_ATTENDANCE":
         modules.push("TRANSPORT");
         break;
@@ -157,6 +162,11 @@ function isActiveAssignment(assignment: OperationalAssignment, nowMs: number) {
 function resolveActionHrefFromAssignment(
   assignment: OperationalAssignment,
 ): string {
+
+  if (assignment.operationKind === "STUDENT_ACTIVITY_MANAGEMENT") {
+    return "/staff/activities";
+  }
+
   if (assignment.operationKind === "TRANSPORT_ATTENDANCE") {
     return assignment.scopeId
       ? `/staff/transport/routes/${assignment.scopeId}`
@@ -466,6 +476,17 @@ function buildQuickActions(params: {
       description: "متابعة القضايا أو إنشاء إحالات",
       href: "/staff/cases",
       moduleKey: "CASES",
+    });
+  }
+
+
+  if (modules.has("ACTIVITIES")) {
+    actions.push({
+      key: "activities",
+      title: "الأنشطة",
+      description: "إدارة الأنشطة والمسابقات",
+      href: "/staff/activities",
+      moduleKey: "ACTIVITIES",
     });
   }
 
