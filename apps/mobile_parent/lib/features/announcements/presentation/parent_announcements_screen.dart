@@ -28,12 +28,23 @@ class _ParentAnnouncementsScreenState extends State<ParentAnnouncementsScreen> {
   Future<void> _registerInActivity(ParentAnnouncementEntry entry) async {
     final activity = entry.activity;
 
+    final registerableStudents = entry.students
+        .where((student) => !entry.isStudentRegistered(student.studentId))
+        .toList();
+
+    if (registerableStudents.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تم التسجيل في هذا النشاط بالفعل')),
+      );
+      return;
+    }
+
     ParentStudentSummary? selectedStudent;
 
-    if (entry.students.length == 1) {
-      selectedStudent = entry.students.first;
+    if (registerableStudents.length == 1) {
+      selectedStudent = registerableStudents.first;
     } else {
-      selectedStudent = await _chooseStudent(entry.students);
+      selectedStudent = await _chooseStudent(registerableStudents);
     }
 
     if (selectedStudent == null) return;
@@ -298,6 +309,13 @@ class _AnnouncementActivityCard extends StatelessWidget {
     final activity = entry.activity;
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+
+    final canRegister =
+        activity.status == 'REGISTRATION_OPEN' &&
+        !entry.allTargetedStudentsRegistered &&
+        registeringKey.isEmpty &&
+        !entry.hasResult;
+
     final studentNames = entry.students.map((student) => student.studentName);
     final schools = entry.students
         .map((student) => student.schoolName)
@@ -367,6 +385,25 @@ class _AnnouncementActivityCard extends StatelessWidget {
             label: 'متاح لـ',
             value: studentNames.join('، '),
           ),
+
+          if (entry.registrationStatusByStudentId.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _InfoRow(
+              icon: Icons.verified_rounded,
+              label: 'حالة التسجيل',
+              value: _registrationStatusText(entry),
+            ),
+          ],
+
+          if (entry.resultByStudentId.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _InfoRow(
+              icon: Icons.emoji_events_rounded,
+              label: 'النتيجة',
+              value: _activityResultText(entry),
+            ),
+          ],
+
           const SizedBox(height: AppSpacing.sm),
           _InfoRow(
             icon: Icons.school_rounded,
@@ -416,17 +453,32 @@ class _AnnouncementActivityCard extends StatelessWidget {
             ),
           ],
           const SizedBox(height: AppSpacing.md),
+
           FilledButton.icon(
-            onPressed: registeringKey.isEmpty ? onRegister : null,
+            onPressed: canRegister ? onRegister : null,
             icon: registeringKey.isEmpty
-                ? const Icon(Icons.how_to_reg_rounded)
+                ? Icon(
+                    entry.hasResult
+                        ? Icons.emoji_events_rounded
+                        : entry.allTargetedStudentsRegistered
+                        ? Icons.check_circle_rounded
+                        : Icons.how_to_reg_rounded,
+                  )
                 : const SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
             label: Text(
-              registeringKey.isEmpty ? 'تسجيل في النشاط' : 'جاري التسجيل...',
+              registeringKey.isNotEmpty
+                  ? 'جاري التسجيل...'
+                  : entry.hasResult
+                  ? 'تم إعلان النتيجة'
+                  : entry.allTargetedStudentsRegistered
+                  ? 'تم التسجيل'
+                  : activity.status == 'REGISTRATION_OPEN'
+                  ? 'تسجيل في النشاط'
+                  : 'انتهى التسجيل',
             ),
           ),
         ],
@@ -535,6 +587,72 @@ IconData _activityIcon(String value) {
       return Icons.celebration_rounded;
     default:
       return Icons.campaign_rounded;
+  }
+}
+
+String _registrationStatusText(ParentAnnouncementEntry entry) {
+  final parts = <String>[];
+
+  for (final student in entry.students) {
+    final status = entry.registrationStatusByStudentId[student.studentId];
+
+    if (status == null || status.isEmpty) continue;
+
+    parts.add('${student.studentName}: ${_registrationStatusLabel(status)}');
+  }
+
+  return parts.join('، ');
+}
+
+String _registrationStatusLabel(String status) {
+  switch (status) {
+    case 'CONFIRMED':
+      return 'تم التسجيل';
+    case 'WAITLISTED':
+      return 'قائمة الانتظار';
+    case 'REQUESTED':
+      return 'تم إرسال الطلب';
+    case 'PENDING':
+      return 'بانتظار المراجعة';
+    case 'REJECTED':
+      return 'مرفوض';
+    default:
+      return status;
+  }
+}
+
+String _activityResultText(ParentAnnouncementEntry entry) {
+  final parts = <String>[];
+
+  for (final student in entry.students) {
+    final result = entry.resultByStudentId[student.studentId];
+
+    if (result == null) continue;
+
+    final title = result.title.isEmpty
+        ? _activityResultTypeLabel(result.resultType)
+        : result.title;
+
+    parts.add('${student.studentName}: $title');
+  }
+
+  return parts.join('، ');
+}
+
+String _activityResultTypeLabel(String value) {
+  switch (value) {
+    case 'WINNER':
+      return 'فائز';
+    case 'RANKED':
+      return 'مركز';
+    case 'PARTICIPATION':
+      return 'مشاركة';
+    case 'HONORABLE_MENTION':
+      return 'تميز';
+    case 'NOTE':
+      return 'ملاحظة';
+    default:
+      return value.isEmpty ? 'نتيجة' : value;
   }
 }
 

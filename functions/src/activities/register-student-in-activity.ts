@@ -51,13 +51,35 @@ function readOptionalBoolean(value: unknown) {
   return value === true;
 }
 
-function readString(data: FirebaseFirestore.DocumentData | undefined, key: string) {
+function readString(
+  data: FirebaseFirestore.DocumentData | undefined,
+  key: string,
+) {
   const value = data?.[key];
 
   return typeof value === "string" ? value.trim() : "";
 }
 
-function readStringList(data: Record<string, unknown> | undefined, key: string) {
+function readDisplayName(data: FirebaseFirestore.DocumentData | undefined) {
+  if (!data) return "";
+
+  const keys = ["displayName", "fullName", "name", "studentName", "arabicName"];
+
+  for (const key of keys) {
+    const value = data[key];
+
+    if (typeof value === "string" && value.trim()) {
+      return value.trim();
+    }
+  }
+
+  return "";
+}
+
+function readStringList(
+  data: Record<string, unknown> | undefined,
+  key: string,
+) {
   const value = data?.[key];
 
   if (!Array.isArray(value)) return [];
@@ -172,10 +194,7 @@ async function loadGuardianIdForUid(params: { orgId: string; uid: string }) {
     return readString(data, "id") || docSnap.id;
   }
 
-  throw new HttpsError(
-    "permission-denied",
-    "Guardian record was not found.",
-  );
+  throw new HttpsError("permission-denied", "Guardian record was not found.");
 }
 
 async function assertGuardianCanRegisterStudent(params: {
@@ -235,6 +254,36 @@ async function loadActiveEnrollment(params: {
   );
 }
 
+async function loadStudentDisplayName(params: {
+  orgId: string;
+  studentId: string;
+}) {
+  const db = getFirestore();
+
+  const studentSnap = await db
+    .doc(`orgs/${params.orgId}/students/${params.studentId}`)
+    .get();
+
+  const studentData = studentSnap.data();
+
+  const directName = readDisplayName(studentData);
+
+  if (directName) return directName;
+
+  const personId =
+    typeof studentData?.personId === "string"
+      ? studentData.personId.trim()
+      : "";
+
+  if (!personId) return "";
+
+  const personSnap = await db
+    .doc(`orgs/${params.orgId}/people/${personId}`)
+    .get();
+
+  return readDisplayName(personSnap.data());
+}
+
 export const registerStudentInActivity = onCall(
   {
     region: REGION,
@@ -269,6 +318,11 @@ export const registerStudentInActivity = onCall(
     });
 
     const enrollment = await loadActiveEnrollment({
+      orgId,
+      studentId,
+    });
+
+    const studentDisplayName = await loadStudentDisplayName({
       orgId,
       studentId,
     });
@@ -330,6 +384,23 @@ export const registerStudentInActivity = onCall(
         const existing = registrationSnap.data();
 
         if (existing?.status !== "CANCELLED") {
+          transaction.set(
+            registrationRef,
+            {
+              studentDisplayName,
+              updatedAt: now,
+              metadata: {
+                ...(existing?.metadata ?? {}),
+                studentName: studentDisplayName,
+                enrollmentId: enrollment.id,
+                schoolId: enrollment.schoolId ?? "",
+                gradeId: enrollment.gradeId ?? "",
+                classId: enrollment.classId ?? "",
+              },
+            },
+            { merge: true },
+          );
+
           return {
             ok: true,
             alreadyRegistered: true,
@@ -357,9 +428,7 @@ export const registerStudentInActivity = onCall(
         );
       }
 
-      const registrationStatus = hasAvailableSeat
-        ? "CONFIRMED"
-        : "WAITLISTED";
+      const registrationStatus = hasAvailableSeat ? "CONFIRMED" : "WAITLISTED";
 
       transaction.set(registrationRef, {
         id: registrationId,
@@ -373,12 +442,12 @@ export const registerStudentInActivity = onCall(
         studentId,
         guardianId,
         guardianUid: uid,
-
+        studentDisplayName,
         status: registrationStatus,
 
         guardianConsentAccepted,
         guardianConsentText: activity.requiresGuardianConsent
-          ? activity.consentText ?? ""
+          ? (activity.consentText ?? "")
           : "",
 
         registeredAt: now,
@@ -396,6 +465,7 @@ export const registerStudentInActivity = onCall(
           schoolId: enrollment.schoolId ?? "",
           gradeId: enrollment.gradeId ?? "",
           classId: enrollment.classId ?? "",
+          studentName: studentDisplayName,
         },
       });
 

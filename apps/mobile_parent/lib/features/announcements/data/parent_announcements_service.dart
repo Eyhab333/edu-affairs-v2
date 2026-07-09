@@ -61,17 +61,48 @@ class ParentAnnouncementsService {
 
         if (targetedStudents.isEmpty) continue;
 
+        final resultByStudentId = await _loadResultByStudentId(
+          orgId: orgId,
+          activityId: activity.id,
+          students: targetedStudents,
+        );
+
+        final isOpenForRegistration =
+            activity.status == 'REGISTRATION_OPEN' &&
+            _isRegistrationOpen(activity, now);
+
+        final hasVisibleResult = resultByStudentId.isNotEmpty;
+
+        if (!isOpenForRegistration && !hasVisibleResult) continue;
+
+        final registrationStatusByStudentId =
+            await _loadRegistrationStatusByStudentId(
+              orgId: orgId,
+              activityId: activity.id,
+              students: targetedStudents,
+            );
+
         final existing = entriesByActivityId[activity.id];
 
         if (existing == null) {
           entriesByActivityId[activity.id] = ParentAnnouncementEntry(
             activity: activity,
             students: targetedStudents,
+            registrationStatusByStudentId: registrationStatusByStudentId,
+            resultByStudentId: resultByStudentId,
           );
         } else {
           entriesByActivityId[activity.id] = ParentAnnouncementEntry(
             activity: existing.activity,
             students: _mergeStudents(existing.students, targetedStudents),
+            registrationStatusByStudentId: {
+              ...existing.registrationStatusByStudentId,
+              ...registrationStatusByStudentId,
+            },
+            resultByStudentId: {
+              ...existing.resultByStudentId,
+              ...resultByStudentId,
+            },
           );
         }
       }
@@ -114,6 +145,60 @@ class ParentAnnouncementsService {
     }
 
     return 'CONFIRMED';
+  }
+
+  Future<Map<String, String>> _loadRegistrationStatusByStudentId({
+    required String orgId,
+    required String activityId,
+    required List<ParentStudentSummary> students,
+  }) async {
+    final result = <String, String>{};
+
+    for (final student in students) {
+      final registrationId = '${activityId}_${student.studentId}';
+
+      final snap = await _firestore
+          .doc('orgs/$orgId/schoolActivityRegistrations/$registrationId')
+          .get();
+
+      if (!snap.exists) continue;
+
+      final data = snap.data();
+
+      final status = data?['status'];
+
+      if (status is String && status.isNotEmpty && status != 'CANCELLED') {
+        result[student.studentId] = status;
+      }
+    }
+
+    return result;
+  }
+
+  Future<Map<String, ParentActivityResult>> _loadResultByStudentId({
+    required String orgId,
+    required String activityId,
+    required List<ParentStudentSummary> students,
+  }) async {
+    final result = <String, ParentActivityResult>{};
+
+    for (final student in students) {
+      final resultId = '${activityId}_${student.studentId}';
+
+      final snap = await _firestore
+          .doc('orgs/$orgId/schoolActivityResults/$resultId')
+          .get();
+
+      if (!snap.exists) continue;
+
+      final activityResult = ParentActivityResult.fromDoc(snap);
+
+      if (activityResult.studentId.isNotEmpty) {
+        result[activityResult.studentId] = activityResult;
+      }
+    }
+
+    return result;
   }
 
   bool _isRegistrationOpen(ParentSchoolActivity activity, int now) {
@@ -195,12 +280,82 @@ class ParentAnnouncementsService {
   }
 }
 
+class ParentActivityResult {
+  const ParentActivityResult({
+    required this.id,
+    required this.studentId,
+    required this.resultType,
+    required this.title,
+    required this.rank,
+    required this.note,
+  });
+
+  final String id;
+  final String studentId;
+  final String resultType;
+  final String title;
+  final int? rank;
+  final String note;
+
+  factory ParentActivityResult.fromDoc(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
+    final data = doc.data() ?? <String, dynamic>{};
+
+    return ParentActivityResult(
+      id: doc.id,
+      studentId: _readString(data, 'studentId'),
+      resultType: _readString(data, 'resultType'),
+      title: _readString(data, 'title'),
+      rank: _readInt(data, 'rank'),
+      note: _readString(data, 'note'),
+    );
+  }
+}
+
 class ParentAnnouncementEntry {
   const ParentAnnouncementEntry({
     required this.activity,
     required this.students,
+    required this.registrationStatusByStudentId,
+    required this.resultByStudentId,
   });
 
   final ParentSchoolActivity activity;
   final List<ParentStudentSummary> students;
+  final Map<String, String> registrationStatusByStudentId;
+  final Map<String, ParentActivityResult> resultByStudentId;
+
+  bool isStudentRegistered(String studentId) {
+    return registrationStatusByStudentId.containsKey(studentId);
+  }
+
+  bool get allTargetedStudentsRegistered {
+    if (students.isEmpty) return false;
+
+    return students.every((student) {
+      return registrationStatusByStudentId.containsKey(student.studentId);
+    });
+  }
+
+  bool get hasResult {
+    return resultByStudentId.isNotEmpty;
+  }
+}
+
+String _readString(Map<String, dynamic> data, String key) {
+  final value = data[key];
+
+  if (value is String) return value.trim();
+
+  return '';
+}
+
+int? _readInt(Map<String, dynamic> data, String key) {
+  final value = data[key];
+
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+
+  return null;
 }
