@@ -27,6 +27,52 @@ function getThreadTypeLabel(type: string, isInternal: boolean) {
   return "مباشرة";
 }
 
+function getUrgentLevelLabel(level: string) {
+  if (level === "TEACHER") return "المعلم";
+  if (level === "COUNSELOR") return "المرشد";
+  if (level === "PRINCIPAL") return "المدير";
+  if (level === "SUPERVISION_HEAD") return "رئيس الإشراف";
+
+  return level || "غير محدد";
+}
+
+function getUrgentStatusLabel(status: string) {
+  if (status === "ACTIVE") return "نشط";
+  if (status === "RESPONDED") return "تم الرد";
+  if (status === "ESCALATED") return "تم التصعيد";
+  if (status === "CLOSED") return "مغلق";
+  if (status === "CANCELLED") return "ملغي";
+
+  return status || "نشط";
+}
+
+function getTimelineEventTypeLabel(type: string) {
+  if (type === "URGENT_REQUEST_CREATED") return "إنشاء الطلب";
+  if (type === "SLA_STARTED") return "بدء المهلة";
+  if (type === "ASSIGNED") return "تعيين المسؤول";
+  if (type === "MESSAGE_SENT") return "رسالة";
+  if (type === "RESPONSIBLE_REPLIED") return "تم الرد";
+  if (type === "DEADLINE_MISSED") return "انتهت المهلة";
+  if (type === "ESCALATED") return "تصعيد";
+  if (type === "CLOSED") return "إغلاق";
+  if (type === "CANCELLED") return "إلغاء";
+  if (type === "SYSTEM_NOTE") return "ملاحظة نظام";
+
+  return type || "حدث";
+}
+
+function formatUrgentDeadline(timestamp: number) {
+  if (!timestamp) return "بدون موعد محدد";
+
+  const formatted = formatDateTime(timestamp);
+
+  if (timestamp < Date.now()) {
+    return `تجاوز الموعد: ${formatted}`;
+  }
+
+  return `مطلوب الرد قبل: ${formatted}`;
+}
+
 export default function StaffMessageThreadPage() {
   const params = useParams<{ threadId: string }>();
   const threadId = typeof params.threadId === "string" ? params.threadId : "";
@@ -36,6 +82,7 @@ export default function StaffMessageThreadPage() {
     orgId,
     thread,
     messages,
+    urgentTimelineEvents,
     currentParticipant,
     loading,
     error,
@@ -93,7 +140,7 @@ export default function StaffMessageThreadPage() {
     threadId,
   ]);
 
-  async function handleSendMessage(event:  SyntheticEvent<HTMLFormElement>) {
+  async function handleSendMessage(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const body = draft.trim();
@@ -134,6 +181,12 @@ export default function StaffMessageThreadPage() {
                 </span>
               ) : null}
 
+              {thread?.hasActiveUrgentRequest ? (
+                <span className="rounded-full border border-destructive/40 bg-destructive/10 px-2.5 py-1 font-bold text-destructive">
+                  عاجل
+                </span>
+              ) : null}
+
               {thread?.studentId ? (
                 <span className="rounded-full border border-border bg-background px-2.5 py-1">
                   الطالب: {thread.studentId}
@@ -167,6 +220,90 @@ export default function StaffMessageThreadPage() {
           ) : null}
         </div>
       </header>
+
+      {thread?.hasActiveUrgentRequest ? (
+        <section className="rounded-3xl border border-destructive/40 bg-destructive/5 p-5 shadow-sm">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-sm font-bold text-destructive">طلب عاجل نشط</p>
+              <h2 className="mt-1 text-lg font-bold text-foreground">
+                الرد داخل هذه المحادثة يعتبر استجابة للطلب العاجل
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                المستوى الحالي:{" "}
+                <span className="font-semibold text-foreground">
+                  {getUrgentLevelLabel(thread.urgentCurrentLevel)}
+                </span>
+                {" · "}
+                الحالة:{" "}
+                <span className="font-semibold text-foreground">
+                  {getUrgentStatusLabel(thread.urgentStatus)}
+                </span>
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-destructive/30 bg-background px-4 py-3 text-sm font-semibold text-destructive">
+              {formatUrgentDeadline(thread.urgentCurrentDeadlineAt)}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {thread?.hasActiveUrgentRequest ? (
+        <section className="rounded-3xl border border-border bg-card p-5 shadow-sm">
+          <div className="flex flex-col gap-1">
+            <p className="text-sm text-muted-foreground">سجل الطلب العاجل</p>
+            <h2 className="text-lg font-bold text-foreground">خط الأحداث</h2>
+          </div>
+
+          {urgentTimelineEvents.length === 0 ? (
+            <p className="mt-4 text-sm text-muted-foreground">
+              لا توجد أحداث مسجلة بعد.
+            </p>
+          ) : (
+            <div className="mt-4 grid gap-3">
+              {urgentTimelineEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className="rounded-2xl border border-border bg-background px-4 py-3"
+                >
+                  <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground">
+                          {getTimelineEventTypeLabel(event.type)}
+                        </span>
+
+                        {event.level ? (
+                          <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground">
+                            {getUrgentLevelLabel(event.level)}
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <p className="mt-2 text-sm font-semibold text-foreground">
+                        {event.title || getTimelineEventTypeLabel(event.type)}
+                      </p>
+
+                      {event.actorDisplayName ? (
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          بواسطة: {event.actorDisplayName}
+                        </p>
+                      ) : null}
+                    </div>
+
+                    {event.createdAt ? (
+                      <div className="shrink-0 text-xs text-muted-foreground">
+                        {formatDateTime(event.createdAt)}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      ) : null}
 
       {loading ? (
         <section className="rounded-3xl border border-border bg-card p-5 text-sm text-muted-foreground shadow-sm">

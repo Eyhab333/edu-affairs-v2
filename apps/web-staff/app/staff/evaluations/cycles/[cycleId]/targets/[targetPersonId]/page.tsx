@@ -264,6 +264,8 @@ export default function EvaluationSubmissionPage() {
   const isSubmitted = submissionStatus === "SUBMITTED";
   const isApproved = submissionStatus === "APPROVED";
   const isFinal = isApproved || submissionStatus === "LOCKED";
+  const isReadOnly = isSubmitted || isFinal;
+  const canApprove = formData?.canApprove === true;
 
   if (checkingAuth || loading) {
     return (
@@ -407,13 +409,14 @@ export default function EvaluationSubmissionPage() {
                       max={item.maxScore}
                       step={1}
                       value={scores[item.id] ?? ""}
+                      disabled={isReadOnly}
                       onChange={(event) => {
                         setScores((current) => ({
                           ...current,
                           [item.id]: event.target.value,
                         }));
                       }}
-                      className="h-10 rounded-xl border bg-background px-3 text-center"
+                      className="h-10 rounded-xl border bg-background px-3 text-center disabled:cursor-not-allowed disabled:opacity-70"
                       placeholder={`0-${item.maxScore}`}
                     />
                   </div>
@@ -426,10 +429,12 @@ export default function EvaluationSubmissionPage() {
 
       <section className="rounded-3xl border bg-card p-6 shadow-sm">
         <label className="text-sm font-medium">ملاحظة عامة</label>
+
         <textarea
           value={generalNote}
+          disabled={isReadOnly}
           onChange={(event) => setGeneralNote(event.target.value)}
-          className="mt-2 min-h-28 w-full rounded-2xl border bg-background p-3"
+          className="mt-2 min-h-28 w-full rounded-2xl border bg-background p-3 disabled:cursor-not-allowed disabled:opacity-70"
           placeholder="اكتب ملاحظة عامة على التقييم..."
         />
 
@@ -440,30 +445,44 @@ export default function EvaluationSubmissionPage() {
         ) : null}
 
         <div className="mt-4 flex flex-col gap-3 md:flex-row md:justify-end">
-          <Button
-            variant="outline"
-            onClick={() => void handleSaveDraft()}
-            disabled={
-              saving || submitting || approving || isSubmitted || isFinal
-            }
-          >
-            {saving ? "جاري حفظ المسودة..." : "حفظ مسودة"}
-          </Button>
+          {!isReadOnly ? (
+            <>
+              <Button
+                variant="outline"
+                onClick={() => void handleSaveDraft()}
+                disabled={saving || submitting || approving}
+              >
+                {saving ? "جاري حفظ المسودة..." : "حفظ مسودة"}
+              </Button>
 
-          <Button
-            onClick={() => void handleSubmitEvaluation()}
-            disabled={saving || submitting || approving || isFinal}
-          >
-            {submitting ? "جاري إرسال التقييم..." : "إرسال التقييم"}
-          </Button>
+              <Button
+                onClick={() => void handleSubmitEvaluation()}
+                disabled={saving || submitting || approving}
+              >
+                {submitting ? "جاري إرسال التقييم..." : "إرسال التقييم"}
+              </Button>
+            </>
+          ) : null}
 
-          {isSubmitted ? (
+          {isSubmitted && canApprove ? (
             <Button
               onClick={() => void handleApproveEvaluation()}
               disabled={saving || submitting || approving}
             >
               {approving ? "جاري اعتماد التقييم..." : "اعتماد التقييم"}
             </Button>
+          ) : null}
+
+          {isSubmitted && !canApprove ? (
+            <div className="rounded-2xl border bg-muted px-4 py-2 text-sm text-muted-foreground">
+              تم إرسال التقييم وينتظر الاعتماد من صاحب الصلاحية.
+            </div>
+          ) : null}
+
+          {isApproved ? (
+            <div className="rounded-2xl border bg-muted px-4 py-2 text-sm text-muted-foreground">
+              هذا التقييم معتمد ولا يمكن تعديله.
+            </div>
           ) : null}
         </div>
       </section>

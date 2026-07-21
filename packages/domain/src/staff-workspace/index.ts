@@ -1,7 +1,4 @@
-import {
-  resolveTermContext,
-  type TermContextInput,
-} from "../term-context";
+import { resolveTermContext, type TermContextInput } from "../term-context";
 import type {
   Class,
   Membership,
@@ -27,6 +24,7 @@ export type StaffHomeVisibleModule =
   | "EVALUATIONS"
   | "MY_EVALUATIONS"
   | "MESSAGES"
+  | "GUARDIAN_SERVICES"
   | "ACTIVITIES";
 
 export type StaffHomeSummaryCard = {
@@ -135,8 +133,63 @@ function resolveModulesFromAssignments(
         modules.push("EVALUATIONS");
         break;
 
+      case "GUARDIAN_FINANCE":
+        modules.push("GUARDIAN_SERVICES");
+        break;
+
       default:
         break;
+    }
+  }
+
+  return uniqueStrings(modules) as StaffHomeVisibleModule[];
+}
+
+function resolveModulesFromMemberships(params: {
+  memberships: Membership[];
+  actorPersonId: string;
+  orgId: string;
+  nowMs: number;
+}): StaffHomeVisibleModule[] {
+  const modules: StaffHomeVisibleModule[] = ["HOME"];
+
+  for (const membership of params.memberships) {
+    if (membership.orgId !== params.orgId) continue;
+
+    if (membership.personId && membership.personId !== params.actorPersonId) {
+      continue;
+    }
+
+    if (membership.isActive === false) continue;
+
+    if (
+      typeof membership.startAt === "number" &&
+      membership.startAt > params.nowMs
+    ) {
+      continue;
+    }
+
+    if (
+      typeof membership.endAt === "number" &&
+      membership.endAt < params.nowMs
+    ) {
+      continue;
+    }
+
+    const roleKey = membership.roleKey ?? membership.role;
+    const permissions = membership.permissions;
+
+    const canAccessGuardianFinance =
+      roleKey === "FINANCE_COLLECTOR" ||
+      permissions.viewGuardianFinance ||
+      permissions.manageGuardianFinance ||
+      permissions.recordGuardianPayments ||
+      permissions.applyGuardianFinanceAdjustments ||
+      permissions.voidGuardianPayments ||
+      permissions.viewGuardianFinanceReports;
+
+    if (canAccessGuardianFinance) {
+      modules.push("GUARDIAN_SERVICES", "MESSAGES");
     }
   }
 
@@ -162,6 +215,9 @@ function isActiveAssignment(assignment: OperationalAssignment, nowMs: number) {
 function resolveActionHrefFromAssignment(
   assignment: OperationalAssignment,
 ): string {
+  if (assignment.operationKind === "GUARDIAN_FINANCE") {
+    return "/staff/guardian-services/finance";
+  }
 
   if (assignment.operationKind === "STUDENT_ACTIVITY_MANAGEMENT") {
     return "/staff/activities";
@@ -479,7 +535,6 @@ function buildQuickActions(params: {
     });
   }
 
-
   if (modules.has("ACTIVITIES")) {
     actions.push({
       key: "activities",
@@ -500,7 +555,17 @@ function buildQuickActions(params: {
     });
   }
 
-  return actions.slice(0, 6);
+  if (modules.has("GUARDIAN_SERVICES")) {
+    actions.push({
+      key: "guardian-services",
+      title: "خدمات ولي الأمر",
+      description: "الرسوم والمدفوعات وخدمات أولياء الأمور",
+      href: "/staff/guardian-services/finance",
+      moduleKey: "GUARDIAN_SERVICES",
+    });
+  }
+
+  return actions.slice(0, 8);
 }
 
 function buildAlerts(params: {
@@ -567,6 +632,8 @@ export function buildStaffHome(params: {
     params.context.operationalAssignments ??
     [];
 
+  const memberships = params.memberships ?? params.context.memberships ?? [];
+
   const activeAssignments = operationalAssignments.filter((assignment) => {
     return (
       assignment.actorPersonId === params.context.actorPersonId &&
@@ -577,7 +644,7 @@ export function buildStaffHome(params: {
   const visibleClasses = getVisibleClassesForActor({
     context: {
       ...params.context,
-      memberships: params.memberships ?? params.context.memberships,
+      memberships,
       operationalAssignments,
       teacherAssignments:
         params.teacherAssignments ?? params.context.teacherAssignments,
@@ -589,11 +656,19 @@ export function buildStaffHome(params: {
   const modulesFromAssignments =
     resolveModulesFromAssignments(activeAssignments);
 
+  const modulesFromMemberships = resolveModulesFromMemberships({
+    memberships,
+    actorPersonId: params.context.actorPersonId,
+    orgId: params.context.orgId,
+    nowMs,
+  });
+
   const rawVisibleModules: StaffHomeVisibleModule[] = [
-  "MY_EVALUATIONS",
-  ...modulesFromAssignments,
-  ...(params.visibleModulesOverride ?? []),
-];
+    "MY_EVALUATIONS",
+    ...modulesFromAssignments,
+    ...modulesFromMemberships,
+    ...(params.visibleModulesOverride ?? []),
+  ];
 
   if (visibleClasses.length > 0) {
     rawVisibleModules.push("CLASSES", "STUDENTS");

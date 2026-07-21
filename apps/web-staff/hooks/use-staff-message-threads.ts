@@ -54,6 +54,14 @@ export type StaffMessageThread = {
 
   unreadCount: number;
 
+  hasActiveUrgentRequest: boolean;
+  activeUrgentRequestId: string;
+  urgentStatus: string;
+  urgentCurrentLevel: string;
+  urgentCurrentAssigneeUid: string;
+  urgentCurrentDeadlineAt: number;
+  activeUrgentTemporalWorkflowId: string;
+
   createdAt: number;
   updatedAt: number;
 };
@@ -153,6 +161,17 @@ function threadFromDoc(
 
     unreadCount: currentParticipant?.unreadCount ?? 0,
 
+    hasActiveUrgentRequest: readBoolean(data, "hasActiveUrgentRequest"),
+    activeUrgentRequestId: readString(data, "activeUrgentRequestId"),
+    urgentStatus: readString(data, "urgentStatus"),
+    urgentCurrentLevel: readString(data, "urgentCurrentLevel"),
+    urgentCurrentAssigneeUid: readString(data, "urgentCurrentAssigneeUid"),
+    urgentCurrentDeadlineAt: readNumber(data, "urgentCurrentDeadlineAt"),
+    activeUrgentTemporalWorkflowId: readString(
+      data,
+      "activeUrgentTemporalWorkflowId",
+    ),
+
     createdAt: readNumber(data, "createdAt"),
     updatedAt: readNumber(data, "updatedAt"),
   };
@@ -190,6 +209,10 @@ export function useStaffMessageThreads() {
         const nextThreads = snapshot.docs
           .map((doc) => threadFromDoc(doc, uid))
           .sort((a, b) => {
+            if (a.hasActiveUrgentRequest !== b.hasActiveUrgentRequest) {
+              return a.hasActiveUrgentRequest ? -1 : 1;
+            }
+
             const aTime = a.lastMessageAt || a.updatedAt || a.createdAt || 0;
             const bTime = b.lastMessageAt || b.updatedAt || b.createdAt || 0;
             return bTime - aTime;

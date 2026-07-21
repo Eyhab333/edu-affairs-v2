@@ -103,6 +103,14 @@ const emptyPermissions: MembershipPermissions = {
   manageEvaluations: false,
   manageDisplay: false,
   sendNotifications: false,
+
+  viewGuardianFinance: false,
+  manageGuardianFinance: false,
+  recordGuardianPayments: false,
+  applyGuardianFinanceAdjustments: false,
+  voidGuardianPayments: false,
+  viewGuardianFinanceReports: false,
+  manageGuardianFinanceSettings: false,
 };
 
 function resolveMembershipIsActive(data: {
@@ -236,7 +244,9 @@ function normalizeCurrentTerm(params: {
         : false,
 
     startsAt:
-      typeof params.data.startsAt === "number" ? params.data.startsAt : undefined,
+      typeof params.data.startsAt === "number"
+        ? params.data.startsAt
+        : undefined,
     endsAt:
       typeof params.data.endsAt === "number" ? params.data.endsAt : undefined,
   };
@@ -709,7 +719,8 @@ function resolveVisibleModules(params: {
       "TRANSPORT",
       "EVALUATIONS",
       "MY_EVALUATIONS",
-      "MESSAGES"
+      "MESSAGES",
+      "GUARDIAN_SERVICES",
     ];
   }
 
@@ -726,6 +737,9 @@ function resolveVisibleModules(params: {
   });
 
   home.visibleModules.forEach((moduleKey) => modules.add(moduleKey));
+
+  modules.add("HOME");
+  modules.add("MESSAGES");
 
   if (params.visibleClasses.length > 0) {
     modules.add("CLASSES");
@@ -824,9 +838,7 @@ export async function getStaffActorData(params: {
 
   const academicYearIds = uniqueItems([
     ...classes.map((item) => item.academicYearId).filter(Boolean),
-    ...classSubjectOfferings
-      .map((item) => item.academicYearId)
-      .filter(Boolean),
+    ...classSubjectOfferings.map((item) => item.academicYearId).filter(Boolean),
   ]);
 
   const currentTermsByAcademicYear = await getCurrentTermsForAcademicYears({

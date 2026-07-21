@@ -20,6 +20,7 @@ import {
   Ruler,
   TrendingDown,
   UserCheck,
+  UsersRound,
 } from "lucide-react";
 import { signOut } from "firebase/auth";
 
@@ -97,7 +98,7 @@ const navItems: Array<{
   },
   {
     href: "/staff/cases",
-    label: "القضايا",
+    label: "إحالات الطلاب",
     icon: FileText,
     moduleKey: "CASES",
   },
@@ -130,7 +131,7 @@ const navItems: Array<{
   },
   {
     href: "/staff/messages",
-    label: "رسائل",
+    label: "المحادثات",
     icon: MessageSquare,
     moduleKey: "MESSAGES",
   },
@@ -139,6 +140,12 @@ const navItems: Array<{
     label: "الأنشطة",
     icon: CalendarDays,
     moduleKey: "ACTIVITIES",
+  },
+  {
+    href: "/staff/guardian-services",
+    label: "خدمات ولي الأمر",
+    icon: UsersRound,
+    moduleKey: "GUARDIAN_SERVICES",
   },
 ];
 
@@ -161,7 +168,7 @@ function StaffShell({ children }: { children: ReactNode }) {
     ...actor.visibleModules,
     "TASKS",
   ]);
-  
+
   const hiddenFromAsideModuleKeys = new Set<StaffHomeVisibleModule | "TASKS">([
     "GAMIFICATION",
   ]);

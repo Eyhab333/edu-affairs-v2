@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../guardian/models/parent_student_summary.dart';
 import 'parent_message_thread.dart';
 import 'parent_thread_message.dart';
-import 'package:cloud_functions/cloud_functions.dart';
-
-import '../../guardian/models/parent_student_summary.dart';
 import 'student_communication_target.dart';
 
 class ParentMessagesService {
@@ -67,7 +66,56 @@ class ParentMessagesService {
 
     final callable = _functions.httpsCallable('markThreadRead');
 
-    await callable.call<Map<String, dynamic>>({'orgId': orgId, 'threadId': id});
+    await callable.call<Map<String, dynamic>>({
+      'orgId': orgId,
+      'threadId': id,
+    });
+  }
+
+  Future<ParentUrgentRequestResult> createUrgentStudentRequest({
+    required ParentStudentSummary student,
+    required String threadId,
+    required StudentCommunicationTarget teacherTarget,
+    String? title,
+    String? initialMessageId,
+  }) async {
+    final id = threadId.trim();
+
+    if (id.isEmpty) {
+      throw ArgumentError('threadId مطلوب');
+    }
+
+    final callable = _functions.httpsCallable('createUrgentStudentRequest');
+
+    final result = await callable.call(<String, dynamic>{
+      'orgId': student.orgId.isEmpty ? orgId : student.orgId,
+      'schoolId': student.schoolId,
+      'academicYearId': student.academicYearId,
+      'gradeId': student.gradeId,
+      'classId': student.classId,
+      'studentId': student.studentId,
+      'threadId': id,
+      'title': title ?? 'طلب عاجل بخصوص ${student.studentName}',
+      'initialMessageId': initialMessageId,
+      'teacherAssignee': <String, dynamic>{
+        'uid': teacherTarget.targetUid,
+        'personId': teacherTarget.targetPersonId,
+        'roleKey': teacherTarget.targetRoleKey,
+        'displayName': teacherTarget.targetDisplayName.isNotEmpty
+            ? teacherTarget.targetDisplayName
+            : teacherTarget.title,
+      },
+    });
+
+    final rawData = result.data;
+
+    if (rawData is! Map) {
+      throw Exception('استجابة غير متوقعة من إنشاء الطلب العاجل');
+    }
+
+    return ParentUrgentRequestResult.fromMap(
+      Map<String, dynamic>.from(rawData),
+    );
   }
 
   Future<List<StudentCommunicationTarget>> getStudentCommunicationTargets({
@@ -221,8 +269,19 @@ class ParentMessagesService {
             return aTime.compareTo(bTime);
           });
 
-          return messages;
+          return aTimeCompare(messages);
         });
+  }
+
+  List<ParentThreadMessage> aTimeCompare(List<ParentThreadMessage> messages) {
+    messages.sort((a, b) {
+      final aTime = a.createdAt == 0 ? a.updatedAt : a.createdAt;
+      final bTime = b.createdAt == 0 ? b.updatedAt : b.createdAt;
+
+      return aTime.compareTo(bTime);
+    });
+
+    return messages;
   }
 
   Future<String> createOrGetStudentContextThread({
@@ -286,5 +345,33 @@ class ParentMessagesService {
     }
 
     throw StateError('لم يتم إنشاء المحادثة');
+  }
+}
+
+class ParentUrgentRequestResult {
+  const ParentUrgentRequestResult({
+    required this.requestId,
+    required this.threadId,
+    required this.status,
+    required this.currentLevel,
+    required this.currentDeadlineAt,
+  });
+
+  final String requestId;
+  final String threadId;
+  final String status;
+  final String currentLevel;
+  final int currentDeadlineAt;
+
+  factory ParentUrgentRequestResult.fromMap(Map<String, dynamic> data) {
+    return ParentUrgentRequestResult(
+      requestId: (data['requestId'] ?? '').toString(),
+      threadId: (data['threadId'] ?? '').toString(),
+      status: (data['status'] ?? '').toString(),
+      currentLevel: (data['currentLevel'] ?? '').toString(),
+      currentDeadlineAt: data['currentDeadlineAt'] is int
+          ? data['currentDeadlineAt'] as int
+          : int.tryParse((data['currentDeadlineAt'] ?? '0').toString()) ?? 0,
+    );
   }
 }

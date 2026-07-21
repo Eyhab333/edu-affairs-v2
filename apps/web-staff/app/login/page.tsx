@@ -8,6 +8,7 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { FullScreenTakweenLoader } from "@/components/ui/takween-loader";
 import {
   CheckCircle2,
   Eye,
@@ -57,9 +58,17 @@ export default function LoginPage() {
       router.replace("/select-org");
     } catch (error) {
       setError(getErrorMessage(error));
-    } finally {
       setLoading(false);
     }
+  }
+
+  if (loading) {
+    return (
+      <FullScreenTakweenLoader
+        label="جاري تسجيل الدخول..."
+        sublabel="نجهّز لك مساحة العمل"
+      />
+    );
   }
 
   return (

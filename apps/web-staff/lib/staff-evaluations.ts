@@ -319,6 +319,7 @@ export type EvaluationSubmissionFormData = {
   evaluatorRoleKey?: string;
   evaluatorAssignmentId: string;
   weight: number;
+  canApprove: boolean;
 
   sections: EvaluationFormSection[];
   items: EvaluationFormItem[];
@@ -389,6 +390,37 @@ async function getRubricItems(orgId: string, frameworkId: string) {
     });
 }
 
+async function canEvaluatorApprove(params: {
+  orgId: string;
+  planId: string;
+  evaluatorRoleKey: string;
+}) {
+  if (
+    params.evaluatorRoleKey === "platform_owner" ||
+    params.evaluatorRoleKey === "platform_admin" ||
+    params.evaluatorRoleKey === "org_owner" ||
+    params.evaluatorRoleKey === "org_admin"
+  ) {
+    return true;
+  }
+
+  const snap = await getDocs(
+    query(
+      collection(db, `orgs/${params.orgId}/evaluatorPolicies`),
+      where("planId", "==", params.planId),
+    ),
+  );
+
+  return snap.docs.some((item) => {
+    const data = item.data();
+
+    return (
+      data.evaluatorRoleKey === params.evaluatorRoleKey &&
+      data.canApprove === true
+    );
+  });
+}
+
 export async function loadEvaluationSubmissionForm(params: {
   uid: string;
   orgId?: string;
@@ -438,6 +470,14 @@ export async function loadEvaluationSubmissionForm(params: {
 
   const frameworkId = asString(plan.frameworkId);
 
+  const evaluatorRoleKey = asString(assignment.evaluatorRoleKey);
+
+  const canApprove = await canEvaluatorApprove({
+    orgId,
+    planId,
+    evaluatorRoleKey,
+  });
+
   const [framework, sections, items, submissions] = await Promise.all([
     getDocData(`orgs/${orgId}/evaluationFrameworks/${frameworkId}`),
     getRubricSections(orgId, frameworkId),
@@ -477,9 +517,10 @@ export async function loadEvaluationSubmissionForm(params: {
 
     evaluatorPersonId,
     evaluatorEmail: asString(assignment.evaluatorEmail),
-    evaluatorRoleKey: asString(assignment.evaluatorRoleKey),
+    evaluatorRoleKey,
     evaluatorAssignmentId: String(assignment.id),
     weight: asNumber(assignment.weight, 100),
+    canApprove,
 
     sections,
     items,
@@ -567,14 +608,14 @@ export async function saveEvaluationDraft(params: {
     throw new Error("لا يمكن حفظ المسودة لأن دورة التقييم ليست مفتوحة.");
   }
 
-if (
-  formData.existingSubmissionStatus === "SUBMITTED" ||
-  formData.existingSubmissionStatus === "APPROVED" ||
-  formData.existingSubmissionStatus === "LOCKED" ||
-  formData.existingSubmissionStatus === "CANCELLED"
-) {
-  throw new Error("لا يمكن حفظ مسودة بعد إرسال أو اعتماد التقييم.");
-}
+  if (
+    formData.existingSubmissionStatus === "SUBMITTED" ||
+    formData.existingSubmissionStatus === "APPROVED" ||
+    formData.existingSubmissionStatus === "LOCKED" ||
+    formData.existingSubmissionStatus === "CANCELLED"
+  ) {
+    throw new Error("لا يمكن حفظ مسودة بعد إرسال أو اعتماد التقييم.");
+  }
 
   const sectionById = new Map(
     formData.sections.map((section) => [section.id, section]),
@@ -695,11 +736,12 @@ export async function submitEvaluation(params: {
   }
 
   if (
+    formData.existingSubmissionStatus === "SUBMITTED" ||
     formData.existingSubmissionStatus === "APPROVED" ||
     formData.existingSubmissionStatus === "LOCKED" ||
     formData.existingSubmissionStatus === "CANCELLED"
   ) {
-    throw new Error("لا يمكن تعديل هذا التقييم لأنه لم يعد قابلًا للإرسال.");
+    throw new Error("لا يمكن تعديل هذا التقييم بعد إرساله أو اعتماده.");
   }
 
   const missingRequiredItems = formData.items.filter((item) => {
@@ -815,8 +857,6 @@ export async function submitEvaluation(params: {
   };
 }
 
-
-
 export async function approveEvaluationSubmission(params: {
   uid: string;
   orgId?: string;
@@ -857,7 +897,7 @@ export async function approveEvaluationSubmission(params: {
   }
 
   const cycle = await getDocData(
-    `orgs/${orgId}/evaluationCycles/${formData.cycleId}`
+    `orgs/${orgId}/evaluationCycles/${formData.cycleId}`,
   );
 
   const ts = Date.now();
@@ -875,7 +915,7 @@ export async function approveEvaluationSubmission(params: {
       approvedByPersonId: approverPersonId,
       updatedAt: ts,
     },
-    { merge: true }
+    { merge: true },
   );
 
   const cycleSummaryId = `${formData.planId}-${formData.cycleId}-${formData.targetPersonId}`;
@@ -910,42 +950,35 @@ export async function approveEvaluationSubmission(params: {
   await setDoc(
     doc(db, `orgs/${orgId}/evaluationCycleTargetSummaries/${cycleSummaryId}`),
     cycleSummary,
-    { merge: true }
+    { merge: true },
   );
 
   const approvedSummariesSnap = await getDocs(
     query(
       collection(db, `orgs/${orgId}/evaluationCycleTargetSummaries`),
-      where("planId", "==", formData.planId)
-    )
+      where("planId", "==", formData.planId),
+    ),
   );
 
-
-
-
-
-const allApprovedSummaries: FirestoreDoc[] = approvedSummariesSnap.docs.map(
-  (item) => ({
-    id: item.id,
-    ...(item.data() as FirestoreDoc),
-  })
-);
-
-const approvedSummaries = allApprovedSummaries.filter((item) => {
-  return (
-    item.targetPersonId === formData.targetPersonId &&
-    item.status === "APPROVED" &&
-    item.includedInAverage === true
+  const allApprovedSummaries: FirestoreDoc[] = approvedSummariesSnap.docs.map(
+    (item) => ({
+      id: item.id,
+      ...(item.data() as FirestoreDoc),
+    }),
   );
-});
 
-const approvedScores = approvedSummaries
-  .map((item) => asNumber(item.finalScore))
-  .filter((score) => Number.isFinite(score));
+  const approvedSummaries = allApprovedSummaries.filter((item) => {
+    return (
+      item.targetPersonId === formData.targetPersonId &&
+      item.status === "APPROVED" &&
+      item.includedInAverage === true
+    );
+  });
 
+  const approvedScores = approvedSummaries
+    .map((item) => asNumber(item.finalScore))
+    .filter((score) => Number.isFinite(score));
 
-
-    
   const approvedAverageScore =
     approvedScores.length > 0
       ? approvedScores.reduce((sum, score) => sum + score, 0) /
@@ -984,7 +1017,7 @@ const approvedScores = approvedSummaries
   await setDoc(
     doc(db, `orgs/${orgId}/evaluationStaffSummaries/${staffSummaryId}`),
     staffSummary,
-    { merge: true }
+    { merge: true },
   );
 
   return {
@@ -998,9 +1031,6 @@ const approvedScores = approvedSummaries
     approvedAt: ts,
   };
 }
-
-
-
 
 export type MyEvaluationCycleResult = {
   id: string;
@@ -1053,8 +1083,8 @@ async function getStaffSummaryForTarget(params: {
   const snap = await getDocs(
     query(
       collection(db, `orgs/${params.orgId}/evaluationStaffSummaries`),
-      where("targetPersonId", "==", params.targetPersonId)
-    )
+      where("targetPersonId", "==", params.targetPersonId),
+    ),
   );
 
   const first = snap.docs[0];
@@ -1074,8 +1104,8 @@ async function getApprovedCycleSummariesForTarget(params: {
   const snap = await getDocs(
     query(
       collection(db, `orgs/${params.orgId}/evaluationCycleTargetSummaries`),
-      where("targetPersonId", "==", params.targetPersonId)
-    )
+      where("targetPersonId", "==", params.targetPersonId),
+    ),
   );
 
   return snap.docs
@@ -1088,7 +1118,6 @@ async function getApprovedCycleSummariesForTarget(params: {
     .filter((item) => asString(item.status) === "APPROVED")
     .sort((a, b) => asNumber(b.approvedAt) - asNumber(a.approvedAt));
 }
-
 
 export async function buildMyEvaluationsView(params: {
   uid: string;
@@ -1148,7 +1177,7 @@ export async function buildMyEvaluationsView(params: {
         submittedAt: asNumber(cycleSummary.submittedAt),
         approvedAt: asNumber(cycleSummary.approvedAt),
       } satisfies MyEvaluationCycleResult;
-    })
+    }),
   );
 
   const summary: MyEvaluationSummary | null = staffSummary
@@ -1223,8 +1252,8 @@ async function getApprovedCycleSummaryForTarget(params: {
   const snap = await getDocs(
     query(
       collection(db, `orgs/${params.orgId}/evaluationCycleTargetSummaries`),
-      where("targetPersonId", "==", params.targetPersonId)
-    )
+      where("targetPersonId", "==", params.targetPersonId),
+    ),
   );
 
   const found = snap.docs
@@ -1252,8 +1281,8 @@ async function getApprovedSubmissionForTargetCycle(params: {
   const snap = await getDocs(
     query(
       collection(db, `orgs/${params.orgId}/evaluationSubmissions`),
-      where("targetPersonId", "==", params.targetPersonId)
-    )
+      where("targetPersonId", "==", params.targetPersonId),
+    ),
   );
 
   const found = snap.docs
@@ -1274,7 +1303,7 @@ async function getApprovedSubmissionForTargetCycle(params: {
 }
 
 function buildDetailSections(
-  itemScoresValue: unknown
+  itemScoresValue: unknown,
 ): MyEvaluationDetailSection[] {
   if (!Array.isArray(itemScoresValue)) return [];
 
@@ -1303,7 +1332,7 @@ function buildDetailSections(
           ...(note ? { note } : {}),
         },
       ];
-    }
+    },
   );
 
   const sectionMap = new Map<string, MyEvaluationDetailSection>();
@@ -1395,4 +1424,3 @@ export async function buildMyEvaluationDetailView(params: {
     sections: buildDetailSections(submission.itemScores),
   };
 }
-

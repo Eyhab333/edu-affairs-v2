@@ -151,3 +151,350 @@ textarea {
 .auth-glass-input:-webkit-autofill::first-line {
   color: #ffffff;
 }
+
+
+
+
+
+/* =========================
+   Takween Loader
+   ========================= */
+
+.takween-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+.takween-loader__mark {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.35rem;
+  direction: ltr;
+  flex-direction: row;
+  filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0));
+  animation: takween-loader-pulse 2.8s ease-in-out infinite;
+}
+
+.takween-loader__book {
+  position: relative;
+  width: 92px;
+  height: 78px;
+  flex-shrink: 0;
+}
+
+.takween-loader__page {
+  position: absolute;
+  inset: 0;
+  border: 4px solid currentColor;
+  border-radius: 10px 10px 12px 12px;
+  background: transparent;
+  transform-origin: 85% 100%;
+  opacity: 0;
+}
+
+/* صفحة 1 */
+.takween-loader__page--1 {
+  color: #00d084;
+  transform: translateX(-18px) rotate(-30deg) scale(0.94);
+  animation: takween-page-open-1 2.8s ease-in-out infinite;
+}
+
+/* صفحة 2 */
+.takween-loader__page--2 {
+  color: #004b7a;
+  transform: translateX(-8px) rotate(-18deg) scale(0.96);
+  animation: takween-page-open-2 2.8s ease-in-out infinite;
+}
+
+/* صفحة 3 */
+.takween-loader__page--3 {
+  color: #14b8a6;
+  transform: translateX(2px) rotate(-7deg) scale(0.98);
+  animation: takween-page-open-3 2.8s ease-in-out infinite;
+}
+
+/* صفحة 4 */
+.takween-loader__page--4 {
+  color: #f8fafc;
+  transform: translateX(10px) rotate(-1deg) scale(1);
+  animation: takween-page-open-4 2.8s ease-in-out infinite;
+}
+
+.takween-loader__word {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 240px;
+  height: 74px;
+  line-height: 1;
+}
+
+.takween-loader__word-base,
+.takween-loader__segment {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+.takween-loader__word-base {
+  color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.takween-loader__segment {
+  color: #0f8f7a;
+  opacity: 0;
+  text-shadow: 0 0 0 rgba(20, 184, 166, 0);
+}
+
+/* 4 أجزاء للكلمة */
+.takween-loader__segment--1 {
+  clip-path: inset(0 0 0 75%);
+  animation: takween-word-reveal-1 2.8s ease-in-out infinite;
+}
+
+.takween-loader__segment--2 {
+  clip-path: inset(0 25% 0 50%);
+  animation: takween-word-reveal-2 2.8s ease-in-out infinite;
+}
+
+.takween-loader__segment--3 {
+  clip-path: inset(0 50% 0 25%);
+  animation: takween-word-reveal-3 2.8s ease-in-out infinite;
+}
+
+.takween-loader__segment--4 {
+  clip-path: inset(0 75% 0 0);
+  animation: takween-word-reveal-4 2.8s ease-in-out infinite;
+}
+
+.takween-loader__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.takween-loader__label {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.takween-loader__sublabel {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* =========================
+   Animations
+   ========================= */
+
+@keyframes takween-page-open-1 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(-6px) rotate(-8deg) scale(0.94);
+  }
+  10% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(-18px) rotate(-30deg) scale(0.94);
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(-18px) rotate(-30deg) scale(0.94);
+  }
+}
+
+@keyframes takween-page-open-2 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(0px) rotate(-5deg) scale(0.96);
+  }
+  16% {
+    opacity: 0;
+  }
+  28% {
+    opacity: 1;
+    transform: translateX(-8px) rotate(-18deg) scale(0.96);
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(-8px) rotate(-18deg) scale(0.96);
+  }
+}
+
+@keyframes takween-page-open-3 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(4px) rotate(-2deg) scale(0.98);
+  }
+  24% {
+    opacity: 0;
+  }
+  36% {
+    opacity: 1;
+    transform: translateX(2px) rotate(-7deg) scale(0.98);
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(2px) rotate(-7deg) scale(0.98);
+  }
+}
+
+@keyframes takween-page-open-4 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(8px) rotate(0deg) scale(1);
+  }
+  32% {
+    opacity: 0;
+  }
+  44% {
+    opacity: 1;
+    transform: translateX(10px) rotate(-1deg) scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(10px) rotate(-1deg) scale(1);
+  }
+}
+
+@keyframes takween-word-reveal-1 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+    text-shadow: 0 0 0 rgba(20, 184, 166, 0);
+  }
+  12% {
+    opacity: 0;
+  }
+  26% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(20, 184, 166, 0.18);
+  }
+}
+
+@keyframes takween-word-reveal-2 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+    text-shadow: 0 0 0 rgba(20, 184, 166, 0);
+  }
+  20% {
+    opacity: 0;
+  }
+  34% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(20, 184, 166, 0.18);
+  }
+}
+
+@keyframes takween-word-reveal-3 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+    text-shadow: 0 0 0 rgba(20, 184, 166, 0);
+  }
+  28% {
+    opacity: 0;
+  }
+  42% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(20, 184, 166, 0.18);
+  }
+}
+
+@keyframes takween-word-reveal-4 {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+    text-shadow: 0 0 0 rgba(20, 184, 166, 0);
+  }
+  36% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(20, 184, 166, 0.18);
+  }
+}
+
+@keyframes takween-loader-pulse {
+  0%,
+  54%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(20, 184, 166, 0));
+  }
+  62% {
+    transform: scale(1.018);
+    filter: drop-shadow(0 0 12px rgba(20, 184, 166, 0.18));
+  }
+  70% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(20, 184, 166, 0.12));
+  }
+}
+
+/* تقليل الحركة لمن يحتاج */
+@media (prefers-reduced-motion: reduce) {
+  .takween-loader__mark,
+  .takween-loader__page,
+  .takween-loader__segment {
+    animation: none !important;
+  }
+
+  .takween-loader__page {
+    opacity: 1;
+  }
+
+  .takween-loader__segment {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+
+
+
+
+

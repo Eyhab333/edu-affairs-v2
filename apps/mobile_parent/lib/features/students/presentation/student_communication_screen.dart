@@ -32,6 +32,8 @@ class _StudentCommunicationScreenState
   Future<List<StudentCommunicationTarget>>? _targetsFuture;
   String _targetsStudentId = '';
   String _openingTargetId = '';
+String _creatingUrgentTargetId = '';
+
 
   @override
   void initState() {
@@ -52,12 +54,14 @@ class _StudentCommunicationScreenState
   }
 
   void _reload() {
-    setState(() {
-      _future = _loadStudent();
-      _targetsFuture = null;
-      _targetsStudentId = '';
-    });
-  }
+  setState(() {
+    _future = _loadStudent();
+    _targetsFuture = null;
+    _targetsStudentId = '';
+    _openingTargetId = '';
+    _creatingUrgentTargetId = '';
+  });
+}
 
   Future<List<StudentCommunicationTarget>> _getTargetsFuture(
     ParentStudentSummary student,
@@ -116,6 +120,64 @@ class _StudentCommunicationScreenState
       }
     }
   }
+
+
+
+Future<void> _createUrgentRequestForTarget({
+  required ParentStudentSummary student,
+  required StudentCommunicationTarget target,
+}) async {
+  if (_openingTargetId.isNotEmpty || _creatingUrgentTargetId.isNotEmpty) {
+    return;
+  }
+
+  setState(() {
+    _creatingUrgentTargetId = target.id;
+  });
+
+  try {
+    final threadId = await _messagesService.createOrGetStudentContextThread(
+      student: student,
+      target: target,
+    );
+
+    final result = await _messagesService.createUrgentStudentRequest(
+      student: student,
+      threadId: threadId,
+      teacherTarget: target,
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result.requestId.isEmpty
+              ? 'تم إنشاء الطلب العاجل بنجاح'
+              : 'تم إنشاء الطلب العاجل بنجاح',
+        ),
+      ),
+    );
+
+    context.push('/messages/${Uri.encodeComponent(threadId)}');
+  } catch (error) {
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('تعذر إنشاء الطلب العاجل: $error')),
+    );
+  } finally {
+    if (mounted) {
+      setState(() {
+        _creatingUrgentTargetId = '';
+      });
+    }
+  }
+}
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -238,14 +300,23 @@ class _StudentCommunicationScreenState
         ),
         const SizedBox(height: AppSpacing.sm),
 
-        _CommunicationTargetsSection(
-          targetsFuture: _getTargetsFuture(student),
-          openingTargetId: _openingTargetId,
-          onRefresh: () => _refreshTargets(student),
-          onTargetTap: (target) {
-            _openTargetThread(student: student, target: target);
-          },
-        ),
+       _CommunicationTargetsSection(
+  targetsFuture: _getTargetsFuture(student),
+  openingTargetId: _openingTargetId,
+  creatingUrgentTargetId: _creatingUrgentTargetId,
+  onRefresh: () => _refreshTargets(student),
+  onTargetTap: (target) {
+    _openTargetThread(student: student, target: target);
+  },
+  onUrgentTap: (target) {
+    _createUrgentRequestForTarget(student: student, target: target);
+  },
+),
+
+
+
+
+
       ],
     );
   }
@@ -528,16 +599,27 @@ class _SectionTitle extends StatelessWidget {
 
 class _CommunicationTargetsSection extends StatelessWidget {
   const _CommunicationTargetsSection({
-    required this.targetsFuture,
-    required this.openingTargetId,
-    required this.onRefresh,
-    required this.onTargetTap,
-  });
+  required this.targetsFuture,
+  required this.openingTargetId,
+  required this.creatingUrgentTargetId,
+  required this.onRefresh,
+  required this.onTargetTap,
+  required this.onUrgentTap,
+});
 
-  final Future<List<StudentCommunicationTarget>> targetsFuture;
-  final String openingTargetId;
-  final VoidCallback onRefresh;
-  final ValueChanged<StudentCommunicationTarget> onTargetTap;
+
+
+
+ final Future<List<StudentCommunicationTarget>> targetsFuture;
+final String openingTargetId;
+final String creatingUrgentTargetId;
+final VoidCallback onRefresh;
+final ValueChanged<StudentCommunicationTarget> onTargetTap;
+final ValueChanged<StudentCommunicationTarget> onUrgentTap;
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -626,18 +708,46 @@ class _CommunicationTargetsSection extends StatelessWidget {
               const SizedBox(height: AppSpacing.sm),
               _TargetGroupTitle(title: 'معلمو ابني'),
               const SizedBox(height: AppSpacing.sm),
-              for (final target in teacherTargets) ...[
-                _CommunicationTargetCard(
-                  icon: target.targetKind == 'CLASS_TEACHER'
-                      ? Icons.person_rounded
-                      : Icons.menu_book_rounded,
-                  title: target.title,
-                  subtitle: target.subtitle,
-                  loading: openingTargetId == target.id,
-                  onTap: () => onTargetTap(target),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-              ],
+
+
+             for (final target in teacherTargets) ...[
+  _CommunicationTargetCard(
+    icon: target.targetKind == 'CLASS_TEACHER'
+        ? Icons.person_rounded
+        : Icons.menu_book_rounded,
+    title: target.title,
+    subtitle: target.subtitle,
+    loading: openingTargetId == target.id,
+    onTap: () => onTargetTap(target),
+  ),
+  const SizedBox(height: 6),
+  OutlinedButton.icon(
+    onPressed: openingTargetId.isNotEmpty || creatingUrgentTargetId.isNotEmpty
+        ? null
+        : () => onUrgentTap(target),
+    icon: creatingUrgentTargetId == target.id
+        ? const SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          )
+        : const Icon(Icons.priority_high_rounded),
+    label: Text(
+      creatingUrgentTargetId == target.id
+          ? 'جاري إنشاء الطلب العاجل...'
+          : 'طلب عاجل لهذا المعلم',
+    ),
+  ),
+  const SizedBox(height: AppSpacing.sm),
+],
+
+
+
+
+
+
+
+
             ],
 
             if (otherTargets.isNotEmpty) ...[

@@ -53,6 +53,7 @@ export const ProductModuleKey = z.enum([
   "VIRTUAL_CLASSES",
   "PARENT_APP",
   "ANALYTICS",
+  "GUARDIAN_SERVICES",
 ]);
 export type ProductModuleKey = z.infer<typeof ProductModuleKey>;
 
@@ -72,6 +73,7 @@ export const ModuleKey = z.enum([
   "KG_DAILY",
   "PRIMARY_ASSESSMENTS",
   "TRANSPORT",
+  "GUARDIAN_SERVICES",
 ]);
 export type ModuleKey = z.infer<typeof ModuleKey>;
 
@@ -122,6 +124,7 @@ export const MembershipRole = z.enum([
   "HR_SPECIALIST",
   "ACTIVITY_COORD",
   "SCHOOL_MONITOR",
+  "FINANCE_COLLECTOR",
 
   /**
    * Boys school roles
@@ -279,6 +282,14 @@ export const MembershipPermissionsSchema = z.object({
   manageEvaluations: z.boolean().default(false),
   manageDisplay: z.boolean().default(false),
   sendNotifications: z.boolean().default(false),
+
+  viewGuardianFinance: z.boolean().default(false),
+  manageGuardianFinance: z.boolean().default(false),
+  recordGuardianPayments: z.boolean().default(false),
+  applyGuardianFinanceAdjustments: z.boolean().default(false),
+  voidGuardianPayments: z.boolean().default(false),
+  viewGuardianFinanceReports: z.boolean().default(false),
+  manageGuardianFinanceSettings: z.boolean().default(false),
 });
 export type MembershipPermissions = z.infer<typeof MembershipPermissionsSchema>;
 
@@ -1147,6 +1158,7 @@ export const OperationKind = z.enum([
   "TRANSPORT_ATTENDANCE",
   "STAFF_EVALUATION",
   "STAFF_OBSERVATION",
+  "GUARDIAN_FINANCE",
   "CUSTOM",
 ]);
 export type OperationKind = z.infer<typeof OperationKind>;
@@ -1174,6 +1186,12 @@ export const OperationTargetKind = z.enum([
   "CASE",
   "BATCH",
   "PLAN",
+
+  "GUARDIAN",
+  "CHARGE",
+  "INSTALLMENT",
+  "PAYMENT",
+
   "NONE",
   "CUSTOM",
 ]);
@@ -1196,6 +1214,12 @@ export const OperationSourceType = z.enum([
   "TRANSPORT_ATTENDANCE_BATCH",
   "EVALUATION_CYCLE",
   "EVALUATION_SUBMISSION",
+
+  "STUDENT_FEE_CHARGE",
+  "STUDENT_FEE_INSTALLMENT",
+  "GUARDIAN_PAYMENT",
+  "GUARDIAN_FINANCIAL_ADJUSTMENT",
+
   "CUSTOM",
 ]);
 export type OperationSourceType = z.infer<typeof OperationSourceType>;
@@ -3286,6 +3310,7 @@ export const StaffTaskModuleKey = z.enum([
   "ACTIVITIES",
   "TRANSPORT",
   "EVALUATIONS",
+  "GUARDIAN_SERVICES",
   "CUSTOM",
 ]);
 export type StaffTaskModuleKey = z.infer<typeof StaffTaskModuleKey>;
@@ -5739,4 +5764,5 @@ export * from "./staff-evaluations";
 export * from "./student-cases";
 export * from "./transport";
 export * from "./school-activities";
-
+export * from "./urgent-communications";
+export * from "./guardian-finance";

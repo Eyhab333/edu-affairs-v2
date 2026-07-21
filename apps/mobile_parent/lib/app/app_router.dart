@@ -11,6 +11,9 @@ import '../features/messages/presentation/messages_screen.dart';
 import '../features/messages/presentation/message_thread_screen.dart';
 import '../features/students/presentation/student_communication_screen.dart';
 import '../features/announcements/presentation/parent_announcements_screen.dart';
+import '../features/guardian_finance/presentation/guardian_finance_screen.dart';
+import '../features/guardian_finance/presentation/guardian_finance_child_screen.dart';
+import '../features/guardian_finance/presentation/guardian_finance_receipt_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/splash',
@@ -25,6 +28,27 @@ final appRouter = GoRouter(
       builder: (context, state) => const MyChildrenScreen(),
     ),
 
+    GoRoute(
+      path: '/guardian-finance',
+      builder: (context, state) => const GuardianFinanceScreen(),
+    ),
+
+    GoRoute(
+      path: '/guardian-finance/children/:studentId',
+      builder: (context, state) {
+        final studentId = state.pathParameters['studentId'] ?? '';
+
+        return GuardianFinanceChildScreen(studentId: studentId);
+      },
+    ),
+    GoRoute(
+      path: '/guardian-finance/receipts/:receiptId',
+      builder: (context, state) {
+        final receiptId = state.pathParameters['receiptId'] ?? '';
+
+        return GuardianFinanceReceiptScreen(receiptId: receiptId);
+      },
+    ),
     GoRoute(
       path: '/announcements',
       builder: (context, state) => const ParentAnnouncementsScreen(),

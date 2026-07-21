@@ -17,7 +17,7 @@ export * from "./subject-lesson-prep/index";
 
 export * from "./school-activities";
 
-
+export * from "./guardian-finance/index";
 
 
 

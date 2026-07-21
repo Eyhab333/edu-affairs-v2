@@ -71,6 +71,11 @@ class _MyChildrenScreenState extends State<MyChildrenScreen> {
             },
           ),
           IconButton(
+            tooltip: 'الرسوم والمدفوعات',
+            onPressed: () => context.go('/guardian-finance'),
+            icon: const Icon(Icons.account_balance_wallet_rounded),
+          ),
+          IconButton(
             tooltip: 'تحديث',
             onPressed: _reload,
             icon: const Icon(Icons.refresh_rounded),
@@ -124,12 +129,8 @@ class _MyChildrenScreenState extends State<MyChildrenScreen> {
                     childrenCount: children.length,
                   ),
 
-
-                  _AnnouncementsCard(
-                    onTap: () => context.go('/announcements'),
-                  ),
+                  _AnnouncementsCard(onTap: () => context.go('/announcements')),
                   const SizedBox(height: AppSpacing.lg),
-
 
                   const SizedBox(height: AppSpacing.lg),
                   const AppSectionTitle(
@@ -369,12 +370,6 @@ class _NotificationIconWithBadge extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
 class _AnnouncementsCard extends StatelessWidget {
   const _AnnouncementsCard({required this.onTap});
 
@@ -430,8 +425,3 @@ class _AnnouncementsCard extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

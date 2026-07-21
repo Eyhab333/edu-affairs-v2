@@ -5,6 +5,7 @@ import {
   collection,
   doc as firestoreDoc,
   onSnapshot,
+  orderBy,
   query,
   type DocumentSnapshot,
   type QueryDocumentSnapshot,
@@ -53,6 +54,14 @@ export type StaffMessageThreadDetails = {
   lastMessageSenderUid: string;
   lastMessageType: string;
 
+  hasActiveUrgentRequest: boolean;
+  activeUrgentRequestId: string;
+  urgentStatus: string;
+  urgentCurrentLevel: string;
+  urgentCurrentAssigneeUid: string;
+  urgentCurrentDeadlineAt: number;
+  activeUrgentTemporalWorkflowId: string;
+
   createdAt: number;
   updatedAt: number;
 };
@@ -74,6 +83,26 @@ export type StaffThreadMessage = {
 
   createdAt: number;
   updatedAt: number;
+};
+
+export type StaffUrgentTimelineEvent = {
+  id: string;
+  orgId: string;
+  requestId: string;
+  threadId: string;
+
+  type: string;
+  level: string;
+  title: string;
+
+  actorUid: string;
+  actorPersonId: string;
+  actorRoleKey: string;
+  actorDisplayName: string;
+
+  messageId: string;
+
+  createdAt: number;
 };
 
 function readString(data: Record<string, unknown>, key: string, fallback = "") {
@@ -189,6 +218,17 @@ function threadFromSnapshot(
     lastMessageSenderUid: readString(data, "lastMessageSenderUid"),
     lastMessageType: readString(data, "lastMessageType", "TEXT"),
 
+    hasActiveUrgentRequest: readBoolean(data, "hasActiveUrgentRequest"),
+    activeUrgentRequestId: readString(data, "activeUrgentRequestId"),
+    urgentStatus: readString(data, "urgentStatus"),
+    urgentCurrentLevel: readString(data, "urgentCurrentLevel"),
+    urgentCurrentAssigneeUid: readString(data, "urgentCurrentAssigneeUid"),
+    urgentCurrentDeadlineAt: readNumber(data, "urgentCurrentDeadlineAt"),
+    activeUrgentTemporalWorkflowId: readString(
+      data,
+      "activeUrgentTemporalWorkflowId",
+    ),
+
     createdAt: readNumber(data, "createdAt"),
     updatedAt: readNumber(data, "updatedAt"),
   };
@@ -221,6 +261,32 @@ function messageFromDoc(snapshot: QueryDocumentSnapshot): StaffThreadMessage {
   };
 }
 
+function urgentTimelineEventFromDoc(
+  snapshot: QueryDocumentSnapshot,
+): StaffUrgentTimelineEvent {
+  const data = snapshot.data() as Record<string, unknown>;
+
+  return {
+    id: snapshot.id,
+    orgId: readString(data, "orgId"),
+    requestId: readString(data, "requestId"),
+    threadId: readString(data, "threadId"),
+
+    type: readString(data, "type"),
+    level: readString(data, "level"),
+    title: readString(data, "title"),
+
+    actorUid: readString(data, "actorUid"),
+    actorPersonId: readString(data, "actorPersonId"),
+    actorRoleKey: readString(data, "actorRoleKey"),
+    actorDisplayName: readString(data, "actorDisplayName"),
+
+    messageId: readString(data, "messageId"),
+
+    createdAt: readNumber(data, "createdAt"),
+  };
+}
+
 export function useStaffThreadMessages(threadId: string) {
   const { actor, user } = useStaffActor();
 
@@ -229,6 +295,9 @@ export function useStaffThreadMessages(threadId: string) {
 
   const [thread, setThread] = useState<StaffMessageThreadDetails | null>(null);
   const [messages, setMessages] = useState<StaffThreadMessage[]>([]);
+  const [urgentTimelineEvents, setUrgentTimelineEvents] = useState<
+    StaffUrgentTimelineEvent[]
+  >([]);
   const [loadingThread, setLoadingThread] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [error, setError] = useState("");
@@ -278,13 +347,11 @@ export function useStaffThreadMessages(threadId: string) {
     const unsubscribeMessages = onSnapshot(
       messagesQuery,
       (snapshot) => {
-        const nextMessages = snapshot.docs
-          .map(messageFromDoc)
-          .sort((a, b) => {
-            const aTime = a.createdAt || a.updatedAt || 0;
-            const bTime = b.createdAt || b.updatedAt || 0;
-            return aTime - bTime;
-          });
+        const nextMessages = snapshot.docs.map(messageFromDoc).sort((a, b) => {
+          const aTime = a.createdAt || a.updatedAt || 0;
+          const bTime = b.createdAt || b.updatedAt || 0;
+          return aTime - bTime;
+        });
 
         setMessages(nextMessages);
         setLoadingMessages(false);
@@ -302,14 +369,50 @@ export function useStaffThreadMessages(threadId: string) {
     };
   }, [uid, orgId, threadId]);
 
+  useEffect(() => {
+    const requestId = thread?.activeUrgentRequestId || "";
+
+    if (!orgId || !requestId) {
+      setUrgentTimelineEvents([]);
+      return;
+    }
+
+    const timelineRef = collection(
+      db,
+      `orgs/${orgId}/urgentCommunicationRequests/${requestId}/timelineEvents`,
+    );
+
+    const timelineQuery = query(timelineRef, orderBy("createdAt", "asc"));
+
+    const unsubscribe = onSnapshot(
+      timelineQuery,
+      (snapshot) => {
+        const nextEvents = snapshot.docs.map(urgentTimelineEventFromDoc);
+        setUrgentTimelineEvents(nextEvents);
+      },
+      (err) => {
+        console.error("Failed to load urgent timeline events", err);
+        setUrgentTimelineEvents([]);
+      },
+    );
+
+    return () => unsubscribe();
+  }, [orgId, thread?.activeUrgentRequestId]);
+
   const loading = loadingThread || loadingMessages;
 
   const currentParticipant = useMemo(() => {
-    return thread?.participants.find((participant) => participant.uid === uid) ?? null;
+    return (
+      thread?.participants.find((participant) => participant.uid === uid) ??
+      null
+    );
   }, [thread, uid]);
 
   const otherParticipants = useMemo(() => {
-    return thread?.participants.filter((participant) => participant.uid !== uid) ?? [];
+    return (
+      thread?.participants.filter((participant) => participant.uid !== uid) ??
+      []
+    );
   }, [thread, uid]);
 
   return {
@@ -317,6 +420,7 @@ export function useStaffThreadMessages(threadId: string) {
     orgId,
     thread,
     messages,
+    urgentTimelineEvents,
     currentParticipant,
     otherParticipants,
     loading,

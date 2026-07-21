@@ -12,7 +12,13 @@ export { getStudentCommunicationTargets } from "./messaging/get-student-communic
 export { createVirtualClassSessionWithMeet } from "./virtual-classes/create-virtual-class-session-with-meet";
 export { importGoogleMeetAttendance } from "./virtual-classes/import-google-meet-attendance";
 export { registerStudentInActivity } from "./activities/register-student-in-activity";
-
+export { createUrgentStudentRequest } from "./messaging/create-urgent-student-request";
+export { createStudentFeeCharge } from "./guardian-finance/create-student-fee-charge";
+export { createGuardianPaymentDraft } from "./guardian-finance/create-guardian-payment-draft";
+export { postGuardianPayment } from "./guardian-finance/post-guardian-payment";
+export { reverseGuardianPayment } from "./guardian-finance/reverse-guardian-payment";
+export { getGuardianFinanceWorkspace } from "./guardian-finance/get-guardian-finance-workspace";
+export { getMyGuardianFinanceOverview } from "./guardian-finance/get-my-guardian-finance-overview";
 
 export const functionsHealth = onRequest(
   {

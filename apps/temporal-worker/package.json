@@ -1,0 +1,25 @@
+{
+  "name": "temporal-worker",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "worker:dev": "tsx src/worker.ts",
+    "worker:prod": "node dist/worker.js",
+    "start-spike": "tsx src/start-spike.ts",
+    "start-latest-urgent-spike": "tsx src/start-latest-urgent-spike.ts",
+    "start-latest-urgent-sla": "tsx src/start-latest-urgent-sla.ts",
+    "signal-urgent-replied": "tsx src/signal-urgent-replied.ts"
+  },
+  "dependencies": {
+    "@temporalio/client": "^1.16.2",
+    "@temporalio/worker": "^1.16.2",
+    "@temporalio/workflow": "^1.16.2",
+    "firebase-admin": "^13.7.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.0",
+    "typescript": "^6.0.3"
+  }
+}

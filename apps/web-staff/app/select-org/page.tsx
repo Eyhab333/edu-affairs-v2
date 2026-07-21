@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useRequireAuth } from "@/hooks/use-require-auth";
+import { FullScreenTakweenLoader } from "@/components/ui/takween-loader";
 import {
   getAvailableOrgsForUser,
   getOrgDisplayName,
@@ -32,7 +33,7 @@ export default function SelectOrgPage() {
       if (!user) return;
 
       setLoading(true);
-      setError("");
+      setError(""); 
 
       try {
         const nextOrgs = await getAvailableOrgsForUser(user.uid);
@@ -70,12 +71,17 @@ export default function SelectOrgPage() {
   }
 
   if (checkingAuth || loading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-        <p className="text-sm text-slate-500">جاري تحميل المؤسسات...</p>
-      </main>
-    );
-  }
+  return (
+    <FullScreenTakweenLoader
+      label={
+        checkingAuth
+          ? "جاري التحقق من حسابك..."
+          : "جاري تحميل المؤسسات..."
+      }
+      sublabel="نجهّز لك مساحة العمل"
+    />
+  );
+}
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10">

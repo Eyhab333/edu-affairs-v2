@@ -16,6 +16,8 @@ import {
   type StaffActorData,
 } from "@/lib/staff-actor";
 import { useRequireAuth } from "@/hooks/use-require-auth";
+import { FullScreenTakweenLoader } from "@/components/ui/takween-loader";
+
 
 type StaffActorContextValue = {
   user: User;
@@ -35,11 +37,10 @@ function getErrorMessage(error: unknown) {
 
 function LoadingScreen() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="rounded-2xl border border-border bg-card px-5 py-4 text-sm text-muted-foreground shadow-sm">
-        جاري تجهيز بيانات المستخدم...
-      </div>
-    </main>
+    <FullScreenTakweenLoader
+      label="جاري تجهيز بوابة الموظفين..."
+      sublabel="نحمّل بياناتك وصلاحياتك ومساحة العمل"
+    />
   );
 }
 
