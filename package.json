@@ -16,7 +16,7 @@
     "lint:staff": "pnpm --filter web-staff lint",
     "build:functions": "pnpm --filter functions build",
     "deploy:functions": "pnpm --filter functions deploy",
-    "build:all": "pnpm --filter @takween/contracts build && pnpm --filter web-admin build && pnpm --filter web-staff build && pnpm --filter functions build"
+    "build:all": "pnpm --filter @takween/contracts build && pnpm --filter @takween/domain build && pnpm --filter web-admin build && pnpm --filter web-staff build && pnpm --filter functions build"
   },
   "keywords": [],
   "author": "",

@@ -185,12 +185,12 @@ export default function StaffStudentsPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-4 text-sm leading-7 text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100">
+          {/* <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-4 text-sm leading-7 text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100">
             <span className="font-semibold">مصدر البيانات:</span> الطلاب هنا
             يأتون من <span className="font-mono">studentEnrollments</span>{" "}
             النشطة المرتبطة بالفصول الموجودة داخل{" "}
             <span className="font-mono">actor.visibleClasses</span>.
-          </div>
+          </div> */}
         </div>
 
         <StudentsSummaryCards

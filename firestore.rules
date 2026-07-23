@@ -1,6 +1,13 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    /*
+     * ============================================================
+     * Shared helpers
+     * ============================================================
+     */
 
     function signedIn() {
       return request.auth != null;
@@ -8,6 +15,10 @@ service cloud.firestore {
 
     function isSelf(uid) {
       return signedIn() && request.auth.uid == uid;
+    }
+
+    function userProfilePath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
     }
 
     function membershipPath(orgId) {
@@ -23,12 +34,12 @@ service cloud.firestore {
     }
 
     function membershipIsActive(orgId) {
-  return membershipExists(orgId)
-    && (
-      membershipData(orgId).isActive == true ||
-      membershipData(orgId).active == true
-    );
-}
+      return membershipExists(orgId)
+        && (
+          membershipData(orgId).isActive == true
+          || membershipData(orgId).active == true
+        );
+    }
 
     function orgRole(orgId) {
       return membershipData(orgId).role != null
@@ -41,17 +52,83 @@ service cloud.firestore {
     }
 
     function canManageOrg(orgId) {
-      return hasOrgMembership(orgId) && (
-        orgRole(orgId) == "platform_owner" ||
-        orgRole(orgId) == "platform_admin" ||
-        orgRole(orgId) == "org_owner" ||
-        orgRole(orgId) == "org_admin"
-      );
+      return hasOrgMembership(orgId)
+        && (
+          orgRole(orgId) == "platform_owner"
+          || orgRole(orgId) == "platform_admin"
+          || orgRole(orgId) == "org_owner"
+          || orgRole(orgId) == "org_admin"
+        );
     }
+
+    function currentUserPersonId() {
+      return get(userProfilePath(request.auth.uid)).data.personId;
+    }
+
+    function hasSchoolAccess(orgId, schoolId) {
+      return hasOrgMembership(orgId)
+        && (
+          canManageOrg(orgId)
+
+          || (
+            "scopes" in membershipData(orgId)
+            && membershipData(orgId).scopes is map
+            && "schoolIds" in membershipData(orgId).scopes
+            && membershipData(orgId).scopes.schoolIds is list
+            && schoolId in membershipData(orgId).scopes.schoolIds
+          )
+
+          || (
+            "scopeType" in membershipData(orgId)
+            && "scopeId" in membershipData(orgId)
+            && membershipData(orgId).scopeType == "SCHOOL"
+            && membershipData(orgId).scopeId == schoolId
+          )
+        );
+    }
+
+    function ownsNotificationLog(orgId, notificationData) {
+      return signedIn()
+        && (
+          (
+            "recipientUid" in notificationData
+            && notificationData.recipientUid == request.auth.uid
+          )
+
+          || (
+            "recipientPersonId" in notificationData
+            && notificationData.recipientPersonId == currentUserPersonId()
+          )
+
+          || (
+            "staffPersonId" in notificationData
+            && notificationData.staffPersonId == currentUserPersonId()
+          )
+
+          || (
+            "guardianId" in notificationData
+            && notificationData.guardianId is string
+            && notificationData.guardianId != ""
+            && exists(
+              /databases/$(database)/documents/orgs/$(orgId)/guardians/$(notificationData.guardianId)
+            )
+            && get(
+              /databases/$(database)/documents/orgs/$(orgId)/guardians/$(notificationData.guardianId)
+            ).data.personId == currentUserPersonId()
+          )
+        );
+    }
+
+    /*
+     * ============================================================
+     * User profile
+     * ============================================================
+     */
 
     match /users/{uid} {
       allow get: if isSelf(uid);
       allow list: if false;
+
       allow create, update, delete: if false;
 
       match /orgMemberships/{orgId} {
@@ -60,104 +137,564 @@ service cloud.firestore {
       }
     }
 
+    /*
+     * ============================================================
+     * Organization
+     * ============================================================
+     */
+
     match /orgs/{orgId} {
       allow get: if hasOrgMembership(orgId);
       allow list: if false;
+
       allow create: if false;
       allow update, delete: if canManageOrg(orgId);
 
+      /*
+       * Legacy membership collection.
+       * The canonical membership source is users/{uid}/orgMemberships/{orgId}.
+       */
       match /memberships/{uid} {
         allow get: if isSelf(uid) && hasOrgMembership(orgId);
         allow list: if canManageOrg(orgId);
+
         allow create, update, delete: if canManageOrg(orgId);
       }
 
+      /*
+       * ==========================================================
+       * Schools and nested academic structure
+       * ==========================================================
+       */
+
       match /schools/{schoolId} {
-        allow get, list: if hasOrgMembership(orgId);
+        allow get: if hasSchoolAccess(orgId, schoolId);
+        allow list: if canManageOrg(orgId);
+
         allow create, update, delete: if canManageOrg(orgId);
 
-        match /academicYears/{yearId} {
-          allow get, list: if hasOrgMembership(orgId);
+        match /academicYears/{academicYearId} {
+          allow get, list: if hasSchoolAccess(orgId, schoolId);
           allow create, update, delete: if canManageOrg(orgId);
 
           match /grades/{gradeId} {
-            allow get, list: if hasOrgMembership(orgId);
+            allow get, list: if hasSchoolAccess(orgId, schoolId);
             allow create, update, delete: if canManageOrg(orgId);
           }
 
           match /classes/{classId} {
-            allow get, list: if hasOrgMembership(orgId);
+            allow get, list: if hasSchoolAccess(orgId, schoolId);
             allow create, update, delete: if canManageOrg(orgId);
           }
         }
 
-        match /{subPath=**} {
-          allow read: if hasOrgMembership(orgId);
+        /*
+         * Streams and any other nested school configuration.
+         */
+        match /{schoolSubPath=**} {
+          allow read: if hasSchoolAccess(orgId, schoolId);
           allow write: if canManageOrg(orgId);
         }
       }
 
-      match /{subPath=**} {
-        allow read: if hasOrgMembership(orgId);
-        allow write: if canManageOrg(orgId);
+      /*
+       * ==========================================================
+       * Organization academic years and terms
+       * ==========================================================
+       */
+
+      match /academicYears/{academicYearId} {
+        allow get, list: if hasOrgMembership(orgId);
+        allow create, update, delete: if canManageOrg(orgId);
+
+        match /terms/{termId} {
+          allow get, list: if hasOrgMembership(orgId);
+          allow create, update, delete: if canManageOrg(orgId);
+        }
       }
 
+      /*
+       * ==========================================================
+       * Subject offerings
+       *
+       * Important:
+       * This collection is directly under orgs/{orgId},
+       * not under schools/{schoolId}.
+       * ==========================================================
+       */
+
+      match /classSubjectOfferings/{offeringId} {
+        allow get, list: if canManageOrg(orgId)
+          || (
+            resource.data.schoolId is string
+            && hasSchoolAccess(orgId, resource.data.schoolId)
+          );
+
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      /*
+       * ==========================================================
+       * Current person's profile
+       * ==========================================================
+       */
+
+      match /people/{personId} {
+        allow get: if canManageOrg(orgId)
+          || (
+            hasOrgMembership(orgId)
+            && currentUserPersonId() == personId
+          );
+
+        allow list: if canManageOrg(orgId);
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      /*
+       * ==========================================================
+       * Operational assignments
+       *
+       * A staff member reads only assignments where they are actor.
+       * The query must contain:
+       * where("actorPersonId", "==", currentPersonId)
+       * ==========================================================
+       */
+
+      match /operationalAssignments/{assignmentId} {
+        allow get, list: if canManageOrg(orgId)
+          || (
+            hasOrgMembership(orgId)
+            && resource.data.actorPersonId == currentUserPersonId()
+          );
+
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      /*
+       * ==========================================================
+       * Teacher assignments
+       *
+       * A teacher reads only their own assignments.
+       * ==========================================================
+       */
+
+      match /teacherAssignments/{assignmentId} {
+        allow get, list: if canManageOrg(orgId)
+          || (
+            hasOrgMembership(orgId)
+            && resource.data.teacherPersonId == currentUserPersonId()
+          );
+
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      match /teacherAssignmentClassLinks/{linkId} {
+        allow get, list: if canManageOrg(orgId);
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      /*
+       * ==========================================================
+       * Device tokens
+       * ==========================================================
+       */
+
+      match /deviceTokens/{tokenId} {
+        allow create: if signedIn()
+          && request.resource.data.orgId == orgId
+          && request.resource.data.uid == request.auth.uid;
+
+        allow read: if signedIn()
+          && resource.data.orgId == orgId
+          && resource.data.uid == request.auth.uid;
+
+        allow update: if signedIn()
+          && resource.data.orgId == orgId
+          && resource.data.uid == request.auth.uid
+          && request.resource.data.orgId == orgId
+          && request.resource.data.uid == request.auth.uid;
+
+        allow delete: if false;
+      }
+
+      /*
+       * ==========================================================
+       * Notification logs
+       * ==========================================================
+       */
+
+      match /notificationLogs/{notificationId} {
+        allow read: if ownsNotificationLog(orgId, resource.data);
+
+        allow update: if ownsNotificationLog(orgId, resource.data)
+          && request.resource.data
+            .diff(resource.data)
+            .affectedKeys()
+            .hasOnly([
+              "status",
+              "readAt",
+              "updatedAt"
+            ])
+          && request.resource.data.status == "READ";
+
+        allow create, delete: if false;
+      }
+
+      /*
+       * ==========================================================
+       * Guardians
+       *
+       * Guardians may only read their own guardian record.
+       * School staff access will be redesigned through a
+       * school-scoped directory/read model.
+       * ==========================================================
+       */
+
+      match /guardians/{guardianId} {
+        allow get, list: if signedIn()
+          && (
+            (
+              "uid" in resource.data
+              && resource.data.uid == request.auth.uid
+            )
+            || (
+              "authUid" in resource.data
+              && resource.data.authUid == request.auth.uid
+            )
+            || (
+              "userUid" in resource.data
+              && resource.data.userUid == request.auth.uid
+            )
+          );
+
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      match /guardianLinks/{linkId} {
+        allow get, list: if signedIn()
+          && (
+            (
+              "guardianUid" in resource.data
+              && resource.data.guardianUid == request.auth.uid
+            )
+            || canManageOrg(orgId)
+          );
+
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      /*
+       * ==========================================================
+       * Students
+       *
+       * Temporarily closed for school staff because the student
+       * document currently has no schoolId.
+       *
+       * Access will be restored through studentEnrollments or a
+       * school-scoped read model.
+       * ==========================================================
+       */
+
       match /students/{studentId} {
-  allow get, list: if signedIn()
-    && resource.data.orgId is string
-    && hasOrgMembership(resource.data.orgId);
+        allow get, list: if canManageOrg(orgId);
+        allow create, update, delete: if canManageOrg(orgId);
+      }
 
-  allow create, update, delete: if signedIn()
-    && request.resource.data.orgId is string
-    && canManageOrg(request.resource.data.orgId);
+      /*
+       * Enrollment documents contain schoolId and can therefore
+       * be protected properly.
+       *
+       * Queries must filter by schoolId.
+       */
+      match /studentEnrollments/{enrollmentId} {
+        allow get, list: if canManageOrg(orgId)
+          || (
+            resource.data.schoolId is string
+            && hasSchoolAccess(orgId, resource.data.schoolId)
+          );
+
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      /*
+       * ==========================================================
+       * Student cases
+       * ==========================================================
+       */
+
+      match /studentCaseTypes/{caseTypeId} {
+        allow get, list: if hasOrgMembership(orgId);
+        allow create, update, delete: if canManageOrg(orgId);
+      }
+
+      match /studentCases/{caseId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && request.resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        request.resource.data.schoolId
+      )
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.orgId == orgId
+      && request.resource.data.schoolId
+        == resource.data.schoolId
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow delete: if canManageOrg(orgId);
+
+  match /events/{eventId} {
+    allow read: if canManageOrg(orgId)
+      || (
+        get(
+          /databases/$(database)/documents/orgs/$(orgId)/studentCases/$(caseId)
+        ).data.schoolId is string
+        && hasSchoolAccess(
+          orgId,
+          get(
+            /databases/$(database)/documents/orgs/$(orgId)/studentCases/$(caseId)
+          ).data.schoolId
+        )
+      );
+
+    allow create: if canManageOrg(orgId)
+      || (
+        request.resource.data.orgId == orgId
+        && request.resource.data.caseId == caseId
+        && request.resource.data.schoolId is string
+        && hasSchoolAccess(
+          orgId,
+          request.resource.data.schoolId
+        )
+        && getAfter(
+          /databases/$(database)/documents/orgs/$(orgId)/studentCases/$(caseId)
+        ).data.schoolId
+          == request.resource.data.schoolId
+      );
+
+    allow update, delete: if false;
+  }
 }
 
-match /guardians/{guardianId} {
-  allow get, list: if signedIn()
-    && resource.data.orgId is string
-    && hasOrgMembership(resource.data.orgId);
+      /*
+       * ==========================================================
+       * Virtual class participants
+       *
+       * Keep guardian join updates only.
+       * School staff rules will be added through the session's
+       * schoolId when this module is tested.
+       * ==========================================================
+       */
 
-  allow create, update, delete: if signedIn()
-    && request.resource.data.orgId is string
-    && canManageOrg(request.resource.data.orgId);
+      match /virtualClassParticipants/{participantId} {
+        allow get, list: if canManageOrg(orgId)
+          || (
+            signedIn()
+            && "guardianUids" in resource.data
+            && resource.data.guardianUids is list
+            && request.auth.uid in resource.data.guardianUids
+          );
+
+        allow create, delete: if canManageOrg(orgId);
+
+        allow update: if canManageOrg(orgId)
+          || (
+            signedIn()
+            && "guardianUids" in resource.data
+            && resource.data.guardianUids is list
+            && request.auth.uid in resource.data.guardianUids
+
+            && request.resource.data
+              .diff(resource.data)
+              .affectedKeys()
+              .hasOnly([
+                "platformJoinStatus",
+                "joinClickedAt",
+                "joinClickedByGuardianId",
+                "joinClickedByGuardianUid",
+                "joinClickedDeviceId",
+                "updatedAt"
+              ])
+
+            && request.resource.data.platformJoinStatus == "JOIN_CLICKED"
+            && request.resource.data.joinClickedByGuardianUid
+              == request.auth.uid
+          );
+      }
+
+
+
+
+match /studentMeasurementBatches/{batchId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        request.resource.data.schoolId
+      )
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.schoolId == resource.data.schoolId
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow delete: if canManageOrg(orgId);
 }
 
 
 
-match /studentEnrollments/{enrollmentId} {
-  allow get, list: if signedIn()
-    && resource.data.orgId is string
-    && hasOrgMembership(resource.data.orgId);
 
-  allow create, update, delete: if signedIn()
-    && request.resource.data.orgId is string
-    && canManageOrg(request.resource.data.orgId);
+
+
+
+match /studentAssessmentRecords/{recordId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.schoolId is string
+      && hasSchoolAccess(orgId, request.resource.data.schoolId)
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.schoolId == resource.data.schoolId
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow delete: if canManageOrg(orgId);
 }
 
-match /guardianLinks/{linkId} {
-  allow get, list: if hasOrgMembership(orgId);
-  allow create, update, delete: if canManageOrg(orgId);
+match /studentTrackerEntries/{entryId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.schoolId is string
+      && hasSchoolAccess(orgId, request.resource.data.schoolId)
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.schoolId == resource.data.schoolId
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow delete: if canManageOrg(orgId);
 }
 
-match /studentCaseTypes/{caseTypeId} {
-  allow get, list: if hasOrgMembership(orgId);
-  allow create, update, delete: if canManageOrg(orgId);
+match /studentLearningLossPlans/{planId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.schoolId is string
+      && hasSchoolAccess(orgId, request.resource.data.schoolId)
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.schoolId == resource.data.schoolId
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow delete: if canManageOrg(orgId);
 }
 
-match /studentCases/{caseId} {
-  allow get, list: if hasOrgMembership(orgId);
-  allow create, update, delete: if canManageOrg(orgId);
+
+
+
+match /studentAttendanceBatches/{batchId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        request.resource.data.schoolId
+      )
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.schoolId
+        == resource.data.schoolId
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow delete: if canManageOrg(orgId);
 }
 
-match /enrollments/{enrollmentId} {
-  allow get, list: if signedIn()
-    && resource.data.orgId is string
-    && hasOrgMembership(resource.data.orgId);
 
-  allow create, update, delete: if signedIn()
-    && request.resource.data.orgId is string
-    && canManageOrg(request.resource.data.orgId);
-}
+
+
+
+      /*
+       * ==========================================================
+       * Closed fallback
+       *
+       * No normal member receives organization-wide access.
+       * ==========================================================
+       */
+
+      match /{orgSubPath=**} {
+        allow read, write: if canManageOrg(orgId);
+      }
     }
   }
 }

@@ -234,7 +234,8 @@ function StaffShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 py-4 md:grid-cols-[240px_1fr]">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 py-4 md:grid-cols-[210px_1fr]">
+        
         <aside className="hidden rounded-2xl border border-border bg-card p-3 shadow-sm md:block">
           <div className="px-3 py-2">
             <p className="text-xs font-medium text-muted-foreground">

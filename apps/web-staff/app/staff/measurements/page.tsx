@@ -89,10 +89,7 @@ function getClassTitle(item: StaffVisibleClass) {
 
 function getStudentCount(item: StaffVisibleClass) {
   return (
-    item.studentCount ??
-    item.studentsCount ??
-    item.enrolledStudentCount ??
-    null
+    item.studentCount ?? item.studentsCount ?? item.enrolledStudentCount ?? null
   );
 }
 
@@ -421,6 +418,8 @@ export default function StaffMeasurementsPage() {
         visibleClasses.map(async (classInfo) => {
           const batchesQuery = query(
             batchesRef,
+            where("schoolId", "==", classInfo.schoolId),
+            where("academicYearId", "==", classInfo.academicYearId),
             where("classId", "==", classInfo.id),
           );
 
@@ -499,7 +498,9 @@ export default function StaffMeasurementsPage() {
     }).length;
 
     const totalTargets = batches.reduce((sum, { batch }) => {
-      return sum + (typeof batch.targetCount === "number" ? batch.targetCount : 0);
+      return (
+        sum + (typeof batch.targetCount === "number" ? batch.targetCount : 0)
+      );
     }, 0);
 
     const completedTargets = batches.reduce((sum, { batch }) => {
@@ -687,9 +688,8 @@ export default function StaffMeasurementsPage() {
 
             <div className="mt-5 rounded-3xl bg-slate-50 p-4 text-sm leading-7 text-slate-600 dark:bg-slate-950 dark:text-slate-300">
               <p>
-                القياس الجديد يبدأ من{" "}
-                <span className="font-semibold">فصل</span> ثم{" "}
-                <span className="font-semibold">مادة مفعّلة</span>، حتى لا
+                القياس الجديد يبدأ من <span className="font-semibold">فصل</span>{" "}
+                ثم <span className="font-semibold">مادة مفعّلة</span>، حتى لا
                 تضيع علاقة الدفعة بالمادة والإسناد.
               </p>
 
@@ -977,7 +977,9 @@ function BatchCard({ item }: { item: BatchWithClass }) {
           <span>
             الفصل:{" "}
             <span className="font-semibold">
-              {classInfo ? getClassTitle(classInfo) : batch.classId || "غير محدد"}
+              {classInfo
+                ? getClassTitle(classInfo)
+                : batch.classId || "غير محدد"}
             </span>
           </span>
 

@@ -429,11 +429,11 @@ export default function StaffStudentProfilePage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5 text-sm leading-7 text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100">
+        {/* <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5 text-sm leading-7 text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100">
           <span className="font-semibold">الخطوة التالية:</span>{" "}
           بعد تثبيت هذه الصفحة، نفعّل زر بطاقة الطالب في صفحة طلابي، ثم نغلق
           Milestone 6 رسميًا.
-        </div>
+        </div> */}
       </section>
     </main>
   );

@@ -1,12 +1,19 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 import type { VisibleStudentClass } from "@/hooks/use-visible-students";
-
+import type { SchoolStudentDirectoryEntry } from "@takween/contracts";
 export type StaffStudentEnrollmentRow = {
   id: string;
   orgId?: string;
@@ -180,39 +187,36 @@ function chooseBestVisibleEnrollment(params: {
   return null;
 }
 
-async function buildStudentProfile(params: {
+async function buildStudentProfileFromDirectory(params: {
   orgId: string;
   enrollment: StaffStudentEnrollmentRow;
   classInfo: VisibleStudentClass;
 }): Promise<StaffStudentProfileData> {
   const { orgId, enrollment, classInfo } = params;
 
-  const studentRef = doc(db, "orgs", orgId, "students", enrollment.studentId);
-  const studentSnap = await getDoc(studentRef);
+  const schoolId = enrollment.schoolId || classInfo.schoolId;
 
-  const student = studentSnap.exists()
-    ? ({
-        id: studentSnap.id,
-        ...(studentSnap.data() as Omit<StaffStudentRecord, "id">),
-      } satisfies StaffStudentRecord)
-    : null;
-
-  let person: StaffStudentPerson | null = null;
-
-  if (student?.personId) {
-    const personRef = doc(db, "orgs", orgId, "people", student.personId);
-    const personSnap = await getDoc(personRef);
-
-    if (personSnap.exists()) {
-      person = {
-        id: personSnap.id,
-        ...(personSnap.data() as Omit<StaffStudentPerson, "id">),
-      };
-    }
+  if (!schoolId) {
+    throw new Error(`لا يمكن تحديد مدرسة الطالب ${enrollment.studentId}`);
   }
 
+  const directoryRef = doc(
+    db,
+    "orgs",
+    orgId,
+    "schools",
+    schoolId,
+    "studentDirectory",
+    enrollment.studentId,
+  );
+
+  const directorySnap = await getDoc(directoryRef);
+
+  const directory = directorySnap.exists()
+    ? (directorySnap.data() as SchoolStudentDirectoryEntry)
+    : null;
+
   const classId = enrollment.classId || classInfo.id;
-  const schoolId = enrollment.schoolId || classInfo.schoolId || "";
   const academicYearId =
     enrollment.academicYearId || classInfo.academicYearId || "";
   const gradeId = enrollment.gradeId || classInfo.gradeId || "";
@@ -222,32 +226,32 @@ async function buildStudentProfile(params: {
     orgId,
     studentId: enrollment.studentId,
 
-    displayName: getDisplayName({
-      person,
-      student,
-      enrollment,
-    }),
-    nationalId: person?.nationalId ?? "",
-    phone: person?.phone ?? "",
-    email: person?.email ?? "",
+    displayName: directory?.displayName || enrollment.studentId,
+
+    nationalId: directory?.nationalId ?? "",
+    phone: directory?.phone ?? "",
+    email: directory?.email ?? "",
 
     enrollment,
-    student,
-    person,
+    student: null,
+    person: null,
     classInfo,
 
     classId,
     classTitle: getClassTitle(classInfo),
+
     schoolId,
     schoolName: classInfo.schoolName || schoolId,
+
     academicYearId,
     academicYearTitle: classInfo.academicYearTitle || academicYearId,
+
     gradeId,
     gradeTitle: classInfo.gradeTitle || gradeId,
     streamId,
 
-    studentExists: student !== null,
-    personExists: person !== null,
+    studentExists: directory !== null,
+    personExists: Boolean(directory?.personId),
   };
 }
 
@@ -264,7 +268,7 @@ export function useStaffStudentProfile({
           schoolId: item.schoolId,
           academicYearId: item.academicYearId,
           classId: item.id,
-        })
+        }),
       )
       .sort()
       .join("|");
@@ -274,8 +278,22 @@ export function useStaffStudentProfile({
     return createClassLookups(visibleClasses);
   }, [visibleClasses]);
 
+  const visibleSchoolIds = useMemo(() => {
+    return Array.from(
+      new Set(
+        visibleClasses
+          .map((item) => item.schoolId)
+          .filter((schoolId): schoolId is string => Boolean(schoolId)),
+      ),
+    );
+  }, [visibleClasses]);
+
   const canLoad =
-    enabled && !!orgId && !!studentId && visibleClasses.length > 0;
+    enabled &&
+    !!orgId &&
+    !!studentId &&
+    visibleClasses.length > 0 &&
+    visibleSchoolIds.length > 0;
 
   const loadStudentProfile =
     useCallback(async (): Promise<StaffStudentProfileData | null> => {
@@ -285,14 +303,28 @@ export function useStaffStudentProfile({
         db,
         "orgs",
         orgId,
-        "studentEnrollments"
+        "studentEnrollments",
       );
 
-      const enrollmentsSnap = await getDocs(
-        query(enrollmentsRef, where("studentId", "==", studentId))
+      const enrollmentSnapshots = await Promise.all(
+        visibleSchoolIds.map((schoolId) =>
+          getDocs(
+            query(
+              enrollmentsRef,
+              where("schoolId", "==", schoolId),
+              where("studentId", "==", studentId),
+              where("status", "==", "ACTIVE"),
+            ),
+          ),
+        ),
       );
 
-      const activeEnrollments = enrollmentsSnap.docs
+      const enrollmentDocuments = enrollmentSnapshots.flatMap(
+        (snapshot) => snapshot.docs,
+      );
+
+      const activeEnrollments = enrollmentDocuments
+
         .map((item) => {
           const data = item.data() as Omit<StaffStudentEnrollmentRow, "id">;
 
@@ -319,12 +351,12 @@ export function useStaffStudentProfile({
         return null;
       }
 
-      return buildStudentProfile({
+      return buildStudentProfileFromDirectory({
         orgId,
         enrollment: selected.enrollment,
         classInfo: selected.classInfo,
       });
-    }, [canLoad, orgId, studentId, classLookups]);
+    }, [canLoad, orgId, studentId, classLookups, visibleSchoolIds]);
 
   return useDocumentLoader<StaffStudentProfileData>({
     enabled: canLoad,

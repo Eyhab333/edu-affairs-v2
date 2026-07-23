@@ -135,7 +135,9 @@ function calculatePercentage(record: CandidateRecord) {
 
 function formatScore(record: CandidateRecord) {
   const score =
-    typeof record.score === "number" ? record.score.toLocaleString("ar-SA") : "—";
+    typeof record.score === "number"
+      ? record.score.toLocaleString("ar-SA")
+      : "—";
 
   const maxScore =
     typeof record.maxScore === "number"
@@ -191,7 +193,9 @@ function resolveActorRoleKey(actor: StaffLearningLossActor) {
   return actor.roles?.[0] || actor.roleKeys?.[0] || undefined;
 }
 
-function getContextFilter(searchParams: URLSearchParams): LearningLossContextFilter {
+function getContextFilter(
+  searchParams: URLSearchParams,
+): LearningLossContextFilter {
   return {
     classId: searchParams.get("classId") || "",
     schoolId: searchParams.get("schoolId") || "",
@@ -204,10 +208,10 @@ function getContextFilter(searchParams: URLSearchParams): LearningLossContextFil
 function hasContextFilter(context: LearningLossContextFilter) {
   return Boolean(
     context.classId ||
-      context.schoolId ||
-      context.academicYearId ||
-      context.subjectKey ||
-      context.classSubjectOfferingId,
+    context.schoolId ||
+    context.academicYearId ||
+    context.subjectKey ||
+    context.classSubjectOfferingId,
   );
 }
 
@@ -224,10 +228,7 @@ function rowMatchesContext(
   if (context.classId && row.classId !== context.classId) return false;
   if (context.schoolId && row.schoolId !== context.schoolId) return false;
 
-  if (
-    context.academicYearId &&
-    row.academicYearId !== context.academicYearId
-  ) {
+  if (context.academicYearId && row.academicYearId !== context.academicYearId) {
     return false;
   }
 
@@ -281,7 +282,9 @@ function getCandidateTitle(record: CandidateRecord) {
     return record.assessmentSlot || record.kind || "قياس طالب";
   }
 
-  return record.topicTitle || record.lessonTitle || record.kind || "متابعة طالب";
+  return (
+    record.topicTitle || record.lessonTitle || record.kind || "متابعة طالب"
+  );
 }
 
 function getCandidateSourceId(record: CandidateRecord) {
@@ -464,6 +467,33 @@ async function loadStudentName(
   }
 }
 
+async function loadSchoolStudentName(params: {
+  orgId: string;
+  schoolId: string;
+  studentId: string;
+}) {
+  const directoryRef = doc(
+    db,
+    "orgs",
+    params.orgId,
+    "schools",
+    params.schoolId,
+    "studentDirectory",
+    params.studentId,
+  );
+
+  const directorySnap = await getDoc(directoryRef);
+
+  const displayName = directorySnap.exists()
+    ? String(directorySnap.data().displayName || "").trim()
+    : "";
+
+  return {
+    id: params.studentId,
+    displayName: displayName || params.studentId,
+  };
+}
+
 export default function StaffLearningLossPage() {
   const { actor } = useStaffActor();
   const router = useRouter();
@@ -481,14 +511,27 @@ export default function StaffLearningLossPage() {
   const [error, setError] = useState<string | null>(null);
   const [candidates, setCandidates] = useState<LearningLossCandidate[]>([]);
   const [openPlans, setOpenPlans] = useState<LearningLossPlanRow[]>([]);
-  const [creatingPlanRecordId, setCreatingPlanRecordId] = useState<string | null>(
-    null,
-  );
+  const [creatingPlanRecordId, setCreatingPlanRecordId] = useState<
+    string | null
+  >(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const visibleClasses = useMemo(() => {
     return currentActor?.visibleClasses ?? [];
   }, [currentActor]);
+
+  const visibleSchoolIds = useMemo(() => {
+    return Array.from(
+      new Set(
+        visibleClasses
+          .map((item) => item.schoolId)
+          .filter(
+            (schoolId): schoolId is string =>
+              typeof schoolId === "string" && schoolId.trim().length > 0,
+          ),
+      ),
+    );
+  }, [visibleClasses]);
 
   const visibleClassMap = useMemo(() => {
     return new Map(
@@ -537,6 +580,10 @@ export default function StaffLearningLossPage() {
   const loadAssessmentCandidates = useCallback(async () => {
     if (!currentActor?.orgId) return [];
 
+    if (visibleSchoolIds.length === 0) {
+      return [];
+    }
+
     const recordsRef = collection(
       db,
       "orgs",
@@ -544,31 +591,57 @@ export default function StaffLearningLossPage() {
       "studentAssessmentRecords",
     );
 
-    const recordsQuery = query(
-      recordsRef,
-      where("needsLearningLossFollowUp", "==", true),
+    const recordSnapshots = await Promise.all(
+      visibleSchoolIds.map((schoolId) =>
+        getDocs(
+          query(
+            recordsRef,
+            where("schoolId", "==", schoolId),
+            where("needsLearningLossFollowUp", "==", true),
+          ),
+        ),
+      ),
     );
 
-    const recordsSnap = await getDocs(recordsQuery);
+    const recordDocuments = recordSnapshots.flatMap(
+      (snapshot) => snapshot.docs,
+    );
 
-    return recordsSnap.docs
+    return recordDocuments
       .map((item) => {
         return {
           id: item.id,
           sourceType: "ASSESSMENT_RECORD" as const,
-          ...(item.data() as Omit<CandidateAssessmentRecord, "id" | "sourceType">),
+          ...(item.data() as Omit<
+            CandidateAssessmentRecord,
+            "id" | "sourceType"
+          >),
         };
       })
       .filter((record) => {
-        if (!isMissingPlanId(record.learningLossPlanId)) return false;
-        if (!isRowInVisibleClasses(record)) return false;
+        if (!isMissingPlanId(record.learningLossPlanId)) {
+          return false;
+        }
+
+        if (!isRowInVisibleClasses(record)) {
+          return false;
+        }
 
         return rowMatchesContext(record, contextFilter);
       });
-  }, [contextFilter, currentActor?.orgId, isRowInVisibleClasses]);
+  }, [
+    contextFilter,
+    currentActor?.orgId,
+    isRowInVisibleClasses,
+    visibleSchoolIds,
+  ]);
 
   const loadTrackerCandidates = useCallback(async () => {
     if (!currentActor?.orgId) return [];
+
+    if (visibleSchoolIds.length === 0) {
+      return [];
+    }
 
     const trackersRef = collection(
       db,
@@ -577,14 +650,23 @@ export default function StaffLearningLossPage() {
       "studentTrackerEntries",
     );
 
-    const trackersQuery = query(
-      trackersRef,
-      where("needsLearningLossFollowUp", "==", true),
+    const trackerSnapshots = await Promise.all(
+      visibleSchoolIds.map((schoolId) =>
+        getDocs(
+          query(
+            trackersRef,
+            where("schoolId", "==", schoolId),
+            where("needsLearningLossFollowUp", "==", true),
+          ),
+        ),
+      ),
     );
 
-    const trackersSnap = await getDocs(trackersQuery);
+    const trackerDocuments = trackerSnapshots.flatMap(
+      (snapshot) => snapshot.docs,
+    );
 
-    return trackersSnap.docs
+    return trackerDocuments
       .map((item) => {
         return {
           id: item.id,
@@ -593,12 +675,22 @@ export default function StaffLearningLossPage() {
         };
       })
       .filter((record) => {
-        if (!isMissingPlanId(record.learningLossPlanId)) return false;
-        if (!isRowInVisibleClasses(record)) return false;
+        if (!isMissingPlanId(record.learningLossPlanId)) {
+          return false;
+        }
+
+        if (!isRowInVisibleClasses(record)) {
+          return false;
+        }
 
         return rowMatchesContext(record, contextFilter);
       });
-  }, [contextFilter, currentActor?.orgId, isRowInVisibleClasses]);
+  }, [
+    contextFilter,
+    currentActor?.orgId,
+    isRowInVisibleClasses,
+    visibleSchoolIds,
+  ]);
 
   const loadCandidates = useCallback(async () => {
     if (!currentActor?.orgId) return;
@@ -620,15 +712,26 @@ export default function StaffLearningLossPage() {
 
       const loadedCandidates = await Promise.all(
         records.map(async (record) => {
-          const student = await loadStudentName(
-            currentActor.orgId,
-            record.studentId,
-          );
+          const classInfo = getClassInfoForRow(record);
+
+          const schoolId = record.schoolId || classInfo?.schoolId || "";
+
+          if (!schoolId) {
+            throw new Error(
+              `السجل الخاص بالطالب ${record.studentId} غير مرتبط بمدرسة.`,
+            );
+          }
+
+          const student = await loadSchoolStudentName({
+            orgId: currentActor.orgId,
+            schoolId,
+            studentId: record.studentId,
+          });
 
           return {
             record,
             student,
-            classInfo: getClassInfoForRow(record),
+            classInfo,
           };
         }),
       );
@@ -658,6 +761,12 @@ export default function StaffLearningLossPage() {
     setError(null);
 
     try {
+      if (visibleSchoolIds.length === 0) {
+        setOpenPlans([]);
+        setPlansStatus("success");
+        return;
+      }
+
       const plansRef = collection(
         db,
         "orgs",
@@ -665,9 +774,15 @@ export default function StaffLearningLossPage() {
         "studentLearningLossPlans",
       );
 
-      const plansSnap = await getDocs(plansRef);
+      const planSnapshots = await Promise.all(
+        visibleSchoolIds.map((schoolId) =>
+          getDocs(query(plansRef, where("schoolId", "==", schoolId))),
+        ),
+      );
 
-      const plans = plansSnap.docs
+      const planDocuments = planSnapshots.flatMap((snapshot) => snapshot.docs);
+
+      const plans = planDocuments
         .map((item) => {
           return {
             id: item.id,
@@ -675,29 +790,44 @@ export default function StaffLearningLossPage() {
           };
         })
         .filter((plan) => {
-          if (!isOpenPlan(plan)) return false;
-          if (!isRowInVisibleClasses(plan)) return false;
+          if (!isOpenPlan(plan)) {
+            return false;
+          }
+
+          if (!isRowInVisibleClasses(plan)) {
+            return false;
+          }
 
           return rowMatchesContext(plan, contextFilter);
         });
 
       const rows = await Promise.all(
         plans.map(async (plan) => {
-          const student = await loadStudentName(
-            currentActor.orgId,
-            plan.studentId,
-          );
+          const classInfo = getClassInfoForRow(plan);
+
+          const schoolId = plan.schoolId || classInfo?.schoolId || "";
+
+          if (!schoolId) {
+            throw new Error(`خطة الطالب ${plan.studentId} غير مرتبطة بمدرسة.`);
+          }
+
+          const student = await loadSchoolStudentName({
+            orgId: currentActor.orgId,
+            schoolId,
+            studentId: plan.studentId,
+          });
 
           return {
             plan,
             student,
-            classInfo: getClassInfoForRow(plan),
+            classInfo,
           };
         }),
       );
 
       rows.sort((a, b) => {
         const aDate = a.plan.updatedAt ?? a.plan.planStartAt ?? 0;
+
         const bDate = b.plan.updatedAt ?? b.plan.planStartAt ?? 0;
 
         return bDate - aDate;
@@ -715,6 +845,7 @@ export default function StaffLearningLossPage() {
     currentActor?.orgId,
     getClassInfoForRow,
     isRowInVisibleClasses,
+    visibleSchoolIds,
   ]);
 
   const loadAll = useCallback(async () => {
@@ -895,7 +1026,8 @@ export default function StaffLearningLossPage() {
       candidates.map((item) => getRecordClassKey(item.record)).filter(Boolean),
     ).size;
 
-    const studentsCount = new Set(candidates.map((item) => item.student.id)).size;
+    const studentsCount = new Set(candidates.map((item) => item.student.id))
+      .size;
 
     const subjectsCount = new Set(
       candidates.map((item) => item.record.subjectKey).filter(Boolean),
@@ -922,7 +1054,8 @@ export default function StaffLearningLossPage() {
   const plansSummary = useMemo(() => {
     const total = openPlans.length;
 
-    const studentsCount = new Set(openPlans.map((item) => item.student.id)).size;
+    const studentsCount = new Set(openPlans.map((item) => item.student.id))
+      .size;
 
     const needsFirstCheck = openPlans.filter(
       (item) => typeof item.plan.firstCheckScore !== "number",
@@ -952,8 +1085,7 @@ export default function StaffLearningLossPage() {
     };
   }, [openPlans]);
 
-  const isLoading =
-    candidatesStatus === "loading" || plansStatus === "loading";
+  const isLoading = candidatesStatus === "loading" || plansStatus === "loading";
 
   if (!currentActor) {
     return (
@@ -1017,7 +1149,10 @@ export default function StaffLearningLossPage() {
 
           <div className="mt-3 grid gap-3 md:grid-cols-5">
             <ContextItem label="الفصل" value={contextFilter.classId || "—"} />
-            <ContextItem label="المدرسة" value={contextFilter.schoolId || "—"} />
+            <ContextItem
+              label="المدرسة"
+              value={contextFilter.schoolId || "—"}
+            />
             <ContextItem
               label="السنة"
               value={contextFilter.academicYearId || "—"}
@@ -1068,8 +1203,14 @@ export default function StaffLearningLossPage() {
         <MiniStat label="من قياسات" value={candidatesSummary.assessmentCount} />
         <MiniStat label="من متابعات" value={candidatesSummary.trackerCount} />
         <MiniStat label="طلاب مرشحون" value={candidatesSummary.studentsCount} />
-        <MiniStat label="فصول بها فاقد" value={candidatesSummary.classesCount} />
-        <MiniStat label="مواد في المرشحين" value={candidatesSummary.subjectsCount} />
+        <MiniStat
+          label="فصول بها فاقد"
+          value={candidatesSummary.classesCount}
+        />
+        <MiniStat
+          label="مواد في المرشحين"
+          value={candidatesSummary.subjectsCount}
+        />
         <MiniStat label="خطط من متابعات" value={plansSummary.trackerPlans} />
       </section>
 
@@ -1089,8 +1230,8 @@ export default function StaffLearningLossPage() {
         <div className="border-b p-5">
           <h2 className="text-lg font-semibold">خطط الفاقد المفتوحة</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            الخطط النشطة أو قيد المتابعة، سواء فُتحت تلقائيًا من قياس أو
-            متابعة، أو فُتحت يدويًا.
+            الخطط النشطة أو قيد المتابعة، سواء فُتحت تلقائيًا من قياس أو متابعة،
+            أو فُتحت يدويًا.
           </p>
         </div>
 
@@ -1222,8 +1363,8 @@ export default function StaffLearningLossPage() {
         <div className="border-b p-5">
           <h2 className="text-lg font-semibold">الطلاب المرشحون لخطة فاقد</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            يظهر هنا أي سجل قياس أو متابعة يحمل: يحتاج فاقدًا + لا توجد خطة
-            فاقد مرتبطة به.
+            يظهر هنا أي سجل قياس أو متابعة يحمل: يحتاج فاقدًا + لا توجد خطة فاقد
+            مرتبطة به.
           </p>
         </div>
 
@@ -1236,12 +1377,6 @@ export default function StaffLearningLossPage() {
             لا توجد سجلات تحتاج فتح خطة فاقد ضمن السياق الحالي.
           </div>
         ) : (
-
-
-
-
-
-          
           <div className=" bg-red-50 w-full overflow-x-auto">
             <table className="w-full min-w-[1920px] text-right text-sm">
               <thead className="bg-muted/50 text-muted-foreground">
@@ -1378,9 +1513,7 @@ function MiniStat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-2xl border bg-card p-5 shadow-sm">
       <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="mt-2 text-3xl font-bold">
-        {value.toLocaleString("ar-SA")}
-      </p>
+      <p className="mt-2 text-3xl font-bold">{value.toLocaleString("ar-SA")}</p>
     </div>
   );
 }

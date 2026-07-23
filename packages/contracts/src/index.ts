@@ -5766,3 +5766,6 @@ export * from "./transport";
 export * from "./school-activities";
 export * from "./urgent-communications";
 export * from "./guardian-finance";
+export * from "./staff-provisioning";
+
+export * from "./student-directory";

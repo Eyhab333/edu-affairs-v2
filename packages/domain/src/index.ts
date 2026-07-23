@@ -14,10 +14,7 @@ export * from "./student-homework/index";
 export * from "./gamification-catalog/index";
 export * from "./classroom-display/index";
 export * from "./subject-lesson-prep/index";
-
 export * from "./school-activities";
-
 export * from "./guardian-finance/index";
-
-
-
+export * from "./staff-provisioning";
+export * from "./student-directory";

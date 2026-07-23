@@ -19,6 +19,7 @@ export { postGuardianPayment } from "./guardian-finance/post-guardian-payment";
 export { reverseGuardianPayment } from "./guardian-finance/reverse-guardian-payment";
 export { getGuardianFinanceWorkspace } from "./guardian-finance/get-guardian-finance-workspace";
 export { getMyGuardianFinanceOverview } from "./guardian-finance/get-my-guardian-finance-overview";
+export * from "./student-directory";
 
 export const functionsHealth = onRequest(
   {

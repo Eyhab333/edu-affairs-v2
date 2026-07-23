@@ -406,93 +406,45 @@ function buildEditBatchHref(batch: MeasurementBatchDoc) {
   }`;
 }
 
-async function loadStudentName(
-  orgId: string,
-  studentId: string,
-): Promise<StudentSummary> {
-  try {
-    const studentRef = doc(db, "orgs", orgId, "students", studentId);
-    const studentSnap = await getDoc(studentRef);
-
-    if (!studentSnap.exists()) {
-      return {
-        id: studentId,
-        displayName: studentId,
-      };
-    }
-
-    const studentData = studentSnap.data() as {
-      personId?: string;
-      displayName?: string;
-      name?: string;
-    };
-
-    const directName = studentData.displayName || studentData.name;
-
-    if (directName) {
-      return {
-        id: studentId,
-        personId: studentData.personId,
-        displayName: directName,
-      };
-    }
-
-    if (!studentData.personId) {
-      return {
-        id: studentId,
-        displayName: studentId,
-      };
-    }
-
-    const personRef = doc(db, "orgs", orgId, "people", studentData.personId);
-    const personSnap = await getDoc(personRef);
-
-    if (!personSnap.exists()) {
-      return {
-        id: studentId,
-        personId: studentData.personId,
-        displayName: studentId,
-      };
-    }
-
-    const personData = personSnap.data() as {
-      displayName?: string;
-      name?: string;
-    };
-
-    return {
-      id: studentId,
-      personId: studentData.personId,
-      displayName: personData.displayName || personData.name || studentId,
-    };
-  } catch {
-    return {
-      id: studentId,
-      displayName: studentId,
-    };
-  }
-}
-
 async function buildRowViews(params: {
   orgId: string;
   batch: MeasurementBatchDoc;
 }): Promise<BatchStudentRowView[]> {
   const rows = buildRowsFromBatch(params.batch);
+  const schoolId = params.batch.schoolId || "";
 
   return Promise.all(
     rows.map(async (row) => {
       if (row.studentDisplayName?.trim()) {
+        return row;
+      }
+
+      if (!schoolId) {
         return {
           ...row,
-          studentDisplayName: row.studentDisplayName,
+          studentDisplayName: row.studentId,
         };
       }
 
-      const student = await loadStudentName(params.orgId, row.studentId);
+      const directoryRef = doc(
+        db,
+        "orgs",
+        params.orgId,
+        "schools",
+        schoolId,
+        "studentDirectory",
+        row.studentId,
+      );
+
+      const directorySnap = await getDoc(directoryRef);
+
+      const displayName = directorySnap.exists()
+        ? String(directorySnap.data().displayName || "").trim()
+        : "";
 
       return {
         ...row,
-        studentDisplayName: student.displayName,
+        studentDisplayName: displayName || row.studentId,
       };
     }),
   );
@@ -535,6 +487,7 @@ async function loadSourceTemplate(params: {
 
 async function findExistingCompensationBatch(params: {
   orgId: string;
+  schoolId: string;
   originalBatchId: string;
 }): Promise<string | null> {
   const batchesRef = collection(
@@ -546,6 +499,7 @@ async function findExistingCompensationBatch(params: {
 
   const compensationQuery = query(
     batchesRef,
+    where("schoolId", "==", params.schoolId),
     where("originalBatchId", "==", params.originalBatchId),
   );
 
@@ -689,6 +643,7 @@ export default function StaffMeasurementBatchPage() {
       } else {
         const existingId = await findExistingCompensationBatch({
           orgId: currentActor.orgId,
+          schoolId: loadedBatch.schoolId,
           originalBatchId: loadedBatch.id,
         });
 
@@ -764,6 +719,7 @@ export default function StaffMeasurementBatchPage() {
     try {
       const existingId = await findExistingCompensationBatch({
         orgId: currentActor.orgId,
+        schoolId: batch.schoolId,
         originalBatchId: batch.id,
       });
 

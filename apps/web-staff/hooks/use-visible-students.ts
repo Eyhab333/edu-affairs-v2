@@ -13,6 +13,8 @@ import {
 import { db } from "@/lib/firebase";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 
+import type { SchoolStudentDirectoryEntry } from "@takween/contracts";
+
 export type VisibleStudentClass = {
   id: string;
   orgId?: string;
@@ -143,14 +145,14 @@ function normalizeText(value: string) {
 function sortRows(a: VisibleStudentRow, b: VisibleStudentRow) {
   const classCompare = normalizeText(a.classTitle).localeCompare(
     normalizeText(b.classTitle),
-    "ar"
+    "ar",
   );
 
   if (classCompare !== 0) return classCompare;
 
   return normalizeText(a.displayName).localeCompare(
     normalizeText(b.displayName),
-    "ar"
+    "ar",
   );
 }
 
@@ -207,39 +209,31 @@ function resolveClassForEnrollment(params: {
   return null;
 }
 
-async function getStudentWithPerson(params: {
+async function getStudentFromDirectory(params: {
   orgId: string;
+  schoolId: string;
   enrollment: VisibleStudentEnrollmentRow;
   classInfo: VisibleStudentClass;
 }): Promise<VisibleStudentRow> {
-  const { orgId, enrollment, classInfo } = params;
+  const { orgId, schoolId, enrollment, classInfo } = params;
 
-  const studentRef = doc(db, "orgs", orgId, "students", enrollment.studentId);
-  const studentSnap = await getDoc(studentRef);
+  const directoryRef = doc(
+    db,
+    "orgs",
+    orgId,
+    "schools",
+    schoolId,
+    "studentDirectory",
+    enrollment.studentId,
+  );
 
-  const student = studentSnap.exists()
-    ? ({
-        id: studentSnap.id,
-        ...(studentSnap.data() as Omit<VisibleStudentRecord, "id">),
-      } satisfies VisibleStudentRecord)
+  const directorySnap = await getDoc(directoryRef);
+
+  const directory = directorySnap.exists()
+    ? (directorySnap.data() as SchoolStudentDirectoryEntry)
     : null;
 
-  let person: VisibleStudentPerson | null = null;
-
-  if (student?.personId) {
-    const personRef = doc(db, "orgs", orgId, "people", student.personId);
-    const personSnap = await getDoc(personRef);
-
-    if (personSnap.exists()) {
-      person = {
-        id: personSnap.id,
-        ...(personSnap.data() as Omit<VisibleStudentPerson, "id">),
-      };
-    }
-  }
-
   const classId = enrollment.classId || classInfo.id;
-  const schoolId = enrollment.schoolId || classInfo.schoolId || "";
   const academicYearId =
     enrollment.academicYearId || classInfo.academicYearId || "";
   const gradeId = enrollment.gradeId || classInfo.gradeId || "";
@@ -250,32 +244,32 @@ async function getStudentWithPerson(params: {
     studentId: enrollment.studentId,
     enrollmentId: enrollment.id,
 
-    displayName: getDisplayName({
-      person,
-      student,
-      enrollment,
-    }),
-    nationalId: person?.nationalId ?? "",
-    phone: person?.phone ?? "",
-    email: person?.email ?? "",
+    displayName: directory?.displayName || enrollment.studentId,
+
+    nationalId: directory?.nationalId ?? "",
+    phone: directory?.phone ?? "",
+    email: directory?.email ?? "",
 
     classId,
     classTitle: getClassTitle(classInfo),
+
     schoolId,
     schoolName: classInfo.schoolName || schoolId,
+
     academicYearId,
     academicYearTitle: classInfo.academicYearTitle || academicYearId,
+
     gradeId,
     gradeTitle: classInfo.gradeTitle || gradeId,
     streamId,
 
     enrollment,
-    student,
-    person,
+    student: null,
+    person: null,
     classInfo,
 
-    studentExists: student !== null,
-    personExists: person !== null,
+    studentExists: directory !== null,
+    personExists: Boolean(directory?.personId),
   };
 }
 
@@ -291,7 +285,7 @@ export function useVisibleStudents({
           schoolId: item.schoolId,
           academicYearId: item.academicYearId,
           classId: item.id,
-        })
+        }),
       )
       .sort()
       .join("|");
@@ -301,7 +295,21 @@ export function useVisibleStudents({
     return createClassLookups(visibleClasses);
   }, [visibleClasses]);
 
-  const canLoad = enabled && !!orgId && visibleClasses.length > 0;
+  const visibleSchoolIds = useMemo(() => {
+    return Array.from(
+      new Set(
+        visibleClasses
+          .map((item) => item.schoolId)
+          .filter((schoolId): schoolId is string => Boolean(schoolId)),
+      ),
+    );
+  }, [visibleClasses]);
+
+  const canLoad =
+    enabled &&
+    !!orgId &&
+    visibleClasses.length > 0 &&
+    visibleSchoolIds.length > 0;
 
   const loadVisibleStudents =
     useCallback(async (): Promise<VisibleStudentsData | null> => {
@@ -311,14 +319,27 @@ export function useVisibleStudents({
         db,
         "orgs",
         orgId,
-        "studentEnrollments"
+        "studentEnrollments",
       );
 
-      const enrollmentsSnap = await getDocs(
-        query(enrollmentsRef, where("status", "==", "ACTIVE"))
+      const enrollmentSnapshots = await Promise.all(
+        visibleSchoolIds.map((schoolId) =>
+          getDocs(
+            query(
+              enrollmentsRef,
+              where("schoolId", "==", schoolId),
+              where("status", "==", "ACTIVE"),
+            ),
+          ),
+        ),
       );
 
-      const visibleEnrollments = enrollmentsSnap.docs
+      const enrollmentDocuments = enrollmentSnapshots.flatMap(
+        (snapshot) => snapshot.docs,
+      );
+
+      const visibleEnrollments = enrollmentDocuments
+
         .map((item) => {
           const data = item.data() as Omit<VisibleStudentEnrollmentRow, "id">;
 
@@ -343,21 +364,30 @@ export function useVisibleStudents({
         })
         .filter(
           (
-            item
+            item,
           ): item is {
             enrollment: VisibleStudentEnrollmentRow;
             classInfo: VisibleStudentClass;
-          } => item.classInfo !== null
+          } => item.classInfo !== null,
         );
 
       const rows = await Promise.all(
-        visibleEnrollments.map(({ enrollment, classInfo }) =>
-          getStudentWithPerson({
+        visibleEnrollments.map(({ enrollment, classInfo }) => {
+          const resolvedSchoolId = enrollment.schoolId || classInfo.schoolId;
+
+          if (!resolvedSchoolId) {
+            throw new Error(
+              `لا يمكن تحديد المدرسة للطالب ${enrollment.studentId}`,
+            );
+          }
+
+          return getStudentFromDirectory({
             orgId,
+            schoolId: resolvedSchoolId,
             enrollment,
             classInfo,
-          })
-        )
+          });
+        }),
       );
 
       const sortedRows = rows.sort(sortRows);
@@ -373,7 +403,7 @@ export function useVisibleStudents({
         missingPersonCount: sortedRows.filter((row) => !row.personExists)
           .length,
       };
-    }, [canLoad, orgId, classLookups]);
+    }, [canLoad, orgId, classLookups, visibleSchoolIds]);
 
   return useDocumentLoader<VisibleStudentsData>({
     enabled: canLoad,

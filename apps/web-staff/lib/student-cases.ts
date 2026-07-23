@@ -321,17 +321,58 @@ export async function getStudentCaseEvents(params: {
 export async function getCasesAssignedToMe(params: {
   orgId: string;
   personId: string;
+  schoolIds: string[];
   maxResults?: number;
 }): Promise<StudentCase[]> {
-  const casesRef = collection(db, studentCasesCollectionPath(params.orgId));
-
-  const snap = await getDocs(
-    query(casesRef, where("currentAssigneePersonId", "==", params.personId))
+  const allowedSchoolIds = Array.from(
+    new Set(
+      params.schoolIds
+        .map((schoolId) => schoolId.trim())
+        .filter(Boolean),
+    ),
   );
 
-  return snap.docs
-    .map((item) => parseStudentCase(item.id, item.data()))
-    .filter((item) => item.isArchived !== true)
+  if (allowedSchoolIds.length === 0) {
+    return [];
+  }
+
+  const casesRef = collection(
+    db,
+    studentCasesCollectionPath(params.orgId),
+  );
+
+  const snapshots = await Promise.all(
+    allowedSchoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          casesRef,
+          where("schoolId", "==", schoolId),
+          where(
+            "currentAssigneePersonId",
+            "==",
+            params.personId,
+          ),
+        ),
+      ),
+    ),
+  );
+
+  const byCaseId = new Map<string, StudentCase>();
+
+  for (const snapshot of snapshots) {
+    for (const item of snapshot.docs) {
+      const studentCase = parseStudentCase(
+        item.id,
+        item.data(),
+      );
+
+      if (studentCase.isArchived !== true) {
+        byCaseId.set(studentCase.id, studentCase);
+      }
+    }
+  }
+
+  return Array.from(byCaseId.values())
     .sort((a, b) => b.updatedAt - a.updatedAt)
     .slice(0, params.maxResults ?? 50);
 }
@@ -339,17 +380,58 @@ export async function getCasesAssignedToMe(params: {
 export async function getCasesCreatedByMe(params: {
   orgId: string;
   personId: string;
+  schoolIds: string[];
   maxResults?: number;
 }): Promise<StudentCase[]> {
-  const casesRef = collection(db, studentCasesCollectionPath(params.orgId));
-
-  const snap = await getDocs(
-    query(casesRef, where("createdByPersonId", "==", params.personId))
+  const allowedSchoolIds = Array.from(
+    new Set(
+      params.schoolIds
+        .map((schoolId) => schoolId.trim())
+        .filter(Boolean),
+    ),
   );
 
-  return snap.docs
-    .map((item) => parseStudentCase(item.id, item.data()))
-    .filter((item) => item.isArchived !== true)
+  if (allowedSchoolIds.length === 0) {
+    return [];
+  }
+
+  const casesRef = collection(
+    db,
+    studentCasesCollectionPath(params.orgId),
+  );
+
+  const snapshots = await Promise.all(
+    allowedSchoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          casesRef,
+          where("schoolId", "==", schoolId),
+          where(
+            "createdByPersonId",
+            "==",
+            params.personId,
+          ),
+        ),
+      ),
+    ),
+  );
+
+  const byCaseId = new Map<string, StudentCase>();
+
+  for (const snapshot of snapshots) {
+    for (const item of snapshot.docs) {
+      const studentCase = parseStudentCase(
+        item.id,
+        item.data(),
+      );
+
+      if (studentCase.isArchived !== true) {
+        byCaseId.set(studentCase.id, studentCase);
+      }
+    }
+  }
+
+  return Array.from(byCaseId.values())
     .sort((a, b) => b.updatedAt - a.updatedAt)
     .slice(0, params.maxResults ?? 50);
 }

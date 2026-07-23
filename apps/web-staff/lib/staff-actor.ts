@@ -304,78 +304,78 @@ async function getUserOrgMembership(params: {
   });
 }
 
-async function getOrgMembershipsForUser(params: {
-  uid: string;
-  orgId: string;
-  personId?: string;
-}): Promise<Membership[]> {
-  const memberships: Membership[] = [];
+// async function getOrgMembershipsForUser(params: {
+//   uid: string;
+//   orgId: string;
+//   personId?: string;
+// }): Promise<Membership[]> {
+//   const memberships: Membership[] = [];
 
-  const userMembership = await getUserOrgMembership({
-    uid: params.uid,
-    orgId: params.orgId,
-  });
+//   const userMembership = await getUserOrgMembership({
+//     uid: params.uid,
+//     orgId: params.orgId,
+//   });
 
-  if (userMembership) {
-    memberships.push(userMembership);
-  }
+//   if (userMembership) {
+//     memberships.push(userMembership);
+//   }
 
-  try {
-    const orgMembershipsRef = collection(
-      db,
-      "orgs",
-      params.orgId,
-      "memberships",
-    );
+//   try {
+//     const orgMembershipsRef = collection(
+//       db,
+//       "orgs",
+//       params.orgId,
+//       "memberships",
+//     );
 
-    const byUidSnap = await getDocs(
-      query(orgMembershipsRef, where("uid", "==", params.uid)),
-    );
+//     const byUidSnap = await getDocs(
+//       query(orgMembershipsRef, where("uid", "==", params.uid)),
+//     );
 
-    byUidSnap.docs.forEach((item) => {
-      memberships.push(
-        normalizeMembership({
-          id: item.id,
-          uid: params.uid,
-          orgId: params.orgId,
-          data: item.data(),
-        }),
-      );
-    });
+//     byUidSnap.docs.forEach((item) => {
+//       memberships.push(
+//         normalizeMembership({
+//           id: item.id,
+//           uid: params.uid,
+//           orgId: params.orgId,
+//           data: item.data(),
+//         }),
+//       );
+//     });
 
-    if (params.personId) {
-      const byPersonSnap = await getDocs(
-        query(orgMembershipsRef, where("personId", "==", params.personId)),
-      );
+//     if (params.personId) {
+//       const byPersonSnap = await getDocs(
+//         query(orgMembershipsRef, where("personId", "==", params.personId)),
+//       );
 
-      byPersonSnap.docs.forEach((item) => {
-        memberships.push(
-          normalizeMembership({
-            id: item.id,
-            uid: params.uid,
-            orgId: params.orgId,
-            data: item.data(),
-          }),
-        );
-      });
-    }
-  } catch (error) {
-    console.warn("Failed to load org memberships", error);
-  }
+//       byPersonSnap.docs.forEach((item) => {
+//         memberships.push(
+//           normalizeMembership({
+//             id: item.id,
+//             uid: params.uid,
+//             orgId: params.orgId,
+//             data: item.data(),
+//           }),
+//         );
+//       });
+//     }
+//   } catch (error) {
+//     console.warn("Failed to load org memberships", error);
+//   }
 
-  const unique = new Map<string, Membership>();
+//   const unique = new Map<string, Membership>();
 
-  for (const membership of memberships) {
-    unique.set(
-      membership.id || `${membership.orgId}-${membership.role}`,
-      membership,
-    );
-  }
+//   for (const membership of memberships) {
+//     unique.set(
+//       membership.id || `${membership.orgId}-${membership.role}`,
+//       membership,
+//     );
+//   }
 
-  return Array.from(unique.values()).filter(
-    (membership) => membership.isActive !== false,
-  );
-}
+//   return Array.from(unique.values()).filter(
+//     (membership) => membership.isActive !== false,
+//   );
+// }
 
 async function getPerson(params: {
   orgId: string;
@@ -472,43 +472,66 @@ async function getTeacherAssignmentClassLinks(params: {
   return links;
 }
 
-async function getOrgSchools(params: { orgId: string }): Promise<School[]> {
-  try {
-    const schoolsRef = collection(db, "orgs", params.orgId, "schools");
-    const schoolsSnap = await getDocs(schoolsRef);
+function getMembershipSchoolIds(membership: Membership | null): string[] {
+  if (!membership) return [];
 
-    return schoolsSnap.docs
+  return uniqueItems([
+    ...(membership.scopes?.schoolIds ?? []),
+    ...(membership.scopeType === "SCHOOL" && membership.scopeId
+      ? [membership.scopeId]
+      : []),
+  ]);
+}
+
+async function getOrgSchools(params: {
+  orgId: string;
+  allowedSchoolIds: string[] | null;
+}): Promise<School[]> {
+  try {
+    const documents =
+      params.allowedSchoolIds === null
+        ? (await getDocs(collection(db, "orgs", params.orgId, "schools"))).docs
+        : (
+            await Promise.all(
+              params.allowedSchoolIds.map((schoolId) =>
+                getDoc(doc(db, "orgs", params.orgId, "schools", schoolId)),
+              ),
+            )
+          ).filter((item) => item.exists());
+
+    return documents
       .map((item) => ({
         id: item.id,
         ...(item.data() as Omit<School, "id">),
       }))
       .filter((school) => school.isArchived !== true)
-      .sort((a, b) => {
-        const aName = a.name ?? a.id;
-        const bName = b.name ?? b.id;
-
-        return aName.localeCompare(bName, "ar");
-      });
+      .sort((a, b) => (a.name ?? a.id).localeCompare(b.name ?? b.id, "ar"));
   } catch (error) {
     console.warn("Failed to load org schools", error);
     return [];
   }
 }
 
-async function getOrgClasses(params: { orgId: string }): Promise<Class[]> {
+async function getOrgClasses(params: {
+  orgId: string;
+  allowedSchoolIds: string[] | null;
+}): Promise<Class[]> {
   try {
-    const schoolsRef = collection(db, "orgs", params.orgId, "schools");
-    const schoolsSnap = await getDocs(schoolsRef);
+    const schoolIds =
+      params.allowedSchoolIds ??
+      (await getDocs(collection(db, "orgs", params.orgId, "schools"))).docs.map(
+        (item) => item.id,
+      );
 
     const allClasses: Class[] = [];
 
-    for (const schoolDoc of schoolsSnap.docs) {
+    for (const schoolId of schoolIds) {
       const academicYearsRef = collection(
         db,
         "orgs",
         params.orgId,
         "schools",
-        schoolDoc.id,
+        schoolId,
         "academicYears",
       );
 
@@ -520,7 +543,7 @@ async function getOrgClasses(params: { orgId: string }): Promise<Class[]> {
           "orgs",
           params.orgId,
           "schools",
-          schoolDoc.id,
+          schoolId,
           "academicYears",
           academicYearDoc.id,
           "classes",
@@ -561,6 +584,7 @@ async function getOrgClasses(params: { orgId: string }): Promise<Class[]> {
 
 async function getClassSubjectOfferings(params: {
   orgId: string;
+  allowedSchoolIds: string[] | null;
 }): Promise<ClassSubjectOffering[]> {
   try {
     const offeringsRef = collection(
@@ -570,9 +594,20 @@ async function getClassSubjectOfferings(params: {
       "classSubjectOfferings",
     );
 
-    const offeringsSnap = await getDocs(offeringsRef);
+    const documents =
+      params.allowedSchoolIds === null
+        ? (await getDocs(offeringsRef)).docs
+        : (
+            await Promise.all(
+              chunkArray(params.allowedSchoolIds, 10).map((schoolIds) =>
+                getDocs(
+                  query(offeringsRef, where("schoolId", "in", schoolIds)),
+                ),
+              ),
+            )
+          ).flatMap((snapshot) => snapshot.docs);
 
-    return offeringsSnap.docs
+    return documents
       .map((item) => ({
         id: item.id,
         ...(item.data() as Omit<ClassSubjectOffering, "id">),
@@ -592,24 +627,7 @@ async function getClassSubjectOfferings(params: {
           return a.classId.localeCompare(b.classId);
         }
 
-        const orderDiff = a.order - b.order;
-        if (orderDiff !== 0) return orderDiff;
-
-        const aName =
-          a.displayName ||
-          a.subjectTitleSnapshot ||
-          a.subjectKey ||
-          a.subjectId ||
-          a.id;
-
-        const bName =
-          b.displayName ||
-          b.subjectTitleSnapshot ||
-          b.subjectKey ||
-          b.subjectId ||
-          b.id;
-
-        return aName.localeCompare(bName, "ar");
+        return a.order - b.order;
       });
   } catch (error) {
     console.warn("Failed to load class subject offerings", error);
@@ -764,9 +782,21 @@ export async function getStaffActorData(params: {
   });
 
   const personId = userMembership?.personId || userProfile?.personId || "";
+  const memberships: Membership[] =
+    userMembership && userMembership.isActive !== false ? [userMembership] : [];
+
+  const role = userMembership ? getMembershipRole(userMembership) : undefined;
+
+  const orgWideSchoolAccess =
+    !!role &&
+    (isOrgWideRole(role) ||
+      userMembership?.scopes?.canAccessAllSchools === true);
+
+  const allowedSchoolIds = orgWideSchoolAccess
+    ? null
+    : getMembershipSchoolIds(userMembership);
 
   const [
-    memberships,
     person,
     operationalAssignments,
     teacherAssignments,
@@ -774,11 +804,6 @@ export async function getStaffActorData(params: {
     classes,
     classSubjectOfferings,
   ] = await Promise.all([
-    getOrgMembershipsForUser({
-      uid: params.uid,
-      orgId: params.orgId,
-      personId,
-    }),
     getPerson({
       orgId: params.orgId,
       personId,
@@ -791,14 +816,18 @@ export async function getStaffActorData(params: {
       orgId: params.orgId,
       personId,
     }),
+
     getOrgSchools({
       orgId: params.orgId,
+      allowedSchoolIds,
     }),
     getOrgClasses({
       orgId: params.orgId,
+      allowedSchoolIds,
     }),
     getClassSubjectOfferings({
       orgId: params.orgId,
+      allowedSchoolIds,
     }),
   ]);
 

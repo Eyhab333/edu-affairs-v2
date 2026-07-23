@@ -8,11 +8,15 @@
   "scripts": {
     "build": "tsc",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "staff:preview": "tsx src/staff-provisioning/run-staff-provisioning-preview.ts",
+    "staff:apply": "tsx src/staff-provisioning/run-staff-provisioning-apply.ts",
+    "staff:verify": "tsx src/staff-provisioning/run-staff-provisioning-verify.ts",
+    "student-directory:backfill:sayh": "tsx src/student-directory/run-school-student-directory-backfill.ts"
   },
   "dependencies": {
-    "@takween/contracts": "file:vendor/takween-contracts-0.0.1.tgz",
-    "@takween/domain": "file:vendor/takween-domain-0.0.1.tgz",
+    "@takween/contracts": "workspace:*",
+    "@takween/domain": "workspace:*",
     "@temporalio/client": "^1.16.2",
     "firebase-admin": "^13.7.0",
     "firebase-functions": "^7.2.5",
@@ -20,6 +24,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.39",
+    "tsx": "^4.23.1",
     "typescript": "^6.0.3"
   }
 }

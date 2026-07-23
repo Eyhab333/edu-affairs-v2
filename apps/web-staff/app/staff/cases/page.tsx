@@ -2,18 +2,22 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { AlertCircle, ArrowLeft, FileText, Inbox, Loader2, Plus } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  FileText,
+  Inbox,
+  Loader2,
+  Plus,
+} from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 
 import type { StudentCase } from "@takween/contracts";
-
+import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import { db } from "@/lib/firebase";
 import { ensureSelectedOrgId } from "@/lib/org";
-import {
-  getCasesAssignedToMe,
-  getCasesCreatedByMe,
-} from "@/lib/student-cases";
+import { getCasesAssignedToMe, getCasesCreatedByMe } from "@/lib/student-cases";
 
 type CasesTab = "assigned" | "created";
 
@@ -221,6 +225,21 @@ export default function StaffCasesPage() {
     return activeTab === "assigned" ? assignedCases : createdCases;
   }, [activeTab, assignedCases, createdCases]);
 
+  const { actor } = useStaffActor();
+
+  const visibleSchoolIds = useMemo(() => {
+    return Array.from(
+      new Set(
+        actor.visibleClasses
+          .map((item) => item.schoolId)
+          .filter(
+            (schoolId): schoolId is string =>
+              typeof schoolId === "string" && schoolId.trim().length > 0,
+          ),
+      ),
+    );
+  }, [actor.visibleClasses]);
+
   const loadCases = useCallback(async () => {
     if (!user) return;
 
@@ -240,18 +259,19 @@ export default function StaffCasesPage() {
       }
 
       const nextIdentity = await loadStaffIdentity(user.uid);
-
       const [assigned, created] = await Promise.all([
         getCasesAssignedToMe({
           orgId: nextOrgId,
           personId: nextIdentity.personId,
+          schoolIds: visibleSchoolIds,
         }),
+
         getCasesCreatedByMe({
           orgId: nextOrgId,
           personId: nextIdentity.personId,
+          schoolIds: visibleSchoolIds,
         }),
       ]);
-
       setOrgId(nextOrgId);
       setIdentity(nextIdentity);
       setAssignedCases(assigned);
@@ -262,7 +282,7 @@ export default function StaffCasesPage() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, visibleSchoolIds]);
 
   useEffect(() => {
     if (!checkingAuth && user) {

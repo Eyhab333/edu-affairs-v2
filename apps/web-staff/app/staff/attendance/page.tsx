@@ -18,6 +18,7 @@ import {
   limit,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 
 import type {
@@ -106,7 +107,7 @@ function getBatchStatusLabel(status: StudentAttendanceBatch["status"]) {
 }
 
 function getBatchStatusVariant(
-  status: StudentAttendanceBatch["status"]
+  status: StudentAttendanceBatch["status"],
 ): BadgeVariant {
   if (status === "SUBMITTED" || status === "REVIEWED") return "default";
   if (status === "CANCELLED") return "destructive";
@@ -138,25 +139,19 @@ function getVisibleClassMap(classes: SchoolClass[]) {
   return new Map(classes.map((item) => [item.id, item]));
 }
 
-function getClassLabel(
-  classMap: Map<string, SchoolClass>,
-  classId: string
-) {
+function getClassLabel(classMap: Map<string, SchoolClass>, classId: string) {
   const classInfo = classMap.get(classId);
   return classInfo?.title || classInfo?.code || classId;
 }
 
-function getSchoolLabel(
-  classMap: Map<string, SchoolClass>,
-  classId: string
-) {
+function getSchoolLabel(classMap: Map<string, SchoolClass>, classId: string) {
   const classInfo = classMap.get(classId);
   return classInfo?.schoolId || "غير محدد";
 }
 
 function isBatchVisibleToActor(
   batch: StudentAttendanceBatch,
-  visibleClassIds: Set<string>
+  visibleClassIds: Set<string>,
 ) {
   return visibleClassIds.has(batch.classId);
 }
@@ -189,9 +184,7 @@ function SummaryCard({
           <p className="text-xs text-muted-foreground">{title}</p>
           <p className="mt-1 text-2xl font-bold">{value}</p>
           {description ? (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {description}
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">{description}</p>
           ) : null}
         </div>
 
@@ -220,6 +213,19 @@ export default function StaffAttendanceCenterPage() {
     return new Set(actor.visibleClasses.map((item) => item.id));
   }, [actor.visibleClasses]);
 
+  const visibleSchoolIds = useMemo(() => {
+    return Array.from(
+      new Set(
+        actor.visibleClasses
+          .map((item) => item.schoolId)
+          .filter(
+            (schoolId): schoolId is string =>
+              typeof schoolId === "string" && schoolId.trim().length > 0,
+          ),
+      ),
+    );
+  }, [actor.visibleClasses]);
+
   const classMap = useMemo(() => {
     return getVisibleClassMap(actor.visibleClasses);
   }, [actor.visibleClasses]);
@@ -231,24 +237,49 @@ export default function StaffAttendanceCenterPage() {
     });
 
     try {
+      if (visibleSchoolIds.length === 0) {
+        setBatches([]);
+        setLoadState({
+          loading: false,
+          error: null,
+        });
+        return;
+      }
+
       const batchesRef = collection(
         db,
         "orgs",
         actor.orgId,
-        "studentAttendanceBatches"
+        "studentAttendanceBatches",
       );
 
-      const snap = await getDocs(
-        query(batchesRef, orderBy("updatedAt", "desc"), limit(200))
+      const snapshots = await Promise.all(
+        visibleSchoolIds.map((schoolId) =>
+          getDocs(
+            query(
+              batchesRef,
+
+              where("schoolId", "==", schoolId),
+              orderBy("updatedAt", "desc"),
+              limit(200),
+            ),
+          ),
+        ),
       );
 
-      const loadedBatches = snap.docs
+      const loadedBatches = snapshots
+        .flatMap((snapshot) => snapshot.docs)
         .map((item) => ({
           id: item.id,
           ...(item.data() as Omit<StudentAttendanceBatch, "id">),
         }))
         .filter((item) => item.orgId === actor.orgId)
-        .filter((item) => isBatchVisibleToActor(item, visibleClassIds));
+        .filter((item) => visibleSchoolIds.includes(item.schoolId))
+        .filter((item) => isBatchVisibleToActor(item, visibleClassIds))
+        .sort((a, b) => {
+          return (b.updatedAt ?? 0) - (a.updatedAt ?? 0);
+        })
+        .slice(0, 200);
 
       setBatches(loadedBatches);
 
@@ -258,12 +289,17 @@ export default function StaffAttendanceCenterPage() {
       });
     } catch (error) {
       setBatches([]);
+
       setLoadState({
         loading: false,
         error: getErrorMessage(error),
       });
     }
-  }, [actor.orgId, visibleClassIds]);
+  }, [actor.orgId, visibleClassIds, visibleSchoolIds]);
+
+  useEffect(() => {
+    void loadBatches();
+  }, [loadBatches]);
 
   useEffect(() => {
     void loadBatches();
@@ -285,14 +321,15 @@ export default function StaffAttendanceCenterPage() {
         (batch) =>
           batch.status === "SUBMITTED" ||
           batch.status === "REVIEWED" ||
-          batch.status === "LOCKED"
+          batch.status === "LOCKED",
       );
     }
 
     return dateBatches.filter(
       (batch) =>
         batch.status !== "CANCELLED" &&
-        (batch.notRecordedCount > 0 || batch.completedCount < batch.targetCount)
+        (batch.notRecordedCount > 0 ||
+          batch.completedCount < batch.targetCount),
     );
   }, [dateBatches, filter]);
 
@@ -322,7 +359,8 @@ export default function StaffAttendanceCenterPage() {
 
         if (
           batch.status !== "CANCELLED" &&
-          (batch.notRecordedCount > 0 || batch.completedCount < batch.targetCount)
+          (batch.notRecordedCount > 0 ||
+            batch.completedCount < batch.targetCount)
         ) {
           acc.incomplete += 1;
         }
@@ -343,12 +381,14 @@ export default function StaffAttendanceCenterPage() {
         drafts: 0,
         submitted: 0,
         incomplete: 0,
-      }
+      },
     );
   }, [dateBatches]);
 
   const missingClassIds = useMemo(() => {
-    const classIdsWithBatch = new Set(dateBatches.map((batch) => batch.classId));
+    const classIdsWithBatch = new Set(
+      dateBatches.map((batch) => batch.classId),
+    );
 
     return actor.visibleClasses
       .filter((item) => !classIdsWithBatch.has(item.id))
@@ -565,8 +605,7 @@ export default function StaffAttendanceCenterPage() {
                       <td className="px-3 py-3">
                         <Badge
                           variant={
-                            batch.notRecordedCount > 0 ||
-                            batch.absentCount > 0
+                            batch.notRecordedCount > 0 || batch.absentCount > 0
                               ? "destructive"
                               : "secondary"
                           }
@@ -582,7 +621,9 @@ export default function StaffAttendanceCenterPage() {
                       <td className="px-3 py-3">
                         <div className="flex flex-wrap gap-2">
                           <Button asChild size="sm" variant="outline">
-                            <Link href={`/staff/attendance/batches/${batch.id}`}>
+                            <Link
+                              href={`/staff/attendance/batches/${batch.id}`}
+                            >
                               عرض
                             </Link>
                           </Button>
