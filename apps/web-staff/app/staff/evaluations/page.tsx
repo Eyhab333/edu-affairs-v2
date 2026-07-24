@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import {
   buildStaffEvaluationWorkspace,
@@ -347,6 +348,20 @@ function TeacherStatusSummary({ group }: { group: TeacherTaskGroup }) {
 
 export default function StaffEvaluationsPage() {
   const { user, checkingAuth } = useRequireAuth();
+  const { actor } = useStaffActor();
+
+  const visibleSchoolIds = useMemo(() => {
+    return Array.from(
+      new Set(
+        (actor?.visibleClasses ?? [])
+          .map((item) => item.schoolId)
+          .filter(
+            (schoolId): schoolId is string =>
+              typeof schoolId === "string" && schoolId.trim().length > 0,
+          ),
+      ),
+    );
+  }, [actor?.visibleClasses]);
 
   const [workspace, setWorkspace] = useState<StaffEvaluationWorkspace | null>(
     null,
@@ -364,36 +379,64 @@ export default function StaffEvaluationsPage() {
     null,
   );
 
-  const loadWorkspace = useCallback(async () => {
-    if (!user) return;
 
-    setLoading(true);
-    setError(null);
 
-    try {
-      const result = await buildStaffEvaluationWorkspace({
-        uid: user.uid,
-        orgId: "takween",
-      });
+const loadWorkspace = useCallback(async () => {
+  if (!user || !actor) return;
 
-      setWorkspace(result);
-    } catch (error) {
-      console.error(error);
-      setError(error instanceof Error ? error.message : "تعذر تحميل تقييماتي");
-    } finally {
-      setLoading(false);
-    }
-  }, [user]);
+  setLoading(true);
+  setError(null);
 
-  useEffect(() => {
-    if (!checkingAuth && user) {
-      void loadWorkspace();
-    }
+  try {
+    const result = await buildStaffEvaluationWorkspace({
+      uid: user.uid,
+      orgId: actor.orgId,
+      schoolIds: visibleSchoolIds,
+    });
 
-    if (!checkingAuth && !user) {
-      setLoading(false);
-    }
-  }, [checkingAuth, user, loadWorkspace]);
+    setWorkspace(result);
+  } catch (error) {
+    console.error(error);
+
+    setError(
+      error instanceof Error
+        ? error.message
+        : "تعذر تحميل تقييماتي",
+    );
+  } finally {
+    setLoading(false);
+  }
+}, [
+  actor,
+  user,
+  visibleSchoolIds,
+]);
+
+useEffect(() => {
+  if (checkingAuth) return;
+
+  if (!user) {
+    setLoading(false);
+    return;
+  }
+
+  if (!actor) {
+    return;
+  }
+
+  void loadWorkspace();
+}, [
+  actor,
+  checkingAuth,
+  user,
+  loadWorkspace,
+]);
+
+
+
+
+
+
 
   const tasks = workspace?.tasks ?? [];
 

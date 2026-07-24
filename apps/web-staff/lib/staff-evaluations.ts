@@ -74,6 +74,12 @@ function asNumber(value: unknown, fallback = 0) {
   return typeof value === "number" ? value : fallback;
 }
 
+function normalizeSchoolIds(values: string[]) {
+  return Array.from(
+    new Set(values.map((value) => value.trim()).filter(Boolean)),
+  );
+}
+
 function resolveTaskStatus(
   submission: FirestoreDoc | null,
 ): StaffEvaluationTaskStatus {
@@ -130,6 +136,48 @@ async function getSubmissionsForEvaluator(
   }));
 }
 
+async function getSubmissionsForEvaluatorInSchools(params: {
+  orgId: string;
+  evaluatorPersonId: string;
+  schoolIds: string[];
+}): Promise<FirestoreDoc[]> {
+  const schoolIds = normalizeSchoolIds(params.schoolIds);
+
+  if (schoolIds.length === 0) {
+    return [];
+  }
+
+  const submissionsRef = collection(
+    db,
+    `orgs/${params.orgId}/evaluationSubmissions`,
+  );
+
+  const snapshots = await Promise.all(
+    schoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          submissionsRef,
+          where("schoolId", "==", schoolId),
+          where("evaluatorPersonId", "==", params.evaluatorPersonId),
+        ),
+      ),
+    ),
+  );
+
+  const submissionMap = new Map<string, FirestoreDoc>();
+
+  for (const snapshot of snapshots) {
+    for (const item of snapshot.docs) {
+      submissionMap.set(item.id, {
+        id: item.id,
+        ...(item.data() as FirestoreDoc),
+      });
+    }
+  }
+
+  return Array.from(submissionMap.values());
+}
+
 function findMatchingSubmission(
   submissions: FirestoreDoc[],
   params: {
@@ -154,27 +202,62 @@ function findMatchingSubmission(
 export async function buildStaffEvaluationWorkspace(params: {
   uid: string;
   orgId?: string;
+  schoolIds: string[];
 }): Promise<StaffEvaluationWorkspace> {
   const orgId = params.orgId ?? "takween";
   const evaluatorPersonId = await getCurrentPersonId(params.uid);
 
-  const assignmentsSnap = await getDocs(
-    query(
-      collection(db, `orgs/${orgId}/evaluationEvaluatorAssignments`),
-      where("evaluatorPersonId", "==", evaluatorPersonId),
-      where("status", "==", "ACTIVE"),
+  const schoolIds = normalizeSchoolIds(params.schoolIds);
+
+  if (schoolIds.length === 0) {
+    return {
+      tasks: [],
+      summary: {
+        total: 0,
+        pending: 0,
+        draft: 0,
+        submitted: 0,
+        approved: 0,
+      },
+    };
+  }
+
+  const assignmentsRef = collection(
+    db,
+    `orgs/${orgId}/evaluationEvaluatorAssignments`,
+  );
+
+  const assignmentSnapshots = await Promise.all(
+    schoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          assignmentsRef,
+          where("schoolId", "==", schoolId),
+          where("evaluatorPersonId", "==", evaluatorPersonId),
+          where("status", "==", "ACTIVE"),
+        ),
+      ),
     ),
   );
 
-  const assignments: FirestoreDoc[] = assignmentsSnap.docs.map((item) => ({
-    id: item.id,
-    ...(item.data() as FirestoreDoc),
-  }));
+  const assignmentMap = new Map<string, FirestoreDoc>();
 
-  const submissions = await getSubmissionsForEvaluator(
+  for (const snapshot of assignmentSnapshots) {
+    for (const item of snapshot.docs) {
+      assignmentMap.set(item.id, {
+        id: item.id,
+        ...(item.data() as FirestoreDoc),
+      });
+    }
+  }
+
+  const assignments = Array.from(assignmentMap.values());
+
+  const submissions = await getSubmissionsForEvaluatorInSchools({
     orgId,
     evaluatorPersonId,
-  );
+    schoolIds,
+  });
 
   const tasks = await Promise.all(
     assignments.map(async (assignment) => {
@@ -184,13 +267,16 @@ export async function buildStaffEvaluationWorkspace(params: {
 
       const [plan, cycle, targetAssignment] = await Promise.all([
         getDocData(`orgs/${orgId}/evaluationPlans/${planId}`),
+
         getDocData(`orgs/${orgId}/evaluationCycles/${cycleId}`),
+
         getDocData(
           `orgs/${orgId}/evaluationTargetAssignments/${planId}-target-${targetPersonId}`,
         ),
       ]);
 
       const frameworkId = asString(plan?.frameworkId);
+
       const framework = frameworkId
         ? await getDocData(`orgs/${orgId}/evaluationFrameworks/${frameworkId}`)
         : null;
@@ -222,10 +308,12 @@ export async function buildStaffEvaluationWorkspace(params: {
 
         targetPersonId,
         targetEmail: asString(targetAssignment?.targetEmail),
+
         targetDisplayName: asString(
           targetAssignment?.targetDisplayName,
           asString(targetAssignment?.targetEmail, targetPersonId),
         ),
+
         targetRoleKey: asString(targetAssignment?.targetRoleKey),
 
         evaluatorPersonId,
@@ -233,8 +321,8 @@ export async function buildStaffEvaluationWorkspace(params: {
         evaluatorRoleKey: asString(assignment.evaluatorRoleKey),
 
         weight: asNumber(assignment.weight, 100),
-        status,
 
+        status,
         submissionId,
 
         actionHref: `/staff/evaluations/cycles/${cycleId}/targets/${targetPersonId}`,
@@ -244,9 +332,13 @@ export async function buildStaffEvaluationWorkspace(params: {
 
   const summary = {
     total: tasks.length,
+
     pending: tasks.filter((task) => task.status === "PENDING").length,
+
     draft: tasks.filter((task) => task.status === "DRAFT").length,
+
     submitted: tasks.filter((task) => task.status === "SUBMITTED").length,
+
     approved: tasks.filter((task) => task.status === "APPROVED").length,
   };
 
@@ -1079,17 +1171,44 @@ export type MyEvaluationsView = {
 async function getStaffSummaryForTarget(params: {
   orgId: string;
   targetPersonId: string;
+  schoolIds: string[];
 }): Promise<FirestoreDoc | null> {
-  const snap = await getDocs(
-    query(
-      collection(db, `orgs/${params.orgId}/evaluationStaffSummaries`),
-      where("targetPersonId", "==", params.targetPersonId),
+  const schoolIds = normalizeSchoolIds(params.schoolIds);
+
+  if (schoolIds.length === 0) {
+    return null;
+  }
+
+  const summariesRef = collection(
+    db,
+    `orgs/${params.orgId}/evaluationStaffSummaries`,
+  );
+
+  const snapshots = await Promise.all(
+    schoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          summariesRef,
+          where("schoolId", "==", schoolId),
+          where("targetPersonId", "==", params.targetPersonId),
+        ),
+      ),
     ),
   );
 
-  const first = snap.docs[0];
+  const first = snapshots
+    .flatMap((snapshot) => snapshot.docs)
+    .sort((a, b) => {
+      const aUpdatedAt = asNumber(a.data().updatedAt);
 
-  if (!first) return null;
+      const bUpdatedAt = asNumber(b.data().updatedAt);
+
+      return bUpdatedAt - aUpdatedAt;
+    })[0];
+
+  if (!first) {
+    return null;
+  }
 
   return {
     id: first.id,
@@ -1100,61 +1219,103 @@ async function getStaffSummaryForTarget(params: {
 async function getApprovedCycleSummariesForTarget(params: {
   orgId: string;
   targetPersonId: string;
+  schoolIds: string[];
 }): Promise<FirestoreDoc[]> {
-  const snap = await getDocs(
-    query(
-      collection(db, `orgs/${params.orgId}/evaluationCycleTargetSummaries`),
-      where("targetPersonId", "==", params.targetPersonId),
+  const schoolIds = normalizeSchoolIds(params.schoolIds);
+
+  if (schoolIds.length === 0) {
+    return [];
+  }
+
+  const summariesRef = collection(
+    db,
+    `orgs/${params.orgId}/evaluationCycleTargetSummaries`,
+  );
+
+  const snapshots = await Promise.all(
+    schoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          summariesRef,
+          where("schoolId", "==", schoolId),
+          where("targetPersonId", "==", params.targetPersonId),
+          where("status", "==", "APPROVED"),
+        ),
+      ),
     ),
   );
 
-  return snap.docs
-    .map((item) => {
-      return {
+  const summaryMap = new Map<string, FirestoreDoc>();
+
+  for (const snapshot of snapshots) {
+    for (const item of snapshot.docs) {
+      summaryMap.set(item.id, {
         id: item.id,
         ...item.data(),
-      } as FirestoreDoc;
-    })
-    .filter((item) => asString(item.status) === "APPROVED")
-    .sort((a, b) => asNumber(b.approvedAt) - asNumber(a.approvedAt));
+      } as FirestoreDoc);
+    }
+  }
+
+  return Array.from(summaryMap.values()).sort(
+    (a, b) => asNumber(b.approvedAt) - asNumber(a.approvedAt),
+  );
 }
 
 export async function buildMyEvaluationsView(params: {
   uid: string;
   orgId?: string;
+  schoolIds: string[];
 }): Promise<MyEvaluationsView> {
   const orgId = params.orgId ?? "takween";
+
   const targetPersonId = await getCurrentPersonId(params.uid);
+
+  const schoolIds = normalizeSchoolIds(params.schoolIds);
+
+  if (schoolIds.length === 0) {
+    return {
+      summary: null,
+      results: [],
+    };
+  }
 
   const [staffSummary, cycleSummaries] = await Promise.all([
     getStaffSummaryForTarget({
       orgId,
       targetPersonId,
+      schoolIds,
     }),
+
     getApprovedCycleSummariesForTarget({
       orgId,
       targetPersonId,
+      schoolIds,
     }),
   ]);
 
   const results: MyEvaluationCycleResult[] = await Promise.all(
     cycleSummaries.map(async (cycleSummary) => {
       const planId = asString(cycleSummary.planId);
+
       const cycleId = asString(cycleSummary.cycleId);
 
       const [plan, cycle] = await Promise.all([
         getDocData(`orgs/${orgId}/evaluationPlans/${planId}`),
+
         getDocData(`orgs/${orgId}/evaluationCycles/${cycleId}`),
       ]);
 
       const frameworkId = asString(plan?.frameworkId);
+
       const framework = frameworkId
         ? await getDocData(`orgs/${orgId}/evaluationFrameworks/${frameworkId}`)
         : null;
 
       return {
         id: String(cycleSummary.id),
+
         detailsHref: `/staff/my-evaluations/cycles/${cycleId}`,
+
         orgId,
 
         planId,
@@ -1170,11 +1331,15 @@ export async function buildMyEvaluationsView(params: {
         targetEmail: asString(cycleSummary.targetEmail),
 
         finalScore: asNumber(cycleSummary.finalScore),
+
         maxScore: asNumber(cycleSummary.maxScore, 100),
+
         status: asString(cycleSummary.status),
+
         includedInAverage: asBoolean(cycleSummary.includedInAverage, true),
 
         submittedAt: asNumber(cycleSummary.submittedAt),
+
         approvedAt: asNumber(cycleSummary.approvedAt),
       } satisfies MyEvaluationCycleResult;
     }),
@@ -1183,14 +1348,19 @@ export async function buildMyEvaluationsView(params: {
   const summary: MyEvaluationSummary | null = staffSummary
     ? {
         targetPersonId,
+
         targetEmail: asString(staffSummary.targetEmail),
 
         approvedAverageScore: asNumber(staffSummary.approvedAverageScore),
+
         approvedCyclesCount: asNumber(staffSummary.approvedCyclesCount),
+
         lastApprovedScore: asNumber(staffSummary.lastApprovedScore),
 
         submittedAverageScore: asNumber(staffSummary.submittedAverageScore),
+
         submittedCyclesCount: asNumber(staffSummary.submittedCyclesCount),
+
         lastSubmittedScore: asNumber(staffSummary.lastSubmittedScore),
       }
     : null;

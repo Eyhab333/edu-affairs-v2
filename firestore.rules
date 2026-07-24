@@ -684,6 +684,201 @@ match /studentAttendanceBatches/{batchId} {
 
 
 
+
+match /evaluationEvaluatorAssignments/{assignmentId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && resource.data.evaluatorPersonId
+        == currentUserPersonId()
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+match /evaluationSubmissions/{submissionId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+      && (
+        resource.data.evaluatorPersonId
+          == currentUserPersonId()
+        || (
+          resource.data.targetPersonId
+            == currentUserPersonId()
+          && resource.data.status == "APPROVED"
+        )
+      )
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        request.resource.data.schoolId
+      )
+      && request.resource.data.evaluatorPersonId
+        == currentUserPersonId()
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.schoolId
+        == resource.data.schoolId
+      && resource.data.evaluatorPersonId
+        == currentUserPersonId()
+      && request.resource.data.evaluatorPersonId
+        == resource.data.evaluatorPersonId
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow delete: if false;
+}
+
+match /evaluationPlans/{planId} {
+  allow read: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow write: if canManageOrg(orgId);
+}
+
+match /evaluationCycles/{cycleId} {
+  allow read: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow write: if canManageOrg(orgId);
+}
+
+match /evaluationFrameworks/{frameworkId} {
+  allow get, list: if hasOrgMembership(orgId);
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+match /evaluationTargetAssignments/{assignmentId} {
+  allow read: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow write: if canManageOrg(orgId);
+}
+
+
+
+
+
+
+
+
+match /evaluationRubricSections/{sectionId} {
+  allow get, list: if hasOrgMembership(orgId);
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+match /evaluationRubricItems/{itemId} {
+  allow get, list: if hasOrgMembership(orgId);
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+
+
+
+
+
+
+
+
+
+match /evaluatorPolicies/{policyId} {
+  allow read: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow write: if canManageOrg(orgId);
+}
+
+
+
+
+
+
+match /evaluationCycleTargetSummaries/{summaryId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && resource.data.targetPersonId
+        == currentUserPersonId()
+      && resource.data.status == "APPROVED"
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+match /evaluationStaffSummaries/{summaryId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && resource.data.targetPersonId
+        == currentUserPersonId()
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+
+
+
       /*
        * ==========================================================
        * Closed fallback

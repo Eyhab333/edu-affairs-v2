@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRequireAuth } from "@/hooks/use-require-auth";
@@ -8,6 +8,8 @@ import {
   buildMyEvaluationsView,
   MyEvaluationsView,
 } from "@/lib/staff-evaluations";
+
+import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 function SummaryCard({
   title,
@@ -46,13 +48,27 @@ function formatDate(value?: number) {
 
 export default function MyEvaluationsPage() {
   const { user, checkingAuth } = useRequireAuth();
+  const { actor } = useStaffActor();
+
+  const visibleSchoolIds = useMemo(() => {
+    return Array.from(
+      new Set(
+        (actor?.visibleClasses ?? [])
+          .map((item) => item.schoolId)
+          .filter(
+            (schoolId): schoolId is string =>
+              typeof schoolId === "string" && schoolId.trim().length > 0,
+          ),
+      ),
+    );
+  }, [actor?.visibleClasses]);
 
   const [view, setView] = useState<MyEvaluationsView | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadView = useCallback(async () => {
-    if (!user) return;
+    if (!user || !actor) return;
 
     setLoading(true);
     setError(null);
@@ -60,27 +76,34 @@ export default function MyEvaluationsPage() {
     try {
       const result = await buildMyEvaluationsView({
         uid: user.uid,
-        orgId: "takween",
+        orgId: actor.orgId,
+        schoolIds: visibleSchoolIds,
       });
 
       setView(result);
     } catch (error) {
       console.error(error);
+
       setError(error instanceof Error ? error.message : "تعذر تحميل تقييماتي");
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [actor, user, visibleSchoolIds]);
 
   useEffect(() => {
-    if (!checkingAuth && user) {
-      void loadView();
+    if (checkingAuth) return;
+
+    if (!user) {
+      setLoading(false);
+      return;
     }
 
-    if (!checkingAuth && !user) {
-      setLoading(false);
+    if (!actor) {
+      return;
     }
-  }, [checkingAuth, user, loadView]);
+
+    void loadView();
+  }, [actor, checkingAuth, user, loadView]);
 
   if (checkingAuth || loading) {
     return (
