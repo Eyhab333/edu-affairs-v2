@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import type {
   SchoolActivity,
   SchoolActivityKind,
@@ -14,6 +14,8 @@ import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/firebase";
+
+import { StaffPageError } from "@/components/staff/staff-page-error";
 
 const STATUS_LABELS: Record<SchoolActivityStatus, string> = {
   DRAFT: "مسودة",
@@ -57,9 +59,12 @@ function formatDate(value?: number) {
 }
 
 function isOrgWideRole(role: string) {
-  return ["platform_owner", "platform_admin", "org_owner", "org_admin"].includes(
-    role,
-  );
+  return [
+    "platform_owner",
+    "platform_admin",
+    "org_owner",
+    "org_admin",
+  ].includes(role);
 }
 
 export default function StaffActivitiesPage() {
@@ -67,7 +72,7 @@ export default function StaffActivitiesPage() {
 
   const [activities, setActivities] = useState<SchoolActivity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<unknown>(null);
 
   const schoolNameById = useMemo(() => {
     return new Map(actor.schools.map((school) => [school.id, school.name]));
@@ -98,31 +103,62 @@ export default function StaffActivitiesPage() {
 
     async function loadActivities() {
       setLoading(true);
-      setError("");
+      setError(null);
 
       try {
-        const snap = await getDocs(
-          collection(db, "orgs", actor.orgId, "schoolActivities"),
+        const allowedSchoolIds = Array.from(activitySchoolIds);
+
+        if (allowedSchoolIds.length === 0) {
+          if (active) {
+            setActivities([]);
+          }
+
+          return;
+        }
+
+        const activitiesRef = collection(
+          db,
+          "orgs",
+          actor.orgId,
+          "schoolActivities",
+        );
+
+        const snapshots = await Promise.all(
+          allowedSchoolIds.map((schoolId) =>
+            getDocs(query(activitiesRef, where("schoolId", "==", schoolId))),
+          ),
         );
 
         if (!active) return;
 
-        const rows = snap.docs
-          .map((item) => ({
-            id: item.id,
-            ...(item.data() as Omit<SchoolActivity, "id">),
-          }))
-          .filter((activity) => activity.orgId === actor.orgId)
-          .filter((activity) => {
-            if (activitySchoolIds.size === 0) return false;
-            return activitySchoolIds.has(activity.schoolId);
-          })
-          .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+        const activityMap = new Map<string, SchoolActivity>();
+
+        for (const snapshot of snapshots) {
+          for (const item of snapshot.docs) {
+            const activity = {
+              id: item.id,
+              ...(item.data() as Omit<SchoolActivity, "id">),
+            };
+
+            if (
+              activity.orgId === actor.orgId &&
+              activitySchoolIds.has(activity.schoolId)
+            ) {
+              activityMap.set(activity.id, activity);
+            }
+          }
+        }
+
+        const rows = Array.from(activityMap.values()).sort(
+          (a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0),
+        );
 
         setActivities(rows);
       } catch (error) {
         if (!active) return;
-        setError(getErrorMessage(error));
+
+        setActivities([]);
+        setError(error);
       } finally {
         if (active) {
           setLoading(false);
@@ -195,7 +231,10 @@ export default function StaffActivitiesPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-bold">
-            {activities.filter((activity) => activity.status === "DRAFT").length}
+            {
+              activities.filter((activity) => activity.status === "DRAFT")
+                .length
+            }
           </CardContent>
         </Card>
 
@@ -215,11 +254,14 @@ export default function StaffActivitiesPage() {
       </div>
 
       {error ? (
-        <Card className="border-destructive/40">
-          <CardContent className="pt-6 text-sm text-destructive">
-            {error}
-          </CardContent>
-        </Card>
+        // <Card className="border-destructive/40">
+        //   <CardContent className="pt-6 text-sm text-destructive">
+            <StaffPageError
+              error={error}
+              onRetry={() => window.location.reload()}
+            />
+        //   </CardContent>
+        // </Card>
       ) : null}
 
       {loading ? (
@@ -268,8 +310,14 @@ export default function StaffActivitiesPage() {
                     </p>
 
                     <div className="grid gap-1 text-xs text-muted-foreground md:grid-cols-2">
-                      <p>بداية التسجيل: {formatDate(activity.registrationOpensAt)}</p>
-                      <p>نهاية التسجيل: {formatDate(activity.registrationClosesAt)}</p>
+                      <p>
+                        بداية التسجيل:{" "}
+                        {formatDate(activity.registrationOpensAt)}
+                      </p>
+                      <p>
+                        نهاية التسجيل:{" "}
+                        {formatDate(activity.registrationClosesAt)}
+                      </p>
                       <p>بداية النشاط: {formatDate(activity.startsAt)}</p>
                       <p>
                         المسجلون: {activity.registeredCount ?? 0}

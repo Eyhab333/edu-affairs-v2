@@ -13,6 +13,13 @@ export const BOYS_PRINCIPAL_ROLE_PROFILE = {
   operations: SCHOOL_PRINCIPAL_OPERATIONS,
 } satisfies StaffProvisioningRoleProfile;
 
+export const BOYS_VP_ROLE_PROFILE = {
+  ...BOYS_PRINCIPAL_ROLE_PROFILE,
+
+  roleKey: "BOYS_VP",
+} satisfies StaffProvisioningRoleProfile;
+
 export const SCHOOL_LEADERSHIP_ROLE_PROFILES = {
   BOYS_PRINCIPAL: BOYS_PRINCIPAL_ROLE_PROFILE,
+  BOYS_VP: BOYS_VP_ROLE_PROFILE,
 } as const;

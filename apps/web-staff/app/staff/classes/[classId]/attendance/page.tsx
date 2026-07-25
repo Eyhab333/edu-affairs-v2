@@ -203,6 +203,7 @@ function normalizeEnrollment(
 
 async function loadEnrollmentsFromCollection(params: {
   orgId: string;
+  schoolId: string;
   classId: string;
   collectionName: string;
 }): Promise<StudentEnrollment[]> {
@@ -210,12 +211,17 @@ async function loadEnrollmentsFromCollection(params: {
     const ref = collection(db, "orgs", params.orgId, params.collectionName);
 
     const snap = await getDocs(
-      query(ref, where("classId", "==", params.classId)),
+      query(
+        ref,
+        where("schoolId", "==", params.schoolId),
+        where("classId", "==", params.classId),
+      ),
     );
 
     return snap.docs
       .map((item) => normalizeEnrollment(item.id, item.data()))
       .filter((item) => item.orgId === params.orgId)
+      .filter((item) => item.schoolId === params.schoolId)
       .filter((item) => item.classId === params.classId)
       .filter((item) => item.status === "ACTIVE");
   } catch (error) {
@@ -226,18 +232,16 @@ async function loadEnrollmentsFromCollection(params: {
 
 async function loadClassEnrollments(params: {
   orgId: string;
+  schoolId: string;
   classId: string;
 }): Promise<StudentEnrollment[]> {
-  const sources = await Promise.all([
-    loadEnrollmentsFromCollection({
-      ...params,
-      collectionName: "studentEnrollments",
-    }),
-    loadEnrollmentsFromCollection({
-      ...params,
-      collectionName: "enrollments",
-    }),
-  ]);
+
+  const sources = [
+  await loadEnrollmentsFromCollection({
+    ...params,
+    collectionName: "studentEnrollments",
+  }),
+];
 
   const unique = new Map<string, StudentEnrollment>();
 
@@ -279,6 +283,7 @@ async function loadPersonName(params: {
 
 async function loadStudentDisplayName(params: {
   orgId: string;
+  schoolId: string;
   studentId: string;
   fallbackName?: string;
 }): Promise<string> {
@@ -287,7 +292,9 @@ async function loadStudentDisplayName(params: {
       db,
       "orgs",
       params.orgId,
-      "students",
+      "schools",
+      params.schoolId,
+      "studentDirectory",
       params.studentId,
     );
 
@@ -297,32 +304,26 @@ async function loadStudentDisplayName(params: {
       return params.fallbackName || params.studentId;
     }
 
-    const student = {
-      id: studentSnap.id,
-      ...(studentSnap.data() as Omit<Student, "id"> & {
-        displayName?: string;
-        name?: string;
-      }),
-    };
+    const data = studentSnap.data() as Record<string, unknown>;
 
-    const directName = student.displayName || student.name || "";
+    const displayName =
+      (typeof data.displayName === "string" && data.displayName) ||
+      (typeof data.studentDisplayName === "string" &&
+        data.studentDisplayName) ||
+      (typeof data.name === "string" && data.name) ||
+      (typeof data.fullName === "string" && data.fullName) ||
+      "";
 
-    if (directName) return directName;
-
-    const personName = await loadPersonName({
-      orgId: params.orgId,
-      personId: student.personId,
-    });
-
-    return personName || params.fallbackName || params.studentId;
+    return displayName || params.fallbackName || params.studentId;
   } catch (error) {
-    console.warn("Failed to load student display name", error);
+    console.warn("Failed to load student directory name", error);
     return params.fallbackName || params.studentId;
   }
 }
 
 async function loadStudentsDirectly(params: {
   orgId: string;
+  schoolId: string;
   classId: string;
 }): Promise<AttendanceStudentInput[]> {
   try {
@@ -353,6 +354,7 @@ async function loadStudentsDirectly(params: {
 
 async function loadClassStudents(params: {
   orgId: string;
+  schoolId: string;
   classId: string;
 }): Promise<AttendanceStudentInput[]> {
   const enrollments = await loadClassEnrollments(params);
@@ -362,6 +364,7 @@ async function loadClassStudents(params: {
       enrollments.map(async (enrollment) => {
         const displayName = await loadStudentDisplayName({
           orgId: params.orgId,
+          schoolId: params.schoolId,
           studentId: enrollment.studentId,
         });
 
@@ -537,6 +540,7 @@ export default function ClassAttendancePage() {
     try {
       const loadedStudents = await loadClassStudents({
         orgId: actor.orgId,
+        schoolId: classInfo.schoolId,
         classId,
       });
 
@@ -1123,24 +1127,7 @@ export default function ClassAttendancePage() {
         </Card>
       ) : null}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>حالة الخطوة</CardTitle>
-          <CardDescription>
-            تم إنشاء المسودة داخل الواجهة فقط. في الخطوة التالية سنحفظها في
-            Firestore كـ StudentAttendanceBatch.
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary">9C صفحة الحضور ✅</Badge>
-          <Badge variant="secondary">9D مسودة داخلية ✅</Badge>
-          <Badge variant="secondary">9E جدول الحالات ✅</Badge>
-          <Badge variant="secondary">9F حفظ المسودة ✅</Badge>
-          <Badge variant="secondary">9G إرسال الدفعة وإنشاء السجلات ✅</Badge>
-          <Badge variant="outline">التالي: 9H صفحة عرض دفعة الحضور</Badge>
-        </CardContent>
-      </Card>
+      
     </div>
   );
 }

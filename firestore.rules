@@ -796,12 +796,6 @@ match /evaluationTargetAssignments/{assignmentId} {
 }
 
 
-
-
-
-
-
-
 match /evaluationRubricSections/{sectionId} {
   allow get, list: if hasOrgMembership(orgId);
 
@@ -818,13 +812,6 @@ match /evaluationRubricItems/{itemId} {
 
 
 
-
-
-
-
-
-
-
 match /evaluatorPolicies/{policyId} {
   allow read: if canManageOrg(orgId)
     || (
@@ -837,8 +824,6 @@ match /evaluatorPolicies/{policyId} {
 
   allow write: if canManageOrg(orgId);
 }
-
-
 
 
 
@@ -876,6 +861,72 @@ match /evaluationStaffSummaries/{summaryId} {
     if canManageOrg(orgId);
 }
 
+
+
+match /threads/{threadId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      signedIn()
+      && request.auth.uid in resource.data.participantUids
+    );
+
+  allow create, update, delete: if false;
+
+  match /messages/{messageId} {
+    allow get, list: if canManageOrg(orgId)
+      || (
+        signedIn()
+        && request.auth.uid in get(
+          /databases/$(database)/documents/orgs/$(orgId)/threads/$(threadId)
+        ).data.participantUids
+      );
+
+    allow create, update, delete: if false;
+  }
+}
+
+
+match /schoolActivities/{activityId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && request.resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        request.resource.data.schoolId
+      )
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && request.resource.data.schoolId
+        == resource.data.schoolId
+      && request.resource.data.orgId == orgId
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow delete: if canManageOrg(orgId)
+    || (
+      resource.data.schoolId is string
+      && hasSchoolAccess(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+}
 
 
 

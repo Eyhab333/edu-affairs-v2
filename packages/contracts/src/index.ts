@@ -131,6 +131,7 @@ export const MembershipRole = z.enum([
    */
   "BOYS_SUPERVISION_HEAD",
   "BOYS_PRINCIPAL",
+  "BOYS_VP",
   "BOYS_EDU_VP",
   "BOYS_STUDENT_GUIDE",
   "BOYS_STUDENTS_VP",

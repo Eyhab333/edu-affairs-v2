@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const StaffProvisioningRoleKey = z.enum(["BOYS_PRINCIPAL"]);
+export const StaffProvisioningRoleKey = z.enum(["BOYS_PRINCIPAL", "BOYS_VP"]);
 
 export type StaffProvisioningRoleKey = z.infer<
   typeof StaffProvisioningRoleKey
