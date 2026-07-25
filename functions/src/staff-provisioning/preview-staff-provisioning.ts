@@ -32,31 +32,14 @@ export async function previewStaffProvisioning(
   const pendingAuthCreation = !identity.authExists;
   const pendingPersonCreation = !identity.personExists;
 
-  /*
-   * لا نستطيع بناء الخطة النهائية قبل معرفة uid.
-   * إنشاء uid يحدث فقط عند إنشاء Firebase Auth user.
-   */
-  if (!identity.uid) {
-    return {
-      status: "READY_TO_CREATE",
-      identity,
-      plan: null,
-      pendingAuthCreation,
-      pendingPersonCreation,
-    };
-  }
-
   const plan = buildStaffProvisioningPlan({
     input,
-    uid: identity.uid,
-    personId: identity.personId,
+    uid: identity.uid || "__PENDING_AUTH_UID__",
+    personId: identity.personId || "__PENDING_PERSON_ID__",
   });
 
   return {
-    status:
-      identity.authExists || identity.personExists
-        ? "READY_TO_UPDATE"
-        : "READY_TO_CREATE",
+    status: identity.authExists ? "READY_TO_UPDATE" : "READY_TO_CREATE",
 
     identity,
     plan,

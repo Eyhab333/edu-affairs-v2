@@ -164,10 +164,9 @@ function StaffShell({ children }: { children: ReactNode }) {
   const actorRole = getStaffActorPrimaryRole(actor);
   const stats = getStaffActorStats(actor);
 
-  const visibleModuleSet = new Set<StaffHomeVisibleModule | "TASKS">([
-    ...actor.visibleModules,
-    "TASKS",
-  ]);
+  const visibleModuleSet = new Set<StaffHomeVisibleModule>(
+  actor.visibleModules,
+);
 
   const hiddenFromAsideModuleKeys = new Set<StaffHomeVisibleModule | "TASKS">([
     "GAMIFICATION",

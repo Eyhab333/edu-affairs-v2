@@ -62,9 +62,9 @@ export default function StaffHomePage() {
                   </Link>
                 </Button>
 
-                <Button asChild variant="outline">
+                {/* <Button asChild variant="outline">
                   <Link href="/staff/classes">فتح فصولي</Link>
-                </Button>
+                </Button> */}
               </div>
             </div>
 

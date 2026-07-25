@@ -32,3 +32,13 @@ export const SCHOOL_PRINCIPAL_PERMISSIONS = {
   manageCases: true,
   manageEvaluations: true,
 } satisfies MembershipPermissions;
+
+
+export const SCHOOL_EDU_VP_PERMISSIONS = {
+  ...NO_MEMBERSHIP_PERMISSIONS,
+
+  manageCases: true,
+  manageEvaluations: true,
+} satisfies MembershipPermissions;
+
+

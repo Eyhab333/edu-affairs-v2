@@ -12,6 +12,8 @@
     "staff:preview": "tsx src/staff-provisioning/run-staff-provisioning-preview.ts",
     "staff:apply": "tsx src/staff-provisioning/run-staff-provisioning-apply.ts",
     "staff:verify": "tsx src/staff-provisioning/run-staff-provisioning-verify.ts",
+    "staff:batch:preview": "tsx src/staff-provisioning/run-staff-provisioning-batch-preview.ts",
+    "staff:batch:apply": "tsx src/staff-provisioning/run-staff-provisioning-batch-apply.ts",
     "student-directory:backfill:sayh": "tsx src/student-directory/run-school-student-directory-backfill.ts"
   },
   "dependencies": {
