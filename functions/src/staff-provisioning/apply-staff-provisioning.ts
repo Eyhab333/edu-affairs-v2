@@ -212,7 +212,7 @@ export async function applyStaffProvisioning(
 
         permissions: plan.membership.permissions,
 
-        principalPersonId: personId,
+        principalPersonId: plan.membership.principalPersonId,
 
         isActive: true,
 

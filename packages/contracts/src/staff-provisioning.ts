@@ -2,9 +2,7 @@ import { z } from "zod";
 
 export const StaffProvisioningRoleKey = z.enum(["BOYS_PRINCIPAL", "BOYS_VP"]);
 
-export type StaffProvisioningRoleKey = z.infer<
-  typeof StaffProvisioningRoleKey
->;
+export type StaffProvisioningRoleKey = z.infer<typeof StaffProvisioningRoleKey>;
 
 export const StaffProvisioningInputSchema = z
   .object({
@@ -20,6 +18,7 @@ export const StaffProvisioningInputSchema = z
 
     schoolId: z.string().trim().min(1),
     title: z.string().trim().min(1),
+    principalPersonId: z.string().trim().optional().default(""),
 
     initialPassword: z.string().min(8).optional(),
   })

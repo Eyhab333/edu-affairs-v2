@@ -24,10 +24,17 @@ export type StaffProvisioningOperationProfile = {
   permissions: OperationPermission[];
 };
 
+export type StaffProvisioningHierarchyProfile = {
+  principalPersonIdSource: "SELF" | "INPUT_REQUIRED";
+};
+
+
 export type StaffProvisioningRoleProfile = {
   roleKey: MembershipRole;
 
   scope: StaffProvisioningScopeProfile;
+  hierarchy: StaffProvisioningHierarchyProfile;
+
   permissions: MembershipPermissions;
   operations: StaffProvisioningOperationProfile[];
 };

@@ -13,9 +13,7 @@ function verifyCredentialsProject() {
   const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
   if (!credentialsPath) {
-    throw new Error(
-      "GOOGLE_APPLICATION_CREDENTIALS غير محدد",
-    );
+    throw new Error("GOOGLE_APPLICATION_CREDENTIALS غير محدد");
   }
 
   const credentials = JSON.parse(
@@ -47,9 +45,7 @@ async function main() {
     "staff-provisioning-input.local.json",
   );
 
-  const rawInput = JSON.parse(
-    readFileSync(inputPath, "utf8"),
-  );
+  const rawInput = JSON.parse(readFileSync(inputPath, "utf8"));
 
   const input = StaffProvisioningInputSchema.parse(rawInput);
 
@@ -63,36 +59,31 @@ async function main() {
         identity: {
           authExists: preview.identity.authExists,
           personExists: preview.identity.personExists,
-          personMatchSource:
-            preview.identity.personMatchSource,
+          personMatchSource: preview.identity.personMatchSource,
           uid: preview.identity.uid || null,
           personId: preview.identity.personId || null,
         },
 
-        pendingAuthCreation:
-          preview.pendingAuthCreation,
+        pendingAuthCreation: preview.pendingAuthCreation,
 
-        pendingPersonCreation:
-          preview.pendingPersonCreation,
+        pendingPersonCreation: preview.pendingPersonCreation,
 
         plannedMembership: preview.plan
           ? {
               roleKey: preview.plan.membership.roleKey,
               scopeType: preview.plan.membership.scopeType,
               scopeId: preview.plan.membership.scopeId,
-              schoolIds:
-                preview.plan.membership.scopes?.schoolIds,
+              schoolIds: preview.plan.membership.scopes?.schoolIds,
+              principalPersonId: preview.plan.membership.principalPersonId,
             }
           : null,
 
         plannedOperations:
-          preview.plan?.operationalAssignments.map(
-            (assignment) => ({
-              id: assignment.id,
-              operationKind: assignment.operationKind,
-              scopeId: assignment.scopeId,
-            }),
-          ) ?? [],
+          preview.plan?.operationalAssignments.map((assignment) => ({
+            id: assignment.id,
+            operationKind: assignment.operationKind,
+            scopeId: assignment.scopeId,
+          })) ?? [],
       },
       null,
       2,

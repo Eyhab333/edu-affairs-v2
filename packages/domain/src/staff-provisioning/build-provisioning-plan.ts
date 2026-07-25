@@ -62,6 +62,11 @@ export function buildStaffProvisioningPlan(
 
   const profile = getStaffProvisioningRoleProfile(input.roleKey);
 
+  const principalPersonId =
+    profile.hierarchy.principalPersonIdSource === "SELF"
+      ? personId
+      : requireNonEmpty(input.principalPersonId, "principalPersonId");
+
   const person: Person = {
     id: personId,
     displayName: input.displayName,
@@ -101,7 +106,7 @@ export function buildStaffProvisioningPlan(
     directEvaluatorPersonId: "",
     supervisorPersonId: "",
     managerPersonId: "",
-    principalPersonId: personId,
+    principalPersonId,
     vicePrincipalPersonId: "",
 
     isActive: true,

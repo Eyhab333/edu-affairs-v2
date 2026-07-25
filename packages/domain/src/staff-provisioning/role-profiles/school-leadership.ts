@@ -8,6 +8,10 @@ export const BOYS_PRINCIPAL_ROLE_PROFILE = {
 
   scope: SINGLE_SCHOOL_SCOPE,
 
+  hierarchy: {
+    principalPersonIdSource: "SELF",
+  },
+
   permissions: SCHOOL_PRINCIPAL_PERMISSIONS,
 
   operations: SCHOOL_PRINCIPAL_OPERATIONS,
@@ -17,6 +21,10 @@ export const BOYS_VP_ROLE_PROFILE = {
   ...BOYS_PRINCIPAL_ROLE_PROFILE,
 
   roleKey: "BOYS_VP",
+
+  hierarchy: {
+    principalPersonIdSource: "INPUT_REQUIRED",
+  },
 } satisfies StaffProvisioningRoleProfile;
 
 export const SCHOOL_LEADERSHIP_ROLE_PROFILES = {
