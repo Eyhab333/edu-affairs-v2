@@ -42,3 +42,20 @@ export const SCHOOL_EDU_VP_PERMISSIONS = {
 } satisfies MembershipPermissions;
 
 
+
+
+export const SCHOOL_EVALUATION_STAFF_PERMISSIONS = {
+  ...NO_MEMBERSHIP_PERMISSIONS,
+
+  manageEvaluations: true,
+} satisfies MembershipPermissions;
+
+export const SCHOOL_STUDENT_GUIDE_PERMISSIONS = {
+  ...SCHOOL_EVALUATION_STAFF_PERMISSIONS,
+
+  manageCases: true,
+} satisfies MembershipPermissions;
+
+
+
+

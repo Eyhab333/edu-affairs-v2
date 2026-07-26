@@ -4,6 +4,11 @@ export const StaffProvisioningRoleKey = z.enum([
   "BOYS_PRINCIPAL",
   "BOYS_VP",
   "BOYS_EDU_VP",
+
+  "ADMIN_ASSISTANT",
+  "ACTIVITY_COORD",
+  "MEDIA_SPECIALIST",
+  "BOYS_STUDENT_GUIDE",
 ]);
 
 export type StaffProvisioningRoleKey = z.infer<typeof StaffProvisioningRoleKey>;
@@ -31,8 +36,6 @@ export const StaffProvisioningInputSchema = z
 export type StaffProvisioningInput = z.infer<
   typeof StaffProvisioningInputSchema
 >;
-
-
 
 // Batch Schema
 export const StaffProvisioningBatchMemberSchema = z
@@ -89,4 +92,3 @@ export const StaffProvisioningBatchInputSchema = z
 export type StaffProvisioningBatchInput = z.infer<
   typeof StaffProvisioningBatchInputSchema
 >;
-

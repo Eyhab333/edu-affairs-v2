@@ -18,6 +18,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRequireAuth } from "@/hooks/use-require-auth";
+import { FullScreenTakweenLoader } from "@/components/ui/takween-loader";
 
 const features = [
   {
@@ -44,6 +45,11 @@ export default function WebStaffLandingPage() {
     return (
       <main className="min-h-screen bg-background px-4 py-8 text-foreground">
         <div className="mx-auto flex min-h-[70vh] max-w-5xl items-center justify-center">
+          <FullScreenTakweenLoader
+                label="جاري تجهيز الصفحة..."
+                sublabel="لحظات قليلة"
+              />
+          
           <Card className="w-full max-w-md border-dashed text-center">
             <CardHeader>
               <CardTitle>مرحبًا بك في بوابة تكوين</CardTitle>
@@ -112,11 +118,11 @@ export default function WebStaffLandingPage() {
                   </Link>
                 </Button>
 
-                <Button asChild size="lg" variant="secondary" className="h-12 px-7">
+                {/* <Button asChild size="lg" variant="secondary" className="h-12 px-7">
                   <Link href="/staff/messages" prefetch>
                     فتح الرسائل
                   </Link>
-                </Button>
+                </Button> */}
               </div>
             </div>
 

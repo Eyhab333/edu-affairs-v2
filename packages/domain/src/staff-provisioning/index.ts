@@ -7,3 +7,9 @@ export * from "./shared/permission-presets";
 export * from "./shared/operation-presets";
 
 export * from "./role-profiles/school-leadership";
+
+export * from "./role-profiles/school-administration";
+
+
+
+
