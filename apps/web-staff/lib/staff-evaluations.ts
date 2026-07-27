@@ -1418,58 +1418,65 @@ async function getApprovedCycleSummaryForTarget(params: {
   orgId: string;
   targetPersonId: string;
   cycleId: string;
+  schoolIds: string[];
 }): Promise<FirestoreDoc | null> {
-  const snap = await getDocs(
-    query(
-      collection(db, `orgs/${params.orgId}/evaluationCycleTargetSummaries`),
-      where("targetPersonId", "==", params.targetPersonId),
+  const schoolIds = normalizeSchoolIds(params.schoolIds);
+
+  if (schoolIds.length === 0) return null;
+
+  const summariesRef = collection(
+    db,
+    `orgs/${params.orgId}/evaluationCycleTargetSummaries`,
+  );
+
+  const snapshots = await Promise.all(
+    schoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          summariesRef,
+          where("schoolId", "==", schoolId),
+          where("targetPersonId", "==", params.targetPersonId),
+          where("cycleId", "==", params.cycleId),
+          where("status", "==", "APPROVED"),
+        ),
+      ),
     ),
   );
 
-  const found = snap.docs
-    .map((item) => {
-      return {
-        id: item.id,
-        ...item.data(),
-      } as FirestoreDoc;
-    })
-    .find((item) => {
-      return (
-        asString(item.cycleId) === params.cycleId &&
-        asString(item.status) === "APPROVED"
-      );
-    });
+  const first = snapshots
+    .flatMap((snapshot) => snapshot.docs)
+    .map((item) => ({
+      id: item.id,
+      ...item.data(),
+    }))[0];
 
-  return found ?? null;
+  return first ?? null;
 }
 
 async function getApprovedSubmissionForTargetCycle(params: {
   orgId: string;
   targetPersonId: string;
   cycleId: string;
+  schoolId: string;
 }): Promise<FirestoreDoc | null> {
   const snap = await getDocs(
     query(
       collection(db, `orgs/${params.orgId}/evaluationSubmissions`),
+      where("schoolId", "==", params.schoolId),
       where("targetPersonId", "==", params.targetPersonId),
+      where("cycleId", "==", params.cycleId),
+      where("status", "==", "APPROVED"),
     ),
   );
 
-  const found = snap.docs
-    .map((item) => {
-      return {
-        id: item.id,
-        ...item.data(),
-      } as FirestoreDoc;
-    })
-    .find((item) => {
-      return (
-        asString(item.cycleId) === params.cycleId &&
-        asString(item.status) === "APPROVED"
-      );
-    });
+  const first = snap.docs[0];
 
-  return found ?? null;
+  if (!first) return null;
+
+  return {
+    id: first.id,
+    ...first.data(),
+  } as FirestoreDoc;
 }
 
 function buildDetailSections(
@@ -1537,6 +1544,7 @@ export async function buildMyEvaluationDetailView(params: {
   uid: string;
   orgId?: string;
   cycleId: string;
+  schoolIds: string[];
 }): Promise<MyEvaluationDetailView | null> {
   const orgId = params.orgId ?? "takween";
   const targetPersonId = await getCurrentPersonId(params.uid);
@@ -1545,14 +1553,20 @@ export async function buildMyEvaluationDetailView(params: {
     orgId,
     targetPersonId,
     cycleId: params.cycleId,
+    schoolIds: params.schoolIds,
   });
 
   if (!cycleSummary) return null;
+
+  const schoolId = asString(cycleSummary.schoolId);
+
+  if (!schoolId) return null;
 
   const submission = await getApprovedSubmissionForTargetCycle({
     orgId,
     targetPersonId,
     cycleId: params.cycleId,
+    schoolId,
   });
 
   if (!submission) return null;

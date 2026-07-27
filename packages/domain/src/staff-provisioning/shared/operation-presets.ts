@@ -84,9 +84,10 @@ export const SCHOOL_EVALUATION_ONLY_OPERATIONS = [
   STAFF_EVALUATION_OPERATION,
 ] satisfies StaffProvisioningOperationProfile[];
 
+// رائد النشاط 
 export const SCHOOL_ACTIVITY_COORD_OPERATIONS = [
   STUDENT_ACTIVITY_MANAGEMENT_OPERATION,
-  STAFF_EVALUATION_OPERATION,
+  
 ] satisfies StaffProvisioningOperationProfile[];
 
 export const SCHOOL_STUDENT_GUIDE_OPERATIONS = [
@@ -94,8 +95,17 @@ export const SCHOOL_STUDENT_GUIDE_OPERATIONS = [
   STAFF_EVALUATION_OPERATION,
 ] satisfies StaffProvisioningOperationProfile[];
 
+// المراقبة
+// بحيث تكون المراقبة لها:
 
-
+// الحضور ✅
+// تقييماتي ✅ تلقائي
+// الرسائل ✅ تلقائي
+// التقييمات ❌
+// الإحالات ❌
+export const SCHOOL_MONITOR_OPERATIONS = [
+  STUDENT_ATTENDANCE_OPERATION,
+];
 
 
 

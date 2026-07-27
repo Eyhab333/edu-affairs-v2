@@ -3053,6 +3053,7 @@ export const TeacherAssignmentSchema = AuditFieldsSchema.merge(
     orgId: NonEmptyStringSchema,
     schoolId: NonEmptyStringSchema,
     academicYearId: NonEmptyStringSchema,
+    termId: z.string().optional().default(""),
 
     teacherPersonId: NonEmptyStringSchema,
     supervisorPersonId: z.string().optional().default(""),
@@ -3118,6 +3119,7 @@ export const TeacherAssignmentClassLinkSchema = AuditFieldsSchema.merge(
     orgId: NonEmptyStringSchema,
     schoolId: NonEmptyStringSchema,
     academicYearId: NonEmptyStringSchema,
+    termId: z.string().optional().default(""),
 
     classId: NonEmptyStringSchema,
     gradeId: z.string().optional().default(""),
@@ -3183,6 +3185,16 @@ export const OperationalAssignmentSchema = AuditFieldsSchema.merge(
   z.object({
     id: NonEmptyStringSchema,
     orgId: NonEmptyStringSchema,
+
+    schoolId: z.string().optional().default(""),
+    academicYearId: z.string().optional().default(""),
+    termId: z.string().optional().default(""),
+
+    gradeId: z.string().optional().default(""),
+    classId: z.string().optional().default(""),
+
+    subjectKey: z.string().optional().default(""),
+    classSubjectOfferingId: z.string().optional().default(""),
 
     title: NonEmptyStringSchema,
     description: z.string().optional().default(""),
@@ -5770,3 +5782,4 @@ export * from "./guardian-finance";
 export * from "./staff-provisioning";
 
 export * from "./student-directory";
+export * from "./teacher-provisioning";

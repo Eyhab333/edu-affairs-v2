@@ -343,6 +343,7 @@ export default function StaffActivityDetailsPage() {
           query(
             collection(db, "orgs", actor.orgId, "schoolActivityRegistrations"),
             where("activityId", "==", activityId),
+            where("schoolId", "==", row.schoolId),
           ),
         );
 
@@ -353,15 +354,8 @@ export default function StaffActivityDetailsPage() {
 
             let studentDisplayName = data.metadata?.studentName ?? "";
 
-            if (studentId) {
-              const studentSnap = await getDoc(
-                doc(db, "orgs", actor.orgId, "students", studentId),
-              );
-
-              studentDisplayName =
-                readStudentDisplayName(studentSnap.data()) ||
-                studentDisplayName ||
-                studentId;
+            if (!studentDisplayName) {
+              studentDisplayName = studentId;
             }
 
             return {
@@ -387,6 +381,7 @@ export default function StaffActivityDetailsPage() {
               "schoolActivityAttendanceRecords",
             ),
             where("activityId", "==", activityId),
+            where("schoolId", "==", row.schoolId),
           ),
         );
 
@@ -409,6 +404,7 @@ export default function StaffActivityDetailsPage() {
           query(
             collection(db, "orgs", actor.orgId, "schoolActivityResults"),
             where("activityId", "==", activityId),
+            where("schoolId", "==", row.schoolId),
           ),
         );
 

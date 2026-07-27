@@ -11,6 +11,7 @@ import type { StaffProvisioningRoleProfile } from "./types";
 export const STAFF_PROVISIONING_ROLE_PROFILES = {
   ...SCHOOL_LEADERSHIP_ROLE_PROFILES,
   ...SCHOOL_ADMINISTRATION_ROLE_PROFILES,
+  
 } satisfies Record<StaffProvisioningRoleKey, StaffProvisioningRoleProfile>;
 
 export function getStaffProvisioningRoleProfile(

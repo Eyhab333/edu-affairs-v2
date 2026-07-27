@@ -87,6 +87,27 @@ service cloud.firestore {
         );
     }
 
+function canManageSchoolActivities(orgId, schoolId) {
+  return canManageOrg(orgId)
+    || (
+      hasSchoolAccess(orgId, schoolId)
+      && orgRole(orgId) == "ACTIVITY_COORD"
+    );
+}
+
+
+
+function canManageSchoolEvaluations(orgId, schoolId) {
+  return canManageOrg(orgId)
+    || (
+      hasSchoolAccess(orgId, schoolId)
+      && get(
+        /databases/$(database)/documents/users/$(request.auth.uid)/orgMemberships/$(orgId)
+      ).data.permissions.manageEvaluations == true
+    );
+}
+
+
     function ownsNotificationLog(orgId, notificationData) {
       return signedIn()
         && (
@@ -289,9 +310,17 @@ service cloud.firestore {
       }
 
       match /teacherAssignmentClassLinks/{linkId} {
-        allow get, list: if canManageOrg(orgId);
-        allow create, update, delete: if canManageOrg(orgId);
-      }
+      allow get, list: if canManageOrg(orgId)
+      || (
+      hasOrgMembership(orgId)
+      && resource.data.assignmentId is string
+      && get(
+        /databases/$(database)/documents/orgs/$(orgId)/teacherAssignments/$(resource.data.assignmentId)
+       ).data.teacherPersonId == currentUserPersonId()
+      );
+
+      allow create, update, delete: if canManageOrg(orgId);
+    }
 
       /*
        * ==========================================================
@@ -428,10 +457,10 @@ service cloud.firestore {
       }
 
       match /studentCases/{caseId} {
-  allow get, list: if canManageOrg(orgId)
-    || (
-      resource.data.schoolId is string
-      && hasSchoolAccess(
+       allow get, list: if canManageOrg(orgId)
+       || (
+       resource.data.schoolId is string
+       && hasSchoolAccess(
         orgId,
         resource.data.schoolId
       )
@@ -646,7 +675,6 @@ match /studentLearningLossPlans/{planId} {
 
 
 
-
 match /studentAttendanceBatches/{batchId} {
   allow get, list: if canManageOrg(orgId)
     || (
@@ -682,20 +710,25 @@ match /studentAttendanceBatches/{batchId} {
 
 
 
-
+/*evaluation*/
 
 
 match /evaluationEvaluatorAssignments/{assignmentId} {
-  allow get, list: if canManageOrg(orgId)
+  allow get, list: if resource.data.schoolId is string
+  && (
+    canManageSchoolEvaluations(
+      orgId,
+      resource.data.schoolId
+    )
     || (
-      resource.data.schoolId is string
-      && resource.data.evaluatorPersonId
+      resource.data.evaluatorPersonId
         == currentUserPersonId()
       && hasSchoolAccess(
         orgId,
         resource.data.schoolId
       )
-    );
+    )
+  );
 
   allow create, update, delete:
     if canManageOrg(orgId);
@@ -720,37 +753,34 @@ match /evaluationSubmissions/{submissionId} {
       )
     );
 
-  allow create: if canManageOrg(orgId)
-    || (
-      request.resource.data.schoolId is string
-      && hasSchoolAccess(
-        orgId,
-        request.resource.data.schoolId
-      )
-      && request.resource.data.evaluatorPersonId
-        == currentUserPersonId()
-    );
+  allow create: if request.resource.data.schoolId is string
+  && request.resource.data.evaluatorPersonId
+    == currentUserPersonId()
+  && canManageSchoolEvaluations(
+    orgId,
+    request.resource.data.schoolId
+  );
 
   allow update: if canManageOrg(orgId)
-    || (
-      resource.data.schoolId is string
-      && request.resource.data.schoolId
-        == resource.data.schoolId
-      && resource.data.evaluatorPersonId
-        == currentUserPersonId()
-      && request.resource.data.evaluatorPersonId
-        == resource.data.evaluatorPersonId
-      && hasSchoolAccess(
-        orgId,
-        resource.data.schoolId
-      )
-    );
+  || (
+    resource.data.schoolId is string
+    && request.resource.data.schoolId
+      == resource.data.schoolId
+    && resource.data.evaluatorPersonId
+      == currentUserPersonId()
+    && request.resource.data.evaluatorPersonId
+      == resource.data.evaluatorPersonId
+    && canManageSchoolEvaluations(
+      orgId,
+      resource.data.schoolId
+    )
+  );
 
   allow delete: if false;
 }
 
 match /evaluationPlans/{planId} {
-  allow read: if canManageOrg(orgId)
+  allow get: if canManageOrg(orgId)
     || (
       resource.data.schoolId is string
       && hasSchoolAccess(
@@ -759,11 +789,18 @@ match /evaluationPlans/{planId} {
       )
     );
 
-  allow write: if canManageOrg(orgId);
+  allow list: if resource.data.schoolId is string
+    && canManageSchoolEvaluations(
+      orgId,
+      resource.data.schoolId
+    );
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
 }
 
 match /evaluationCycles/{cycleId} {
-  allow read: if canManageOrg(orgId)
+  allow get: if canManageOrg(orgId)
     || (
       resource.data.schoolId is string
       && hasSchoolAccess(
@@ -772,7 +809,14 @@ match /evaluationCycles/{cycleId} {
       )
     );
 
-  allow write: if canManageOrg(orgId);
+  allow list: if resource.data.schoolId is string
+    && canManageSchoolEvaluations(
+      orgId,
+      resource.data.schoolId
+    );
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
 }
 
 match /evaluationFrameworks/{frameworkId} {
@@ -783,14 +827,11 @@ match /evaluationFrameworks/{frameworkId} {
 }
 
 match /evaluationTargetAssignments/{assignmentId} {
-  allow read: if canManageOrg(orgId)
-    || (
-      resource.data.schoolId is string
-      && hasSchoolAccess(
-        orgId,
-        resource.data.schoolId
-      )
-    );
+  allow read: if resource.data.schoolId is string
+  && canManageSchoolEvaluations(
+    orgId,
+    resource.data.schoolId
+  );
 
   allow write: if canManageOrg(orgId);
 }
@@ -811,21 +852,15 @@ match /evaluationRubricItems/{itemId} {
 }
 
 
-
 match /evaluatorPolicies/{policyId} {
-  allow read: if canManageOrg(orgId)
-    || (
-      resource.data.schoolId is string
-      && hasSchoolAccess(
-        orgId,
-        resource.data.schoolId
-      )
-    );
+  allow read: if resource.data.schoolId is string
+  && canManageSchoolEvaluations(
+    orgId,
+    resource.data.schoolId
+  );
 
   allow write: if canManageOrg(orgId);
 }
-
-
 
 
 match /evaluationCycleTargetSummaries/{summaryId} {
@@ -862,7 +897,7 @@ match /evaluationStaffSummaries/{summaryId} {
 }
 
 
-
+/*threads*/
 match /threads/{threadId} {
   allow get, list: if canManageOrg(orgId)
     || (
@@ -886,11 +921,14 @@ match /threads/{threadId} {
 }
 
 
+
+
+/*schoolActivities*/
 match /schoolActivities/{activityId} {
   allow get, list: if canManageOrg(orgId)
     || (
       resource.data.schoolId is string
-      && hasSchoolAccess(
+      && canManageSchoolActivities(
         orgId,
         resource.data.schoolId
       )
@@ -900,7 +938,7 @@ match /schoolActivities/{activityId} {
     || (
       request.resource.data.orgId == orgId
       && request.resource.data.schoolId is string
-      && hasSchoolAccess(
+      && canManageSchoolActivities(
         orgId,
         request.resource.data.schoolId
       )
@@ -912,7 +950,7 @@ match /schoolActivities/{activityId} {
       && request.resource.data.schoolId
         == resource.data.schoolId
       && request.resource.data.orgId == orgId
-      && hasSchoolAccess(
+      && canManageSchoolActivities(
         orgId,
         resource.data.schoolId
       )
@@ -921,12 +959,84 @@ match /schoolActivities/{activityId} {
   allow delete: if canManageOrg(orgId)
     || (
       resource.data.schoolId is string
-      && hasSchoolAccess(
+      && canManageSchoolActivities(
         orgId,
         resource.data.schoolId
       )
     );
 }
+
+match /schoolActivityRegistrations/{registrationId} {
+  allow get, list: if resource.data.schoolId is string
+    && canManageSchoolActivities(
+      orgId,
+      resource.data.schoolId
+    );
+
+  allow create: if request.resource.data.orgId == orgId
+    && request.resource.data.schoolId is string
+    && canManageSchoolActivities(
+      orgId,
+      request.resource.data.schoolId
+    );
+
+  allow update, delete: if resource.data.schoolId is string
+    && request.resource.data.schoolId == resource.data.schoolId
+    && request.resource.data.orgId == orgId
+    && canManageSchoolActivities(
+      orgId,
+      resource.data.schoolId
+    );
+}
+
+match /schoolActivityAttendanceRecords/{recordId} {
+  allow get, list: if resource.data.schoolId is string
+    && canManageSchoolActivities(
+      orgId,
+      resource.data.schoolId
+    );
+
+  allow create: if request.resource.data.orgId == orgId
+    && request.resource.data.schoolId is string
+    && canManageSchoolActivities(
+      orgId,
+      request.resource.data.schoolId
+    );
+
+  allow update, delete: if resource.data.schoolId is string
+    && request.resource.data.schoolId == resource.data.schoolId
+    && request.resource.data.orgId == orgId
+    && canManageSchoolActivities(
+      orgId,
+      resource.data.schoolId
+    );
+}
+
+match /schoolActivityResults/{resultId} {
+  allow get, list: if resource.data.schoolId is string
+    && canManageSchoolActivities(
+      orgId,
+      resource.data.schoolId
+    );
+
+  allow create: if request.resource.data.orgId == orgId
+    && request.resource.data.schoolId is string
+    && canManageSchoolActivities(
+      orgId,
+      request.resource.data.schoolId
+    );
+
+  allow update, delete: if resource.data.schoolId is string
+    && request.resource.data.schoolId == resource.data.schoolId
+    && request.resource.data.orgId == orgId
+    && canManageSchoolActivities(
+      orgId,
+      resource.data.schoolId
+    );
+}
+
+
+
 
 
 

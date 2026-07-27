@@ -1,0 +1,43 @@
+{
+  "orgId": "takween",
+  "schoolId": "mrb-boys-faleh",
+  "principalPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+  "staff": [
+    {
+      "displayName": "مدير مدرسة الفالح",
+      "email": "riadah3@qz.org.sa",
+      "roleKey": "BOYS_PRINCIPAL",
+      "title": "مدير المدرسة"
+    },
+    {
+      "displayName": "راشد سليمان فايز الفايز",
+      "email": "ralfaiz@qz.org.sa",
+      "roleKey": "BOYS_VP",
+      "title": "وكيل المدرسة"
+    },
+    {
+      "displayName": "أيوب صالح عبدالكريم المطوع",
+      "email": "a.almotwa@qz.org.sa",
+      "roleKey": "ADMIN_ASSISTANT",
+      "title": "مساعد إداري"
+    },
+    {
+      "displayName": "الموجه الطلابي",
+      "email": "students-mentor-faleh@qz.org.sa",
+      "roleKey": "BOYS_STUDENT_GUIDE",
+      "title": "الموجه الطلابي"
+    },
+    {
+      "displayName": "إعلامي مدرسة الفالح",
+      "email": "media-faleh@qz.org.sa",
+      "roleKey": "MEDIA_SPECIALIST",
+      "title": "الإعلامي"
+    },
+    {
+      "displayName": "الوكيل التعليمي",
+      "email": "educational-agent-faleh@qz.org.sa",
+      "roleKey": "BOYS_EDU_VP",
+      "title": "الوكيل التعليمي"
+    }
+  ]
+}

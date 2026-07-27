@@ -1,0 +1,13 @@
+{
+  "orgId": "takween",
+  "schoolId": "mrb-boys-faleh",
+  "principalPersonId": "",
+  "staff": [
+    {
+      "displayName": "مدير مدرسة الفالح",
+      "email": "riadah3@qz.org.sa",
+      "roleKey": "BOYS_PRINCIPAL",
+      "title": "مدير المدرسة"
+    }
+  ]
+}

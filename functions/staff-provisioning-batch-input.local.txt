@@ -1,0 +1,49 @@
+{
+  "orgId": "takween",
+  "schoolId": "mrb-boys-sayh",
+  "principalPersonId": "p-a-s-alkmays",
+  "staff": [
+    {
+      "displayName": "أحمد سليمان عبدالله الخميس",
+      "email": "a-s-alkmays@qz.org.sa",
+      "roleKey": "BOYS_PRINCIPAL",
+      "title": "مدير المدرسة"
+    },
+    {
+      "displayName": "رائد سليمان المطوع",
+      "email": "r.almutawa@qz.org.sa",
+      "roleKey": "BOYS_VP",
+      "title": "وكيل المدرسة"
+    },
+    {
+      "displayName": "محمد صالح حمد العتيق",
+      "email": "m.alateeq@qz.org.sa",
+      "roleKey": "BOYS_EDU_VP",
+      "title": "الوكيل التعليمي"
+    },
+    {
+      "displayName": "قاسم محمد الفرهود",
+      "email": "q.alfrhud@qz.org.sa",
+      "roleKey": "ADMIN_ASSISTANT",
+      "title": "مساعد إداري"
+    },
+    {
+      "displayName": "فهد محمد عبدالله القشعمي",
+      "email": "f.alqashami@qz.org.sa",
+      "roleKey": "ACTIVITY_COORD",
+      "title": "رائد النشاط"
+    },
+    {
+      "displayName": "عبدالرحمن دخيل العواد",
+      "email": "a.d.alawad@qz.org.sa",
+      "roleKey": "MEDIA_SPECIALIST",
+      "title": "الإعلامي"
+    },
+    {
+      "displayName": "الموجه الطلابي",
+      "email": "students-mentor-syeh@qz.org.sa",
+      "roleKey": "BOYS_STUDENT_GUIDE",
+      "title": "الموجه الطلابي"
+    }
+  ]
+}

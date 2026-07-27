@@ -1,0 +1,43 @@
+{
+  "orgId": "takween",
+  "schoolId": "mrb-girls",
+  "principalPersonId": "p-n-albader",
+  "staff": [
+    {
+      "displayName": "نادية عثمان ناصر البدر",
+      "email": "n.albader@qz.org.sa",
+      "roleKey": "GIRLS_PRINCIPAL",
+      "title": "مديرة المدرسة"
+    },
+    {
+      "displayName": "فوزيه عبدالله مطلق العبيوي",
+      "email": "f.alobawe@qz.org.sa",
+      "roleKey": "GIRLS_VP",
+      "title": "وكيلة المدرسة"
+    },
+    {
+      "displayName": "هناء فراج سليمان الزنيدي",
+      "email": "hanaz@qz.org.sa",
+      "roleKey": "ACTIVITY_COORD",
+      "title": "رائدة النشاط"
+    },
+    {
+      "displayName": "أريج عبدالله عبدالرحمن المنصور",
+      "email": "aa.almansor@qz.org.sa",
+      "roleKey": "ADMIN_ASSISTANT",
+      "title": "مساعدة إدارية"
+    },
+    {
+      "displayName": "ساره ناصر محمد الحمد",
+      "email": "sarah@qz.org.sa",
+      "roleKey": "GIRLS_STUDENT_COUNSELOR",
+      "title": "الموجهة الطلابية"
+    },
+    {
+      "displayName": "نوره يوسف علي المسعود",
+      "email": "ny.almasoud@qz.org.sa",
+      "roleKey": "SCHOOL_MONITOR",
+      "title": "مراقبة"
+    }
+  ]
+}

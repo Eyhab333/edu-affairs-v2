@@ -4,11 +4,13 @@ import {
   SCHOOL_ACTIVITY_COORD_OPERATIONS,
   SCHOOL_EVALUATION_ONLY_OPERATIONS,
   SCHOOL_STUDENT_GUIDE_OPERATIONS,
+  SCHOOL_MONITOR_OPERATIONS,
 } from "../shared/operation-presets";
 
 import {
   SCHOOL_EVALUATION_STAFF_PERMISSIONS,
   SCHOOL_STUDENT_GUIDE_PERMISSIONS,
+  NO_MEMBERSHIP_PERMISSIONS,
 } from "../shared/permission-presets";
 
 import { SINGLE_SCHOOL_SCOPE } from "../shared/scope-presets";
@@ -22,11 +24,12 @@ export const ADMIN_ASSISTANT_ROLE_PROFILE = {
     principalPersonIdSource: "INPUT_REQUIRED",
   },
 
-  permissions: SCHOOL_EVALUATION_STAFF_PERMISSIONS,
+  permissions: NO_MEMBERSHIP_PERMISSIONS,
 
-  operations: SCHOOL_EVALUATION_ONLY_OPERATIONS,
+  operations: [],
 } satisfies StaffProvisioningRoleProfile;
 
+// رائد النشاط
 export const ACTIVITY_COORD_ROLE_PROFILE = {
   roleKey: "ACTIVITY_COORD",
 
@@ -36,7 +39,7 @@ export const ACTIVITY_COORD_ROLE_PROFILE = {
     principalPersonIdSource: "INPUT_REQUIRED",
   },
 
-  permissions: SCHOOL_EVALUATION_STAFF_PERMISSIONS,
+  permissions: NO_MEMBERSHIP_PERMISSIONS,
 
   operations: SCHOOL_ACTIVITY_COORD_OPERATIONS,
 } satisfies StaffProvisioningRoleProfile;
@@ -50,9 +53,8 @@ export const MEDIA_SPECIALIST_ROLE_PROFILE = {
     principalPersonIdSource: "INPUT_REQUIRED",
   },
 
-  permissions: SCHOOL_EVALUATION_STAFF_PERMISSIONS,
-
-  operations: SCHOOL_EVALUATION_ONLY_OPERATIONS,
+  permissions: NO_MEMBERSHIP_PERMISSIONS,
+  operations: [],
 } satisfies StaffProvisioningRoleProfile;
 
 export const BOYS_STUDENT_GUIDE_ROLE_PROFILE = {
@@ -69,9 +71,37 @@ export const BOYS_STUDENT_GUIDE_ROLE_PROFILE = {
   operations: SCHOOL_STUDENT_GUIDE_OPERATIONS,
 } satisfies StaffProvisioningRoleProfile;
 
+
+
+export const GIRLS_STUDENT_COUNSELOR_ROLE_PROFILE = {
+  ...BOYS_STUDENT_GUIDE_ROLE_PROFILE,
+  roleKey: "GIRLS_STUDENT_COUNSELOR",
+} satisfies StaffProvisioningRoleProfile;
+
+
+// المراقبة
+export const SCHOOL_MONITOR_ROLE_PROFILE = {
+  roleKey: "SCHOOL_MONITOR",
+
+  scope: SINGLE_SCHOOL_SCOPE,
+
+  hierarchy: {
+    principalPersonIdSource: "INPUT_REQUIRED",
+  },
+
+  permissions: NO_MEMBERSHIP_PERMISSIONS,
+
+  operations: SCHOOL_MONITOR_OPERATIONS,
+} satisfies StaffProvisioningRoleProfile;
+
+
+
 export const SCHOOL_ADMINISTRATION_ROLE_PROFILES = {
   ADMIN_ASSISTANT: ADMIN_ASSISTANT_ROLE_PROFILE,
   ACTIVITY_COORD: ACTIVITY_COORD_ROLE_PROFILE,
   MEDIA_SPECIALIST: MEDIA_SPECIALIST_ROLE_PROFILE,
   BOYS_STUDENT_GUIDE: BOYS_STUDENT_GUIDE_ROLE_PROFILE,
+
+  GIRLS_STUDENT_COUNSELOR: GIRLS_STUDENT_COUNSELOR_ROLE_PROFILE,
+  SCHOOL_MONITOR: SCHOOL_MONITOR_ROLE_PROFILE,
 } as const;

@@ -9,6 +9,14 @@ export const StaffProvisioningRoleKey = z.enum([
   "ACTIVITY_COORD",
   "MEDIA_SPECIALIST",
   "BOYS_STUDENT_GUIDE",
+  // منار بنات
+  "GIRLS_PRINCIPAL",
+  "GIRLS_VP",
+  "GIRLS_STUDENT_COUNSELOR",
+  "SCHOOL_MONITOR",
+  // روضة
+  "KG_PRINCIPAL",
+  "KG_VP",
 ]);
 
 export type StaffProvisioningRoleKey = z.infer<typeof StaffProvisioningRoleKey>;

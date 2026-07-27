@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { StaffHomeVisibleModule } from "@takween/domain";
@@ -59,7 +59,7 @@ const navItems: Array<{
   },
   {
     href: "/staff/classes",
-    label: "فصولي",
+    label: "الفصول",
     icon: School,
     moduleKey: "CLASSES",
   },
@@ -72,7 +72,7 @@ const navItems: Array<{
 
   {
     href: "/staff/students",
-    label: "طلابي",
+    label: "الطلاب",
     icon: Users,
     moduleKey: "STUDENTS",
   },
@@ -154,6 +154,19 @@ function isActiveHref(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function getRequiredModuleForPath(
+  pathname: string,
+): StaffHomeVisibleModule | "TASKS" | null {
+  const matchedItem = navItems
+    .filter((item) => item.href !== "/staff")
+    .sort((a, b) => b.href.length - a.href.length)
+    .find(
+      (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
+    );
+
+  return matchedItem?.moduleKey ?? null;
+}
+
 function StaffShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -164,9 +177,20 @@ function StaffShell({ children }: { children: ReactNode }) {
   const actorRole = getStaffActorPrimaryRole(actor);
   const stats = getStaffActorStats(actor);
 
-  const visibleModuleSet = new Set<StaffHomeVisibleModule>(
+  const visibleModuleSet = new Set<StaffHomeVisibleModule | "TASKS">(
   actor.visibleModules,
 );
+
+  const requiredModule = getRequiredModuleForPath(pathname);
+
+  const canAccessCurrentRoute =
+    !requiredModule || visibleModuleSet.has(requiredModule);
+
+  useEffect(() => {
+    if (!canAccessCurrentRoute) {
+      router.replace("/staff");
+    }
+  }, [canAccessCurrentRoute, router]);
 
   const hiddenFromAsideModuleKeys = new Set<StaffHomeVisibleModule | "TASKS">([
     "GAMIFICATION",
@@ -186,6 +210,10 @@ function StaffShell({ children }: { children: ReactNode }) {
 
   function handleChangeOrg() {
     router.push("/select-org");
+  }
+
+  if (!canAccessCurrentRoute) {
+    return null;
   }
 
   return (
@@ -234,7 +262,6 @@ function StaffShell({ children }: { children: ReactNode }) {
       </header>
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 py-4 md:grid-cols-[210px_1fr]">
-        
         <aside className="hidden rounded-2xl border border-border bg-card p-3 shadow-sm md:block">
           <div className="px-3 py-2">
             <p className="text-xs font-medium text-muted-foreground">
