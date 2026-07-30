@@ -147,6 +147,8 @@ export default function SubjectLessonPrepListPage() {
   const teacherAssignmentId = searchParams.get("teacherAssignmentId");
   const orgId = staffActor?.orgId || "";
 
+  const teacherPersonId = staffActor?.personId || staffActor?.uid || "";
+
   const preservedQuery = useMemo(() => {
     const next = new URLSearchParams(searchParams.toString());
 
@@ -172,7 +174,14 @@ export default function SubjectLessonPrepListPage() {
   )}${schoolId || academicYearId ? `?${buildQueryString(preservedQuery).slice(1)}` : ""}`;
 
   const loadRows = useCallback(async () => {
-    if (!orgId) {
+    if (
+      !orgId ||
+      !teacherPersonId ||
+      !schoolId ||
+      !academicYearId ||
+      !termId ||
+      !subjectKey
+    ) {
       setRows([]);
       setLoadError("لم يتم تحديد orgId من بيانات المستخدم.");
       setLoading(false);
@@ -186,7 +195,16 @@ export default function SubjectLessonPrepListPage() {
       const ref = collection(db, "orgs", orgId, "subjectLessonPreps");
 
       const snap = await getDocs(
-        query(ref, where("classSubjectOfferingId", "==", offeringId)),
+        query(
+          ref,
+          where("teacherPersonId", "==", teacherPersonId),
+          where("schoolId", "==", schoolId),
+          where("academicYearId", "==", academicYearId),
+          where("termId", "==", termId),
+          where("classId", "==", classId),
+          where("subjectKey", "==", subjectKey),
+          where("classSubjectOfferingId", "==", offeringId),
+        ),
       );
 
       const nextRows = snap.docs
@@ -220,7 +238,16 @@ export default function SubjectLessonPrepListPage() {
     } finally {
       setLoading(false);
     }
-  }, [orgId, offeringId, classId, schoolId, academicYearId, termId]);
+  }, [
+    orgId,
+    teacherPersonId,
+    offeringId,
+    classId,
+    schoolId,
+    academicYearId,
+    termId,
+    subjectKey,
+  ]);
 
   useEffect(() => {
     void loadRows();

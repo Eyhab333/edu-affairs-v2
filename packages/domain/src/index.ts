@@ -18,3 +18,4 @@ export * from "./school-activities";
 export * from "./guardian-finance/index";
 export * from "./staff-provisioning";
 export * from "./student-directory";
+export * from "./teacher-provisioning";

@@ -100,14 +100,25 @@ function isOrgWideMembership(membership: Membership): boolean {
   return (
     membership.orgId.length > 0 &&
     membership.isActive !== false &&
-    (
-      orgWideRoles.has(roleKey ?? "") ||
+    (orgWideRoles.has(roleKey ?? "") ||
       membership.permissions?.manageOrg === true ||
       membership.permissions?.manageSchools === true ||
       membership.permissions?.manageDirectory === true ||
-      membership.scopes?.canAccessAllSchools === true
-    )
+      membership.scopes?.canAccessAllSchools === true)
   );
+}
+
+const TEACHER_MEMBERSHIP_ROLE_KEYS = new Set<string>([
+  "teacher",
+  "BOYS_TEACHER",
+  "GIRLS_TEACHER",
+  "KG_TEACHER",
+]);
+
+function isTeacherMembership(membership: Membership): boolean {
+  const roleKey = membership.roleKey ?? membership.role;
+
+  return TEACHER_MEMBERSHIP_ROLE_KEYS.has(roleKey ?? "");
 }
 
 function membershipAllowsClass(
@@ -118,6 +129,15 @@ function membershipAllowsClass(
   if (membership.orgId !== classItem.orgId) return false;
 
   if (isOrgWideMembership(membership)) return true;
+
+  /*
+   * عضوية المعلم تحدد هويته ودوره فقط.
+   * الفصول المسموحة له تأتي من TeacherAssignment،
+   * حتى لا يمنحه schoolId كل فصول المدرسة.
+   */
+  if (isTeacherMembership(membership)) {
+    return false;
+  }
 
   const schoolIds = membership.scopes?.schoolIds ?? [];
   const gradeIds = membership.scopes?.gradeIds ?? [];
@@ -158,10 +178,7 @@ function operationalAssignmentAllowsClass(
 ): boolean {
   if (assignment.orgId !== classItem.orgId) return false;
 
-  if (
-    assignment.scopeType === "CLASS" &&
-    assignment.scopeId === classItem.id
-  ) {
+  if (assignment.scopeType === "CLASS" && assignment.scopeId === classItem.id) {
     return true;
   }
 
@@ -185,11 +202,12 @@ function operationalAssignmentAllowsClass(
   if (assignment.targetClassIds.includes(classItem.id)) return true;
 
   if (
-    classItem.gradeId &&
-    assignment.targetGradeIds.includes(classItem.gradeId)
-  ) {
-    return true;
-  }
+  assignment.coverageMode === "ALL_CLASSES_IN_SCOPE" &&
+  classItem.gradeId &&
+  assignment.targetGradeIds.includes(classItem.gradeId)
+) {
+  return true;
+}
 
   return false;
 }

@@ -1,0 +1,161 @@
+{
+  "generatedAt": "2026-07-30T13:32:31.419Z",
+  "orgId": "takween",
+  "summary": {
+    "totalRows": 21,
+    "requestedRepairs": 21,
+    "repaired": 21,
+    "unchanged": 0,
+    "failed": 0
+  },
+  "repaired": [
+    {
+      "email": "afnanf@qz.org.sa",
+      "uid": "5duXQ9CgfKdEW0mKtBjXfom1zhC2",
+      "personId": "p-afnanf",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "a.a.alsuwaykit@qz.org.sa",
+      "uid": "vwOoznxIKNPPfvM96UrZ7cKrgFy2",
+      "personId": "p-a-a-alsuwaykit",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "jawaherf@qz.org.sa",
+      "uid": "NjahF4KGkQZFjjizACbiVGDJXdn1",
+      "personId": "p-jawaherf",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "h.alsuwiket@qz.org.sa",
+      "uid": "9PWo3Z6bABXJOzjpWLoxbpEmotj2",
+      "personId": "p-h-alsuwiket",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "ma.almulifi@qz.org.sa",
+      "uid": "mfCYJPCpVEg1nu6mhCgjhX7ZBx82",
+      "personId": "p-ma-almulifi",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "d.alshammri@qz.org.sa",
+      "uid": "sbYBkuwnhFP93EXOxHNxUwciEaE2",
+      "personId": "p-d-alshammri",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "a.alfarhod@qz.org.sa",
+      "uid": "gA4d9DMAq6Sh2SfcIGB3JMshd6r2",
+      "personId": "p-a-alfarhod",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "l.alwazzan@qz.org.sa",
+      "uid": "IKblbdqf48gS0uyDGwmz3gDXI512",
+      "personId": "p-l-alwazzan",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "m.alosaimi@qz.org.sa",
+      "uid": "prkRgagih1hQd3djzy5n0Hb4CrY2",
+      "personId": "p-m-alosaimi",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "m.alfarhud@qz.org.sa",
+      "uid": "snJX8GoCItPwTHdXFIwclqElfVB3",
+      "personId": "p-m-alfarhud",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "h.albhlal@qz.org.sa",
+      "uid": "b2nudZwXRZdJp9eyrDMys9i7PpH2",
+      "personId": "p-h-albhlal",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "nedarf@qz.org.sa",
+      "uid": "AYPQfWZ8fMXEErt1HKQF1Rk1Ihr2",
+      "personId": "p-nedarf",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "amenam@qz.org.sa",
+      "uid": "Yu0Tq152kAgUL2tw0LeGW1nAMJK2",
+      "personId": "p-amenam",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "e.alturaiqi@qz.org.sa",
+      "uid": "YPLuwfPfBmW7EhOVrT0inc6Xgbn2",
+      "personId": "p-e-alturaiqi",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "l.almunifi@qz.org.sa",
+      "uid": "UwyG5A7L7TdChjVPJ5wco4hXCSJ2",
+      "personId": "p-l-almunifi",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "r.altwala@qz.org.sa",
+      "uid": "XYcR1ltAW6hmPZLYsRS1088OJhB3",
+      "personId": "p-r-altwala",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "mm.alfarhod@qz.org.sa",
+      "uid": "5ruHBNdp8hgbz8xiKleBURav5eg2",
+      "personId": "p-mm-alfarhod",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "l.alfrih@qz.org.sa",
+      "uid": "PRPuJeyquTaw9kZlhcS70rugZom2",
+      "personId": "p-l-alfrih",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "s-s-mnsor@qz.org.sa",
+      "uid": "Fsn3O3q5ooQDaYQfAvpSQmPLT9m1",
+      "personId": "p-s-s-mnsor",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "m-m-alduwaysh@qz.org.sa",
+      "uid": "Dlc8VZs1xZVAYxmmmnSnvPs00nw2",
+      "personId": "p-m-m-alduwaysh",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    },
+    {
+      "email": "na.alshaya@qz.org.sa",
+      "uid": "8WTpOW7ciJNl01WjHRgH3ouG0g62",
+      "personId": "p-na-alshaya",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER"
+    }
+  ],
+  "failures": []
+}

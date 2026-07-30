@@ -23,6 +23,12 @@ export type StaffProvisioningIdentityResolution = {
   personExists: boolean;
 };
 
+export type ProvisioningIdentityInput = {
+  orgId: string;
+  email: string;
+  nationalId?: string;
+};
+
 function isAuthUserNotFound(error: unknown) {
   return (
     typeof error === "object" &&
@@ -65,10 +71,22 @@ async function findSinglePersonId(params: {
   return snapshot.empty ? "" : snapshot.docs[0].id;
 }
 
-export async function resolveStaffProvisioningIdentity(
-  rawInput: StaffProvisioningInput,
+export async function resolveProvisioningIdentity(
+  rawInput: ProvisioningIdentityInput,
 ): Promise<StaffProvisioningIdentityResolution> {
-  const input = StaffProvisioningInputSchema.parse(rawInput);
+  const input = {
+    orgId: rawInput.orgId.trim(),
+    email: rawInput.email.trim().toLowerCase(),
+    nationalId: rawInput.nationalId?.trim() ?? "",
+  };
+
+  if (!input.orgId) {
+    throw new Error("orgId مطلوب");
+  }
+
+  if (!input.email) {
+    throw new Error("email مطلوب");
+  }
 
   const db = getFirestore();
   const authUser = await findAuthUserByEmail(input.email);
@@ -140,4 +158,12 @@ export async function resolveStaffProvisioningIdentity(
     authExists: authUser !== null,
     personExists: false,
   };
+}
+
+export async function resolveStaffProvisioningIdentity(
+  rawInput: StaffProvisioningInput,
+): Promise<StaffProvisioningIdentityResolution> {
+  const input = StaffProvisioningInputSchema.parse(rawInput);
+
+  return resolveProvisioningIdentity(input);
 }

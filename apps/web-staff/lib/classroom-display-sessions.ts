@@ -111,7 +111,6 @@ export async function createClassroomDisplaySession(
   return session;
 }
 
-
 export async function updateClassroomDisplaySessionStatus(input: {
   orgId: string;
   sessionId: string;
@@ -139,6 +138,7 @@ export async function findReusableClassroomDisplaySession(input: {
   termId: string;
   classId: string;
   classSubjectOfferingId: string;
+  subjectKey: string;
 }) {
   const sessionsRef = collection(
     db,
@@ -146,7 +146,15 @@ export async function findReusableClassroomDisplaySession(input: {
   );
 
   const snapshot = await getDocs(
-    query(sessionsRef, where("status", "in", ["ACTIVE", "PAUSED"])),
+    query(
+      sessionsRef,
+      where("schoolId", "==", input.schoolId),
+      where("academicYearId", "==", input.academicYearId),
+      where("termId", "==", input.termId),
+      where("classId", "==", input.classId),
+      where("subjectKey", "==", input.subjectKey),
+      where("classSubjectOfferingId", "==", input.classSubjectOfferingId),
+    ),
   );
 
   const sessions: ClassroomDisplaySession[] = [];
@@ -162,6 +170,11 @@ export async function findReusableClassroomDisplaySession(input: {
     const session = parsed.data;
 
     if (session.isArchived) return;
+
+    if (session.status !== "ACTIVE" && session.status !== "PAUSED") {
+      return;
+    }
+
     if (session.schoolId !== input.schoolId) return;
     if (session.academicYearId !== input.academicYearId) return;
     if (session.termId !== input.termId) return;

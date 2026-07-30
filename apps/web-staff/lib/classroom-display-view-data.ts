@@ -12,9 +12,8 @@ import {
 import type {
   Class,
   ClassroomDisplaySession,
-  Person,
   School,
-  Student,
+  SchoolStudentDirectoryEntry,
   StudentEnrollment,
   StudentGamificationEvent,
 } from "@takween/contracts";
@@ -40,19 +39,6 @@ export type ClassroomDisplayViewData = {
   eventsCount: number;
 };
 
-function getStudentDisplayName(params: {
-  person: Person | null;
-  student: Student | null;
-  studentId: string;
-}) {
-  return (
-    params.person?.displayName ||
-    params.student?.id ||
-    params.studentId ||
-    "طالب"
-  );
-}
-
 function getNickname(fullName: string) {
   return fullName.trim().split(/\s+/)[0] || "طالب";
 }
@@ -64,32 +50,6 @@ function getInitials(fullName: string) {
     .slice(0, 2)
     .map((part) => part[0])
     .join("");
-}
-
-async function loadPerson(orgId: string, personId: string) {
-  if (!personId) return null;
-
-  const peopleRef = doc(db, `orgs/${orgId}/people/${personId}`);
-  const peopleSnap = await getDoc(peopleRef);
-
-  if (peopleSnap.exists()) {
-    return {
-      id: peopleSnap.id,
-      ...(peopleSnap.data() as Omit<Person, "id">),
-    } as Person;
-  }
-
-  const personsRef = doc(db, `orgs/${orgId}/persons/${personId}`);
-  const personsSnap = await getDoc(personsRef);
-
-  if (personsSnap.exists()) {
-    return {
-      id: personsSnap.id,
-      ...(personsSnap.data() as Omit<Person, "id">),
-    } as Person;
-  }
-
-  return null;
 }
 
 export async function loadClassroomDisplaySession(params: {
@@ -141,7 +101,6 @@ export function subscribeClassroomDisplaySession(
   );
 }
 
-
 export async function loadSchoolName(session: ClassroomDisplaySession) {
   const ref = doc(db, `orgs/${session.orgId}/schools/${session.schoolId}`);
   const snap = await getDoc(ref);
@@ -181,7 +140,13 @@ export async function loadClassStudents(session: ClassroomDisplaySession) {
   );
 
   const enrollmentsSnap = await getDocs(
-    query(enrollmentsRef, where("classId", "==", session.classId)),
+    query(
+      enrollmentsRef,
+      where("schoolId", "==", session.schoolId),
+      where("academicYearId", "==", session.academicYearId),
+      where("classId", "==", session.classId),
+      where("status", "==", "ACTIVE"),
+    ),
   );
 
   const enrollments = enrollmentsSnap.docs
@@ -198,29 +163,25 @@ export async function loadClassStudents(session: ClassroomDisplaySession) {
 
   const rows = await Promise.all(
     enrollments.map(async (enrollment) => {
-      const studentRef = doc(
+      const directoryRef = doc(
         db,
-        `orgs/${session.orgId}/students/${enrollment.studentId}`,
+        "orgs",
+        session.orgId,
+        "schools",
+        session.schoolId,
+        "studentDirectory",
+        enrollment.studentId,
       );
 
-      const studentSnap = await getDoc(studentRef);
+      const directorySnap = await getDoc(directoryRef);
 
-      const student = studentSnap.exists()
-        ? ({
-            id: studentSnap.id,
-            ...(studentSnap.data() as Omit<Student, "id">),
-          } as Student)
+      const directory = directorySnap.exists()
+        ? (directorySnap.data() as SchoolStudentDirectoryEntry)
         : null;
-
-      const person = await loadPerson(session.orgId, student?.personId ?? "");
 
       return {
         studentId: enrollment.studentId,
-        displayName: getStudentDisplayName({
-          person,
-          student,
-          studentId: enrollment.studentId,
-        }),
+        displayName: directory?.displayName || enrollment.studentId,
       };
     }),
   );
@@ -261,7 +222,6 @@ async function loadSessionGamificationEvents(session: ClassroomDisplaySession) {
     .sort((a, b) => (b.occurredAt ?? 0) - (a.occurredAt ?? 0));
 }
 
-
 export function subscribeSessionGamificationEvents(
   session: ClassroomDisplaySession,
   onChange: (events: StudentGamificationEvent[]) => void,
@@ -274,6 +234,11 @@ export function subscribeSessionGamificationEvents(
 
   const eventsQuery = query(
     eventsRef,
+    where("schoolId", "==", session.schoolId),
+    where("academicYearId", "==", session.academicYearId),
+    where("termId", "==", session.termId),
+    where("classId", "==", session.classId),
+    where("subjectKey", "==", session.subjectKey),
     where("classSubjectOfferingId", "==", session.classSubjectOfferingId),
   );
 
@@ -305,7 +270,6 @@ export function subscribeSessionGamificationEvents(
     onError,
   );
 }
-
 
 function buildPointsByStudentId(events: StudentGamificationEvent[]) {
   const map = new Map<string, number>();
@@ -343,7 +307,6 @@ export function toStudentInputs(params: {
   });
 }
 
-
 function readGamificationPointsDelta(data: Record<string, unknown>) {
   const candidates = [
     data.pointsDelta,
@@ -362,12 +325,8 @@ function readGamificationPointsDelta(data: Record<string, unknown>) {
 
     if (typeof value === "string") {
       const normalized = value
-        .replace(/[٠-٩]/g, (digit) =>
-          String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)),
-        )
-        .replace(/[۰-۹]/g, (digit) =>
-          String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)),
-        )
+        .replace(/[٠-٩]/g, (digit) => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
+        .replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)))
         .replace(/[^\d.-]/g, "");
 
       const parsed = Number(normalized);

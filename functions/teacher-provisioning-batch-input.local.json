@@ -1,0 +1,27 @@
+{
+  "orgId": "takween",
+  "schoolId": "mrb-boys-sayh",
+  "teachers": [
+    {
+      "displayName": "المعلم فلان",
+      "email": "a.brakat@qz.org.sa",
+      "nationalId": "2582391039",
+      "phone": "501018806",
+      "roleKey": "BOYS_TEACHER",
+      "title": "معلم",
+      "assignments": [
+        {
+          "academicYearId": "ay-1448",
+          "termId": "term-1",
+          "gradeId": "g1",
+          "classId": "g1-general-1",
+          "streamId": "",
+          "subjectKey": "ENGLISH",
+          "classSubjectOfferingId": "mrb-boys-sayh-g1-general-1-english"
+        }
+      ],
+      "additionalDuties": [],
+      "legacyTeacherAssignmentIdsToEnd": ["ta-brakat-g1-general-1"]
+    }
+  ]
+}

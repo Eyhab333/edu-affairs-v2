@@ -1,0 +1,216 @@
+{
+  "generatedAt": "2026-07-30T15:33:08.890Z",
+  "orgId": "takween",
+  "summary": {
+    "totalRows": 7,
+    "newAccounts": 0,
+    "existingComplete": 7,
+    "existingIncomplete": 0,
+    "conflicts": 0
+  },
+  "results": [
+    {
+      "rowNumber": 2,
+      "displayName": "ندى عبدالله الموسى",
+      "email": "n.almosa@qz.org.sa",
+      "employeeNumber": "KF100000147",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
+      "schoolExists": true,
+      "authExists": true,
+      "uid": "oSB81HJNmLZBZR35zA8qVTyqrBj2",
+      "peopleMatches": [
+        {
+          "id": "p-n-almosa",
+          "personId": "p-n-almosa",
+          "displayName": "ندى عبدالله الموسى"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "oSB81HJNmLZBZR35zA8qVTyqrBj2",
+          "personId": "p-n-almosa",
+          "displayName": "ندى عبدالله الموسى"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
+      "conflicts": []
+    },
+    {
+      "rowNumber": 3,
+      "displayName": "جواهر عبدالله دخيل الفهيد",
+      "email": "g.alfahid@qz.org.sa",
+      "employeeNumber": "KF100000148",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
+      "schoolExists": true,
+      "authExists": true,
+      "uid": "9mhPR9OFgQgyAPPPJGjEue7I1KE2",
+      "peopleMatches": [
+        {
+          "id": "p-g-alfahid",
+          "personId": "p-g-alfahid",
+          "displayName": "جواهر عبدالله دخيل الفهيد"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "9mhPR9OFgQgyAPPPJGjEue7I1KE2",
+          "personId": "p-g-alfahid",
+          "displayName": "جواهر عبدالله دخيل الفهيد"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
+      "conflicts": []
+    },
+    {
+      "rowNumber": 4,
+      "displayName": "انفال عبدالله أحمد السلمان",
+      "email": "an.alslman@qz.org.sa",
+      "employeeNumber": "KF100000149",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
+      "schoolExists": true,
+      "authExists": true,
+      "uid": "X8mIh8oLzrMPLliTH8vCP5I6Mn43",
+      "peopleMatches": [
+        {
+          "id": "p-an-alslman",
+          "personId": "p-an-alslman",
+          "displayName": "انفال عبدالله أحمد السلمان"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "X8mIh8oLzrMPLliTH8vCP5I6Mn43",
+          "personId": "p-an-alslman",
+          "displayName": "انفال عبدالله أحمد السلمان"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
+      "conflicts": []
+    },
+    {
+      "rowNumber": 5,
+      "displayName": "اروى يوسف احمد الطيار",
+      "email": "a.alttayar@qz.org.sa",
+      "employeeNumber": "KF100000150",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
+      "schoolExists": true,
+      "authExists": true,
+      "uid": "PfCXoWplJrhhkEJXxunVermH9co1",
+      "peopleMatches": [
+        {
+          "id": "p-a-alttayar",
+          "personId": "p-a-alttayar",
+          "displayName": "اروى يوسف احمد الطيار"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "PfCXoWplJrhhkEJXxunVermH9co1",
+          "personId": "p-a-alttayar",
+          "displayName": "اروى يوسف احمد الطيار"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
+      "conflicts": []
+    },
+    {
+      "rowNumber": 6,
+      "displayName": "ساره عبدالله علي البدر",
+      "email": "s.bader@qz.org.sa",
+      "employeeNumber": "KF100000151",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
+      "schoolExists": true,
+      "authExists": true,
+      "uid": "uy60CMhBPLUDXWRJ8NlmemfwfDe2",
+      "peopleMatches": [
+        {
+          "id": "p-s-bader",
+          "personId": "p-s-bader",
+          "displayName": "ساره عبدالله علي البدر"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "uy60CMhBPLUDXWRJ8NlmemfwfDe2",
+          "personId": "p-s-bader",
+          "displayName": "ساره عبدالله علي البدر"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
+      "conflicts": []
+    },
+    {
+      "rowNumber": 7,
+      "displayName": "نوره سليمان صالح الخنيني",
+      "email": "n.alkhunini@qz.org.sa",
+      "employeeNumber": "KF100000152",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
+      "schoolExists": true,
+      "authExists": true,
+      "uid": "MxbFiC4pOCgz4CTUqANyt1ySPSW2",
+      "peopleMatches": [
+        {
+          "id": "p-n-alkhunini",
+          "personId": "p-n-alkhunini",
+          "displayName": "نوره سليمان صالح الخنيني"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "MxbFiC4pOCgz4CTUqANyt1ySPSW2",
+          "personId": "p-n-alkhunini",
+          "displayName": "نوره سليمان صالح الخنيني"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
+      "conflicts": []
+    },
+    {
+      "rowNumber": 8,
+      "displayName": "شروق يوسف عبدالله الذويخ",
+      "email": "sh.aldhuwaikh@qz.org.sa",
+      "employeeNumber": "KF100000153",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
+      "schoolExists": true,
+      "authExists": true,
+      "uid": "L2TfIFKmkCV6ilLiOq6odsxe0lJ3",
+      "peopleMatches": [
+        {
+          "id": "p-sh-aldhuwaikh",
+          "personId": "p-sh-aldhuwaikh",
+          "displayName": "شروق يوسف عبدالله الذويخ"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "L2TfIFKmkCV6ilLiOq6odsxe0lJ3",
+          "personId": "p-sh-aldhuwaikh",
+          "displayName": "شروق يوسف عبدالله الذويخ"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
+      "conflicts": []
+    }
+  ]
+}

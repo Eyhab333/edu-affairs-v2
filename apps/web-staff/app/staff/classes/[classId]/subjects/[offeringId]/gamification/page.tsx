@@ -31,8 +31,7 @@ import type {
   GamificationBadge,
   GamificationReason,
   MembershipRole,
-  Person,
-  Student,
+  SchoolStudentDirectoryEntry,
   StudentEnrollment,
   StudentGamificationEvent,
   StudentGamificationEventType,
@@ -145,19 +144,6 @@ function getErrorMessage(error: unknown) {
   return "حدث خطأ غير متوقع";
 }
 
-function getStudentDisplayName(params: {
-  person: Person | null;
-  student: Student | null;
-  studentId: string;
-}) {
-  return (
-    params.person?.displayName ||
-    params.student?.id ||
-    params.studentId ||
-    "طالب"
-  );
-}
-
 function toggleSetItem(source: Set<string>, item: string) {
   const next = new Set(source);
 
@@ -236,7 +222,13 @@ async function loadClassStudents(params: {
   );
 
   const enrollmentsSnap = await getDocs(
-    query(enrollmentsRef, where("classId", "==", params.classId)),
+    query(
+      enrollmentsRef,
+      where("schoolId", "==", params.schoolId),
+      where("academicYearId", "==", params.academicYearId),
+      where("classId", "==", params.classId),
+      where("status", "==", "ACTIVE"),
+    ),
   );
 
   const enrollments = enrollmentsSnap.docs
@@ -268,44 +260,28 @@ async function loadClassStudents(params: {
 
   const rows = await Promise.all(
     enrollments.map(async (enrollment): Promise<StudentGamificationRow> => {
-      const studentRef = doc(
+      const directoryRef = doc(
         db,
-        `orgs/${params.orgId}/students/${enrollment.studentId}`,
+        "orgs",
+        params.orgId,
+        "schools",
+        params.schoolId,
+        "studentDirectory",
+        enrollment.studentId,
       );
-      const studentSnap = await getDoc(studentRef);
 
-      const student = studentSnap.exists()
-        ? ({
-            id: studentSnap.id,
-            ...(studentSnap.data() as Omit<Student, "id">),
-          } as Student)
+      const directorySnap = await getDoc(directoryRef);
+
+      const directory = directorySnap.exists()
+        ? (directorySnap.data() as SchoolStudentDirectoryEntry)
         : null;
-
-      const personId = student?.personId ?? "";
-
-      const person =
-        personId.length > 0
-          ? await getDoc(doc(db, `orgs/${params.orgId}/people/${personId}`))
-          : null;
-
-      const personData =
-        person && person.exists()
-          ? ({
-              id: person.id,
-              ...(person.data() as Omit<Person, "id">),
-            } as Person)
-          : null;
 
       return {
         studentId: enrollment.studentId,
         enrollmentId: enrollment.id,
-        personId,
-        displayName: getStudentDisplayName({
-          person: personData,
-          student,
-          studentId: enrollment.studentId,
-        }),
-        nationalId: personData?.nationalId,
+        personId: directory?.personId ?? "",
+        displayName: directory?.displayName || enrollment.studentId,
+        nationalId: directory?.nationalId ?? "",
         schoolId: enrollment.schoolId,
         academicYearId: enrollment.academicYearId,
         gradeId: enrollment.gradeId ?? "",
@@ -333,7 +309,15 @@ async function loadSubjectGamificationEvents(params: {
   );
 
   const eventsSnap = await getDocs(
-    query(eventsRef, where("classSubjectOfferingId", "==", params.offeringId)),
+    query(
+      eventsRef,
+      where("schoolId", "==", params.schoolId),
+      where("academicYearId", "==", params.academicYearId),
+      where("termId", "==", params.termId),
+      where("classId", "==", params.classId),
+      where("subjectKey", "==", params.subjectKey),
+      where("classSubjectOfferingId", "==", params.offeringId),
+    ),
   );
 
   return eventsSnap.docs
@@ -961,7 +945,7 @@ export default function SubjectGamificationPage() {
       toast.error("لا يمكن إنشاء تحفيز قبل تحديد الفصل الدراسي الحالي.");
       return;
     }
-    
+
     setSaving(true);
 
     try {

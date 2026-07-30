@@ -276,6 +276,7 @@ export function ClassroomDisplayLaunchCard({
           termId,
           classId,
           classSubjectOfferingId: offeringId,
+          subjectKey,
         });
 
         if (cancelled) return;
@@ -297,7 +298,15 @@ export function ClassroomDisplayLaunchCard({
     return () => {
       cancelled = true;
     };
-  }, [academicYearId, classId, offeringId, , orgId, schoolId, termId]);
+  }, [
+    academicYearId,
+    classId,
+    offeringId,
+    orgId,
+    schoolId,
+    subjectKey,
+    termId,
+  ]);
 
   async function handleLaunch() {
     if (!canLaunch) {
@@ -321,6 +330,7 @@ export function ClassroomDisplayLaunchCard({
         termId,
         classId,
         classSubjectOfferingId: offeringId,
+        subjectKey,
       });
 
       if (reusableSession) {

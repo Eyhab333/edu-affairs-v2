@@ -55,12 +55,12 @@ export default function StaffHomePage() {
               </p>
 
               <div className="flex flex-wrap gap-2 pt-2">
-                <Button asChild>
+                {/* <Button asChild>
                   <Link href="/staff/tasks">
                     فتح مهامي
                     <ArrowLeft className="size-4" />
                   </Link>
-                </Button>
+                </Button> */}
 
                 {/* <Button asChild variant="outline">
                   <Link href="/staff/classes">فتح فصولي</Link>
@@ -80,7 +80,7 @@ export default function StaffHomePage() {
         <InfoCard title="الدور" value={actorRole || "غير محدد"} />
         <InfoCard title="العضويات" value={stats.membershipsCount} />
         <InfoCard title="المدارس" value={stats.schoolsCount} />
-        <InfoCard title="الفصول المقروءة" value={stats.classesCount} />
+        {/* <InfoCard title="الفصول المقروءة" value={stats.classesCount} /> */}
         <InfoCard title="الفصول المرئية" value={stats.visibleClassesCount} />
       </section>
 
@@ -190,7 +190,7 @@ export default function StaffHomePage() {
         </Card>
       ) : null}
 
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>الوحدات المتاحة</CardTitle>
           <CardDescription>
@@ -207,9 +207,9 @@ export default function StaffHomePage() {
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
-      <section className="grid gap-4 lg:grid-cols-2">
+      {/* <section className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
@@ -299,7 +299,7 @@ export default function StaffHomePage() {
             )}
           </CardContent>
         </Card>
-      </section>
+      </section> */}
     </div>
   );
 }

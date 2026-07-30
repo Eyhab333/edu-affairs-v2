@@ -102,7 +102,8 @@ function findVisibleClass(params: {
     classes.find((item) => {
       if (item.id !== classId) return false;
       if (schoolId && item.schoolId !== schoolId) return false;
-      if (academicYearId && item.academicYearId !== academicYearId) return false;
+      if (academicYearId && item.academicYearId !== academicYearId)
+        return false;
       return true;
     }) ??
     classes.find((item) => {
@@ -221,7 +222,16 @@ export default function StaffClassHomeworkListPage() {
   const loadHomeworkAssignments = useCallback(async (): Promise<
     StudentHomeworkAssignment[]
   > => {
-    if (!actor?.orgId || !subjectKey) return [];
+    if (
+      !actor?.orgId ||
+      !subjectKey ||
+      !resolvedSchoolId ||
+      !resolvedAcademicYearId ||
+      !currentTerm?.id ||
+      !classSubjectOfferingId
+    ) {
+      return [];
+    }
 
     const ref = collection(
       db,
@@ -231,7 +241,15 @@ export default function StaffClassHomeworkListPage() {
     );
 
     const snap = await getDocs(
-      query(ref, where("subjectKey", "==", subjectKey)),
+      query(
+        ref,
+        where("schoolId", "==", resolvedSchoolId),
+        where("academicYearId", "==", resolvedAcademicYearId),
+        where("termId", "==", currentTerm.id),
+        where("classId", "==", classId),
+        where("subjectKey", "==", subjectKey),
+        where("classSubjectOfferingId", "==", classSubjectOfferingId),
+      ),
     );
 
     return snap.docs.map((docSnap) => {
@@ -274,13 +292,12 @@ export default function StaffClassHomeworkListPage() {
       });
   }, [
     actor?.orgId,
-    rawAssignments,
     resolvedSchoolId,
     resolvedAcademicYearId,
+    currentTerm?.id,
     classId,
     subjectKey,
     classSubjectOfferingId,
-    currentTerm?.id,
   ]);
 
   const stats = useMemo(() => {

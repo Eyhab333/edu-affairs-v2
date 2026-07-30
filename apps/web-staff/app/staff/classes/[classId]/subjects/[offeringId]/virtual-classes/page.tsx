@@ -238,8 +238,14 @@ export default function SubjectVirtualClassesPage() {
        * نستخدم فلترًا واحدًا فقط لتجنب الحاجة إلى Composite Index الآن.
        * ثم نفلتر باقي السياق في الذاكرة.
        */
+
       const sessionsQuery = query(
         sessionsRef,
+        where("schoolId", "==", schoolId),
+        where("academicYearId", "==", academicYearId),
+        where("termId", "==", termId),
+        where("classId", "==", classId),
+        where("subjectKey", "==", subjectKey),
         where("classSubjectOfferingId", "==", classSubjectOfferingId),
       );
 

@@ -14,8 +14,7 @@ import {
 } from "firebase/firestore";
 
 import type {
-  Person,
-  Student,
+  SchoolStudentDirectoryEntry,
   StudentEnrollment,
   StudentGamificationEvent,
 } from "@takween/contracts";
@@ -54,40 +53,7 @@ function getErrorMessage(error: unknown) {
   return "حدث خطأ غير متوقع";
 }
 
-function getTextField(source: unknown, keys: string[]) {
-  if (!source || typeof source !== "object") return "";
 
-  const record = source as Record<string, unknown>;
-
-  for (const key of keys) {
-    const value = record[key];
-
-    if (typeof value === "string" && value.trim().length > 0) {
-      return value.trim();
-    }
-  }
-
-  return "";
-}
-
-function getStudentDisplayName(params: {
-  person: Person | null;
-  student: Student | null;
-  studentId: string;
-}) {
-  return (
-    getTextField(params.person, ["displayName", "fullName", "nameAr", "name"]) ||
-    getTextField(params.student, [
-      "displayName",
-      "fullName",
-      "nameAr",
-      "name",
-      "studentName",
-    ]) ||
-    params.studentId ||
-    "طالب"
-  );
-}
 
 async function loadClassStudents(params: {
   orgId: string;
@@ -101,8 +67,18 @@ async function loadClassStudents(params: {
   );
 
   const enrollmentsSnap = await getDocs(
-    query(enrollmentsRef, where("classId", "==", params.classId)),
-  );
+  query(
+    enrollmentsRef,
+    where("schoolId", "==", params.schoolId),
+    where(
+      "academicYearId",
+      "==",
+      params.academicYearId,
+    ),
+    where("classId", "==", params.classId),
+    where("status", "==", "ACTIVE"),
+  ),
+);
 
   const enrollments = enrollmentsSnap.docs
     .map((item) => ({
@@ -132,44 +108,32 @@ async function loadClassStudents(params: {
     });
 
   const rows = await Promise.all(
-    enrollments.map(async (enrollment): Promise<StudentDisplayRow> => {
-      const studentRef = doc(
-        db,
-        `orgs/${params.orgId}/students/${enrollment.studentId}`,
-      );
-      const studentSnap = await getDoc(studentRef);
+    enrollments.map(
+  async (enrollment): Promise<StudentDisplayRow> => {
+    const directoryRef = doc(
+      db,
+      "orgs",
+      params.orgId,
+      "schools",
+      params.schoolId,
+      "studentDirectory",
+      enrollment.studentId,
+    );
 
-      const student = studentSnap.exists()
-        ? ({
-            id: studentSnap.id,
-            ...(studentSnap.data() as Omit<Student, "id">),
-          } as Student)
-        : null;
+    const directorySnap = await getDoc(directoryRef);
 
-      const personId = student?.personId ?? "";
+    const directory = directorySnap.exists()
+      ? (directorySnap.data() as SchoolStudentDirectoryEntry)
+      : null;
 
-      const person =
-        personId.length > 0
-          ? await getDoc(doc(db, `orgs/${params.orgId}/people/${personId}`))
-          : null;
-
-      const personData =
-        person && person.exists()
-          ? ({
-              id: person.id,
-              ...(person.data() as Omit<Person, "id">),
-            } as Person)
-          : null;
-
-      return {
-        studentId: enrollment.studentId,
-        displayName: getStudentDisplayName({
-          person: personData,
-          student,
-          studentId: enrollment.studentId,
-        }),
-      };
-    }),
+    return {
+      studentId: enrollment.studentId,
+      displayName:
+        directory?.displayName ||
+        enrollment.studentId,
+    };
+  },
+),
   );
 
   return rows.sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
@@ -190,8 +154,24 @@ async function loadSubjectGamificationEvents(params: {
   );
 
   const eventsSnap = await getDocs(
-    query(eventsRef, where("classSubjectOfferingId", "==", params.offeringId)),
-  );
+  query(
+    eventsRef,
+    where("schoolId", "==", params.schoolId),
+    where(
+      "academicYearId",
+      "==",
+      params.academicYearId,
+    ),
+    where("termId", "==", params.termId),
+    where("classId", "==", params.classId),
+    where("subjectKey", "==", params.subjectKey),
+    where(
+      "classSubjectOfferingId",
+      "==",
+      params.offeringId,
+    ),
+  ),
+);
 
   return eventsSnap.docs
     .map((item) => ({

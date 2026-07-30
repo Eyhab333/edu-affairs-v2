@@ -82,6 +82,15 @@ export const TeacherProvisioningBatchTeacherSchema = z
       .array(TeacherAdditionalDutySchema)
       .optional()
       .default([]),
+
+    /**
+     * إسنادات قديمة نريد إنهاءها صراحة عند تطبيق الدفعة.
+     * لا ينهي المحرك أي إسناد قديم غير مذكور هنا.
+     */
+    legacyTeacherAssignmentIdsToEnd: z
+      .array(NonEmptyStringSchema)
+      .optional()
+      .default([]),
   })
   .strict()
   .superRefine((teacher, ctx) => {
@@ -128,6 +137,22 @@ export const TeacherProvisioningBatchTeacherSchema = z
       }
 
       dutyKeys.add(key);
+    });
+
+    const legacyAssignmentIds = new Set<string>();
+
+    teacher.legacyTeacherAssignmentIdsToEnd.forEach((assignmentId, index) => {
+      if (legacyAssignmentIds.has(assignmentId)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `تكرر معرف الإسناد القديم: ${assignmentId}`,
+          path: ["legacyTeacherAssignmentIdsToEnd", index],
+        });
+
+        return;
+      }
+
+      legacyAssignmentIds.add(assignmentId);
     });
   });
 

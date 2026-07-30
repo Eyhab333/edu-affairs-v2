@@ -65,6 +65,10 @@ service cloud.firestore {
       return get(userProfilePath(request.auth.uid)).data.personId;
     }
 
+
+
+
+
     function hasSchoolAccess(orgId, schoolId) {
       return hasOrgMembership(orgId)
         && (
@@ -86,6 +90,33 @@ service cloud.firestore {
           )
         );
     }
+
+
+function hasAssignedClassSubjectAccess(
+  orgId,
+  sessionData
+) {
+  return hasOrgMembership(orgId)
+    && "scopes" in membershipData(orgId)
+    && membershipData(orgId).scopes is map
+
+    && "schoolIds" in membershipData(orgId).scopes
+    && membershipData(orgId).scopes.schoolIds is list
+    && sessionData.schoolId
+      in membershipData(orgId).scopes.schoolIds
+
+    && "classIds" in membershipData(orgId).scopes
+    && membershipData(orgId).scopes.classIds is list
+    && sessionData.classId
+      in membershipData(orgId).scopes.classIds
+
+    && "subjectKeys" in membershipData(orgId).scopes
+    && membershipData(orgId).scopes.subjectKeys is list
+    && sessionData.subjectKey
+      in membershipData(orgId).scopes.subjectKeys;
+}
+
+
 
 function canManageSchoolActivities(orgId, schoolId) {
   return canManageOrg(orgId)
@@ -466,8 +497,8 @@ function canManageSchoolEvaluations(orgId, schoolId) {
       )
     );
 
-  allow create: if canManageOrg(orgId)
-    || (
+       allow create: if canManageOrg(orgId)
+       || (
       request.resource.data.orgId == orgId
       && request.resource.data.schoolId is string
       && hasSchoolAccess(
@@ -533,6 +564,17 @@ function canManageSchoolEvaluations(orgId, schoolId) {
        * ==========================================================
        */
 
+match /virtualClassSessions/{sessionId} {
+  allow get, list: if canManageOrg(orgId)
+    || hasAssignedClassSubjectAccess(
+      orgId,
+      resource.data
+    );
+
+  allow create, update, delete: if false;
+}
+
+
       match /virtualClassParticipants/{participantId} {
         allow get, list: if canManageOrg(orgId)
           || (
@@ -572,6 +614,225 @@ function canManageSchoolEvaluations(orgId, schoolId) {
 
 
 
+/*
+ * Measurement template configuration
+ *
+ * القوالب بيانات إعداد غير حساسة.
+ * أي عضو نشط بالمؤسسة يستطيع قراءة القوالب،
+ * بينما إدارتها تظل للإدارة العامة فقط.
+ */
+
+match /studentAssessmentTemplates/{templateId} {
+  allow get, list: if hasOrgMembership(orgId);
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+match /studentTrackerTemplates/{templateId} {
+  allow get, list: if hasOrgMembership(orgId);
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+
+
+
+/*
+ * Question bank
+ *
+ * محتوى بنك الأسئلة متاح للقراءة لأعضاء المؤسسة.
+ * الإنشاء والتعديل سنربطهما لاحقًا بإسناد المادة وصاحب السؤال.
+ */
+
+match /questionBankItems/{questionId} {
+  allow get, list: if hasOrgMembership(orgId);
+
+  allow create, update, delete:
+    if canManageOrg(orgId);
+}
+
+
+
+
+
+match /studentHomeworkAssignments/{homeworkId} {
+  allow get, list: if canManageOrg(orgId)
+    || hasAssignedClassSubjectAccess(
+      orgId,
+      resource.data
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && hasAssignedClassSubjectAccess(
+        orgId,
+        request.resource.data
+      )
+      && request.resource.data.createdByPersonId
+        == currentUserPersonId()
+      && request.resource.data.status == "DRAFT"
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      hasAssignedClassSubjectAccess(
+        orgId,
+        resource.data
+      )
+      && resource.data.createdByPersonId
+        == currentUserPersonId()
+      && request.resource.data.createdByPersonId
+        == resource.data.createdByPersonId
+      && request.resource.data.schoolId
+        == resource.data.schoolId
+      && request.resource.data.academicYearId
+        == resource.data.academicYearId
+      && request.resource.data.termId
+        == resource.data.termId
+      && request.resource.data.classId
+        == resource.data.classId
+      && request.resource.data.subjectKey
+        == resource.data.subjectKey
+      && request.resource.data.classSubjectOfferingId
+        == resource.data.classSubjectOfferingId
+    );
+
+  allow delete: if false;
+}
+
+
+
+match /subjectLessonPreps/{lessonPrepId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      hasAssignedClassSubjectAccess(
+        orgId,
+        resource.data
+      )
+      && (
+        resource.data.teacherPersonId
+          == currentUserPersonId()
+        || resource.data.reviewerPersonId
+          == currentUserPersonId()
+      )
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && hasAssignedClassSubjectAccess(
+        orgId,
+        request.resource.data
+      )
+      && request.resource.data.teacherPersonId
+        == currentUserPersonId()
+      && request.resource.data.status == "DRAFT"
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      hasAssignedClassSubjectAccess(
+        orgId,
+        resource.data
+      )
+      && resource.data.teacherPersonId
+        == currentUserPersonId()
+      && request.resource.data.teacherPersonId
+        == resource.data.teacherPersonId
+
+      && request.resource.data.schoolId
+        == resource.data.schoolId
+      && request.resource.data.academicYearId
+        == resource.data.academicYearId
+      && request.resource.data.termId
+        == resource.data.termId
+      && request.resource.data.classId
+        == resource.data.classId
+      && request.resource.data.subjectKey
+        == resource.data.subjectKey
+      && request.resource.data.classSubjectOfferingId
+        == resource.data.classSubjectOfferingId
+
+      && (
+        (
+          resource.data.status == "DRAFT"
+          && request.resource.data.status
+            in ["DRAFT", "SUBMITTED"]
+        )
+        || (
+          resource.data.status == "RETURNED"
+          && request.resource.data.status
+            in ["RETURNED", "SUBMITTED"]
+        )
+      )
+    );
+
+  allow delete: if false;
+}
+
+
+
+
+
+
+match /studentHomeworkSubmissions/{submissionId} {
+  allow get, list: if canManageOrg(orgId)
+    || hasAssignedClassSubjectAccess(
+      orgId,
+      resource.data
+    );
+
+  /*
+   * عند نشر الواجب، المعلم ينشئ تسليمًا أوليًا لكل طالب.
+   */
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && hasAssignedClassSubjectAccess(
+        orgId,
+        request.resource.data
+      )
+      && request.resource.data.status == "NOT_STARTED"
+      && request.resource.data.answers.size() == 0
+      && request.resource.data.score == 0
+      && request.resource.data.gradedByPersonId == ""
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      hasAssignedClassSubjectAccess(
+        orgId,
+        resource.data
+      )
+      && request.resource.data.orgId
+        == resource.data.orgId
+      && request.resource.data.schoolId
+        == resource.data.schoolId
+      && request.resource.data.academicYearId
+        == resource.data.academicYearId
+      && request.resource.data.termId
+        == resource.data.termId
+      && request.resource.data.homeworkId
+        == resource.data.homeworkId
+      && request.resource.data.studentId
+        == resource.data.studentId
+      && request.resource.data.classId
+        == resource.data.classId
+      && request.resource.data.subjectKey
+        == resource.data.subjectKey
+      && request.resource.data.classSubjectOfferingId
+        == resource.data.classSubjectOfferingId
+    );
+
+  allow delete: if false;
+}
+
+
+
+
 match /studentMeasurementBatches/{batchId} {
   allow get, list: if canManageOrg(orgId)
     || (
@@ -597,7 +858,6 @@ match /studentMeasurementBatches/{batchId} {
 
   allow delete: if canManageOrg(orgId);
 }
-
 
 
 
@@ -1037,10 +1297,133 @@ match /schoolActivityResults/{resultId} {
 
 
 
+/*gamificationReasons*/
+
+match /gamificationReasons/{reasonId} {
+  allow get, list: if hasOrgMembership(orgId);
+  allow create, update, delete: if canManageOrg(orgId);
+}
+
+match /gamificationBadges/{badgeId} {
+  allow get, list: if hasOrgMembership(orgId);
+  allow create, update, delete: if canManageOrg(orgId);
+}
+
+match /gamificationLevelRules/{ruleId} {
+  allow get, list: if hasOrgMembership(orgId);
+  allow create, update, delete: if canManageOrg(orgId);
+}
+
+match /gamificationAchievementRules/{ruleId} {
+  allow get, list: if hasOrgMembership(orgId);
+  allow create, update, delete: if canManageOrg(orgId);
+}
 
 
 
-      /*
+
+
+match /studentGamificationEvents/{eventId} {
+  allow get, list: if canManageOrg(orgId)
+    || hasAssignedClassSubjectAccess(
+      orgId,
+      resource.data
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && hasAssignedClassSubjectAccess(
+        orgId,
+        request.resource.data
+      )
+      && request.resource.data.createdByPersonId
+        == currentUserPersonId()
+      && request.resource.data.status == "ACTIVE"
+    );
+
+  allow update, delete: if canManageOrg(orgId);
+}
+
+
+
+
+
+
+match /classroomDisplaySessions/{sessionId} {
+  allow get, list: if canManageOrg(orgId)
+    || hasAssignedClassSubjectAccess(
+      orgId,
+      resource.data
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && hasAssignedClassSubjectAccess(
+        orgId,
+        request.resource.data
+      )
+      && request.resource.data.startedByPersonId
+        == currentUserPersonId()
+      && request.resource.data.status == "ACTIVE"
+    );
+
+
+
+
+
+allow update: if canManageOrg(orgId)
+  || (
+    hasAssignedClassSubjectAccess(
+      orgId,
+      resource.data
+    )
+
+    && request.resource.data.orgId
+      == resource.data.orgId
+    && request.resource.data.schoolId
+      == resource.data.schoolId
+    && request.resource.data.academicYearId
+      == resource.data.academicYearId
+    && request.resource.data.termId
+      == resource.data.termId
+    && request.resource.data.classId
+      == resource.data.classId
+    && request.resource.data.subjectKey
+      == resource.data.subjectKey
+    && request.resource.data.classSubjectOfferingId
+      == resource.data.classSubjectOfferingId
+
+    && request.resource.data.status
+      in ["ACTIVE", "PAUSED", "ENDED"]
+
+    && request.resource.data
+      .diff(resource.data)
+      .affectedKeys()
+      .hasOnly([
+        "status",
+        "displayThemeKey",
+        "updatedAt",
+        "endedAt",
+        "lastHeartbeatAt"
+      ])
+  );
+
+  allow delete: if false;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
        * ==========================================================
        * Closed fallback
        *

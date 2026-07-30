@@ -122,6 +122,17 @@ export function buildStaffProvisioningPlan(
 
       orgId: input.orgId,
 
+      schoolId: input.schoolId,
+      // القيم فارغة لأن إسنادات الإداريين على مستوى المدرسة وليست مرتبطة بفصل أو مادة.
+      academicYearId: "",
+      termId: "",
+
+      gradeId: "",
+      classId: "",
+
+      subjectKey: "",
+      classSubjectOfferingId: "",
+
       title: operation.title,
       description: operation.description ?? "",
 

@@ -15,6 +15,12 @@
     "staff:batch:preview": "tsx src/staff-provisioning/run-staff-provisioning-batch-preview.ts",
     "staff:batch:apply": "tsx src/staff-provisioning/run-staff-provisioning-batch-apply.ts",
     "staff:batch:verify": "tsx src/staff-provisioning/run-staff-provisioning-batch-verify.ts",
+    "teacher:batch:preview": "tsx src/teacher-provisioning/run-teacher-provisioning-batch-preview.ts",
+    "teacher:inspect": "tsx src/teacher-provisioning/run-teacher-provisioning-inspect.ts",
+    "teacher:firestore-plan:preview": "tsx src/teacher-provisioning/run-teacher-provisioning-firestore-plan-preview.ts",
+    "teacher:change:preview": "tsx src/teacher-provisioning/run-teacher-provisioning-change-preview.ts",
+    "teacher:batch:apply": "tsx src/teacher-provisioning/run-teacher-provisioning-batch-apply.ts",
+    "teacher:batch:verify": "tsx src/teacher-provisioning/run-teacher-provisioning-batch-verify.ts",
     "student-directory:backfill:sayh": "tsx src/student-directory/run-school-student-directory-backfill.ts"
   },
   "dependencies": {

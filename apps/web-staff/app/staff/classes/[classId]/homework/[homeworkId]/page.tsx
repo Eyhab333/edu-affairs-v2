@@ -326,7 +326,9 @@ export default function StaffHomeworkDetailsPage() {
   const loadSubmissions = useCallback(async (): Promise<
     StudentHomeworkSubmission[]
   > => {
-    if (!actor?.orgId || !homeworkId) return [];
+    if (!actor?.orgId || !homeworkId || !assignment) {
+      return [];
+    }
 
     const ref = collection(
       db,
@@ -336,7 +338,20 @@ export default function StaffHomeworkDetailsPage() {
     );
 
     const snap = await getDocs(
-      query(ref, where("homeworkId", "==", homeworkId)),
+      query(
+        ref,
+        where("homeworkId", "==", homeworkId),
+        where("schoolId", "==", assignment.schoolId),
+        where("academicYearId", "==", assignment.academicYearId),
+        where("termId", "==", assignment.termId),
+        where("classId", "==", assignment.classId),
+        where("subjectKey", "==", assignment.subjectKey),
+        where(
+          "classSubjectOfferingId",
+          "==",
+          assignment.classSubjectOfferingId,
+        ),
+      ),
     );
 
     return snap.docs
@@ -351,7 +366,16 @@ export default function StaffHomeworkDetailsPage() {
         const bTime = b.submittedAt ?? b.updatedAt ?? b.createdAt ?? 0;
         return bTime - aTime;
       });
-  }, [actor?.orgId, homeworkId]);
+  }, [
+    actor?.orgId,
+    homeworkId,
+    assignment?.schoolId,
+    assignment?.academicYearId,
+    assignment?.termId,
+    assignment?.classId,
+    assignment?.subjectKey,
+    assignment?.classSubjectOfferingId,
+  ]);
 
   const {
     data: submissions,
