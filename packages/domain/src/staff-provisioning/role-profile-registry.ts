@@ -4,14 +4,14 @@ import { SCHOOL_LEADERSHIP_ROLE_PROFILES } from "./role-profiles/school-leadersh
 import { SCHOOL_ADMINISTRATION_ROLE_PROFILES } from "./role-profiles/school-administration";
 
 import type { StaffProvisioningRoleProfile } from "./types";
-
+import { SUPERVISION_ROLE_PROFILES } from "./role-profiles/supervision";
 
 
 
 export const STAFF_PROVISIONING_ROLE_PROFILES = {
   ...SCHOOL_LEADERSHIP_ROLE_PROFILES,
   ...SCHOOL_ADMINISTRATION_ROLE_PROFILES,
-  
+  ...SUPERVISION_ROLE_PROFILES,
 } satisfies Record<StaffProvisioningRoleKey, StaffProvisioningRoleProfile>;
 
 export function getStaffProvisioningRoleProfile(

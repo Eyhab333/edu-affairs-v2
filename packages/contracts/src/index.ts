@@ -126,6 +126,9 @@ export const MembershipRole = z.enum([
   "SCHOOL_MONITOR",
   "FINANCE_COLLECTOR",
 
+  "EDU_SUPERVISOR",
+  "VALUES_COORD",
+
   /**
    * Boys school roles
    */
@@ -261,6 +264,11 @@ export type UserProfile = z.infer<typeof UserProfileSchema>;
 
 export const MembershipScopesSchema = z.object({
   schoolIds: z.array(z.string()).default([]),
+   /**
+   * مجموعات المدارس الإدارية التي تم منها اشتقاق schoolIds.
+   * لا تعتمد قواعد Firestore عليها مباشرة.
+   */
+  scopeGroupIds: z.array(z.string()).default([]),
   gradeIds: z.array(z.string()).default([]),
   classIds: z.array(z.string()).default([]),
   subjectKeys: z.array(z.string()).default([]),
@@ -5783,3 +5791,5 @@ export * from "./staff-provisioning";
 
 export * from "./student-directory";
 export * from "./teacher-provisioning";
+
+export * from "./school-scope-groups";

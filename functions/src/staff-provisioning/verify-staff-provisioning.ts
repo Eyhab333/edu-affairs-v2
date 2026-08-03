@@ -1,12 +1,9 @@
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
-import {
-  StaffProvisioningInputSchema,
-  type StaffProvisioningInput,
-} from "@takween/contracts";
+import type { StaffProvisioningInput } from "@takween/contracts";
 import { buildStaffProvisioningPlan } from "@takween/domain";
-
+import { resolveStaffProvisioningScope } from "./resolve-staff-provisioning-scope";
 import { PROVISIONING_SOURCE } from "./apply-staff-provisioning";
 
 export type StaffProvisioningVerificationCheck = {
@@ -22,10 +19,23 @@ export type StaffProvisioningVerificationResult = {
   checks: StaffProvisioningVerificationCheck[];
 };
 
+function hasSameStrings(actual: unknown, expected: string[]) {
+  const actualStrings = Array.isArray(actual)
+    ? actual.filter((value): value is string => typeof value === "string")
+    : [];
+
+  return (
+    actualStrings.length === expected.length &&
+    expected.every((value) => actualStrings.includes(value))
+  );
+}
+
 export async function verifyStaffProvisioning(
   rawInput: StaffProvisioningInput,
 ): Promise<StaffProvisioningVerificationResult> {
-  const input = StaffProvisioningInputSchema.parse(rawInput);
+  const scope = await resolveStaffProvisioningScope(rawInput);
+
+  const input = scope.input;
 
   const auth = getAuth();
   const db = getFirestore();
@@ -47,9 +57,7 @@ export async function verifyStaffProvisioning(
   const userData = userSnapshot.data();
 
   const personId =
-    typeof userData?.personId === "string"
-      ? userData.personId.trim()
-      : "";
+    typeof userData?.personId === "string" ? userData.personId.trim() : "";
 
   checks.push({
     key: "USER_PROFILE",
@@ -97,9 +105,7 @@ export async function verifyStaffProvisioning(
       personSnapshot.exists &&
       personData?.displayName === input.displayName &&
       personData?.email === input.email,
-    message: personSnapshot.exists
-      ? "Person موجود ومربوط"
-      : "Person غير موجود",
+    message: personSnapshot.exists ? "Person موجود ومربوط" : "Person غير موجود",
   });
 
   checks.push({
@@ -115,29 +121,31 @@ export async function verifyStaffProvisioning(
       : "عضوية المؤسسة غير موجودة",
   });
 
-  const schoolIds = Array.isArray(
-    membershipData?.scopes?.schoolIds,
-  )
-    ? membershipData.scopes.schoolIds
-    : [];
-
   checks.push({
     key: "SCHOOL_SCOPE",
+
     passed:
-      membershipData?.scopeType === "SCHOOL" &&
-      membershipData?.scopeId === input.schoolId &&
-      schoolIds.length === 1 &&
-      schoolIds[0] === input.schoolId &&
-      membershipData?.scopes?.canAccessAllSchools === false,
-    message: "نطاق العضوية مقصور على المدرسة المحددة",
+      membershipSnapshot.exists &&
+      membershipData?.scopeType === plan.membership.scopeType &&
+      membershipData?.scopeId === scope.primarySchoolId &&
+      hasSameStrings(membershipData?.scopes?.schoolIds, scope.schoolIds) &&
+      hasSameStrings(
+        membershipData?.scopes?.scopeGroupIds,
+        scope.scopeGroupIds,
+      ) &&
+      membershipData?.scopes?.canAccessAllSchools ===
+        plan.membership.scopes.canAccessAllSchools,
+
+    message:
+      scope.schoolIds.length === 1
+        ? "نطاق العضوية مربوط بالمدرسة المحددة"
+        : `نطاق العضوية مربوط بـ ${scope.schoolIds.length} مدارس`,
   });
 
   const assignmentSnapshots = await Promise.all(
     plan.operationalAssignments.map((assignment) =>
       db
-        .doc(
-          `orgs/${input.orgId}/operationalAssignments/${assignment.id}`,
-        )
+        .doc(`orgs/${input.orgId}/operationalAssignments/${assignment.id}`)
         .get(),
     ),
   );
@@ -147,18 +155,19 @@ export async function verifyStaffProvisioning(
     const data = snapshot.data();
 
     checks.push({
-      key: `ASSIGNMENT_${assignment.operationKind}`,
+      key: `ASSIGNMENT_${assignment.schoolId}_${assignment.operationKind}`,
       passed:
         snapshot.exists &&
         data?.actorPersonId === personId &&
         data?.operationKind === assignment.operationKind &&
-        data?.scopeId === input.schoolId &&
+        data?.schoolId === assignment.schoolId &&
+        data?.scopeId === assignment.schoolId &&
         data?.isActive === true &&
         data?.status === "ACTIVE" &&
         data?.provisioningSource === PROVISIONING_SOURCE,
       message: snapshot.exists
-        ? `إسناد ${assignment.operationKind} موجود`
-        : `إسناد ${assignment.operationKind} غير موجود`,
+        ? `إسناد ${assignment.operationKind} موجود للمدرسة ${assignment.schoolId}`
+        : `إسناد ${assignment.operationKind} غير موجود للمدرسة ${assignment.schoolId}`,
     });
   });
 

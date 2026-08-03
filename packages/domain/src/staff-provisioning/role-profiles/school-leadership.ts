@@ -30,7 +30,7 @@ export const BOYS_VP_ROLE_PROFILE = {
   roleKey: "BOYS_VP",
 
   hierarchy: {
-    principalPersonIdSource: "INPUT_REQUIRED",
+    principalPersonIdSource: "NONE",
   },
   operations: SCHOOL_VP_OPERATIONS,
 } satisfies StaffProvisioningRoleProfile;
@@ -41,7 +41,7 @@ export const BOYS_EDU_VP_ROLE_PROFILE = {
   scope: SINGLE_SCHOOL_SCOPE,
 
   hierarchy: {
-    principalPersonIdSource: "INPUT_REQUIRED",
+    principalPersonIdSource: "NONE",
   },
 
   permissions: SCHOOL_EDU_VP_PERMISSIONS,

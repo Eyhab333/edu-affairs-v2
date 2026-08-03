@@ -39,6 +39,27 @@ function requireNonEmpty(value: string, fieldName: string) {
   return normalized;
 }
 
+function uniqueNonEmptyStrings(values: string[]) {
+  return Array.from(
+    new Set(values.map((value) => value.trim()).filter(Boolean)),
+  );
+}
+
+function resolveEffectiveSchoolIds(input: StaffProvisioningInput) {
+  const schoolIds = uniqueNonEmptyStrings([input.schoolId, ...input.schoolIds]);
+
+  if (schoolIds.length === 0) {
+    throw new Error(
+      [
+        "لم يتم حل نطاق المدارس قبل بناء خطة تجهيز الموظف.",
+        "يجب تحويل scopeGroupIds إلى schoolIds داخل طبقة Functions أولًا.",
+      ].join(" "),
+    );
+  }
+
+  return schoolIds;
+}
+
 function buildOperationalAssignmentId(params: {
   personId: string;
   schoolId: string;
@@ -62,10 +83,22 @@ export function buildStaffProvisioningPlan(
 
   const profile = getStaffProvisioningRoleProfile(input.roleKey);
 
+  const schoolIds = resolveEffectiveSchoolIds(input);
+
+  /*
+   * المدرسة الأساسية مطلوبة للتوافق مع الأكواد القديمة
+   * التي ما زالت تقرأ membership.scopeId.
+   *
+   * الصلاحية الفعلية تعتمد على scopes.schoolIds.
+   */
+  const primarySchoolId = input.schoolId.trim() || schoolIds[0];
+
   const principalPersonId =
     profile.hierarchy.principalPersonIdSource === "SELF"
       ? personId
-      : requireNonEmpty(input.principalPersonId, "principalPersonId");
+      : profile.hierarchy.principalPersonIdSource === "INPUT_REQUIRED"
+        ? requireNonEmpty(input.principalPersonId, "principalPersonId")
+        : "";
 
   const person: Person = {
     id: personId,
@@ -87,17 +120,20 @@ export function buildStaffProvisioningPlan(
     roleKey: profile.roleKey,
 
     title: input.title,
-    department: "إدارة المدرسة",
+    department: "الإشراف والإدارة التعليمية",
 
     scopeType: profile.scope.scopeType,
-    scopeId: input.schoolId,
+    scopeId: primarySchoolId,
 
     scopes: {
-      schoolIds: [input.schoolId],
+      schoolIds,
+      scopeGroupIds: uniqueNonEmptyStrings(input.scopeGroupIds),
+
       gradeIds: [],
       classIds: [],
       subjectKeys: [],
       routeIds: [],
+
       canAccessAllSchools: profile.scope.canAccessAllSchools,
     },
 
@@ -112,59 +148,66 @@ export function buildStaffProvisioningPlan(
     isActive: true,
   };
 
-  const operationalAssignments: OperationalAssignment[] =
-    profile.operations.map((operation) => ({
-      id: buildOperationalAssignmentId({
-        personId,
-        schoolId: input.schoolId,
+  /*
+   * كل عملية تشغيلية تُنشأ مرة مستقلة لكل مدرسة،
+   * حتى تظل التقييمات والتقارير والمهام مفصولة بواسطة schoolId.
+   */
+  const operationalAssignments: OperationalAssignment[] = schoolIds.flatMap(
+    (schoolId) =>
+      profile.operations.map((operation) => ({
+        id: buildOperationalAssignmentId({
+          personId,
+          schoolId,
+          operationKind: operation.operationKind,
+        }),
+
+        orgId: input.orgId,
+        schoolId,
+
+        // إسنادات الإداريين والمشرفين على مستوى المدرسة.
+        academicYearId: "",
+        termId: "",
+
+        gradeId: "",
+        classId: "",
+
+        subjectKey: "",
+        classSubjectOfferingId: "",
+
+        title: operation.title,
+        description: operation.description ?? "",
+
+        status: "ACTIVE",
+        isActive: true,
+
+        actorPersonId: personId,
+        actorMembershipId: "",
+        actorRoleKey: profile.roleKey,
+
         operationKind: operation.operationKind,
-      }),
 
-      orgId: input.orgId,
+        scopeType: profile.scope.scopeType,
+        scopeId: schoolId,
+        scopeLabel: schoolId,
 
-      schoolId: input.schoolId,
-      // القيم فارغة لأن إسنادات الإداريين على مستوى المدرسة وليست مرتبطة بفصل أو مادة.
-      academicYearId: "",
-      termId: "",
+        coverageMode: operation.coverageMode,
 
-      gradeId: "",
-      classId: "",
+        targetKind: operation.targetKind,
+        targetPersonIds: [],
+        targetStudentIds: [],
+        targetClassIds: [],
+        targetGradeIds: [],
+        targetRouteIds: [],
+        targetRoleKeys: [],
 
-      subjectKey: "",
-      classSubjectOfferingId: "",
+        permissions: operation.permissions,
 
-      title: operation.title,
-      description: operation.description ?? "",
+        sourceTeacherAssignmentId: "",
+        sourceMembershipId: "",
 
-      status: "ACTIVE",
-      isActive: true,
-
-      actorPersonId: personId,
-      actorMembershipId: "",
-      actorRoleKey: profile.roleKey,
-
-      operationKind: operation.operationKind,
-
-      scopeType: profile.scope.scopeType,
-      scopeId: input.schoolId,
-      scopeLabel: input.schoolId,
-
-      coverageMode: operation.coverageMode,
-
-      targetKind: operation.targetKind,
-      targetPersonIds: [],
-      targetStudentIds: [],
-      targetClassIds: [],
-      targetGradeIds: [],
-      targetRouteIds: [],
-      targetRoleKeys: [],
-
-      permissions: operation.permissions,
-
-      sourceTeacherAssignmentId: "",
-      sourceMembershipId: "",
-      note: "تم إنشاؤه بواسطة Staff Provisioning Engine",
-    }));
+        note: "تم إنشاؤه بواسطة Staff Provisioning Engine",
+      })),
+  );
 
   return {
     userProfile: {

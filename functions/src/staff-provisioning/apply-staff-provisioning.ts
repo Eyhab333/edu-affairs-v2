@@ -1,21 +1,16 @@
 import { randomBytes } from "node:crypto";
 
 import { getAuth } from "firebase-admin/auth";
-import {
-  getFirestore,
-  type DocumentSnapshot,
-} from "firebase-admin/firestore";
+import { getFirestore, type DocumentSnapshot } from "firebase-admin/firestore";
 
-import {
-  StaffProvisioningInputSchema,
-  type StaffProvisioningInput,
-} from "@takween/contracts";
+import { type StaffProvisioningInput } from "@takween/contracts";
 import { buildStaffProvisioningPlan } from "@takween/domain";
 
 import { resolveStaffProvisioningIdentity } from "./resolve-staff-provisioning-identity";
+import { resolveStaffProvisioningScope } from "./resolve-staff-provisioning-scope";
 
 export const PROVISIONING_SOURCE = "STAFF_PROVISIONING_ENGINE";
-const PROVISIONING_VERSION = 1;
+const PROVISIONING_VERSION = 2;
 
 export type ApplyStaffProvisioningResult = {
   uid: string;
@@ -38,37 +33,11 @@ function existingCreatedAt(snapshot: DocumentSnapshot, fallback: number) {
   return typeof value === "number" ? value : fallback;
 }
 
-async function ensureProvisioningScopeExists(params: {
-  orgId: string;
-  schoolId: string;
-}) {
-  const db = getFirestore();
-
-  const [orgSnapshot, schoolSnapshot] = await Promise.all([
-    db.doc(`orgs/${params.orgId}`).get(),
-    db.doc(`orgs/${params.orgId}/schools/${params.schoolId}`).get(),
-  ]);
-
-  if (!orgSnapshot.exists) {
-    throw new Error(`المؤسسة غير موجودة: ${params.orgId}`);
-  }
-
-  if (!schoolSnapshot.exists) {
-    throw new Error(
-      `المدرسة غير موجودة داخل المؤسسة: ${params.schoolId}`,
-    );
-  }
-}
-
 export async function applyStaffProvisioning(
   rawInput: StaffProvisioningInput,
 ): Promise<ApplyStaffProvisioningResult> {
-  const input = StaffProvisioningInputSchema.parse(rawInput);
-
-  await ensureProvisioningScopeExists({
-    orgId: input.orgId,
-    schoolId: input.schoolId,
-  });
+  const scope = await resolveStaffProvisioningScope(rawInput);
+  const input = scope.input;
 
   const identity = await resolveStaffProvisioningIdentity(input);
 
@@ -80,8 +49,7 @@ export async function applyStaffProvisioning(
   let initialPassword: string | undefined;
 
   if (!authUser) {
-    initialPassword =
-      input.initialPassword ?? generateTemporaryPassword();
+    initialPassword = input.initialPassword ?? generateTemporaryPassword();
 
     authUser = await auth.createUser({
       email: input.email,
@@ -94,9 +62,7 @@ export async function applyStaffProvisioning(
     authAction = "CREATED";
   } else {
     if (authUser.disabled) {
-      throw new Error(
-        `حساب Firebase Auth موجود لكنه معطل: ${input.email}`,
-      );
+      throw new Error(`حساب Firebase Auth موجود لكنه معطل: ${input.email}`);
     }
 
     if (authUser.displayName !== input.displayName) {
@@ -108,8 +74,7 @@ export async function applyStaffProvisioning(
 
   const uid = authUser.uid;
 
-  const personId =
-    identity.personId || `staff-${uid}`;
+  const personId = identity.personId || `staff-${uid}`;
 
   const plan = buildStaffProvisioningPlan({
     input,
@@ -119,13 +84,9 @@ export async function applyStaffProvisioning(
 
   const userRef = db.doc(`users/${uid}`);
 
-  const membershipRef = db.doc(
-    `users/${uid}/orgMemberships/${input.orgId}`,
-  );
+  const membershipRef = db.doc(`users/${uid}/orgMemberships/${input.orgId}`);
 
-  const personRef = db.doc(
-    `orgs/${input.orgId}/people/${personId}`,
-  );
+  const personRef = db.doc(`orgs/${input.orgId}/people/${personId}`);
 
   const assignmentCollection = db.collection(
     `orgs/${input.orgId}/operationalAssignments`,
@@ -149,7 +110,6 @@ export async function applyStaffProvisioning(
 
       return (
         data.provisioningSource === PROVISIONING_SOURCE &&
-        data.scopeId === input.schoolId &&
         !plannedAssignmentIds.has(document.id)
       );
     });
@@ -164,9 +124,7 @@ export async function applyStaffProvisioning(
     const assignmentSnapshots: DocumentSnapshot[] = [];
 
     for (const assignmentRef of assignmentRefs) {
-      assignmentSnapshots.push(
-        await transaction.get(assignmentRef),
-      );
+      assignmentSnapshots.push(await transaction.get(assignmentRef));
     }
 
     transaction.set(
@@ -228,16 +186,13 @@ export async function applyStaffProvisioning(
         {
           ...assignment,
 
-          schoolId: input.schoolId,
+          schoolId: assignment.schoolId,
 
           provisioningSource: PROVISIONING_SOURCE,
           provisioningRoleKey: input.roleKey,
           provisioningVersion: PROVISIONING_VERSION,
 
-          createdAt: existingCreatedAt(
-            assignmentSnapshots[index],
-            now,
-          ),
+          createdAt: existingCreatedAt(assignmentSnapshots[index], now),
           updatedAt: now,
         },
         { merge: true },
@@ -267,10 +222,12 @@ export async function applyStaffProvisioning(
 
     membershipPath: membershipRef.path,
 
-    operationalAssignmentIds:
-      plan.operationalAssignments.map((assignment) => assignment.id),
+    operationalAssignmentIds: plan.operationalAssignments.map(
+      (assignment) => assignment.id,
+    ),
 
-    deactivatedAssignmentIds:
-      assignmentsToDeactivate.map((document) => document.id),
+    deactivatedAssignmentIds: assignmentsToDeactivate.map(
+      (document) => document.id,
+    ),
   };
 }

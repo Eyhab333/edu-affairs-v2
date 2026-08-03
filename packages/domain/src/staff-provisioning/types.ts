@@ -25,7 +25,7 @@ export type StaffProvisioningOperationProfile = {
 };
 
 export type StaffProvisioningHierarchyProfile = {
-  principalPersonIdSource: "SELF" | "INPUT_REQUIRED";
+  principalPersonIdSource: "SELF" | "INPUT_REQUIRED" | "NONE";
 };
 
 
