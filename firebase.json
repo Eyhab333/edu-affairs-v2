@@ -8,7 +8,7 @@
   "functions": {
     "source": "functions",
     "runtime": "nodejs22",
-    "predeploy": ["pnpm --dir functions build"]
+    "predeploy": ["npm --prefix functions run build"]
   }
   
 }

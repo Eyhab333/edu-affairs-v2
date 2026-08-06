@@ -50,6 +50,7 @@ const DEFAULT_TEACHER_SCHOOL_POLICY: TeacherProvisioningSchoolPolicy = {
     "LESSON_PREP",
     "STUDENT_NOTES",
     "STUDENT_GAMIFICATION",
+    "STUDENT_CASE_REFERRAL",
     "VIRTUAL_CLASS",
   ],
 

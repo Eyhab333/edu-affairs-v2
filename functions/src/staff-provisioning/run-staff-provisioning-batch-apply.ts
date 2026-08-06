@@ -15,7 +15,7 @@ async function main() {
 
   const inputPath = resolve(
     process.cwd(),
-    "staff-provisioning-batch-input.local.json",
+    process.argv[2] || "staff-provisioning-batch-input.local.json",
   );
 
   const batchInput = StaffProvisioningBatchInputSchema.parse(

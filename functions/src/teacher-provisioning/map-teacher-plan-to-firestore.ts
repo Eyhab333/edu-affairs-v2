@@ -26,6 +26,7 @@ const OPERATION_TITLES: Partial<Record<OperationKind, string>> = {
   LESSON_PREP: "تحضير الدروس",
   STUDENT_NOTES: "ملاحظات الطلاب",
   STUDENT_GAMIFICATION: "تحفيز الطلاب",
+  STUDENT_CASE_REFERRAL: "إنشاء إحالات الطلاب",
   VIRTUAL_CLASS: "الفصول الافتراضية",
   TRANSPORT_ATTENDANCE: "متابعة حضور الباص",
 };
@@ -239,7 +240,9 @@ export function mapTeacherPlanToFirestore(
 
         description: routeScoped
           ? "إسناد إشراف على مسار باص محدد"
-          : "إسناد تشغيل مرتبط بفصل ومادة محددين",
+          : assignment.scopeType === "SCHOOL"
+            ? "صلاحية إنشاء إحالات طلاب المدرسة"
+            : "إسناد تشغيل مرتبط بفصل ومادة محددين",
 
         status: "ACTIVE",
         isActive: true,

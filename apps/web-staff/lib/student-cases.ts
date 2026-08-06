@@ -8,6 +8,7 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 
 import type {
   StudentCase,
@@ -19,7 +20,31 @@ import type {
 } from "@takween/contracts";
 import { StudentCaseEventSchema, StudentCaseSchema } from "@takween/contracts";
 
-import { db } from "@/lib/firebase";
+import { db, functions } from "@/lib/firebase";
+
+export type StudentCaseReferralRecipient = {
+  id: string;
+  personId: string;
+  displayName: string;
+  roleKey: string;
+  roleLabel: string;
+};
+
+export async function getStudentCaseReferralOptions(params: {
+  orgId: string;
+  schoolId: string;
+}): Promise<StudentCaseReferralRecipient[]> {
+  const callable = httpsCallable<
+    typeof params,
+    {
+      ok: true;
+      schoolId: string;
+      recipients: StudentCaseReferralRecipient[];
+    }
+  >(functions, "getStudentCaseReferralOptions");
+  const result = await callable(params);
+  return result.data.recipients;
+}
 
 export type StudentCaseActorInput = {
   personId: string;

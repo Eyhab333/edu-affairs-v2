@@ -19,7 +19,13 @@ export { postGuardianPayment } from "./guardian-finance/post-guardian-payment";
 export { reverseGuardianPayment } from "./guardian-finance/reverse-guardian-payment";
 export { getGuardianFinanceWorkspace } from "./guardian-finance/get-guardian-finance-workspace";
 export { getMyGuardianFinanceOverview } from "./guardian-finance/get-my-guardian-finance-overview";
+export { approveEvaluationSubmission } from "./evaluations/approve-evaluation-submission";
+export { createPerformanceImprovementPlan } from "./evaluations/create-performance-improvement-plan";
+export { updatePerformanceImprovementPlan } from "./evaluations/update-performance-improvement-plan";
+export { dismissPerformanceImprovementSignal } from "./evaluations/dismiss-performance-improvement-signal";
+export { updatePerformanceImprovementSettings } from "./evaluations/update-performance-improvement-settings";
 export * from "./student-directory";
+export { getStudentCaseReferralOptions } from "./student-cases/get-student-case-referral-options";
 
 export const functionsHealth = onRequest(
   {

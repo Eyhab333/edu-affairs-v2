@@ -179,6 +179,14 @@ function resolveModulesFromMemberships(params: {
     const roleKey = membership.roleKey ?? membership.role;
     const permissions = membership.permissions;
 
+    if (
+      roleKey === "BOYS_TEACHER" ||
+      roleKey === "GIRLS_TEACHER" ||
+      roleKey === "KG_TEACHER"
+    ) {
+      modules.push("CASES", "STUDENTS");
+    }
+
     const canAccessGuardianFinance =
       roleKey === "FINANCE_COLLECTOR" ||
       permissions.viewGuardianFinance ||

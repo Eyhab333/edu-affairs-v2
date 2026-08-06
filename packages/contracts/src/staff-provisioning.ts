@@ -17,6 +17,7 @@ export const StaffProvisioningRoleKey = z.enum([
   "GIRLS_VP",
   "GIRLS_STUDENT_COUNSELOR",
   "SCHOOL_MONITOR",
+  "NURSERY_CAREGIVER",
 
   // روضة
   "KG_PRINCIPAL",

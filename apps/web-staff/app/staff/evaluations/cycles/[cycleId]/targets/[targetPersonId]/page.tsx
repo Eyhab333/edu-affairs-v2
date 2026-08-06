@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import {
   approveEvaluationSubmission,
@@ -26,6 +27,12 @@ export default function EvaluationSubmissionPage() {
   }>();
 
   const { user, checkingAuth } = useRequireAuth();
+  const { actor } = useStaffActor();
+
+  const schoolIds = useMemo(
+    () => actor.schools.map((school) => school.id),
+    [actor.schools],
+  );
 
   const [formData, setFormData] = useState<EvaluationSubmissionFormData | null>(
     null,
@@ -46,7 +53,7 @@ export default function EvaluationSubmissionPage() {
   const targetPersonId = params.targetPersonId;
 
   const loadForm = useCallback(async () => {
-    if (!user || !cycleId || !targetPersonId) return;
+    if (!user || !actor || !cycleId || !targetPersonId) return;
 
     setLoading(true);
     setError(null);
@@ -54,7 +61,8 @@ export default function EvaluationSubmissionPage() {
     try {
       const result = await loadEvaluationSubmissionForm({
         uid: user.uid,
-        orgId: "takween",
+        orgId: actor.orgId,
+        schoolIds,
         cycleId,
         targetPersonId,
       });
@@ -79,7 +87,7 @@ export default function EvaluationSubmissionPage() {
     } finally {
       setLoading(false);
     }
-  }, [user, cycleId, targetPersonId]);
+  }, [actor, user, schoolIds, cycleId, targetPersonId]);
 
   useEffect(() => {
     if (!checkingAuth && user) {
@@ -144,7 +152,7 @@ export default function EvaluationSubmissionPage() {
   }, [formData, scores]);
 
   const handleSaveDraft = async () => {
-    if (!user || !formData) return;
+    if (!user || !actor || !formData) return;
 
     setSaving(true);
     setError(null);
@@ -153,7 +161,8 @@ export default function EvaluationSubmissionPage() {
     try {
       const result = await saveEvaluationDraft({
         uid: user.uid,
-        orgId: "takween",
+        orgId: actor.orgId,
+        schoolIds,
         cycleId: formData.cycleId,
         targetPersonId: formData.targetPersonId,
         scores,
@@ -180,7 +189,7 @@ export default function EvaluationSubmissionPage() {
   };
 
   const handleSubmitEvaluation = async () => {
-    if (!user || !formData) return;
+    if (!user || !actor || !formData) return;
 
     const confirmed = window.confirm(
       "هل أنت متأكد من إرسال التقييم؟ بعد الإرسال ستصبح الحالة مرسل.",
@@ -195,7 +204,8 @@ export default function EvaluationSubmissionPage() {
     try {
       const result = await submitEvaluation({
         uid: user.uid,
-        orgId: "takween",
+        orgId: actor.orgId,
+        schoolIds,
         cycleId: formData.cycleId,
         targetPersonId: formData.targetPersonId,
         scores,
@@ -222,7 +232,7 @@ export default function EvaluationSubmissionPage() {
   };
 
   const handleApproveEvaluation = async () => {
-    if (!user || !formData) return;
+    if (!user || !actor || !formData) return;
 
     const confirmed = window.confirm(
       "هل أنت متأكد من اعتماد التقييم؟ بعد الاعتماد ستصبح النتيجة رسمية.",
@@ -237,7 +247,8 @@ export default function EvaluationSubmissionPage() {
     try {
       await approveEvaluationSubmission({
         uid: user.uid,
-        orgId: "takween",
+        orgId: actor.orgId,
+        schoolIds,
         cycleId: formData.cycleId,
         targetPersonId: formData.targetPersonId,
       });

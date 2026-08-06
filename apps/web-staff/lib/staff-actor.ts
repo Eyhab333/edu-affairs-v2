@@ -84,6 +84,7 @@ const emptyScopes: MembershipScopes = {
   schoolIds: [],
   gradeIds: [],
   classIds: [],
+  scopeGroupIds: [],
   subjectKeys: [],
   routeIds: [],
   canAccessAllSchools: false,

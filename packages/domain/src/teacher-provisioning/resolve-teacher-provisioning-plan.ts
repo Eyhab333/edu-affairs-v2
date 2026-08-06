@@ -498,6 +498,49 @@ function resolveBusOperations(params: {
   );
 }
 
+function resolveCaseReferralOperations(params: {
+  orgId: string;
+  schoolId: string;
+  personId: string;
+  teacher: TeacherProvisioningBatchTeacher;
+  policy: TeacherProvisioningSchoolPolicy;
+}): ResolvedTeacherOperationPlan[] {
+  if (!params.policy.allowedOperationKinds.includes("STUDENT_CASE_REFERRAL")) {
+    return [];
+  }
+
+  return [
+    {
+      id: buildStableId([
+        "teacher-provisioning",
+        params.personId,
+        params.schoolId,
+        "STUDENT_CASE_REFERRAL",
+      ]),
+      operationKind: "STUDENT_CASE_REFERRAL",
+      actorPersonId: params.personId,
+      actorRoleKey: params.teacher.roleKey,
+      orgId: params.orgId,
+      schoolId: params.schoolId,
+      academicYearId: "",
+      termId: "",
+      gradeId: "",
+      classId: "",
+      streamId: "",
+      subjectKey: "",
+      classSubjectOfferingId: "",
+      scopeType: "SCHOOL",
+      scopeId: params.schoolId,
+      targetKind: "CASE",
+      sourceType: "OPERATIONAL_ASSIGNMENT",
+      sourceId: "",
+      routeId: "",
+      active: true,
+      managedBy: "TEACHER_PROVISIONING",
+    },
+  ];
+}
+
 export function resolveTeacherProvisioningPlan(
   input: ResolveTeacherProvisioningPlanInput,
 ): ResolvedTeacherProvisioningPlan {
@@ -552,6 +595,14 @@ export function resolveTeacherProvisioningPlan(
     policy: input.policy,
   });
 
+  const caseReferralOperations = resolveCaseReferralOperations({
+    orgId: input.orgId,
+    schoolId: input.schoolId,
+    personId: input.personId,
+    teacher: input.teacher,
+    policy: input.policy,
+  });
+
   return {
     personId: input.personId,
     identity: {
@@ -598,6 +649,7 @@ export function resolveTeacherProvisioningPlan(
     operationalAssignments: [
       ...subjectOperations,
       ...busOperations,
+      ...caseReferralOperations,
     ],
 
     additionalDuties: input.teacher.additionalDuties,

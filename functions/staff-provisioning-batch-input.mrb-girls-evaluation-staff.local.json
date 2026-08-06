@@ -1,0 +1,31 @@
+{
+  "orgId": "takween",
+  "schoolId": "mrb-girls",
+  "principalPersonId": "p-n-albader",
+  "staff": [
+    {
+      "displayName": "روعه إبراهيم احمد عبدالله",
+      "email": "r.abdallah@qz.org.sa",
+      "roleKey": "NURSERY_CAREGIVER",
+      "title": "حاضنة"
+    },
+    {
+      "displayName": "هاجر إبراهيم احمدعبدالله",
+      "email": "h.abdallah@qz.org.sa",
+      "roleKey": "NURSERY_CAREGIVER",
+      "title": "حاضنة"
+    },
+    {
+      "displayName": "ريف فهد سعود المحترش",
+      "email": "r.almuhatrsh@qz.org.sa",
+      "roleKey": "MEDIA_SPECIALIST",
+      "title": "إعلامية"
+    },
+    {
+      "displayName": "مرام صالح جوير الفراج",
+      "email": "m.alfrraj@qz.org.sa",
+      "roleKey": "MEDIA_SPECIALIST",
+      "title": "إعلامية"
+    }
+  ]
+}

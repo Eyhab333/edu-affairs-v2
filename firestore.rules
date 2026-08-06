@@ -1155,6 +1155,45 @@ match /evaluationStaffSummaries/{summaryId} {
     if canManageOrg(orgId);
 }
 
+match /performanceImprovementSignals/{signalId} {
+  allow get, list: if resource.data.schoolId is string
+    && canManageSchoolEvaluations(
+      orgId,
+      resource.data.schoolId
+    );
+
+  allow create, update, delete: if false;
+}
+
+match /performanceImprovementSettings/{schoolId} {
+  allow get: if canManageSchoolEvaluations(orgId, schoolId);
+
+  allow list: if resource.data.schoolId is string
+    && canManageSchoolEvaluations(
+      orgId,
+      resource.data.schoolId
+    );
+
+  allow create, update, delete: if false;
+}
+
+match /performanceImprovementPlans/{planId} {
+  allow get, list: if resource.data.schoolId is string
+    && (
+      canManageSchoolEvaluations(
+        orgId,
+        resource.data.schoolId
+      )
+      || (
+        resource.data.targetPersonId
+          == currentUserPersonId()
+        && hasOrgMembership(orgId)
+      )
+    );
+
+  allow create, update, delete: if false;
+}
+
 
 /*threads*/
 match /threads/{threadId} {

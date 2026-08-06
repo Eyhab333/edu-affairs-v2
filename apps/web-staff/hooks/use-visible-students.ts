@@ -67,6 +67,7 @@ export type VisibleStudentPerson = {
 export type VisibleStudentRow = {
   id: string;
   studentId: string;
+  personId: string;
   enrollmentId: string;
 
   displayName: string;
@@ -242,6 +243,7 @@ async function getStudentFromDirectory(params: {
   return {
     id: `${enrollment.id}:${enrollment.studentId}`,
     studentId: enrollment.studentId,
+    personId: directory?.personId ?? "",
     enrollmentId: enrollment.id,
 
     displayName: directory?.displayName || enrollment.studentId,

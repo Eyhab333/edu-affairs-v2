@@ -124,6 +124,7 @@ export const MembershipRole = z.enum([
   "HR_SPECIALIST",
   "ACTIVITY_COORD",
   "SCHOOL_MONITOR",
+  "NURSERY_CAREGIVER",
   "FINANCE_COLLECTOR",
 
   "EDU_SUPERVISOR",
@@ -5782,6 +5783,7 @@ export const ImportTemplatesSchema = z.object({
 export type ImportTemplates = z.infer<typeof ImportTemplatesSchema>;
 
 export * from "./staff-evaluations";
+export * from "./performance-improvement";
 export * from "./student-cases";
 export * from "./transport";
 export * from "./school-activities";

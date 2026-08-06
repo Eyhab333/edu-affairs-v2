@@ -94,6 +94,20 @@ export const SCHOOL_MONITOR_ROLE_PROFILE = {
   operations: SCHOOL_MONITOR_OPERATIONS,
 } satisfies StaffProvisioningRoleProfile;
 
+export const NURSERY_CAREGIVER_ROLE_PROFILE = {
+  roleKey: "NURSERY_CAREGIVER",
+
+  scope: SINGLE_SCHOOL_SCOPE,
+
+  hierarchy: {
+    principalPersonIdSource: "INPUT_REQUIRED",
+  },
+
+  permissions: NO_MEMBERSHIP_PERMISSIONS,
+
+  operations: [],
+} satisfies StaffProvisioningRoleProfile;
+
 
 
 export const SCHOOL_ADMINISTRATION_ROLE_PROFILES = {
@@ -104,4 +118,5 @@ export const SCHOOL_ADMINISTRATION_ROLE_PROFILES = {
 
   GIRLS_STUDENT_COUNSELOR: GIRLS_STUDENT_COUNSELOR_ROLE_PROFILE,
   SCHOOL_MONITOR: SCHOOL_MONITOR_ROLE_PROFILE,
+  NURSERY_CAREGIVER: NURSERY_CAREGIVER_ROLE_PROFILE,
 } as const;

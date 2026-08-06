@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 
+import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { Button } from "@/components/ui/button";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import {
@@ -27,6 +28,12 @@ function formatDate(value?: number) {
 export default function MyEvaluationDetailPage() {
   const params = useParams<{ cycleId: string }>();
   const { user, checkingAuth } = useRequireAuth();
+  const { actor } = useStaffActor();
+
+  const schoolIds = useMemo(
+    () => actor.schools.map((school) => school.id),
+    [actor.schools],
+  );
 
   const [view, setView] = useState<MyEvaluationDetailView | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +42,7 @@ export default function MyEvaluationDetailPage() {
   const cycleId = params.cycleId;
 
   const loadView = useCallback(async () => {
-    if (!user || !cycleId) return;
+    if (!user || !actor || !cycleId) return;
 
     setLoading(true);
     setError(null);
@@ -43,8 +50,9 @@ export default function MyEvaluationDetailPage() {
     try {
       const result = await buildMyEvaluationDetailView({
         uid: user.uid,
-        orgId: "takween",
+        orgId: actor.orgId,
         cycleId,
+        schoolIds,
       });
 
       setView(result);
@@ -56,7 +64,7 @@ export default function MyEvaluationDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [user, cycleId]);
+  }, [actor, user, cycleId, schoolIds]);
 
   useEffect(() => {
     if (!checkingAuth && user) {

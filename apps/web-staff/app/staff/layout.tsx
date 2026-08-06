@@ -19,6 +19,7 @@ import {
   CalendarDays,
   Ruler,
   TrendingDown,
+  TrendingUp,
   UserCheck,
   UsersRound,
 } from "lucide-react";
@@ -127,6 +128,12 @@ const navItems: Array<{
     href: "/staff/my-evaluations",
     label: "التقييمات",
     icon: GraduationCap,
+    moduleKey: "MY_EVALUATIONS",
+  },
+  {
+    href: "/staff/performance-improvement",
+    label: "خطط تحسين الأداء",
+    icon: TrendingUp,
     moduleKey: "MY_EVALUATIONS",
   },
   {

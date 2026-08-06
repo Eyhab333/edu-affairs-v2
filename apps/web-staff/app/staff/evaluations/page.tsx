@@ -12,23 +12,9 @@ import {
   StaffEvaluationTask,
   StaffEvaluationWorkspace,
 } from "@/lib/staff-evaluations";
-import { CheckCircle2 } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Target } from "lucide-react";
 
-type WorkspaceTabKey =
-  | "teacher-weekly"
-  | "teacher-diagnostic"
-  | "admin"
-  | "other";
-
-type AdminCategoryKey =
-  | "all"
-  | "media"
-  | "admin-assistant"
-  | "activity-leader"
-  | "vice-principal"
-  | "student-counselor";
-
-type TeacherTaskGroup = {
+type PersonTaskGroup = {
   key: string;
   displayName: string;
   email: string;
@@ -38,46 +24,21 @@ type TeacherTaskGroup = {
   draft: number;
   submitted: number;
   approved: number;
+  performanceImprovementStatus?: "NEEDS_REVIEW" | "PLAN_OPEN";
 };
 
-const TABS: Array<{
-  key: WorkspaceTabKey;
-  label: string;
-  description: string;
-}> = [
-  {
-    key: "teacher-weekly",
-    label: "المعلمون - تقييم المدير",
-    description: "متابعة تقييمات المدير للمعلمين خلال الفصل الدراسي.",
-  },
-  {
-    key: "teacher-diagnostic",
-    label: "المعلمون - تشخيصي",
-    description: "متابعة الزيارات أو التقييمات التشخيصية للمعلمين.",
-  },
-  {
-    key: "admin",
-    label: "الإداريون",
-    description: "متابعة تقييمات الإداريين والموظفين غير المعلمين.",
-  },
-  {
-    key: "other",
-    label: "أخرى",
-    description: "أي تقييمات لا تنتمي للتصنيفات الأساسية.",
-  },
-];
-
-const ADMIN_CATEGORIES: Array<{
-  key: AdminCategoryKey;
-  label: string;
-}> = [
-  { key: "all", label: "الكل" },
-  { key: "media", label: "الإعلامي" },
-  { key: "admin-assistant", label: "المساعد الإداري" },
-  { key: "activity-leader", label: "رائد النشاط" },
-  { key: "vice-principal", label: "وكيل المدرسة" },
-  { key: "student-counselor", label: "الموجه الطلابي" },
-];
+type EvaluationPlanGroup = {
+  id: string;
+  title: string;
+  frameworkTitle: string;
+  tasks: StaffEvaluationTask[];
+  people: number;
+  total: number;
+  pending: number;
+  draft: number;
+  submitted: number;
+  approved: number;
+};
 
 function SummaryCard({ title, value }: { title: string; value: number }) {
   return (
@@ -89,7 +50,9 @@ function SummaryCard({ title, value }: { title: string; value: number }) {
 }
 
 function getCycleOrder(task: StaffEvaluationTask) {
-  const match = task.cycleId.match(/week-(\d+)/);
+  const match = task.cycleId.match(
+    /(?:week|evaluation|visit|diagnostic|period)-(\d+)/,
+  );
   if (!match) return 9999;
 
   const value = Number(match[1]);
@@ -111,7 +74,7 @@ function getActionLabel(status: StaffEvaluationTask["status"]) {
   }
 }
 
-function getTeacherKey(task: StaffEvaluationTask) {
+function getTargetKey(task: StaffEvaluationTask) {
   const extended = task as StaffEvaluationTask & {
     targetPersonId?: string;
   };
@@ -119,133 +82,11 @@ function getTeacherKey(task: StaffEvaluationTask) {
   return extended.targetPersonId || task.targetEmail || task.targetDisplayName;
 }
 
-function getOptionalText(task: StaffEvaluationTask, key: string) {
-  const value = (task as unknown as Record<string, unknown>)[key];
-
-  return typeof value === "string" ? value : "";
-}
-
-function classifyTask(task: StaffEvaluationTask): WorkspaceTabKey {
-  const frameworkKind = getOptionalText(task, "frameworkKind");
-  const planKind = getOptionalText(task, "planKind");
-  const targetKind = getOptionalText(task, "targetKind");
-  const targetRoleKey = getOptionalText(task, "targetRoleKey");
-  const frameworkId = getOptionalText(task, "frameworkId");
-
-  const text = [
-    task.frameworkTitle,
-    task.planTitle,
-    task.planId,
-    task.cycleId,
-    frameworkId,
-    frameworkKind,
-    planKind,
-    targetKind,
-    targetRoleKey,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
-  const looksTeacher =
-    text.includes("teacher") ||
-    text.includes("معلم") ||
-    text.includes("المعلمين") ||
-    targetKind === "TEACHER";
-
-  const looksWeekly =
-    text.includes("weekly") ||
-    text.includes("week") ||
-    text.includes("أسبوع") ||
-    frameworkKind === "WEEKLY_TEACHER_EVALUATION";
-
-  const looksDiagnostic =
-    text.includes("diagnostic") ||
-    text.includes("classroom") ||
-    text.includes("تشخيص") ||
-    text.includes("زيارة") ||
-    frameworkKind === "CLASSROOM_VISIT";
-
-  const looksAdmin =
-    text.includes("admin") ||
-    text.includes("إداري") ||
-    text.includes("الإداريين") ||
-    targetKind === "ADMIN_STAFF";
-
-  if (looksTeacher && looksWeekly) return "teacher-weekly";
-  if (looksTeacher && looksDiagnostic) return "teacher-diagnostic";
-  if (looksAdmin) return "admin";
-
-  return "other";
-}
-
-function classifyAdminCategory(task: StaffEvaluationTask): AdminCategoryKey {
-  const frameworkId = getOptionalText(task, "frameworkId");
-  const targetRoleKey = getOptionalText(task, "targetRoleKey");
-  const targetRoleLabel = getOptionalText(task, "targetRoleLabel");
-
-  const text = [
-    frameworkId,
-    targetRoleKey,
-    targetRoleLabel,
-    task.frameworkTitle,
-    task.planTitle,
-    task.planId,
-    // task.targetDisplayName,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
-  if (
-    text.includes("media") ||
-    text.includes("إعلام") ||
-    text.includes("الإعلامي")
-  ) {
-    return "media";
-  }
-
-  if (
-    text.includes("assistant") ||
-    text.includes("مساعد") ||
-    text.includes("المساعد الإداري")
-  ) {
-    return "admin-assistant";
-  }
-
-  if (
-    text.includes("activity") ||
-    text.includes("رائد") ||
-    text.includes("نشاط")
-  ) {
-    return "activity-leader";
-  }
-
-  if (
-    text.includes("vice") ||
-    text.includes("principal") ||
-    text.includes("وكيل")
-  ) {
-    return "vice-principal";
-  }
-
-  if (
-    text.includes("counselor") ||
-    text.includes("موجه") ||
-    text.includes("إرشاد") ||
-    text.includes("طلابي")
-  ) {
-    return "student-counselor";
-  }
-
-  return "all";
-}
-
-function buildTeacherGroups(tasks: StaffEvaluationTask[]) {
-  const map = new Map<string, TeacherTaskGroup>();
+function buildPersonGroups(tasks: StaffEvaluationTask[]) {
+  const map = new Map<string, PersonTaskGroup>();
 
   for (const task of tasks) {
-    const key = getTeacherKey(task);
+    const key = getTargetKey(task);
     const existing = map.get(key);
 
     if (!existing) {
@@ -259,6 +100,7 @@ function buildTeacherGroups(tasks: StaffEvaluationTask[]) {
         draft: task.status === "DRAFT" ? 1 : 0,
         submitted: task.status === "SUBMITTED" ? 1 : 0,
         approved: task.status === "APPROVED" ? 1 : 0,
+        performanceImprovementStatus: task.performanceImprovementStatus,
       });
 
       continue;
@@ -271,6 +113,9 @@ function buildTeacherGroups(tasks: StaffEvaluationTask[]) {
     if (task.status === "DRAFT") existing.draft += 1;
     if (task.status === "SUBMITTED") existing.submitted += 1;
     if (task.status === "APPROVED") existing.approved += 1;
+    if (task.performanceImprovementStatus) {
+      existing.performanceImprovementStatus = task.performanceImprovementStatus;
+    }
   }
 
   return Array.from(map.values())
@@ -283,19 +128,38 @@ function buildTeacherGroups(tasks: StaffEvaluationTask[]) {
     .sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
 }
 
-function buildTabCounts(tasks: StaffEvaluationTask[]) {
-  const counts: Record<WorkspaceTabKey, number> = {
-    "teacher-weekly": 0,
-    "teacher-diagnostic": 0,
-    admin: 0,
-    other: 0,
-  };
+function buildPlanGroups(tasks: StaffEvaluationTask[]) {
+  const map = new Map<string, StaffEvaluationTask[]>();
 
   for (const task of tasks) {
-    counts[classifyTask(task)] += 1;
+    const current = map.get(task.planId);
+
+    if (current) {
+      current.push(task);
+    } else {
+      map.set(task.planId, [task]);
+    }
   }
 
-  return counts;
+  return Array.from(map.entries())
+    .map(([planId, planTasks]): EvaluationPlanGroup => {
+      const firstTask = planTasks[0];
+      const people = new Set(planTasks.map(getTargetKey)).size;
+
+      return {
+        id: planId,
+        title: firstTask.planTitle,
+        frameworkTitle: firstTask.frameworkTitle,
+        tasks: planTasks,
+        people,
+        total: planTasks.length,
+        pending: planTasks.filter((task) => task.status === "PENDING").length,
+        draft: planTasks.filter((task) => task.status === "DRAFT").length,
+        submitted: planTasks.filter((task) => task.status === "SUBMITTED").length,
+        approved: planTasks.filter((task) => task.status === "APPROVED").length,
+      };
+    })
+    .sort((left, right) => left.title.localeCompare(right.title, "ar"));
 }
 
 function EvaluationStatusBadge({
@@ -320,7 +184,7 @@ function EvaluationStatusBadge({
   );
 }
 
-function TeacherStatusSummary({ group }: { group: TeacherTaskGroup }) {
+function PersonStatusSummary({ group }: { group: PersonTaskGroup }) {
   return (
     <div className="mt-4 grid grid-cols-2 gap-2 text-sm md:grid-cols-4">
       <div className="rounded-xl border bg-background p-3">
@@ -353,15 +217,15 @@ export default function StaffEvaluationsPage() {
   const visibleSchoolIds = useMemo(() => {
     return Array.from(
       new Set(
-        (actor?.visibleClasses ?? [])
-          .map((item) => item.schoolId)
+        (actor?.schools ?? [])
+          .map((item) => item.id)
           .filter(
             (schoolId): schoolId is string =>
               typeof schoolId === "string" && schoolId.trim().length > 0,
           ),
       ),
     );
-  }, [actor?.visibleClasses]);
+  }, [actor?.schools]);
 
   const [workspace, setWorkspace] = useState<StaffEvaluationWorkspace | null>(
     null,
@@ -369,13 +233,10 @@ export default function StaffEvaluationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState<WorkspaceTabKey>("teacher-weekly");
-
-  const [activeAdminCategory, setActiveAdminCategory] =
-    useState<AdminCategoryKey>("all");
+  const [activePlanId, setActivePlanId] = useState<string | null>(null);
 
   const [searchText, setSearchText] = useState("");
-  const [expandedTeacherKey, setExpandedTeacherKey] = useState<string | null>(
+  const [expandedPersonKey, setExpandedPersonKey] = useState<string | null>(
     null,
   );
 
@@ -440,62 +301,31 @@ useEffect(() => {
 
   const tasks = workspace?.tasks ?? [];
 
-  const tabCounts = useMemo(() => buildTabCounts(tasks), [tasks]);
+  const planGroups = useMemo(() => buildPlanGroups(tasks), [tasks]);
 
-  const activeTabInfo = TABS.find((tab) => tab.key === activeTab) ?? TABS[0];
+  const activePlan = useMemo(
+    () => planGroups.find((plan) => plan.id === activePlanId) ?? planGroups[0],
+    [planGroups, activePlanId],
+  );
 
-  const baseTabTasks = useMemo(() => {
-    return tasks.filter((task) => classifyTask(task) === activeTab);
-  }, [tasks, activeTab]);
-
-  const adminCategoryCounts = useMemo(() => {
-    const counts: Record<AdminCategoryKey, number> = {
-      all: baseTabTasks.length,
-      media: 0,
-      "admin-assistant": 0,
-      "activity-leader": 0,
-      "vice-principal": 0,
-      "student-counselor": 0,
-    };
-
-    if (activeTab !== "admin") return counts;
-
-    for (const task of baseTabTasks) {
-      const category = classifyAdminCategory(task);
-
-      if (category !== "all") {
-        counts[category] += 1;
-      }
-    }
-
-    return counts;
-  }, [baseTabTasks, activeTab]);
-
-  const tabTasks = useMemo(() => {
-    if (activeTab !== "admin") return baseTabTasks;
-    if (activeAdminCategory === "all") return baseTabTasks;
-
-    return baseTabTasks.filter(
-      (task) => classifyAdminCategory(task) === activeAdminCategory,
-    );
-  }, [baseTabTasks, activeTab, activeAdminCategory]);
+  const activePlanTasks = activePlan?.tasks ?? [];
 
   const summary = useMemo(() => {
-    const groups = buildTeacherGroups(tabTasks);
+    const groups = buildPersonGroups(activePlanTasks);
 
     return {
       people: groups.length,
-      total: tabTasks.length,
-      pending: tabTasks.filter((task) => task.status === "PENDING").length,
-      draft: tabTasks.filter((task) => task.status === "DRAFT").length,
-      submitted: tabTasks.filter((task) => task.status === "SUBMITTED").length,
-      approved: tabTasks.filter((task) => task.status === "APPROVED").length,
+      total: activePlanTasks.length,
+      pending: activePlanTasks.filter((task) => task.status === "PENDING").length,
+      draft: activePlanTasks.filter((task) => task.status === "DRAFT").length,
+      submitted: activePlanTasks.filter((task) => task.status === "SUBMITTED").length,
+      approved: activePlanTasks.filter((task) => task.status === "APPROVED").length,
     };
-  }, [tabTasks]);
+  }, [activePlanTasks]);
 
-  const teacherGroups = useMemo(() => {
+  const personGroups = useMemo(() => {
     const search = searchText.trim().toLowerCase();
-    const groups = buildTeacherGroups(tabTasks);
+    const groups = buildPersonGroups(activePlanTasks);
 
     if (!search) return groups;
 
@@ -507,28 +337,33 @@ useEffect(() => {
 
       return haystack.includes(search);
     });
-  }, [tabTasks, searchText]);
+  }, [activePlanTasks, searchText]);
 
   useEffect(() => {
-    setExpandedTeacherKey(null);
-    setSearchText("");
-
-    if (activeTab !== "admin") {
-      setActiveAdminCategory("all");
+    if (
+      planGroups.length > 0 &&
+      !planGroups.some((plan) => plan.id === activePlanId)
+    ) {
+      setActivePlanId(planGroups[0].id);
     }
-  }, [activeTab]);
+  }, [planGroups, activePlanId]);
 
   useEffect(() => {
-    if (!expandedTeacherKey) return;
+    setExpandedPersonKey(null);
+    setSearchText("");
+  }, [activePlanId]);
 
-    const stillExists = teacherGroups.some(
-      (group) => group.key === expandedTeacherKey,
+  useEffect(() => {
+    if (!expandedPersonKey) return;
+
+    const stillExists = personGroups.some(
+      (group) => group.key === expandedPersonKey,
     );
 
     if (!stillExists) {
-      setExpandedTeacherKey(null);
+      setExpandedPersonKey(null);
     }
-  }, [teacherGroups, expandedTeacherKey]);
+  }, [personGroups, expandedPersonKey]);
 
   if (checkingAuth || loading) {
     return (
@@ -561,50 +396,84 @@ useEffect(() => {
           <div className="space-y-2">
             <h1 className="text-2xl font-bold">مساحة التقييمات</h1>
             <p className="text-sm text-muted-foreground">
-              اختر نوع التقييم أولًا، ثم ابحث عن الشخص المطلوب وافتح تقييماته.
+              اختر خطة التقييم، ثم ابحث عن الشخص المطلوب وافتح دورته الحالية.
             </p>
           </div>
 
           <Button variant="outline" onClick={() => void loadWorkspace()}>
             تحديث
           </Button>
+          <Button asChild variant="outline">
+            <Link href="/staff/performance-improvement">
+              <Target className="size-4" /> خطط تحسين الأداء
+            </Link>
+          </Button>
         </div>
       </section>
 
-      <section className="rounded-3xl border bg-card p-3 shadow-sm">
-        <div className="grid gap-2 md:grid-cols-4">
-          {TABS.map((tab) => {
-            const isActive = activeTab === tab.key;
-
-            return (
-              <button
-                key={tab.key}
-                type="button"
-                onClick={() => setActiveTab(tab.key)}
-                className={[
-                  "rounded-2xl border p-4 text-right transition",
-                  isActive
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "bg-background hover:bg-muted",
-                ].join(" ")}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <span className="font-bold">{tab.label}</span>
-                  <span
-                    className={[
-                      "rounded-full px-2 py-0.5 text-xs",
-                      isActive
-                        ? "bg-primary-foreground/20"
-                        : "border bg-card text-muted-foreground",
-                    ].join(" ")}
-                  >
-                    {tabCounts[tab.key]}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
+      <section className="rounded-3xl border bg-card p-5 shadow-sm">
+        <div className="mb-4">
+          <h2 className="text-lg font-bold">خطط التقييم المسندة إليك</h2>
+          <p className="text-sm text-muted-foreground">
+            تظهر هذه الكروت تلقائيًا حسب التقييمات المسندة لك.
+          </p>
         </div>
+
+        {planGroups.length === 0 ? (
+          <div className="rounded-2xl border border-dashed p-5 text-sm text-muted-foreground">
+            لا توجد خطط تقييم مسندة إليك حاليًا.
+          </div>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {planGroups.map((plan) => {
+              const isActive = activePlan?.id === plan.id;
+              const remaining = plan.pending + plan.draft;
+
+              return (
+                <button
+                  key={plan.id}
+                  type="button"
+                  onClick={() => setActivePlanId(plan.id)}
+                  className={[
+                    "rounded-2xl border p-5 text-right transition",
+                    isActive
+                      ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                      : "bg-background hover:border-primary/50 hover:bg-muted/40",
+                  ].join(" ")}
+                >
+                  <div className="font-bold">{plan.title}</div>
+                  {plan.frameworkTitle !== plan.title ? (
+                    <div
+                      className={[
+                        "mt-1 text-xs",
+                        isActive
+                          ? "text-primary-foreground/80"
+                          : "text-muted-foreground",
+                      ].join(" ")}
+                    >
+                      {plan.frameworkTitle}
+                    </div>
+                  ) : null}
+
+                  <div className="mt-4 flex flex-wrap gap-2 text-xs">
+                    <span className="rounded-full border border-current/20 px-2.5 py-1">
+                      {plan.people} أشخاص
+                    </span>
+                    <span className="rounded-full border border-current/20 px-2.5 py-1">
+                      المتبقي {remaining}
+                    </span>
+                    <span className="rounded-full border border-current/20 px-2.5 py-1">
+                      مرسل {plan.submitted}
+                    </span>
+                    <span className="rounded-full border border-current/20 px-2.5 py-1">
+                      معتمد {plan.approved}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       <section className="grid gap-4 md:grid-cols-6">
@@ -618,38 +487,13 @@ useEffect(() => {
 
       <section className="rounded-3xl border bg-card p-6 shadow-sm">
         <div className="mb-4">
-          <h2 className="text-lg font-bold">{activeTabInfo.label}</h2>
+          <h2 className="text-lg font-bold">
+            {activePlan?.title ?? "تفاصيل خطة التقييم"}
+          </h2>
           <p className="text-sm text-muted-foreground">
-            {activeTabInfo.description}
+            {activePlan?.frameworkTitle ?? "اختر إحدى الخطط لعرض الأشخاص والدورات."}
           </p>
         </div>
-
-        {activeTab === "admin" ? (
-          <div className="mb-5 flex flex-wrap gap-2">
-            {ADMIN_CATEGORIES.map((category) => {
-              const isActive = activeAdminCategory === category.key;
-
-              return (
-                <button
-                  key={category.key}
-                  type="button"
-                  onClick={() => setActiveAdminCategory(category.key)}
-                  className={[
-                    "rounded-full border px-4 py-2 text-sm transition",
-                    isActive
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "bg-background hover:bg-muted",
-                  ].join(" ")}
-                >
-                  {category.label}
-                  <span className="ms-2 text-xs opacity-80">
-                    {adminCategoryCounts[category.key]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        ) : null}
 
         <input
           value={searchText}
@@ -660,13 +504,13 @@ useEffect(() => {
       </section>
 
       <section className="space-y-4">
-        {teacherGroups.length === 0 ? (
+        {personGroups.length === 0 ? (
           <div className="rounded-3xl border border-dashed bg-card p-6 text-sm text-muted-foreground">
             لا توجد تقييمات في هذا القسم أو لا توجد نتائج مطابقة للبحث الحالي.
           </div>
         ) : (
-          teacherGroups.map((group) => {
-            const isExpanded = expandedTeacherKey === group.key;
+          personGroups.map((group) => {
+            const isExpanded = expandedPersonKey === group.key;
 
             return (
               <div
@@ -676,6 +520,18 @@ useEffect(() => {
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <h2 className="text-xl font-bold">{group.displayName}</h2>
+
+                    {group.performanceImprovementStatus ? (
+                      <Link
+                        href="/staff/performance-improvement"
+                        className="mt-2 inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-700 dark:text-amber-300"
+                      >
+                        <AlertTriangle className="size-3.5" />
+                        {group.performanceImprovementStatus === "PLAN_OPEN"
+                          ? "لديه خطة تحسين نشطة"
+                          : "يحتاج مراجعة أداء"}
+                      </Link>
+                    ) : null}
 
                     {group.email ? (
                       <p className="mt-1 text-sm text-muted-foreground">
@@ -691,14 +547,14 @@ useEffect(() => {
                   <Button
                     variant={isExpanded ? "secondary" : "outline"}
                     onClick={() =>
-                      setExpandedTeacherKey(isExpanded ? null : group.key)
+                      setExpandedPersonKey(isExpanded ? null : group.key)
                     }
                   >
                     {isExpanded ? "إخفاء التقييمات" : "عرض التقييمات"}
                   </Button>
                 </div>
 
-                <TeacherStatusSummary group={group} />
+                <PersonStatusSummary group={group} />
 
                 {isExpanded ? (
                   <div className="mt-5 overflow-hidden rounded-2xl border">
