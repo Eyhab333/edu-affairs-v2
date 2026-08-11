@@ -1,0 +1,115 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function membershipPath(orgId) {
+      return /databases/(default)/documents/users/$(request.auth.uid)/orgMemberships/$(orgId);
+    }
+
+    function membershipExists(orgId) {
+      return signedIn()
+        && firestore.exists(membershipPath(orgId));
+    }
+
+    function membershipData(orgId) {
+      return firestore.get(membershipPath(orgId)).data;
+    }
+
+    function orgRole(orgId) {
+      return membershipData(orgId).role != null
+        ? membershipData(orgId).role
+        : membershipData(orgId).roleKey;
+    }
+
+    function canManageOrg(orgId) {
+      return membershipExists(orgId)
+        && (
+          orgRole(orgId) == "platform_owner"
+          || orgRole(orgId) == "platform_admin"
+          || orgRole(orgId) == "org_owner"
+          || orgRole(orgId) == "org_admin"
+        );
+    }
+
+    function pdfResourcePath(orgId, resourceId) {
+      return /databases/(default)/documents/orgs/$(orgId)/pdfResources/$(resourceId);
+    }
+
+    function pdfResourceExists(orgId, resourceId) {
+      return firestore.exists(pdfResourcePath(orgId, resourceId));
+    }
+
+    function pdfResourceData(orgId, resourceId) {
+      return firestore.get(
+        pdfResourcePath(orgId, resourceId)
+      ).data;
+    }
+
+    function hasAllSchoolsAccess(orgId) {
+      return "scopes" in membershipData(orgId)
+        && membershipData(orgId).scopes is map
+        && "canAccessAllSchools" in membershipData(orgId).scopes
+        && membershipData(orgId).scopes.canAccessAllSchools == true;
+    }
+
+    function hasTargetSchoolAccess(orgId, resourceId) {
+      return pdfResourceData(
+        orgId,
+        resourceId
+      ).audience.schoolIds.size() == 0
+
+        || hasAllSchoolsAccess(orgId)
+
+        || (
+          "scopes" in membershipData(orgId)
+          && membershipData(orgId).scopes is map
+          && "schoolIds" in membershipData(orgId).scopes
+          && membershipData(orgId).scopes.schoolIds is list
+          && membershipData(orgId).scopes.schoolIds.hasAny(
+            pdfResourceData(
+              orgId,
+              resourceId
+            ).audience.schoolIds
+          )
+        );
+    }
+
+    function canReadStaffPdfResource(orgId, resourceId) {
+      return membershipExists(orgId)
+        && pdfResourceExists(orgId, resourceId)
+        && pdfResourceData(orgId, resourceId).status == "PUBLISHED"
+        && pdfResourceData(
+          orgId,
+          resourceId
+        ).audience.kind == "STAFF_ROLES"
+        && pdfResourceData(
+          orgId,
+          resourceId
+        ).audience.targetRoleKeys.hasAny([
+          orgRole(orgId)
+        ])
+        && hasTargetSchoolAccess(orgId, resourceId);
+    }
+
+    match /orgs/{orgId}/pdfResources/{resourceId}/{fileName} {
+      allow read: if canManageOrg(orgId)
+        || canReadStaffPdfResource(orgId, resourceId);
+
+      allow create: if canManageOrg(orgId)
+        && request.resource.contentType == "application/pdf"
+        && request.resource.size <= 25 * 1024 * 1024;
+
+      allow update: if false;
+
+      allow delete: if canManageOrg(orgId);
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

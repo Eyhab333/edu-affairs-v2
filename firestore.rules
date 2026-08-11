@@ -61,6 +61,77 @@ service cloud.firestore {
         );
     }
 
+
+
+
+function hasAllPdfResourceSchoolAccess(orgId) {
+  return hasOrgMembership(orgId)
+    && "scopes" in membershipData(orgId)
+    && membershipData(orgId).scopes is map
+    && "canAccessAllSchools" in membershipData(orgId).scopes
+    && membershipData(orgId).scopes.canAccessAllSchools == true;
+}
+
+function hasPdfResourceSchoolAccess(orgId, audience) {
+  return audience.schoolIds.size() == 0
+
+    || hasAllPdfResourceSchoolAccess(orgId)
+
+    || (
+      "scopes" in membershipData(orgId)
+      && membershipData(orgId).scopes is map
+      && "schoolIds" in membershipData(orgId).scopes
+      && membershipData(orgId).scopes.schoolIds is list
+      && membershipData(orgId).scopes.schoolIds.hasAny(
+        audience.schoolIds
+      )
+    )
+
+    || (
+      "scopeType" in membershipData(orgId)
+      && "scopeId" in membershipData(orgId)
+      && membershipData(orgId).scopeType == "SCHOOL"
+      && membershipData(orgId).scopeId in audience.schoolIds
+    );
+}
+
+function pdfResourcePath(orgId, resourceId) {
+  return /databases/$(database)/documents/orgs/$(orgId)/pdfResources/$(resourceId);
+}
+
+function pdfResourceExists(orgId, resourceId) {
+  return exists(pdfResourcePath(orgId, resourceId));
+}
+
+function pdfResourceData(orgId, resourceId) {
+  return get(pdfResourcePath(orgId, resourceId)).data;
+}
+
+function isTargetedStaffPdfResource(orgId, resourceData) {
+  return hasOrgMembership(orgId)
+    && resourceData.orgId == orgId
+    && resourceData.status == "PUBLISHED"
+    && resourceData.audience is map
+    && resourceData.audience.kind == "STAFF_ROLES"
+    && resourceData.audience.targetRoleKeys is list
+    && orgRole(orgId) in resourceData.audience.targetRoleKeys
+    && resourceData.audience.schoolIds is list
+    && hasPdfResourceSchoolAccess(
+      orgId,
+      resourceData.audience
+    );
+}
+
+function canReadPdfResource(orgId, resourceData) {
+  return canManageOrg(orgId)
+    || isTargetedStaffPdfResource(orgId, resourceData);
+}
+
+
+
+
+
+
     function currentUserPersonId() {
       return get(userProfilePath(request.auth.uid)).data.personId;
     }
@@ -1454,7 +1525,130 @@ allow update: if canManageOrg(orgId)
 
 
 
+/*
+ * ==========================================================
+ * PDF resource library
+ * ==========================================================
+ */
 
+match /pdfResources/{resourceId} {
+  allow get, list: if canReadPdfResource(
+    orgId,
+    resource.data
+  );
+
+  allow create: if canManageOrg(orgId)
+    && request.resource.data.id == resourceId
+    && request.resource.data.orgId == orgId
+    && request.resource.data.file is map
+    && request.resource.data.file.contentType == "application/pdf"
+    && request.resource.data.audience is map
+    && request.resource.data.audience.kind
+      in ["STAFF_ROLES", "STUDENTS"]
+
+    && (
+      request.resource.data.audience.kind != "STAFF_ROLES"
+      || (
+        request.resource.data.audience.targetRoleKeys is list
+        && request.resource.data.audience.targetRoleKeys.size() > 0
+      )
+    )
+
+    && (
+      request.resource.data.audience.kind != "STUDENTS"
+      || (
+        request.resource.data.audience.schoolIds is list
+        && request.resource.data.audience.schoolIds.size() > 0
+        && request.resource.data.requiresAcknowledgement == false
+      )
+    );
+
+  /*
+   * بعد النشر لا نغيّر الملف أو الجمهور.
+   * التعديل مسموح للعنوان والوصف والأرشفة فقط.
+   */
+  allow update: if canManageOrg(orgId)
+    && request.resource.data.id == resource.data.id
+    && request.resource.data.orgId == resource.data.orgId
+    && request.resource.data
+      .diff(resource.data)
+      .affectedKeys()
+      .hasOnly([
+        "title",
+        "description",
+        "status",
+        "archivedAt",
+        "archivedByUid",
+        "archivedByPersonId",
+        "updatedAt"
+      ]);
+
+  /*
+   * نحافظ على سجل الملف والإقرارات.
+   * الحذف يُستبدل بالأرشفة.
+   */
+  allow delete: if false;
+
+  match /acknowledgements/{actorId} {
+    allow get: if canManageOrg(orgId)
+      || (
+        hasOrgMembership(orgId)
+        && actorId == currentUserPersonId()
+      );
+
+    allow list: if canManageOrg(orgId);
+
+    allow create: if hasOrgMembership(orgId)
+      && pdfResourceExists(orgId, resourceId)
+      && actorId == currentUserPersonId()
+
+      && isTargetedStaffPdfResource(
+        orgId,
+        pdfResourceData(orgId, resourceId)
+      )
+
+      && pdfResourceData(
+        orgId,
+        resourceId
+      ).requiresAcknowledgement == true
+
+      && request.resource.data.keys().hasOnly([
+        "id",
+        "orgId",
+        "resourceId",
+        "actorKind",
+        "actorId",
+        "uid",
+        "personId",
+        "displayName",
+        "roleKey",
+        "schoolId",
+        "acknowledgedAt"
+      ])
+
+      && request.resource.data.id == actorId
+      && request.resource.data.orgId == orgId
+      && request.resource.data.resourceId == resourceId
+
+      && request.resource.data.actorKind == "STAFF"
+      && request.resource.data.actorId == actorId
+
+      && request.resource.data.uid == request.auth.uid
+      && request.resource.data.personId == actorId
+      && request.resource.data.roleKey == orgRole(orgId)
+
+      && request.resource.data.displayName is string
+      && request.resource.data.displayName != ""
+
+      && request.resource.data.acknowledgedAt is int
+      && request.resource.data.acknowledgedAt >= 0;
+
+    /*
+     * الإقرار يُنشأ مرة واحدة ولا يمكن التراجع عنه.
+     */
+    allow update, delete: if false;
+  }
+}
 
 
 

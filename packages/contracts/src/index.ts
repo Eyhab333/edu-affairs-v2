@@ -5795,3 +5795,4 @@ export * from "./student-directory";
 export * from "./teacher-provisioning";
 
 export * from "./school-scope-groups";
+export * from "./pdf-resources";

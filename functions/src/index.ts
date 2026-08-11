@@ -26,6 +26,8 @@ export { dismissPerformanceImprovementSignal } from "./evaluations/dismiss-perfo
 export { updatePerformanceImprovementSettings } from "./evaluations/update-performance-improvement-settings";
 export * from "./student-directory";
 export { getStudentCaseReferralOptions } from "./student-cases/get-student-case-referral-options";
+export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-resource-acknowledgement-report";
+export { getMyGuardianChildren } from "./guardian/get-my-guardian-children";
 
 export const functionsHealth = onRequest(
   {
