@@ -11,7 +11,7 @@
    - ملاحظات
    - قضايا وسجل سلوكي
    - نقل وباص
-
+gggggggggggggggggggggggggggggggggggggggggggggggggggggg
 2. تشغيل يومي يخص الموظفين والمعلمين:
    - تقييمات أسبوعية
    - زيارات فتريّة
