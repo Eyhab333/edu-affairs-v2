@@ -1,0 +1,5078 @@
+{
+  "metadata": {
+    "generatedAt": "2026-08-13T13:14:12.676Z",
+    "projectId": "edu-affairs-dev",
+    "orgId": "takween",
+    "firestoreWritesPerformed": false,
+    "readOnly": true
+  },
+  "schools": [
+    {
+      "id": "kg-01",
+      "name": "روضة واحة الرياحين الأولى",
+      "schoolType": "KG",
+      "path": "orgs/takween/schools/kg-01"
+    },
+    {
+      "id": "kg-02",
+      "name": "روضة واحة الرياحين الثانية",
+      "schoolType": "KG",
+      "path": "orgs/takween/schools/kg-02"
+    },
+    {
+      "id": "kg-03",
+      "name": "روضة واحة الرياحين الثالثة",
+      "schoolType": "KG",
+      "path": "orgs/takween/schools/kg-03"
+    },
+    {
+      "id": "kg-04",
+      "name": "روضة واحة الرياحين الرابعة",
+      "schoolType": "KG",
+      "path": "orgs/takween/schools/kg-04"
+    }
+  ],
+  "academicYears": [
+    {
+      "id": "ay-1448",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "name": "1448 هـ / 2026-2027",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448",
+      "isActive": true
+    },
+    {
+      "id": "ay-1448",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "name": "1448 هـ / 2026-2027",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448",
+      "isActive": true
+    },
+    {
+      "id": "ay-1448",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "name": "1448 هـ / 2026-2027",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448",
+      "isActive": true
+    },
+    {
+      "id": "ay-1448",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "name": "1448 هـ / 2026-2027",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448",
+      "isActive": true
+    }
+  ],
+  "levels": [
+    {
+      "requestedLevel": "المستوى الأول",
+      "grades": [
+        {
+          "id": "kg1",
+          "name": "المستوى الأول",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/grades/kg1"
+        },
+        {
+          "id": "kg1",
+          "name": "المستوى الأول",
+          "schoolId": "kg-02",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/grades/kg1"
+        },
+        {
+          "id": "kg1",
+          "name": "المستوى الأول",
+          "schoolId": "kg-03",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/grades/kg1"
+        },
+        {
+          "id": "kg1",
+          "name": "المستوى الأول",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/grades/kg1"
+        }
+      ],
+      "classes": [
+        {
+          "id": "kg1-a",
+          "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg1-a",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg1",
+          "gradeName": "المستوى الأول",
+          "level": "المستوى الأول",
+          "name": "فصل النجوم",
+          "code": "KG1-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg1-a",
+          "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg1-a",
+          "schoolId": "kg-02",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg1",
+          "gradeName": "المستوى الأول",
+          "level": "المستوى الأول",
+          "name": "فصل النجوم",
+          "code": "KG1-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg1-a",
+          "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg1-a",
+          "schoolId": "kg-03",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg1",
+          "gradeName": "المستوى الأول",
+          "level": "المستوى الأول",
+          "name": "فصل النجوم",
+          "code": "KG1-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg1-a",
+          "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg1-a",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg1",
+          "gradeName": "المستوى الأول",
+          "level": "المستوى الأول",
+          "name": "فصل النجوم",
+          "code": "KG1-A",
+          "streamId": "",
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "requestedLevel": "المستوى الثاني",
+      "grades": [
+        {
+          "id": "kg2",
+          "name": "المستوى الثاني",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/grades/kg2"
+        },
+        {
+          "id": "kg2",
+          "name": "المستوى الثاني",
+          "schoolId": "kg-02",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/grades/kg2"
+        },
+        {
+          "id": "kg2",
+          "name": "المستوى الثاني",
+          "schoolId": "kg-03",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/grades/kg2"
+        },
+        {
+          "id": "kg2",
+          "name": "المستوى الثاني",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/grades/kg2"
+        }
+      ],
+      "classes": [
+        {
+          "id": "kg2-a",
+          "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg2-a",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg2",
+          "gradeName": "المستوى الثاني",
+          "level": "المستوى الثاني",
+          "name": "فصل الزهور",
+          "code": "KG2-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg2-a",
+          "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg2-a",
+          "schoolId": "kg-02",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg2",
+          "gradeName": "المستوى الثاني",
+          "level": "المستوى الثاني",
+          "name": "فصل الزهور",
+          "code": "KG2-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg2-a",
+          "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg2-a",
+          "schoolId": "kg-03",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg2",
+          "gradeName": "المستوى الثاني",
+          "level": "المستوى الثاني",
+          "name": "فصل الزهور",
+          "code": "KG2-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg2-a",
+          "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg2-a",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg2",
+          "gradeName": "المستوى الثاني",
+          "level": "المستوى الثاني",
+          "name": "فصل الزهور",
+          "code": "KG2-A",
+          "streamId": "",
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "requestedLevel": "المستوى الثالث",
+      "grades": [
+        {
+          "id": "kg3",
+          "name": "المستوى الثالث",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/grades/kg3"
+        },
+        {
+          "id": "kg3",
+          "name": "المستوى الثالث",
+          "schoolId": "kg-02",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/grades/kg3"
+        },
+        {
+          "id": "kg3",
+          "name": "المستوى الثالث",
+          "schoolId": "kg-03",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/grades/kg3"
+        },
+        {
+          "id": "kg3",
+          "name": "المستوى الثالث",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/grades/kg3"
+        }
+      ],
+      "classes": [
+        {
+          "id": "kg3-a",
+          "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-a",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "gradeName": "المستوى الثالث",
+          "level": "المستوى الثالث",
+          "name": "فصل الكادي",
+          "code": "KG3-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg3-a",
+          "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-a",
+          "schoolId": "kg-02",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "gradeName": "المستوى الثالث",
+          "level": "المستوى الثالث",
+          "name": "فصل الكادي",
+          "code": "KG3-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg3-a",
+          "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg3-a",
+          "schoolId": "kg-03",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "gradeName": "المستوى الثالث",
+          "level": "المستوى الثالث",
+          "name": "فصل الكادي",
+          "code": "KG3-A",
+          "streamId": "",
+          "isActive": true
+        },
+        {
+          "id": "kg3-a",
+          "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg3-a",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "gradeName": "المستوى الثالث",
+          "level": "المستوى الثالث",
+          "name": "فصل الكادي",
+          "code": "KG3-A",
+          "streamId": "",
+          "isActive": true
+        }
+      ]
+    }
+  ],
+  "classes": [
+    {
+      "id": "kg1-a",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg1-a",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "gradeName": "المستوى الأول",
+      "level": "المستوى الأول",
+      "name": "فصل النجوم",
+      "code": "KG1-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg2-a",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg2-a",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "gradeName": "المستوى الثاني",
+      "level": "المستوى الثاني",
+      "name": "فصل الزهور",
+      "code": "KG2-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg3-a",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-a",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "gradeName": "المستوى الثالث",
+      "level": "المستوى الثالث",
+      "name": "فصل الكادي",
+      "code": "KG3-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg1-a",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg1-a",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "gradeName": "المستوى الأول",
+      "level": "المستوى الأول",
+      "name": "فصل النجوم",
+      "code": "KG1-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg2-a",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg2-a",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "gradeName": "المستوى الثاني",
+      "level": "المستوى الثاني",
+      "name": "فصل الزهور",
+      "code": "KG2-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg3-a",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-a",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "gradeName": "المستوى الثالث",
+      "level": "المستوى الثالث",
+      "name": "فصل الكادي",
+      "code": "KG3-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg1-a",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg1-a",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "gradeName": "المستوى الأول",
+      "level": "المستوى الأول",
+      "name": "فصل النجوم",
+      "code": "KG1-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg2-a",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg2-a",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "gradeName": "المستوى الثاني",
+      "level": "المستوى الثاني",
+      "name": "فصل الزهور",
+      "code": "KG2-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg3-a",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg3-a",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "gradeName": "المستوى الثالث",
+      "level": "المستوى الثالث",
+      "name": "فصل الكادي",
+      "code": "KG3-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg1-a",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg1-a",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "gradeName": "المستوى الأول",
+      "level": "المستوى الأول",
+      "name": "فصل النجوم",
+      "code": "KG1-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg2-a",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg2-a",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "gradeName": "المستوى الثاني",
+      "level": "المستوى الثاني",
+      "name": "فصل الزهور",
+      "code": "KG2-A",
+      "streamId": "",
+      "isActive": true
+    },
+    {
+      "id": "kg3-a",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg3-a",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "gradeName": "المستوى الثالث",
+      "level": "المستوى الثالث",
+      "name": "فصل الكادي",
+      "code": "KG3-A",
+      "streamId": "",
+      "isActive": true
+    }
+  ],
+  "subjects": {
+    "catalogEntries": [
+      {
+        "id": "subject-adhkar-identity-anthems",
+        "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+        "isActive": true
+      },
+      {
+        "id": "subject-corners",
+        "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-corners",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان",
+        "requestedSubject": "الأركان",
+        "isActive": true
+      },
+      {
+        "id": "subject-quran",
+        "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-quran",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم",
+        "requestedSubject": "القرآن الكريم",
+        "isActive": true
+      },
+      {
+        "id": "subject-values",
+        "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-values",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم",
+        "requestedSubject": "القيم",
+        "isActive": true
+      },
+      {
+        "id": "subject-learning-gardens",
+        "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-learning-gardens",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة",
+        "requestedSubject": "بساتين المعرفة",
+        "isActive": true
+      },
+      {
+        "id": "subject-class",
+        "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-class",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "title": "معلمة الصف",
+        "requestedSubject": null,
+        "isActive": true
+      },
+      {
+        "id": "subject-count-and-calculate",
+        "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-count-and-calculate",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب",
+        "requestedSubject": "نعد ونحسب",
+        "isActive": true
+      },
+      {
+        "id": "subject-adhkar-identity-anthems",
+        "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+        "isActive": true
+      },
+      {
+        "id": "subject-corners",
+        "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-corners",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان",
+        "requestedSubject": "الأركان",
+        "isActive": true
+      },
+      {
+        "id": "subject-quran",
+        "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-quran",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم",
+        "requestedSubject": "القرآن الكريم",
+        "isActive": true
+      },
+      {
+        "id": "subject-values",
+        "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-values",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم",
+        "requestedSubject": "القيم",
+        "isActive": true
+      },
+      {
+        "id": "subject-learning-gardens",
+        "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-learning-gardens",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة",
+        "requestedSubject": "بساتين المعرفة",
+        "isActive": true
+      },
+      {
+        "id": "subject-class",
+        "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-class",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "title": "معلمة الصف",
+        "requestedSubject": null,
+        "isActive": true
+      },
+      {
+        "id": "subject-count-and-calculate",
+        "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-count-and-calculate",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب",
+        "requestedSubject": "نعد ونحسب",
+        "isActive": true
+      },
+      {
+        "id": "subject-adhkar-identity-anthems",
+        "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+        "isActive": true
+      },
+      {
+        "id": "subject-corners",
+        "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-corners",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان",
+        "requestedSubject": "الأركان",
+        "isActive": true
+      },
+      {
+        "id": "subject-quran",
+        "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-quran",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم",
+        "requestedSubject": "القرآن الكريم",
+        "isActive": true
+      },
+      {
+        "id": "subject-values",
+        "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-values",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم",
+        "requestedSubject": "القيم",
+        "isActive": true
+      },
+      {
+        "id": "subject-learning-gardens",
+        "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-learning-gardens",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة",
+        "requestedSubject": "بساتين المعرفة",
+        "isActive": true
+      },
+      {
+        "id": "subject-class",
+        "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-class",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "title": "معلمة الصف",
+        "requestedSubject": null,
+        "isActive": true
+      },
+      {
+        "id": "subject-count-and-calculate",
+        "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-count-and-calculate",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب",
+        "requestedSubject": "نعد ونحسب",
+        "isActive": true
+      },
+      {
+        "id": "subject-adhkar-identity-anthems",
+        "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+        "isActive": true
+      },
+      {
+        "id": "subject-corners",
+        "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-corners",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان",
+        "requestedSubject": "الأركان",
+        "isActive": true
+      },
+      {
+        "id": "subject-quran",
+        "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-quran",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم",
+        "requestedSubject": "القرآن الكريم",
+        "isActive": true
+      },
+      {
+        "id": "subject-values",
+        "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-values",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم",
+        "requestedSubject": "القيم",
+        "isActive": true
+      },
+      {
+        "id": "subject-learning-gardens",
+        "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-learning-gardens",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة",
+        "requestedSubject": "بساتين المعرفة",
+        "isActive": true
+      },
+      {
+        "id": "subject-class",
+        "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-class",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "title": "معلمة الصف",
+        "requestedSubject": null,
+        "isActive": true
+      },
+      {
+        "id": "subject-count-and-calculate",
+        "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-count-and-calculate",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب",
+        "requestedSubject": "نعد ونحسب",
+        "isActive": true
+      }
+    ],
+    "requestedSubjects": [
+      {
+        "requestedSubject": "القرآن الكريم",
+        "existsInCatalog": true,
+        "existsInOfferings": true,
+        "actualSubjectKeys": [
+          "QURAN"
+        ],
+        "catalogEntries": [
+          {
+            "id": "subject-quran",
+            "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-quran",
+            "schoolId": "kg-01",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "QURAN",
+            "subjectId": "subject-quran",
+            "title": "القرآن الكريم",
+            "requestedSubject": "القرآن الكريم",
+            "isActive": true
+          },
+          {
+            "id": "subject-quran",
+            "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-quran",
+            "schoolId": "kg-02",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "QURAN",
+            "subjectId": "subject-quran",
+            "title": "القرآن الكريم",
+            "requestedSubject": "القرآن الكريم",
+            "isActive": true
+          },
+          {
+            "id": "subject-quran",
+            "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-quran",
+            "schoolId": "kg-03",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "QURAN",
+            "subjectId": "subject-quran",
+            "title": "القرآن الكريم",
+            "requestedSubject": "القرآن الكريم",
+            "isActive": true
+          },
+          {
+            "id": "subject-quran",
+            "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-quran",
+            "schoolId": "kg-04",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "QURAN",
+            "subjectId": "subject-quran",
+            "title": "القرآن الكريم",
+            "requestedSubject": "القرآن الكريم",
+            "isActive": true
+          }
+        ],
+        "offeringIds": [
+          "kg-01-kg1-a-quran",
+          "kg-01-kg2-a-quran",
+          "kg-02-kg1-a-quran",
+          "kg-02-kg2-a-quran",
+          "kg-02-kg3-a-quran",
+          "kg-03-kg1-a-quran",
+          "kg-03-kg2-a-quran",
+          "kg-03-kg3-a-quran",
+          "kg-04-kg3-a-quran",
+          "kg1-a-quran",
+          "kg2-a-quran",
+          "kg3-a-quran"
+        ]
+      },
+      {
+        "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+        "existsInCatalog": true,
+        "existsInOfferings": true,
+        "actualSubjectKeys": [
+          "ADHKAR_IDENTITY_ANTHEMS"
+        ],
+        "catalogEntries": [
+          {
+            "id": "subject-adhkar-identity-anthems",
+            "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+            "schoolId": "kg-01",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+            "subjectId": "subject-adhkar-identity-anthems",
+            "title": "الأذكار والهوية الوطنية والأناشيد",
+            "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+            "isActive": true
+          },
+          {
+            "id": "subject-adhkar-identity-anthems",
+            "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+            "schoolId": "kg-02",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+            "subjectId": "subject-adhkar-identity-anthems",
+            "title": "الأذكار والهوية الوطنية والأناشيد",
+            "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+            "isActive": true
+          },
+          {
+            "id": "subject-adhkar-identity-anthems",
+            "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+            "schoolId": "kg-03",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+            "subjectId": "subject-adhkar-identity-anthems",
+            "title": "الأذكار والهوية الوطنية والأناشيد",
+            "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+            "isActive": true
+          },
+          {
+            "id": "subject-adhkar-identity-anthems",
+            "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+            "schoolId": "kg-04",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+            "subjectId": "subject-adhkar-identity-anthems",
+            "title": "الأذكار والهوية الوطنية والأناشيد",
+            "requestedSubject": "الأذكار والهوية الوطنية والأناشيد",
+            "isActive": true
+          }
+        ],
+        "offeringIds": [
+          "kg-01-kg1-a-adhkar-identity-anthems",
+          "kg-01-kg2-a-adhkar-identity-anthems",
+          "kg-01-kg3-a-adhkar-identity-anthems",
+          "kg-02-kg1-a-adhkar-identity-anthems",
+          "kg-02-kg2-a-adhkar-identity-anthems",
+          "kg-02-kg3-a-adhkar-identity-anthems",
+          "kg-03-kg1-a-adhkar-identity-anthems",
+          "kg-03-kg2-a-adhkar-identity-anthems",
+          "kg-03-kg3-a-adhkar-identity-anthems",
+          "kg-04-kg1-a-adhkar-identity-anthems",
+          "kg-04-kg2-a-adhkar-identity-anthems",
+          "kg-04-kg3-a-adhkar-identity-anthems"
+        ]
+      },
+      {
+        "requestedSubject": "بساتين المعرفة",
+        "existsInCatalog": true,
+        "existsInOfferings": true,
+        "actualSubjectKeys": [
+          "LEARNING_GARDENS"
+        ],
+        "catalogEntries": [
+          {
+            "id": "subject-learning-gardens",
+            "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-learning-gardens",
+            "schoolId": "kg-01",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "LEARNING_GARDENS",
+            "subjectId": "subject-learning-gardens",
+            "title": "بساتين المعرفة",
+            "requestedSubject": "بساتين المعرفة",
+            "isActive": true
+          },
+          {
+            "id": "subject-learning-gardens",
+            "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-learning-gardens",
+            "schoolId": "kg-02",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "LEARNING_GARDENS",
+            "subjectId": "subject-learning-gardens",
+            "title": "بساتين المعرفة",
+            "requestedSubject": "بساتين المعرفة",
+            "isActive": true
+          },
+          {
+            "id": "subject-learning-gardens",
+            "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-learning-gardens",
+            "schoolId": "kg-03",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "LEARNING_GARDENS",
+            "subjectId": "subject-learning-gardens",
+            "title": "بساتين المعرفة",
+            "requestedSubject": "بساتين المعرفة",
+            "isActive": true
+          },
+          {
+            "id": "subject-learning-gardens",
+            "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-learning-gardens",
+            "schoolId": "kg-04",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "LEARNING_GARDENS",
+            "subjectId": "subject-learning-gardens",
+            "title": "بساتين المعرفة",
+            "requestedSubject": "بساتين المعرفة",
+            "isActive": true
+          }
+        ],
+        "offeringIds": [
+          "kg-01-kg1-a-learning-gardens",
+          "kg-01-kg2-a-learning-gardens",
+          "kg-02-kg1-a-learning-gardens",
+          "kg-02-kg2-a-learning-gardens",
+          "kg-02-kg3-a-learning-gardens",
+          "kg-03-kg1-a-learning-gardens",
+          "kg-03-kg2-a-learning-gardens",
+          "kg-03-kg3-a-learning-gardens",
+          "kg-04-kg3-a-learning-gardens",
+          "kg1-a-learning-gardens",
+          "kg2-a-learning-gardens",
+          "kg3-a-learning-gardens"
+        ]
+      },
+      {
+        "requestedSubject": "نعد ونحسب",
+        "existsInCatalog": true,
+        "existsInOfferings": true,
+        "actualSubjectKeys": [
+          "COUNT_AND_CALCULATE"
+        ],
+        "catalogEntries": [
+          {
+            "id": "subject-count-and-calculate",
+            "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-count-and-calculate",
+            "schoolId": "kg-01",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "COUNT_AND_CALCULATE",
+            "subjectId": "subject-count-and-calculate",
+            "title": "نعد ونحسب",
+            "requestedSubject": "نعد ونحسب",
+            "isActive": true
+          },
+          {
+            "id": "subject-count-and-calculate",
+            "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-count-and-calculate",
+            "schoolId": "kg-02",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "COUNT_AND_CALCULATE",
+            "subjectId": "subject-count-and-calculate",
+            "title": "نعد ونحسب",
+            "requestedSubject": "نعد ونحسب",
+            "isActive": true
+          },
+          {
+            "id": "subject-count-and-calculate",
+            "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-count-and-calculate",
+            "schoolId": "kg-03",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "COUNT_AND_CALCULATE",
+            "subjectId": "subject-count-and-calculate",
+            "title": "نعد ونحسب",
+            "requestedSubject": "نعد ونحسب",
+            "isActive": true
+          },
+          {
+            "id": "subject-count-and-calculate",
+            "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-count-and-calculate",
+            "schoolId": "kg-04",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "COUNT_AND_CALCULATE",
+            "subjectId": "subject-count-and-calculate",
+            "title": "نعد ونحسب",
+            "requestedSubject": "نعد ونحسب",
+            "isActive": true
+          }
+        ],
+        "offeringIds": [
+          "kg-01-kg1-a-count-and-calculate",
+          "kg-01-kg2-a-count-and-calculate",
+          "kg-01-kg3-a-count-and-calculate",
+          "kg-02-kg1-a-count-and-calculate",
+          "kg-02-kg2-a-count-and-calculate",
+          "kg-02-kg3-a-count-and-calculate",
+          "kg-03-kg1-a-count-and-calculate",
+          "kg-03-kg2-a-count-and-calculate",
+          "kg-03-kg3-a-count-and-calculate",
+          "kg-04-kg1-a-count-and-calculate",
+          "kg-04-kg2-a-count-and-calculate",
+          "kg-04-kg3-a-count-and-calculate"
+        ]
+      },
+      {
+        "requestedSubject": "القيم",
+        "existsInCatalog": true,
+        "existsInOfferings": true,
+        "actualSubjectKeys": [
+          "VALUES"
+        ],
+        "catalogEntries": [
+          {
+            "id": "subject-values",
+            "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-values",
+            "schoolId": "kg-01",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "VALUES",
+            "subjectId": "subject-values",
+            "title": "القيم",
+            "requestedSubject": "القيم",
+            "isActive": true
+          },
+          {
+            "id": "subject-values",
+            "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-values",
+            "schoolId": "kg-02",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "VALUES",
+            "subjectId": "subject-values",
+            "title": "القيم",
+            "requestedSubject": "القيم",
+            "isActive": true
+          },
+          {
+            "id": "subject-values",
+            "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-values",
+            "schoolId": "kg-03",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "VALUES",
+            "subjectId": "subject-values",
+            "title": "القيم",
+            "requestedSubject": "القيم",
+            "isActive": true
+          },
+          {
+            "id": "subject-values",
+            "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-values",
+            "schoolId": "kg-04",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "VALUES",
+            "subjectId": "subject-values",
+            "title": "القيم",
+            "requestedSubject": "القيم",
+            "isActive": true
+          }
+        ],
+        "offeringIds": [
+          "kg-01-kg2-a-values",
+          "kg-02-kg2-a-values",
+          "kg-02-kg3-a-values",
+          "kg-03-kg2-a-values",
+          "kg-03-kg3-a-values",
+          "kg-04-kg3-a-values",
+          "kg1-a-values",
+          "kg2-a-values",
+          "kg3-a-values"
+        ]
+      },
+      {
+        "requestedSubject": "الأركان",
+        "existsInCatalog": true,
+        "existsInOfferings": true,
+        "actualSubjectKeys": [
+          "CORNERS"
+        ],
+        "catalogEntries": [
+          {
+            "id": "subject-corners",
+            "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-corners",
+            "schoolId": "kg-01",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "CORNERS",
+            "subjectId": "subject-corners",
+            "title": "الأركان",
+            "requestedSubject": "الأركان",
+            "isActive": true
+          },
+          {
+            "id": "subject-corners",
+            "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-corners",
+            "schoolId": "kg-02",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "CORNERS",
+            "subjectId": "subject-corners",
+            "title": "الأركان",
+            "requestedSubject": "الأركان",
+            "isActive": true
+          },
+          {
+            "id": "subject-corners",
+            "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-corners",
+            "schoolId": "kg-03",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "CORNERS",
+            "subjectId": "subject-corners",
+            "title": "الأركان",
+            "requestedSubject": "الأركان",
+            "isActive": true
+          },
+          {
+            "id": "subject-corners",
+            "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-corners",
+            "schoolId": "kg-04",
+            "academicYearId": "ay-1448",
+            "gradeId": "",
+            "subjectKey": "CORNERS",
+            "subjectId": "subject-corners",
+            "title": "الأركان",
+            "requestedSubject": "الأركان",
+            "isActive": true
+          }
+        ],
+        "offeringIds": [
+          "kg-01-kg2-a-corners",
+          "kg-02-kg2-a-corners",
+          "kg-02-kg3-a-corners",
+          "kg-03-kg2-a-corners",
+          "kg-03-kg3-a-corners",
+          "kg-04-kg3-a-corners",
+          "kg1-a-corners",
+          "kg2-a-corners",
+          "kg3-a-corners"
+        ]
+      }
+    ],
+    "offeringSubjectEntries": [
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد"
+      },
+      {
+        "subjectKey": "NUMBERS",
+        "subjectId": "numbers",
+        "title": "الأرقام"
+      },
+      {
+        "subjectKey": "NUMBERS",
+        "subjectId": "numbers",
+        "title": "الأرقام"
+      },
+      {
+        "subjectKey": "NUMBERS",
+        "subjectId": "numbers",
+        "title": "الأرقام"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "corners",
+        "title": "الأركان / الأنشطة"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان / الأنشطة"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان / الأنشطة"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان"
+      },
+      {
+        "subjectKey": "CORNERS",
+        "subjectId": "subject-corners",
+        "title": "الأركان"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن الكريم"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن"
+      },
+      {
+        "subjectKey": "QURAN",
+        "subjectId": "subject-quran",
+        "title": "القرآن"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "values",
+        "title": "القيم / أسماء الله الحسنى"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم / أسماء الله الحسنى"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم / أسماء الله الحسنى"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم"
+      },
+      {
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "title": "القيم"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "subject-learning-gardens",
+        "title": "بساتين المعرفة"
+      },
+      {
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "title": "معلمة الصف"
+      },
+      {
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "title": "معلمة الصف"
+      },
+      {
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "title": "معلمة الصف"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      },
+      {
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectId": "subject-count-and-calculate",
+        "title": "نعد ونحسب"
+      }
+    ]
+  },
+  "offerings": [
+    {
+      "id": "kg-01-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-adhkar-identity-anthems",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-count-and-calculate",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-learning-gardens",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-quran",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-adhkar-identity-anthems",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-corners",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-count-and-calculate",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-learning-gardens",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-quran",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-values",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-adhkar-identity-anthems",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-01-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-count-and-calculate",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-adhkar-identity-anthems",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-count-and-calculate",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-learning-gardens",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-quran",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-adhkar-identity-anthems",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-corners",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-count-and-calculate",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-learning-gardens",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-quran",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-values",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-adhkar-identity-anthems",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-corners",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-count-and-calculate",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-learning-gardens",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-quran",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-02-kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-values",
+      "schoolId": "kg-02",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-adhkar-identity-anthems",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-count-and-calculate",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-learning-gardens",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-quran",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-adhkar-identity-anthems",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-corners",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-count-and-calculate",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-learning-gardens",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-quran",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-values",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-adhkar-identity-anthems",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-corners",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-count-and-calculate",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-learning-gardens",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-quran",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-03-kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-values",
+      "schoolId": "kg-03",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg1-a-adhkar-identity-anthems",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg1-a-count-and-calculate",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg2-a-adhkar-identity-anthems",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg2-a-count-and-calculate",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-adhkar-identity-anthems",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "subjectId": "subject-adhkar-identity-anthems",
+      "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 20,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-corners",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-count-and-calculate",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "subjectId": "subject-count-and-calculate",
+      "subjectTitle": "نعد ونحسب",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 40,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-learning-gardens",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-quran",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن الكريم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg-04-kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-values",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg1-a-class",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-class",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "CLASS",
+      "subjectId": "subject-class",
+      "subjectTitle": "معلمة الصف",
+      "status": "ACTIVE",
+      "isArchived": false,
+      "order": 0,
+      "offeringKind": "",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg1-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-corners",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "corners",
+      "subjectTitle": "الأركان / الأنشطة",
+      "status": "ARCHIVED",
+      "isActive": false,
+      "isArchived": true,
+      "order": 50,
+      "offeringKind": "KG_DOMAIN",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-learning-gardens",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg1-a-numbers",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-numbers",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "order": 30,
+      "offeringKind": "KG_DOMAIN",
+      "enabledModuleKeys": []
+    },
+    {
+      "id": "kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-quran",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg1-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-values",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "VALUES",
+      "subjectId": "values",
+      "subjectTitle": "القيم / أسماء الله الحسنى",
+      "status": "ARCHIVED",
+      "isActive": false,
+      "isArchived": true,
+      "order": 40,
+      "offeringKind": "KG_DOMAIN",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg2-a-class",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-class",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CLASS",
+      "subjectId": "subject-class",
+      "subjectTitle": "معلمة الصف",
+      "status": "ACTIVE",
+      "isArchived": false,
+      "order": 0,
+      "offeringKind": "",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-corners",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان / الأنشطة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-learning-gardens",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg2-a-numbers",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-numbers",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "order": 30,
+      "offeringKind": "KG_DOMAIN",
+      "enabledModuleKeys": []
+    },
+    {
+      "id": "kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-quran",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-values",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم / أسماء الله الحسنى",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg3-a-class",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-class",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CLASS",
+      "subjectId": "subject-class",
+      "subjectTitle": "معلمة الصف",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 0,
+      "offeringKind": "HOMEROOM_ASSIGNMENT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-corners",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "subjectId": "subject-corners",
+      "subjectTitle": "الأركان / الأنشطة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 60,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-learning-gardens",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "subjectId": "subject-learning-gardens",
+      "subjectTitle": "بساتين المعرفة",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 30,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg3-a-numbers",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-numbers",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "order": 30,
+      "offeringKind": "KG_DOMAIN",
+      "enabledModuleKeys": []
+    },
+    {
+      "id": "kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-quran",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "subjectId": "subject-quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 10,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    },
+    {
+      "id": "kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-values",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "subjectId": "subject-values",
+      "subjectTitle": "القيم / أسماء الله الحسنى",
+      "status": "ACTIVE",
+      "isActive": true,
+      "isArchived": false,
+      "order": 50,
+      "offeringKind": "KG_SUBJECT",
+      "enabledModuleKeys": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ]
+    }
+  ],
+  "kgTeacherMemberships": [
+    {
+      "uid": "os4T9HS7MOd2cP7u5O4XoAMnMPi2",
+      "personId": "p-a-alzuwaid",
+      "displayName": "أروى عبدالعزيز محمد الزويد",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/os4T9HS7MOd2cP7u5O4XoAMnMPi2"
+    },
+    {
+      "uid": "ubbyV0TxkGY2cTErFcRvZ9dkbGj2",
+      "personId": "p-a-aljabr",
+      "displayName": "اروى محمد احمد الجبر",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/ubbyV0TxkGY2cTErFcRvZ9dkbGj2"
+    },
+    {
+      "uid": "PfCXoWplJrhhkEJXxunVermH9co1",
+      "personId": "p-a-alttayar",
+      "displayName": "اروى يوسف احمد الطيار",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-04"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-04"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-04",
+      "path": "orgs/takween/memberships/PfCXoWplJrhhkEJXxunVermH9co1"
+    },
+    {
+      "uid": "YtdRz8noh7dcim7Z1vmjg8bIDF32",
+      "personId": "p-af-alkhunaini",
+      "displayName": "أسيل فهد محمد الخنيني",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/YtdRz8noh7dcim7Z1vmjg8bIDF32"
+    },
+    {
+      "uid": "7h6mGmwWevSW0meBvDbjel80gUX2",
+      "personId": "p-alanoodf",
+      "displayName": "العنود دخيل عبدالله الفهيد",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/7h6mGmwWevSW0meBvDbjel80gUX2"
+    },
+    {
+      "uid": "AfwA4of5MrQSeh1H6nX2sInqVdv2",
+      "personId": "p-a-alyahya",
+      "displayName": "امجاد احمد ابراهبم اليحيى",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/AfwA4of5MrQSeh1H6nX2sInqVdv2"
+    },
+    {
+      "uid": "X8mIh8oLzrMPLliTH8vCP5I6Mn43",
+      "personId": "p-an-alslman",
+      "displayName": "انفال عبدالله أحمد السلمان",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-04"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-04"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-04",
+      "path": "orgs/takween/memberships/X8mIh8oLzrMPLliTH8vCP5I6Mn43"
+    },
+    {
+      "uid": "mh7nViM579dIyGwEXUJxyPGwH1h1",
+      "personId": "p-b-almahasin",
+      "displayName": "بسمه عبدالرحمن صالح المحاسن",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/mh7nViM579dIyGwEXUJxyPGwH1h1"
+    },
+    {
+      "uid": "mO7Oe8t0CtVMhWfFYKv930bPTU53",
+      "personId": "p-b-alarajh",
+      "displayName": "بشاير خالد محمد العراجة",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/mO7Oe8t0CtVMhWfFYKv930bPTU53"
+    },
+    {
+      "uid": "BkmhgoI4MXhpRygn7gQ9zY4kOth1",
+      "personId": "p-t-alghanim",
+      "displayName": "تهاني عبدالبديع حسن الغانم",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/BkmhgoI4MXhpRygn7gQ9zY4kOth1"
+    },
+    {
+      "uid": "9mhPR9OFgQgyAPPPJGjEue7I1KE2",
+      "personId": "p-g-alfahid",
+      "displayName": "جواهر عبدالله دخيل الفهيد",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-04"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-04"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-04",
+      "path": "orgs/takween/memberships/9mhPR9OFgQgyAPPPJGjEue7I1KE2"
+    },
+    {
+      "uid": "6pym4mAT1wX9Gw4OeGDGZARbCPJ3",
+      "personId": "p-h-alarajh",
+      "displayName": "حصة عيسى حمد العراجة",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/6pym4mAT1wX9Gw4OeGDGZARbCPJ3"
+    },
+    {
+      "uid": "A0K0ctyJVyZCjp4wO3IBF14Upd32",
+      "personId": "p-h-almadallah",
+      "displayName": "حصه عبدالعزيز محمد المدالله",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/A0K0ctyJVyZCjp4wO3IBF14Upd32"
+    },
+    {
+      "uid": "Tm4OOsQN0gWK67a1TfGkM4551fT2",
+      "personId": "p-h-aldalbaji",
+      "displayName": "حمده منصور إبراهيم الدلبحي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/Tm4OOsQN0gWK67a1TfGkM4551fT2"
+    },
+    {
+      "uid": "PKoUoTOTqyMCfr622VzbVU2XOUE3",
+      "personId": "p-r-alnutifi",
+      "displayName": "رحاب عبدالله محمد النتيفي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/PKoUoTOTqyMCfr622VzbVU2XOUE3"
+    },
+    {
+      "uid": "9k4JT8ooSuN3Pf50KynIpAKvmol2",
+      "personId": "p-r-alawwad",
+      "displayName": "رزان عبدالله سليمان العواد",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/9k4JT8ooSuN3Pf50KynIpAKvmol2"
+    },
+    {
+      "uid": "yBlAbvpxMOYVYtuoqSasQcnXx5F3",
+      "personId": "p-r-alrasheed",
+      "displayName": "رشا عبدالرحمن الرشيد",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/yBlAbvpxMOYVYtuoqSasQcnXx5F3"
+    },
+    {
+      "uid": "65X4UY6NrRUu2ZM6e6rKXRbUIcu1",
+      "personId": "p-r-f-alosaimi",
+      "displayName": "رغد فهد سليمان العصيمي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/65X4UY6NrRUu2ZM6e6rKXRbUIcu1"
+    },
+    {
+      "uid": "i2LDsRAINLbVxxha3Hm2yg3MFvC2",
+      "personId": "p-r-alfayez",
+      "displayName": "رغده سليمان محمد الفايز",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/i2LDsRAINLbVxxha3Hm2yg3MFvC2"
+    },
+    {
+      "uid": "6Zyi7Ap03oZ3XWjpg6m9WY0H2wz2",
+      "personId": "p-r-aljower",
+      "displayName": "رنا حمود محمد الجوير",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/6Zyi7Ap03oZ3XWjpg6m9WY0H2wz2"
+    },
+    {
+      "uid": "RWyxo00bfrX2jPcCRGUfxASoT4o2",
+      "personId": "p-r-albatel",
+      "displayName": "رهام سويد محمد الباتل",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/RWyxo00bfrX2jPcCRGUfxASoT4o2"
+    },
+    {
+      "uid": "gMC4Wipx4JRWMdCkBHad2sqUV212",
+      "personId": "p-r-alromi",
+      "displayName": "ريفان مساعد عبدالعزيز الرومي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/gMC4Wipx4JRWMdCkBHad2sqUV212"
+    },
+    {
+      "uid": "MJVVV75dEeU3LrFk0C6XRB8Fc6r1",
+      "personId": "p-ss-alfaleh",
+      "displayName": "سارة سعود محمد الفالح",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/MJVVV75dEeU3LrFk0C6XRB8Fc6r1"
+    },
+    {
+      "uid": "uy60CMhBPLUDXWRJ8NlmemfwfDe2",
+      "personId": "p-s-bader",
+      "displayName": "ساره عبدالله علي البدر",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-04"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-04"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-04",
+      "path": "orgs/takween/memberships/uy60CMhBPLUDXWRJ8NlmemfwfDe2"
+    },
+    {
+      "uid": "utTWIyENEfVyBpYiyu4ERHFi12H3",
+      "personId": "p-s-alhumaidan",
+      "displayName": "سعاد حميدان محمد الحميدان",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/utTWIyENEfVyBpYiyu4ERHFi12H3"
+    },
+    {
+      "uid": "4BWT8kWKCCe0ipQBNOxTPnMbn902",
+      "personId": "p-s-s-alaues",
+      "displayName": "سمية سعود حمد العويس",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/4BWT8kWKCCe0ipQBNOxTPnMbn902"
+    },
+    {
+      "uid": "L2TfIFKmkCV6ilLiOq6odsxe0lJ3",
+      "personId": "p-sh-aldhuwaikh",
+      "displayName": "شروق يوسف عبدالله الذويخ",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-04"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-04"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-04",
+      "path": "orgs/takween/memberships/L2TfIFKmkCV6ilLiOq6odsxe0lJ3"
+    },
+    {
+      "uid": "PWuDk4Gw6uWgQvRD8Y40xuHMg1r1",
+      "personId": "p-a-almutairi",
+      "displayName": "عائشه الحمدي محمد المطيري",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/PWuDk4Gw6uWgQvRD8Y40xuHMg1r1"
+    },
+    {
+      "uid": "E59eiQkdRBfKif8q6qHiG2iMKaB3",
+      "personId": "p-la-alturaiqi",
+      "displayName": "لمى عبد اللطيف عبدالعزيز الطريقي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/E59eiQkdRBfKif8q6qHiG2iMKaB3"
+    },
+    {
+      "uid": "YfpwxfFqRnTrGggLhUsDjLfWKIq2",
+      "personId": "p-l-m-alamer",
+      "displayName": "لمى مساعد العامر",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/YfpwxfFqRnTrGggLhUsDjLfWKIq2"
+    },
+    {
+      "uid": "Cw3zseeBQZQfVm7x1SulEg5tOkj2",
+      "personId": "p-l-g-aljaser",
+      "displayName": "لميا جاسر الجاسر",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/Cw3zseeBQZQfVm7x1SulEg5tOkj2"
+    },
+    {
+      "uid": "tC0O3ZrxBqYsQOHovj2c3VZmBMk2",
+      "personId": "p-l-alatalla",
+      "displayName": "لولو عطالله عبدالعزيز العطالله",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/tC0O3ZrxBqYsQOHovj2c3VZmBMk2"
+    },
+    {
+      "uid": "bWXCcSYPZHdMM1qNVgk1ML7Gx3b2",
+      "personId": "p-m-aljabr",
+      "displayName": "منار جبر احمد الجبر",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/bWXCcSYPZHdMM1qNVgk1ML7Gx3b2"
+    },
+    {
+      "uid": "SL2pbFud64MEa26QYzasRquVkcw2",
+      "personId": "p-m-alrased",
+      "displayName": "منار سليمان أحمد الراشد",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/SL2pbFud64MEa26QYzasRquVkcw2"
+    },
+    {
+      "uid": "Cjt5ZpOPXOQxG2sQh6tTUj9Edu63",
+      "personId": "p-ma-alfarhod",
+      "displayName": "منى احمد محمد الفرهود",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/Cjt5ZpOPXOQxG2sQh6tTUj9Edu63"
+    },
+    {
+      "uid": "gsL51GoUEBam1cpAjRO03x718dg1",
+      "personId": "p-m-a-almansor",
+      "displayName": "ميعاد احمد عبداللطيف المنصور",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/gsL51GoUEBam1cpAjRO03x718dg1"
+    },
+    {
+      "uid": "QSBq5581mMeAiQtl5D1SbNcpFD32",
+      "personId": "p-n-alsaeayb",
+      "displayName": "نجود خالد صالح الصعيب",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/QSBq5581mMeAiQtl5D1SbNcpFD32"
+    },
+    {
+      "uid": "oSB81HJNmLZBZR35zA8qVTyqrBj2",
+      "personId": "p-n-almosa",
+      "displayName": "ندى عبدالله الموسى",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-04"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-04"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-04",
+      "path": "orgs/takween/memberships/oSB81HJNmLZBZR35zA8qVTyqrBj2"
+    },
+    {
+      "uid": "E8cQSiXMoyNdyiTYsBcyUlZxlq62",
+      "personId": "p-nm-alkhunaini",
+      "displayName": "نضيد محمد زيد الخنيني",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/E8cQSiXMoyNdyiTYsBcyUlZxlq62"
+    },
+    {
+      "uid": "zUlPcEWjd3ZLNi4mhKUcm9Jaxtf1",
+      "personId": "p-na-alosami",
+      "displayName": "نهاد عبدالله ناصر العصيمي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/zUlPcEWjd3ZLNi4mhKUcm9Jaxtf1"
+    },
+    {
+      "uid": "xj01u7U48xcn9XXVMqzb3eXjGey1",
+      "personId": "p-n-almunifi",
+      "displayName": "نوره حجرف البواردي المنيفي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/xj01u7U48xcn9XXVMqzb3eXjGey1"
+    },
+    {
+      "uid": "MxbFiC4pOCgz4CTUqANyt1ySPSW2",
+      "personId": "p-n-alkhunini",
+      "displayName": "نوره سليمان صالح الخنيني",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-04"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-04"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-04",
+      "path": "orgs/takween/memberships/MxbFiC4pOCgz4CTUqANyt1ySPSW2"
+    },
+    {
+      "uid": "lksDG1wMlXUoqmH6AY2mnfuxUeI2",
+      "personId": "p-no-alosaimi",
+      "displayName": "نوره عبدالرحمن سعود العصيمي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-01"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-01"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-01",
+      "path": "orgs/takween/memberships/lksDG1wMlXUoqmH6AY2mnfuxUeI2"
+    },
+    {
+      "uid": "kiscl0cR2NVdqsonPdZ9TZBWUge2",
+      "personId": "p-n-a-alhammadi",
+      "displayName": "نوره عبدالله عبدالعزيز الحمادي",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/kiscl0cR2NVdqsonPdZ9TZBWUge2"
+    },
+    {
+      "uid": "d6lk0Z441obatV6Mx5JtaBpxtzF2",
+      "personId": "p-h-alknini",
+      "displayName": "هنادي سليمان صالح الخنيني",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-03"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-03"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-03",
+      "path": "orgs/takween/memberships/d6lk0Z441obatV6Mx5JtaBpxtzF2"
+    },
+    {
+      "uid": "4Ewpo24z5ahwSGfDW52xbykGqzk2",
+      "personId": "p-h-almasood",
+      "displayName": "هيا عبد العزيز احمد المسعود",
+      "roleKey": "KG_TEACHER",
+      "schoolIds": [
+        "kg-02"
+      ],
+      "scopes": {
+        "schoolIds": [
+          "kg-02"
+        ],
+        "scopeGroupIds": [],
+        "gradeIds": [],
+        "classIds": [],
+        "subjectKeys": [],
+        "canAccessAllSchools": false
+      },
+      "scopeType": "SCHOOL",
+      "scopeId": "kg-02",
+      "path": "orgs/takween/memberships/4Ewpo24z5ahwSGfDW52xbykGqzk2"
+    }
+  ],
+  "existingAssignments": {
+    "teacherAssignments": [
+      {
+        "id": "ta-kg-values-all",
+        "path": "orgs/takween/teacherAssignments/ta-kg-values-all",
+        "personId": "p-t-altwala",
+        "teacherPersonId": "p-t-altwala",
+        "roleKey": "",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "VALUES",
+        "subjectId": "subject-values",
+        "subjectTitle": "VALUES",
+        "classSubjectOfferingId": "",
+        "offeringId": "",
+        "status": "ACTIVE",
+        "operationKind": "",
+        "operationKinds": []
+      },
+      {
+        "id": "ta-kg1-class",
+        "path": "orgs/takween/teacherAssignments/ta-kg1-class",
+        "personId": "p-s-s-alaues",
+        "teacherPersonId": "p-s-s-alaues",
+        "roleKey": "",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg2",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "CLASS",
+        "subjectId": "subject-class",
+        "subjectTitle": "CLASS",
+        "classSubjectOfferingId": "",
+        "offeringId": "",
+        "status": "ACTIVE",
+        "operationKind": "",
+        "operationKinds": []
+      },
+      {
+        "id": "ta-kg3-a-learning-gardens-class-teacher",
+        "path": "orgs/takween/teacherAssignments/ta-kg3-a-learning-gardens-class-teacher",
+        "personId": "p-s-s-alaues",
+        "teacherPersonId": "p-s-s-alaues",
+        "roleKey": "",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg3",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectId": "learning-gardens",
+        "subjectTitle": "بساتين المعرفة",
+        "classSubjectOfferingId": "kg3-a-learning-gardens",
+        "offeringId": "",
+        "status": "ACTIVE",
+        "isActive": true,
+        "operationKind": "",
+        "operationKinds": []
+      },
+      {
+        "id": "ta-kg3-a-numbers-class-teacher",
+        "path": "orgs/takween/teacherAssignments/ta-kg3-a-numbers-class-teacher",
+        "personId": "p-s-s-alaues",
+        "teacherPersonId": "p-s-s-alaues",
+        "roleKey": "",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg3",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "NUMBERS",
+        "subjectId": "numbers",
+        "subjectTitle": "الأرقام",
+        "classSubjectOfferingId": "kg3-a-numbers",
+        "offeringId": "",
+        "status": "ACTIVE",
+        "isActive": true,
+        "operationKind": "",
+        "operationKinds": []
+      },
+      {
+        "id": "ta-kg3-a-quran-class-teacher",
+        "path": "orgs/takween/teacherAssignments/ta-kg3-a-quran-class-teacher",
+        "personId": "p-s-s-alaues",
+        "teacherPersonId": "p-s-s-alaues",
+        "roleKey": "",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg3",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "QURAN",
+        "subjectId": "quran",
+        "subjectTitle": "القرآن",
+        "classSubjectOfferingId": "kg3-a-quran",
+        "offeringId": "",
+        "status": "ACTIVE",
+        "isActive": true,
+        "operationKind": "",
+        "operationKinds": []
+      }
+    ],
+    "teacherAssignmentClassLinks": [
+      {
+        "id": "tal-kg-values-1",
+        "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg-values-1",
+        "teacherAssignmentId": "ta-kg-values-all",
+        "assignmentId": "ta-kg-values-all",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg1",
+        "classId": "kg1-a",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": ""
+      },
+      {
+        "id": "tal-kg-values-2",
+        "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg-values-2",
+        "teacherAssignmentId": "ta-kg-values-all",
+        "assignmentId": "ta-kg-values-all",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg2",
+        "classId": "kg2-a",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": ""
+      },
+      {
+        "id": "tal-kg-values-3",
+        "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg-values-3",
+        "teacherAssignmentId": "ta-kg-values-all",
+        "assignmentId": "ta-kg-values-all",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg3",
+        "classId": "kg3-a",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": ""
+      },
+      {
+        "id": "tal-kg1-class",
+        "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg1-class",
+        "teacherAssignmentId": "ta-kg1-class",
+        "assignmentId": "ta-kg1-class",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg2",
+        "classId": "kg2-a",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": ""
+      },
+      {
+        "id": "tal-kg3-a-learning-gardens-class-teacher",
+        "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-learning-gardens-class-teacher",
+        "teacherAssignmentId": "ta-kg3-a-learning-gardens-class-teacher",
+        "assignmentId": "ta-kg3-a-learning-gardens-class-teacher",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg3",
+        "classId": "kg3-a",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "LEARNING_GARDENS",
+        "classSubjectOfferingId": "kg3-a-learning-gardens",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "tal-kg3-a-numbers-class-teacher",
+        "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-numbers-class-teacher",
+        "teacherAssignmentId": "ta-kg3-a-numbers-class-teacher",
+        "assignmentId": "ta-kg3-a-numbers-class-teacher",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg3",
+        "classId": "kg3-a",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "NUMBERS",
+        "classSubjectOfferingId": "kg3-a-numbers",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "tal-kg3-a-quran-class-teacher",
+        "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-quran-class-teacher",
+        "teacherAssignmentId": "ta-kg3-a-quran-class-teacher",
+        "assignmentId": "ta-kg3-a-quran-class-teacher",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "gradeId": "kg3",
+        "classId": "kg3-a",
+        "classIds": [],
+        "scopeType": "",
+        "scopeId": "",
+        "subjectKey": "QURAN",
+        "classSubjectOfferingId": "kg3-a-quran",
+        "status": "ACTIVE",
+        "isActive": true
+      }
+    ],
+    "operationalAssignments": [
+      {
+        "id": "staff-provisioning__p-a-alhomidi__kg-01__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-a-alhomidi__kg-01__STAFF_EVALUATION",
+        "actorPersonId": "p-a-alhomidi",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-a-alhomidi__kg-01__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-a-alhomidi__kg-01__STUDENT_CASE_HANDLING",
+        "actorPersonId": "p-a-alhomidi",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-a-almansur__kg-01__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-a-almansur__kg-01__STAFF_EVALUATION",
+        "actorPersonId": "p-a-almansur",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-a-almansur__kg-02__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-a-almansur__kg-02__STAFF_EVALUATION",
+        "actorPersonId": "p-a-almansur",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-a-almansur__kg-03__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-a-almansur__kg-03__STAFF_EVALUATION",
+        "actorPersonId": "p-a-almansur",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-a-almansur__kg-04__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-a-almansur__kg-04__STAFF_EVALUATION",
+        "actorPersonId": "p-a-almansur",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-f-alhamaad__kg-01__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-f-alhamaad__kg-01__STAFF_EVALUATION",
+        "actorPersonId": "p-f-alhamaad",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-f-alhamaad__kg-02__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-f-alhamaad__kg-02__STAFF_EVALUATION",
+        "actorPersonId": "p-f-alhamaad",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-f-alhamaad__kg-03__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-f-alhamaad__kg-03__STAFF_EVALUATION",
+        "actorPersonId": "p-f-alhamaad",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-f-alhamaad__kg-04__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-f-alhamaad__kg-04__STAFF_EVALUATION",
+        "actorPersonId": "p-f-alhamaad",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-h-aljower__kg-02__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-h-aljower__kg-02__STAFF_EVALUATION",
+        "actorPersonId": "p-h-aljower",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-h-aljower__kg-02__STUDENT_ATTENDANCE",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-h-aljower__kg-02__STUDENT_ATTENDANCE",
+        "actorPersonId": "p-h-aljower",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_ATTENDANCE",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-h-aljower__kg-02__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-h-aljower__kg-02__STUDENT_CASE_HANDLING",
+        "actorPersonId": "p-h-aljower",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-h-alshaya__kg-04__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-h-alshaya__kg-04__STAFF_EVALUATION",
+        "actorPersonId": "p-h-alshaya",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-h-alshaya__kg-04__STUDENT_ATTENDANCE",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-h-alshaya__kg-04__STUDENT_ATTENDANCE",
+        "actorPersonId": "p-h-alshaya",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_ATTENDANCE",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-h-alshaya__kg-04__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-h-alshaya__kg-04__STUDENT_CASE_HANDLING",
+        "actorPersonId": "p-h-alshaya",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-malrameh__kg-01__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-malrameh__kg-01__STAFF_EVALUATION",
+        "actorPersonId": "p-malrameh",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-malrameh__kg-02__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-malrameh__kg-02__STAFF_EVALUATION",
+        "actorPersonId": "p-malrameh",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-malrameh__kg-03__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-malrameh__kg-03__STAFF_EVALUATION",
+        "actorPersonId": "p-malrameh",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-malrameh__kg-04__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-malrameh__kg-04__STAFF_EVALUATION",
+        "actorPersonId": "p-malrameh",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-n-alhamiyn__kg-04__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-n-alhamiyn__kg-04__STAFF_EVALUATION",
+        "actorPersonId": "p-n-alhamiyn",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-n-alhamiyn__kg-04__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-n-alhamiyn__kg-04__STUDENT_CASE_HANDLING",
+        "actorPersonId": "p-n-alhamiyn",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-s-alnafea__kg-03__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-s-alnafea__kg-03__STAFF_EVALUATION",
+        "actorPersonId": "p-s-alnafea",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-s-alnafea__kg-03__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-s-alnafea__kg-03__STUDENT_CASE_HANDLING",
+        "actorPersonId": "p-s-alnafea",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-s-alslman__kg-03__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-s-alslman__kg-03__STAFF_EVALUATION",
+        "actorPersonId": "p-s-alslman",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-s-alslman__kg-03__STUDENT_ATTENDANCE",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-s-alslman__kg-03__STUDENT_ATTENDANCE",
+        "actorPersonId": "p-s-alslman",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_ATTENDANCE",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-s-alslman__kg-03__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-s-alslman__kg-03__STUDENT_CASE_HANDLING",
+        "actorPersonId": "p-s-alslman",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-s-alturiqe__kg-02__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-s-alturiqe__kg-02__STAFF_EVALUATION",
+        "actorPersonId": "p-s-alturiqe",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-s-alturiqe__kg-02__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-s-alturiqe__kg-02__STUDENT_CASE_HANDLING",
+        "actorPersonId": "p-s-alturiqe",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-t-altwala__kg-01__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-t-altwala__kg-01__STAFF_EVALUATION",
+        "actorPersonId": "p-t-altwala",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-t-altwala__kg-02__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-t-altwala__kg-02__STAFF_EVALUATION",
+        "actorPersonId": "p-t-altwala",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-02",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-02",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-t-altwala__kg-03__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-t-altwala__kg-03__STAFF_EVALUATION",
+        "actorPersonId": "p-t-altwala",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-03",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-03",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__p-t-altwala__kg-04__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__p-t-altwala__kg-04__STAFF_EVALUATION",
+        "actorPersonId": "p-t-altwala",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-04",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-04",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__staff-ms10LdA0k5TVkiJo4VO6pprmcOh2__kg-01__STAFF_EVALUATION",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__staff-ms10LdA0k5TVkiJo4VO6pprmcOh2__kg-01__STAFF_EVALUATION",
+        "actorPersonId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+        "actorRoleKey": "",
+        "operationKind": "STAFF_EVALUATION",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__staff-ms10LdA0k5TVkiJo4VO6pprmcOh2__kg-01__STUDENT_ATTENDANCE",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__staff-ms10LdA0k5TVkiJo4VO6pprmcOh2__kg-01__STUDENT_ATTENDANCE",
+        "actorPersonId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_ATTENDANCE",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      },
+      {
+        "id": "staff-provisioning__staff-ms10LdA0k5TVkiJo4VO6pprmcOh2__kg-01__STUDENT_CASE_HANDLING",
+        "path": "orgs/takween/operationalAssignments/staff-provisioning__staff-ms10LdA0k5TVkiJo4VO6pprmcOh2__kg-01__STUDENT_CASE_HANDLING",
+        "actorPersonId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+        "actorRoleKey": "",
+        "operationKind": "STUDENT_CASE_HANDLING",
+        "operationKinds": [],
+        "schoolId": "kg-01",
+        "academicYearId": "",
+        "gradeId": "",
+        "classId": "",
+        "classIds": [],
+        "scopeType": "SCHOOL",
+        "scopeId": "kg-01",
+        "subjectKey": "",
+        "classSubjectOfferingId": "",
+        "status": "ACTIVE",
+        "isActive": true
+      }
+    ]
+  },
+  "missingDataRequiredBeforeSeeding": {
+    "missingRequestedCatalogSubjects": [],
+    "missingRequestedSubjectKeys": [],
+    "missingExpectedOfferings": [],
+    "unexpectedLevelOneValuesOrLearningCornersOfferings": [
+      {
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "offeringId": "kg1-a-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitle": "الأركان / الأنشطة"
+      },
+      {
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "offeringId": "kg1-a-values",
+        "subjectKey": "VALUES",
+        "subjectTitle": "القيم / أسماء الله الحسنى"
+      }
+    ],
+    "classesWithUnresolvedLevel": [],
+    "noKgTeacherMemberships": false,
+    "noTeacherAssignmentsForKgTeachers": false
+  },
+  "loadErrors": []
+}

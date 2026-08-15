@@ -4,6 +4,8 @@ import {
   type PdfResource,
   type PdfResourceAcknowledgement,
   type PdfResourceAcknowledgementReport,
+  type TeacherAssignment,
+  type TeacherAssignmentClassLink,
 } from "@takween/contracts";
 
 export type PdfResourceStaffContext = {
@@ -32,6 +34,19 @@ export type PdfResourceStudentContext = {
   subjectKeys?: string[];
 };
 
+export type PdfResourceTeacherContext = PdfResourceStaffContext & {
+  teacherOfferingIds: string[];
+  academicYearIds?: string[];
+  termIds?: string[];
+};
+
+export const TEACHER_PDF_RESOURCE_ROLE_KEYS = new Set<MembershipRole>([
+  "teacher",
+  "BOYS_TEACHER",
+  "GIRLS_TEACHER",
+  "KG_TEACHER",
+]);
+
 export type PdfResourceDomainIssue =
   | "INVALID_STAFF_ROLE"
   | "JOB_TASKS_REQUIRES_STAFF_AUDIENCE"
@@ -58,6 +73,92 @@ function matchesOptionalList(
   if (!actualValue) return false;
 
   return targetValues.includes(actualValue);
+}
+
+function matchesOptionalScopeList(
+  targetValue: string | undefined,
+  actualValues: string[] | undefined,
+): boolean {
+  if (!targetValue) return true;
+  return (actualValues ?? []).includes(targetValue);
+}
+
+export function resolveActiveTeacherOfferingIds(params: {
+  assignments: TeacherAssignment[];
+  classLinks: TeacherAssignmentClassLink[];
+  now: number;
+}): string[] {
+  const activeAssignmentIds = new Set(
+    params.assignments
+      .filter(
+        (assignment) =>
+          assignment.status === "ACTIVE" &&
+          assignment.startAt <= params.now &&
+          (!assignment.endAt || assignment.endAt >= params.now),
+      )
+      .map((assignment) => assignment.id),
+  );
+
+  return Array.from(
+    new Set([
+      ...params.assignments
+        .filter((assignment) => activeAssignmentIds.has(assignment.id))
+        .map((assignment) => assignment.classSubjectOfferingId)
+        .filter(Boolean),
+      ...params.classLinks
+        .filter((link) => activeAssignmentIds.has(link.assignmentId))
+        .map((link) => link.classSubjectOfferingId)
+        .filter(Boolean),
+    ]),
+  );
+}
+
+export function isTeacherTargetedByPdfResource(
+  resource: PdfResource,
+  teacher: PdfResourceTeacherContext,
+): boolean {
+  if (
+    resource.kind !== "ENRICHMENT_MATERIAL" &&
+    resource.kind !== "CURRICULUM_DISTRIBUTION"
+  ) {
+    return false;
+  }
+
+  if (
+    !teacher.roleKeys.some((roleKey) =>
+      TEACHER_PDF_RESOURCE_ROLE_KEYS.has(roleKey),
+    )
+  ) {
+    return false;
+  }
+
+  // The staff helper accepts a single academic-year/term value. Teaching
+  // assignments can span multiple values, so defer those two checks to the
+  // assignment-derived lists below while preserving its org/role/school logic.
+  if (
+    !isStaffTargetedByPdfResource(resource, {
+      ...teacher,
+      academicYearId: resource.audience.academicYearId,
+      termId: resource.audience.termId,
+    })
+  ) {
+    return false;
+  }
+
+  if (
+    !matchesOptionalScopeList(
+      resource.audience.academicYearId,
+      teacher.academicYearIds,
+    ) ||
+    !matchesOptionalScopeList(resource.audience.termId, teacher.termIds)
+  ) {
+    return false;
+  }
+
+  return arraysIntersect(
+    resource.audience.classSubjectOfferingIds,
+    teacher.teacherOfferingIds,
+  );
 }
 
 export function validatePdfResourceDomainRules(

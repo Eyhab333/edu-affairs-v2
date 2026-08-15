@@ -1,0 +1,53 @@
+import type { MembershipRole } from "@takween/contracts";
+
+const ARABIC_ROLE_LABELS: Partial<Record<MembershipRole, string>> = {
+  platform_owner: "مالك المنصة",
+  platform_admin: "مدير المنصة",
+  org_owner: "مالك المؤسسة",
+  org_admin: "مدير المؤسسة",
+  school_admin: "إداري مدرسة",
+  school_manager: "مشرف مدرسة",
+  staff: "موظف",
+  teacher: "معلم",
+  viewer: "مشاهد",
+  ORG_CHAIR: "رئيس المؤسسة",
+  ORG_CEO: "المدير التنفيذي",
+  ORG_CEO_ASSIST: "مساعد المدير التنفيذي",
+  ORG_SUPERVISION_HEAD: "رئيس الإشراف",
+  ADMIN_SUPERVISOR: "مشرف/ة إداري/ة",
+  ADMIN_ASSISTANT: "مساعد/ة إداري/ة",
+  MEDIA_SPECIALIST: "أخصائي/ة إعلام",
+  HR_SPECIALIST: "أخصائي/ة موارد بشرية",
+  ACTIVITY_COORD: "رائد/ة نشاط",
+  SCHOOL_MONITOR: "مراقب/ة مدرسة",
+  NURSERY_CAREGIVER: "مربية حضانة",
+  FINANCE_COLLECTOR: "محصل/ة مالي/ة",
+  EDU_SUPERVISOR: "مشرف/ة تربوي/ة",
+  VALUES_COORD: "منسق/ة قيم",
+  BOYS_SUPERVISION_HEAD: "رئيس إشراف البنين",
+  BOYS_PRINCIPAL: "مدير بنين",
+  BOYS_VP: "وكيل بنين",
+  BOYS_EDU_VP: "وكيل تعليمي - بنين",
+  BOYS_STUDENT_GUIDE: "موجه طلابي - بنين",
+  BOYS_STUDENTS_VP: "وكيل شؤون الطلاب - بنين",
+  BOYS_TEACHERS_VP: "وكيل شؤون المعلمين - بنين",
+  BOYS_EDU_SUPERVISOR: "مشرف تعليمي - بنين",
+  BOYS_TEACHER: "معلم - بنين",
+  GIRLS_PRINCIPAL: "مديرة",
+  GIRLS_VP: "وكيلة",
+  GIRLS_STUDENT_COUNSELOR: "موجهة طلابية",
+  GIRLS_EDU_SUPERVISOR: "مشرفة تعليمية",
+  GIRLS_TEACHER: "معلمة",
+  KG_EDU_SUPERVISOR: "مشرفة تعليمية - رياض أطفال",
+  KG_VALUES_COORD: "منسقة قيم - رياض أطفال",
+  KG_PRINCIPAL: "مديرة روضة",
+  KG_VP: "وكيلة روضة",
+  KG_TEACHER: "معلمة روضة",
+  BUS_SUPERVISOR: "مشرف/ة حافلة",
+  GUARDIAN: "ولي أمر",
+};
+
+export function getArabicRoleLabel(roleKey?: string) {
+  if (!roleKey) return "بدون دور";
+  return ARABIC_ROLE_LABELS[roleKey as MembershipRole] ?? roleKey;
+}

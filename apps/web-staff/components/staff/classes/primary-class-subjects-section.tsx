@@ -38,6 +38,12 @@ type ClassSubjectWorkspace = ReturnType<
   typeof buildClassSubjectWorkspaces
 >[number];
 
+const HIDDEN_WORKSPACE_OPERATION_KEYS = new Set([
+  "NOTES",
+  "CURRICULUM_PLAN",
+  "RESOURCES",
+]);
+
 function normalizeSubjectKey(value?: string) {
   return String(value || "")
     .trim()
@@ -118,6 +124,7 @@ function buildQuestionBankHref(
   subjectContext: {
     classSubjectOfferingId: string;
     subjectKey: string;
+    teacherAssignmentId?: string;
     currentTerm?: StaffActorCurrentTerm | null;
   },
 ) {
@@ -133,6 +140,10 @@ function buildQuestionBankHref(
 
   params.set("classSubjectOfferingId", subjectContext.classSubjectOfferingId);
   params.set("subjectKey", subjectContext.subjectKey);
+
+  if (subjectContext.teacherAssignmentId) {
+    params.set("teacherAssignmentId", subjectContext.teacherAssignmentId);
+  }
 
   const query = params.toString();
 
@@ -146,6 +157,7 @@ function buildHomeworkListHref(
   subjectContext: {
     classSubjectOfferingId: string;
     subjectKey: string;
+    teacherAssignmentId?: string;
     currentTerm?: StaffActorCurrentTerm | null;
   },
 ) {
@@ -161,6 +173,10 @@ function buildHomeworkListHref(
 
   params.set("classSubjectOfferingId", subjectContext.classSubjectOfferingId);
   params.set("subjectKey", subjectContext.subjectKey);
+
+  if (subjectContext.teacherAssignmentId) {
+    params.set("teacherAssignmentId", subjectContext.teacherAssignmentId);
+  }
 
   const query = params.toString();
 
@@ -467,7 +483,10 @@ function PrimaryClassSubjectCard({
     workspace.subjectKey || workspace.subjectId,
   );
 
-  const operations = workspace.availableOperations ?? [];
+  const operations = (workspace.availableOperations ?? []).filter(
+    (operation) =>
+      !HIDDEN_WORKSPACE_OPERATION_KEYS.has(operation.operationKey),
+  );
 
   return (
     <article className="rounded-3xl border border-slate-100 bg-slate-50 p-4 transition hover:border-violet-200 hover:bg-white dark:border-slate-800 dark:bg-slate-950 dark:hover:border-violet-900 dark:hover:bg-slate-900">

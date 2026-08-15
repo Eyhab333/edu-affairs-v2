@@ -1,0 +1,736 @@
+{
+  "metadata": {
+    "generatedAt": "2026-08-13T16:27:27.851Z",
+    "projectId": "edu-affairs-dev",
+    "orgId": "takween",
+    "dryRun": false,
+    "firestoreWritesPerformed": true,
+    "sourceReportPath": "C:\\dev\\edu-affairs-v2\\scripts\\inspections\\inspect-kindergarten-setup-report.json",
+    "elementaryConventions": {
+      "provisioningSource": "TEACHER_PROVISIONING_ENGINE",
+      "provisioningVersion": 1,
+      "teacherAssignmentKind": "SUBJECT_TEACHER",
+      "classLinkCreated": true,
+      "operationalAssignmentsDerivedFromOfferingModules": true
+    }
+  },
+  "teacher": {
+    "found": true,
+    "uid": "4BWT8kWKCCe0ipQBNOxTPnMbn902",
+    "personId": "p-s-s-alaues",
+    "email": "s.s.alaues@qz.org.sa",
+    "displayName": "سمية سعود حمد العويس",
+    "roleKey": "KG_TEACHER",
+    "authFound": true,
+    "membershipPaths": [
+      "users/4BWT8kWKCCe0ipQBNOxTPnMbn902/orgMemberships/takween",
+      "orgs/takween/memberships/4BWT8kWKCCe0ipQBNOxTPnMbn902"
+    ]
+  },
+  "school": {
+    "path": "orgs/takween/schools/kg-01",
+    "found": true,
+    "id": "kg-01"
+  },
+  "academicYear": {
+    "path": "orgs/takween/schools/kg-01/academicYears/ay-1448",
+    "found": true,
+    "id": "ay-1448"
+  },
+  "class": {
+    "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-a",
+    "found": true,
+    "id": "kg3-a",
+    "name": "فصل الكادي",
+    "level": "المستوى الثالث"
+  },
+  "term": {
+    "id": "term-1",
+    "activeTerms": [
+      {
+        "id": "term-1",
+        "path": "orgs/takween/academicYears/ay-1448/terms/term-1"
+      }
+    ]
+  },
+  "canonicalOfferings": [
+    {
+      "id": "kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-quran",
+      "subjectKey": "QURAN",
+      "found": true,
+      "active": true
+    },
+    {
+      "id": "kg-01-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-adhkar-identity-anthems",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "found": true,
+      "active": true
+    },
+    {
+      "id": "kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-learning-gardens",
+      "subjectKey": "LEARNING_GARDENS",
+      "found": true,
+      "active": true
+    },
+    {
+      "id": "kg-01-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-count-and-calculate",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "found": true,
+      "active": true
+    }
+  ],
+  "offeringModules": [
+    {
+      "collection": "classSubjectOfferings",
+      "id": "kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-quran",
+      "subjectKey": "QURAN",
+      "before": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ],
+      "after": [
+        "ASSESSMENTS",
+        "LEARNING_LOSS",
+        "HOMEWORK",
+        "LESSON_PREP",
+        "QUESTION_BANK",
+        "CURRICULUM_PLAN",
+        "RESOURCES",
+        "GAMIFICATION",
+        "NOTES"
+      ],
+      "action": "UPDATE_MODULES"
+    },
+    {
+      "collection": "classSubjectOfferings",
+      "id": "kg-01-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-adhkar-identity-anthems",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "before": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ],
+      "after": [
+        "ASSESSMENTS",
+        "LEARNING_LOSS",
+        "HOMEWORK",
+        "LESSON_PREP",
+        "QUESTION_BANK",
+        "CURRICULUM_PLAN",
+        "RESOURCES",
+        "GAMIFICATION",
+        "NOTES"
+      ],
+      "action": "UPDATE_MODULES"
+    },
+    {
+      "collection": "classSubjectOfferings",
+      "id": "kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-learning-gardens",
+      "subjectKey": "LEARNING_GARDENS",
+      "before": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ],
+      "after": [
+        "ASSESSMENTS",
+        "LEARNING_LOSS",
+        "HOMEWORK",
+        "LESSON_PREP",
+        "QUESTION_BANK",
+        "CURRICULUM_PLAN",
+        "RESOURCES",
+        "GAMIFICATION",
+        "NOTES"
+      ],
+      "action": "UPDATE_MODULES"
+    },
+    {
+      "collection": "classSubjectOfferings",
+      "id": "kg-01-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-count-and-calculate",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "before": [
+        "ASSESSMENTS",
+        "NOTES",
+        "GAMIFICATION"
+      ],
+      "after": [
+        "ASSESSMENTS",
+        "LEARNING_LOSS",
+        "HOMEWORK",
+        "LESSON_PREP",
+        "QUESTION_BANK",
+        "CURRICULUM_PLAN",
+        "RESOURCES",
+        "GAMIFICATION",
+        "NOTES"
+      ],
+      "action": "UPDATE_MODULES"
+    }
+  ],
+  "teacherAssignments": [
+    {
+      "collection": "teacherAssignments",
+      "id": "ta-kg3-a-quran-class-teacher",
+      "path": "orgs/takween/teacherAssignments/ta-kg3-a-quran-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignments",
+      "id": "ta-kg3-a-learning-gardens-class-teacher",
+      "path": "orgs/takween/teacherAssignments/ta-kg3-a-learning-gardens-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate",
+      "action": "REUSE"
+    }
+  ],
+  "teacherAssignmentClassLinks": [
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "tal-kg3-a-quran-class-teacher",
+      "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-quran-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__class-link__kg3-a",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__class-link__kg3-a",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "tal-kg3-a-learning-gardens-class-teacher",
+      "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-learning-gardens-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__class-link__kg3-a",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__class-link__kg3-a",
+      "action": "REUSE"
+    }
+  ],
+  "operationalAssignments": [
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    }
+  ],
+  "existingTeacherAssignmentsReused": [
+    {
+      "collection": "teacherAssignments",
+      "id": "ta-kg3-a-quran-class-teacher",
+      "path": "orgs/takween/teacherAssignments/ta-kg3-a-quran-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignments",
+      "id": "ta-kg3-a-learning-gardens-class-teacher",
+      "path": "orgs/takween/teacherAssignments/ta-kg3-a-learning-gardens-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate",
+      "action": "REUSE"
+    }
+  ],
+  "teacherAssignmentsToCreate": [],
+  "legacyAssignmentsToEnd": [],
+  "classLinksReused": [
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "tal-kg3-a-quran-class-teacher",
+      "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-quran-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__class-link__kg3-a",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__class-link__kg3-a",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "tal-kg3-a-learning-gardens-class-teacher",
+      "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-learning-gardens-class-teacher",
+      "action": "REUSE"
+    },
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__class-link__kg3-a",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__class-link__kg3-a",
+      "action": "REUSE"
+    }
+  ],
+  "classLinksToCreate": [],
+  "classLinksToEnd": [],
+  "visibilityAssignmentsToEnd": [
+    {
+      "collection": "teacherAssignments",
+      "id": "ta-kg1-class",
+      "path": "orgs/takween/teacherAssignments/ta-kg1-class",
+      "action": "END_VISIBILITY_ASSIGNMENT"
+    }
+  ],
+  "visibilityLinksToEnd": [
+    {
+      "collection": "teacherAssignmentClassLinks",
+      "id": "tal-kg1-class",
+      "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg1-class",
+      "action": "END_VISIBILITY_LINK"
+    }
+  ],
+  "operationalAssignmentsReused": [
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_MEASUREMENT",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_MEASUREMENT",
+      "action": "REUSE",
+      "operationKind": "STUDENT_MEASUREMENT"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_GAMIFICATION",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_GAMIFICATION",
+      "action": "REUSE",
+      "operationKind": "STUDENT_GAMIFICATION"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_NOTES",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__STUDENT_NOTES",
+      "action": "REUSE",
+      "operationKind": "STUDENT_NOTES"
+    }
+  ],
+  "operationalAssignmentsToCreate": [
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LEARNING_LOSS_FOLLOWUP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LEARNING_LOSS_FOLLOWUP",
+      "action": "CREATE",
+      "operationKind": "LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "collection": "operationalAssignments",
+      "id": "teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LESSON_PREP",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LESSON_PREP",
+      "action": "CREATE",
+      "operationKind": "LESSON_PREP"
+    }
+  ],
+  "operationalAssignmentsToEnd": [],
+  "membershipScopeChanges": {
+    "path": "users/4BWT8kWKCCe0ipQBNOxTPnMbn902/orgMemberships/takween",
+    "action": "REUSE",
+    "missingScopeFields": [],
+    "requiredByElementaryProvisioningFlow": false,
+    "payload": {}
+  },
+  "finalExpectedVisibleClasses": [
+    {
+      "id": "kg3-a",
+      "name": "فصل الكادي"
+    }
+  ],
+  "legacyOrConflictingAssignments": [],
+  "classAssignmentsExcluded": [
+    {
+      "id": "ta-kg1-class",
+      "path": "orgs/takween/teacherAssignments/ta-kg1-class",
+      "teacherPersonId": "p-s-s-alaues",
+      "schoolId": "kg-01",
+      "academicYearId": "ay-1448",
+      "termId": "",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CLASS",
+      "classSubjectOfferingId": "",
+      "status": "ACTIVE"
+    }
+  ],
+  "legacyOfferings": [
+    {
+      "id": "kg3-a-class",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-class",
+      "subjectKey": "CLASS",
+      "status": "ACTIVE",
+      "active": true,
+      "references": {
+        "teacherAssignments": [],
+        "teacherAssignmentClassLinks": [],
+        "operationalAssignments": []
+      }
+    },
+    {
+      "id": "kg3-a-numbers",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-numbers",
+      "subjectKey": "NUMBERS",
+      "status": "ACTIVE",
+      "active": true,
+      "references": {
+        "teacherAssignments": [
+          {
+            "id": "ta-kg3-a-numbers-class-teacher",
+            "path": "orgs/takween/teacherAssignments/ta-kg3-a-numbers-class-teacher"
+          }
+        ],
+        "teacherAssignmentClassLinks": [
+          {
+            "id": "tal-kg3-a-numbers-class-teacher",
+            "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg3-a-numbers-class-teacher"
+          }
+        ],
+        "operationalAssignments": []
+      }
+    }
+  ],
+  "finalExpectedActiveSubjects": [
+    "QURAN",
+    "ADHKAR_IDENTITY_ANTHEMS",
+    "LEARNING_GARDENS",
+    "COUNT_AND_CALCULATE"
+  ],
+  "exactFirestoreWritesPlanned": [
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-quran",
+      "category": "classSubjectOfferings"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-adhkar-identity-anthems",
+      "category": "classSubjectOfferings"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-learning-gardens",
+      "category": "classSubjectOfferings"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-count-and-calculate",
+      "category": "classSubjectOfferings"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LEARNING_LOSS_FOLLOWUP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-quran__LESSON_PREP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LEARNING_LOSS_FOLLOWUP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-adhkar-identity-anthems__LESSON_PREP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LEARNING_LOSS_FOLLOWUP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg3-a-learning-gardens__LESSON_PREP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LEARNING_LOSS_FOLLOWUP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-s-s-alaues__kg-01__ay-1448__term-1__kg-01-kg3-a-count-and-calculate__LESSON_PREP",
+      "category": "operationalAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/teacherAssignments/ta-kg1-class",
+      "category": "teacherAssignments"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/teacherAssignmentClassLinks/tal-kg1-class",
+      "category": "teacherAssignmentClassLinks"
+    }
+  ],
+  "plannedFirestoreWriteCount": 14,
+  "blockers": []
+}

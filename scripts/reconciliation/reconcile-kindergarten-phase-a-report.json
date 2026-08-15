@@ -1,0 +1,5463 @@
+{
+  "metadata": {
+    "generatedAt": "2026-08-13T13:07:30.713Z",
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "mode": "APPLY",
+    "applyRequested": true,
+    "applyConfirmed": true,
+    "applyConfirmationRequired": "KG_PHASE_A_NORMALIZATION",
+    "firestoreWritesPerformed": true,
+    "allowedFirestoreWriteCollections": [
+      "schools/*/academicYears/*/subjects",
+      "classSubjectOfferings"
+    ],
+    "protectedCollectionsNotWritten": [
+      "teacherAssignments",
+      "teacherAssignmentClassLinks",
+      "operationalAssignments",
+      "memberships",
+      "users",
+      "people"
+    ]
+  },
+  "sourceReport": {
+    "exists": true,
+    "path": "C:\\dev\\edu-affairs-v2\\scripts\\inspections\\inspect-kindergarten-setup-report.json",
+    "generatedAt": "2026-08-13T12:12:30.320Z",
+    "warnings": []
+  },
+  "target": {
+    "schools": [
+      "kg-01",
+      "kg-02",
+      "kg-03",
+      "kg-04"
+    ],
+    "classes": [
+      {
+        "gradeId": "kg1",
+        "classId": "kg1-a"
+      },
+      {
+        "gradeId": "kg2",
+        "classId": "kg2-a"
+      },
+      {
+        "gradeId": "kg3",
+        "classId": "kg3-a"
+      }
+    ],
+    "canonicalSubjects": [
+      {
+        "key": "QURAN",
+        "id": "subject-quran",
+        "suffix": "quran",
+        "title": "القرآن الكريم",
+        "order": 10
+      },
+      {
+        "key": "ADHKAR_IDENTITY_ANTHEMS",
+        "id": "subject-adhkar-identity-anthems",
+        "suffix": "adhkar-identity-anthems",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "order": 20
+      },
+      {
+        "key": "LEARNING_GARDENS",
+        "id": "subject-learning-gardens",
+        "suffix": "learning-gardens",
+        "title": "بساتين المعرفة",
+        "order": 30
+      },
+      {
+        "key": "COUNT_AND_CALCULATE",
+        "id": "subject-count-and-calculate",
+        "suffix": "count-and-calculate",
+        "title": "نعد ونحسب",
+        "order": 40
+      },
+      {
+        "key": "VALUES",
+        "id": "subject-values",
+        "suffix": "values",
+        "title": "القيم",
+        "order": 50
+      },
+      {
+        "key": "CORNERS",
+        "id": "subject-corners",
+        "suffix": "corners",
+        "title": "الأركان",
+        "order": 60
+      }
+    ]
+  },
+  "catalogEntriesToCreate": [
+    {
+      "schoolId": "kg-01",
+      "subjectKey": "QURAN",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-quran",
+      "id": "subject-quran"
+    },
+    {
+      "schoolId": "kg-01",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "id": "subject-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-01",
+      "subjectKey": "LEARNING_GARDENS",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "id": "subject-learning-gardens"
+    },
+    {
+      "schoolId": "kg-01",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "id": "subject-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-02",
+      "subjectKey": "QURAN",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-quran",
+      "id": "subject-quran"
+    },
+    {
+      "schoolId": "kg-02",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "id": "subject-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-02",
+      "subjectKey": "LEARNING_GARDENS",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "id": "subject-learning-gardens"
+    },
+    {
+      "schoolId": "kg-02",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "id": "subject-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-03",
+      "subjectKey": "QURAN",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-quran",
+      "id": "subject-quran"
+    },
+    {
+      "schoolId": "kg-03",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "id": "subject-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-03",
+      "subjectKey": "LEARNING_GARDENS",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "id": "subject-learning-gardens"
+    },
+    {
+      "schoolId": "kg-03",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "id": "subject-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-04",
+      "subjectKey": "QURAN",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-quran",
+      "id": "subject-quran"
+    },
+    {
+      "schoolId": "kg-04",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "id": "subject-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-04",
+      "subjectKey": "LEARNING_GARDENS",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "id": "subject-learning-gardens"
+    },
+    {
+      "schoolId": "kg-04",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "id": "subject-count-and-calculate"
+    }
+  ],
+  "catalogEntriesReused": [
+    {
+      "schoolId": "kg-01",
+      "subjectKey": "VALUES",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-values",
+      "id": "subject-values"
+    },
+    {
+      "schoolId": "kg-01",
+      "subjectKey": "CORNERS",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-corners",
+      "id": "subject-corners"
+    },
+    {
+      "schoolId": "kg-02",
+      "subjectKey": "VALUES",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-values",
+      "id": "subject-values"
+    },
+    {
+      "schoolId": "kg-02",
+      "subjectKey": "CORNERS",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-corners",
+      "id": "subject-corners"
+    },
+    {
+      "schoolId": "kg-03",
+      "subjectKey": "VALUES",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-values",
+      "id": "subject-values"
+    },
+    {
+      "schoolId": "kg-03",
+      "subjectKey": "CORNERS",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-corners",
+      "id": "subject-corners"
+    },
+    {
+      "schoolId": "kg-04",
+      "subjectKey": "VALUES",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-values",
+      "id": "subject-values"
+    },
+    {
+      "schoolId": "kg-04",
+      "subjectKey": "CORNERS",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-corners",
+      "id": "subject-corners"
+    }
+  ],
+  "catalogEntriesToNormalize": [],
+  "offeringsReused": [
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "id": "kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-quran",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-learning-gardens",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "id": "kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-values",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "id": "kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-corners",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "id": "kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-quran",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-learning-gardens",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "id": "kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-quran",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-learning-gardens",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "id": "kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-values",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "id": "kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-corners",
+      "requiresNormalization": true
+    }
+  ],
+  "offeringsToNormalize": [
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "id": "kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-quran",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-learning-gardens",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "id": "kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-values",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "id": "kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-corners",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "id": "kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-quran",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-learning-gardens",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "id": "kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-quran",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-learning-gardens",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "id": "kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-values",
+      "requiresNormalization": true
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "id": "kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-corners",
+      "requiresNormalization": true
+    }
+  ],
+  "offeringsToCreate": [
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "id": "kg-01-kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-quran"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-01-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-01-kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-01-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "id": "kg-01-kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-quran"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-01-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-01-kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-01-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "id": "kg-01-kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-values"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "id": "kg-01-kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-corners"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-01-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-01-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "id": "kg-02-kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-quran"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-02-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-02-kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-02-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "id": "kg-02-kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-quran"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-02-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-02-kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-02-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "id": "kg-02-kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-values"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "id": "kg-02-kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-corners"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "id": "kg-02-kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-quran"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-02-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-02-kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-02-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "id": "kg-02-kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-values"
+    },
+    {
+      "schoolId": "kg-02",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "id": "kg-02-kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-corners"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "QURAN",
+      "id": "kg-03-kg1-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-quran"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-03-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-03-kg1-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-03-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "QURAN",
+      "id": "kg-03-kg2-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-quran"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-03-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-03-kg2-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-03-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "VALUES",
+      "id": "kg-03-kg2-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-values"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CORNERS",
+      "id": "kg-03-kg2-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-corners"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "id": "kg-03-kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-quran"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-03-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-03-kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-03-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "id": "kg-03-kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-values"
+    },
+    {
+      "schoolId": "kg-03",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "id": "kg-03-kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-corners"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-04-kg1-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg1-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-04-kg1-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg1-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-04-kg2-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg2-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-04-kg2-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg2-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "QURAN",
+      "id": "kg-04-kg3-a-quran",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-quran"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+      "id": "kg-04-kg3-a-adhkar-identity-anthems",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-adhkar-identity-anthems"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "LEARNING_GARDENS",
+      "id": "kg-04-kg3-a-learning-gardens",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-learning-gardens"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg-04-kg3-a-count-and-calculate",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-count-and-calculate"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "VALUES",
+      "id": "kg-04-kg3-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-values"
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CORNERS",
+      "id": "kg-04-kg3-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-corners"
+    }
+  ],
+  "forbiddenKg1Offerings": [
+    {
+      "id": "kg1-a-values",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-values",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "VALUES",
+      "references": {
+        "teacherAssignments": [],
+        "teacherAssignmentClassLinks": [],
+        "operationalAssignments": []
+      },
+      "referenceCount": 0,
+      "action": "archive"
+    },
+    {
+      "id": "kg1-a-corners",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-corners",
+      "schoolId": "kg-04",
+      "academicYearId": "ay-1448",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "CORNERS",
+      "references": {
+        "teacherAssignments": [],
+        "teacherAssignmentClassLinks": [],
+        "operationalAssignments": []
+      },
+      "referenceCount": 0,
+      "action": "archive"
+    }
+  ],
+  "legacyClassOrNumbersOfferings": [
+    {
+      "id": "kg1-a-class",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-class",
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "CLASS",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg1-a-numbers",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-numbers",
+      "schoolId": "kg-04",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "NUMBERS",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg2-a-class",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-class",
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "CLASS",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg2-a-numbers",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-numbers",
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "NUMBERS",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg3-a-class",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-class",
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "CLASS",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg3-a-numbers",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-numbers",
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "NUMBERS",
+      "status": "ACTIVE"
+    }
+  ],
+  "expectedCanonicalOfferingCount": 64,
+  "plannedCanonicalOfferingCount": 64,
+  "summary": {
+    "catalogCreates": 16,
+    "catalogReused": 8,
+    "catalogNormalized": 0,
+    "offeringsReused": 10,
+    "offeringsNormalized": 10,
+    "offeringsCreated": 54,
+    "forbiddenKg1OfferingsFound": 2,
+    "forbiddenKg1OfferingsSafeToArchive": 2,
+    "forbiddenKg1OfferingsProtectedByReferences": 0,
+    "legacyClassOrNumbersOfferingsFound": 6,
+    "firestoreWritesPlanned": 82
+  },
+  "exactFirestoreWritesPlanned": [
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-quran",
+      "payload": {
+        "id": "subject-quran",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "code": "QURAN",
+        "key": "QURAN",
+        "title": "القرآن الكريم",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 10,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "payload": {
+        "id": "subject-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "code": "ADHKAR_IDENTITY_ANTHEMS",
+        "key": "ADHKAR_IDENTITY_ANTHEMS",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 20,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "payload": {
+        "id": "subject-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "code": "LEARNING_GARDENS",
+        "key": "LEARNING_GARDENS",
+        "title": "بساتين المعرفة",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 30,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "payload": {
+        "id": "subject-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "code": "COUNT_AND_CALCULATE",
+        "key": "COUNT_AND_CALCULATE",
+        "title": "نعد ونحسب",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 40,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-quran",
+      "payload": {
+        "id": "subject-quran",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "code": "QURAN",
+        "key": "QURAN",
+        "title": "القرآن الكريم",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 10,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "payload": {
+        "id": "subject-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "code": "ADHKAR_IDENTITY_ANTHEMS",
+        "key": "ADHKAR_IDENTITY_ANTHEMS",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 20,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "payload": {
+        "id": "subject-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "code": "LEARNING_GARDENS",
+        "key": "LEARNING_GARDENS",
+        "title": "بساتين المعرفة",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 30,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "payload": {
+        "id": "subject-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "code": "COUNT_AND_CALCULATE",
+        "key": "COUNT_AND_CALCULATE",
+        "title": "نعد ونحسب",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 40,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-quran",
+      "payload": {
+        "id": "subject-quran",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "code": "QURAN",
+        "key": "QURAN",
+        "title": "القرآن الكريم",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 10,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "payload": {
+        "id": "subject-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "code": "ADHKAR_IDENTITY_ANTHEMS",
+        "key": "ADHKAR_IDENTITY_ANTHEMS",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 20,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "payload": {
+        "id": "subject-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "code": "LEARNING_GARDENS",
+        "key": "LEARNING_GARDENS",
+        "title": "بساتين المعرفة",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 30,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "payload": {
+        "id": "subject-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "code": "COUNT_AND_CALCULATE",
+        "key": "COUNT_AND_CALCULATE",
+        "title": "نعد ونحسب",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 40,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-quran",
+      "payload": {
+        "id": "subject-quran",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "code": "QURAN",
+        "key": "QURAN",
+        "title": "القرآن الكريم",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 10,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-adhkar-identity-anthems",
+      "payload": {
+        "id": "subject-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "code": "ADHKAR_IDENTITY_ANTHEMS",
+        "key": "ADHKAR_IDENTITY_ANTHEMS",
+        "title": "الأذكار والهوية الوطنية والأناشيد",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 20,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-learning-gardens",
+      "payload": {
+        "id": "subject-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "code": "LEARNING_GARDENS",
+        "key": "LEARNING_GARDENS",
+        "title": "بساتين المعرفة",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 30,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/subjects/subject-count-and-calculate",
+      "payload": {
+        "id": "subject-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "code": "COUNT_AND_CALCULATE",
+        "key": "COUNT_AND_CALCULATE",
+        "title": "نعد ونحسب",
+        "streamId": "",
+        "appliesToAllStreams": true,
+        "category": "KG",
+        "order": 40,
+        "isArchived": false,
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "subjectCatalog",
+      "reason": "missingCanonicalCatalog"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-values",
+      "payload": {
+        "status": "ARCHIVED",
+        "isActive": false,
+        "isArchived": true,
+        "endAt": 1786626447394,
+        "archivedAt": 1786626447394,
+        "note": "Archived by Phase A KG normalization: VALUES/CORNERS are not part of KG1.",
+        "metadata": {
+          "seededBy": "seed-class-subject-offerings",
+          "seededAt": 1778476519868,
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394,
+          "archivalReason": "KG1_FORBIDDEN_CANONICAL_SUBJECT"
+        },
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "archiveForbiddenKg1Subject"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-corners",
+      "payload": {
+        "status": "ARCHIVED",
+        "isActive": false,
+        "isArchived": true,
+        "endAt": 1786626447394,
+        "archivedAt": 1786626447394,
+        "note": "Archived by Phase A KG normalization: VALUES/CORNERS are not part of KG1.",
+        "metadata": {
+          "seededBy": "seed-class-subject-offerings",
+          "seededAt": 1778476519751,
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394,
+          "archivalReason": "KG1_FORBIDDEN_CANONICAL_SUBJECT"
+        },
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "archiveForbiddenKg1Subject"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-quran",
+      "payload": {
+        "id": "kg-01-kg1-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-01-kg1-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-learning-gardens",
+      "payload": {
+        "id": "kg-01-kg1-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg1-a-count-and-calculate",
+      "payload": {
+        "id": "kg-01-kg1-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-quran",
+      "payload": {
+        "id": "kg-01-kg2-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-01-kg2-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-learning-gardens",
+      "payload": {
+        "id": "kg-01-kg2-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-count-and-calculate",
+      "payload": {
+        "id": "kg-01-kg2-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-values",
+      "payload": {
+        "id": "kg-01-kg2-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg2-a-corners",
+      "payload": {
+        "id": "kg-01-kg2-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-quran",
+      "payload": {
+        "id": "kg3-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778572139458,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-01-kg3-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-learning-gardens",
+      "payload": {
+        "id": "kg3-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778572139458,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-01-kg3-a-count-and-calculate",
+      "payload": {
+        "id": "kg-01-kg3-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-values",
+      "payload": {
+        "id": "kg3-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778476520685,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg3-a-corners",
+      "payload": {
+        "id": "kg3-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-01",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778476520539,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-quran",
+      "payload": {
+        "id": "kg-02-kg1-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-02-kg1-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-learning-gardens",
+      "payload": {
+        "id": "kg-02-kg1-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg1-a-count-and-calculate",
+      "payload": {
+        "id": "kg-02-kg1-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-quran",
+      "payload": {
+        "id": "kg-02-kg2-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-02-kg2-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-learning-gardens",
+      "payload": {
+        "id": "kg-02-kg2-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-count-and-calculate",
+      "payload": {
+        "id": "kg-02-kg2-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-values",
+      "payload": {
+        "id": "kg-02-kg2-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg2-a-corners",
+      "payload": {
+        "id": "kg-02-kg2-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-quran",
+      "payload": {
+        "id": "kg-02-kg3-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-02-kg3-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-learning-gardens",
+      "payload": {
+        "id": "kg-02-kg3-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-count-and-calculate",
+      "payload": {
+        "id": "kg-02-kg3-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-values",
+      "payload": {
+        "id": "kg-02-kg3-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-02-kg3-a-corners",
+      "payload": {
+        "id": "kg-02-kg3-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-02",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-quran",
+      "payload": {
+        "id": "kg-03-kg1-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-03-kg1-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-learning-gardens",
+      "payload": {
+        "id": "kg-03-kg1-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg1-a-count-and-calculate",
+      "payload": {
+        "id": "kg-03-kg1-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-quran",
+      "payload": {
+        "id": "kg-03-kg2-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-03-kg2-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-learning-gardens",
+      "payload": {
+        "id": "kg-03-kg2-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-count-and-calculate",
+      "payload": {
+        "id": "kg-03-kg2-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-values",
+      "payload": {
+        "id": "kg-03-kg2-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg2-a-corners",
+      "payload": {
+        "id": "kg-03-kg2-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-quran",
+      "payload": {
+        "id": "kg-03-kg3-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-03-kg3-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-learning-gardens",
+      "payload": {
+        "id": "kg-03-kg3-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-count-and-calculate",
+      "payload": {
+        "id": "kg-03-kg3-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-values",
+      "payload": {
+        "id": "kg-03-kg3-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-03-kg3-a-corners",
+      "payload": {
+        "id": "kg-03-kg3-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-03",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-quran",
+      "payload": {
+        "id": "kg1-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778572139458,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg1-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-04-kg1-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg1-a-learning-gardens",
+      "payload": {
+        "id": "kg1-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778572139458,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg1-a-count-and-calculate",
+      "payload": {
+        "id": "kg-04-kg1-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg1-a",
+        "gradeId": "kg1",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-quran",
+      "payload": {
+        "id": "kg2-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778572139458,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg2-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-04-kg2-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-learning-gardens",
+      "payload": {
+        "id": "kg2-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778572139458,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg2-a-count-and-calculate",
+      "payload": {
+        "id": "kg-04-kg2-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-values",
+      "payload": {
+        "id": "kg2-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778476520268,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "set-merge",
+      "path": "orgs/takween/classSubjectOfferings/kg2-a-corners",
+      "payload": {
+        "id": "kg2-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg2-a",
+        "gradeId": "kg2",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1778476520127,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "normalizeReusableCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-quran",
+      "payload": {
+        "id": "kg-04-kg3-a-quran",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-quran",
+        "subjectKey": "QURAN",
+        "subjectTitleSnapshot": "القرآن الكريم",
+        "displayName": "القرآن الكريم",
+        "shortLabel": "QURAN",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 10,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-adhkar-identity-anthems",
+      "payload": {
+        "id": "kg-04-kg3-a-adhkar-identity-anthems",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-adhkar-identity-anthems",
+        "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+        "subjectTitleSnapshot": "الأذكار والهوية الوطنية والأناشيد",
+        "displayName": "الأذكار والهوية الوطنية والأناشيد",
+        "shortLabel": "ADHKAR_IDENTITY_ANTHEMS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 20,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-learning-gardens",
+      "payload": {
+        "id": "kg-04-kg3-a-learning-gardens",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-learning-gardens",
+        "subjectKey": "LEARNING_GARDENS",
+        "subjectTitleSnapshot": "بساتين المعرفة",
+        "displayName": "بساتين المعرفة",
+        "shortLabel": "LEARNING_GARDENS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 30,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-count-and-calculate",
+      "payload": {
+        "id": "kg-04-kg3-a-count-and-calculate",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-count-and-calculate",
+        "subjectKey": "COUNT_AND_CALCULATE",
+        "subjectTitleSnapshot": "نعد ونحسب",
+        "displayName": "نعد ونحسب",
+        "shortLabel": "COUNT_AND_CALCULATE",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 40,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-values",
+      "payload": {
+        "id": "kg-04-kg3-a-values",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-values",
+        "subjectKey": "VALUES",
+        "subjectTitleSnapshot": "القيم",
+        "displayName": "القيم",
+        "shortLabel": "VALUES",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 50,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    },
+    {
+      "operation": "create",
+      "path": "orgs/takween/classSubjectOfferings/kg-04-kg3-a-corners",
+      "payload": {
+        "id": "kg-04-kg3-a-corners",
+        "orgId": "takween",
+        "schoolId": "kg-04",
+        "academicYearId": "ay-1448",
+        "classId": "kg3-a",
+        "gradeId": "kg3",
+        "streamId": "",
+        "subjectId": "subject-corners",
+        "subjectKey": "CORNERS",
+        "subjectTitleSnapshot": "الأركان",
+        "displayName": "الأركان",
+        "shortLabel": "CORNERS",
+        "status": "ACTIVE",
+        "isActive": true,
+        "isArchived": false,
+        "order": 60,
+        "offeringKind": "KG_SUBJECT",
+        "enabledModuleKeys": [
+          "ASSESSMENTS",
+          "NOTES",
+          "GAMIFICATION"
+        ],
+        "gradingPolicy": {
+          "gradingScaleKey": "",
+          "note": ""
+        },
+        "assessmentPolicy": {
+          "assessmentTemplateIds": [],
+          "trackerTemplateIds": [],
+          "allowedAssessmentSlotKeys": [],
+          "allowLearningLoss": true,
+          "requiresReview": false,
+          "note": ""
+        },
+        "curriculumPolicy": {
+          "curriculumPlanId": "",
+          "questionBankId": "",
+          "resourceFolderId": "",
+          "lessonPrepRequired": false,
+          "homeworkEnabled": false,
+          "resourcesEnabled": false,
+          "questionBankEnabled": false,
+          "lessonPrepReviewMode": "APPROVAL_REQUIRED",
+          "note": ""
+        },
+        "curriculumPlanId": "",
+        "questionBankId": "",
+        "resourceFolderId": "",
+        "note": "Phase A KG canonical subject offering.",
+        "metadata": {
+          "normalizedBy": "reconcile-kindergarten-phase-a",
+          "normalizedAt": 1786626447394
+        },
+        "createdAt": 1786626447394,
+        "updatedAt": 1786626447394
+      },
+      "category": "classSubjectOffering",
+      "reason": "missingCanonicalOffering"
+    }
+  ],
+  "blockers": []
+}

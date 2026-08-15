@@ -20,3 +20,4 @@ export * from "./staff-provisioning";
 export * from "./student-directory";
 export * from "./teacher-provisioning";
 export * from "./pdf-resources";
+export * from "./staff-portfolio";

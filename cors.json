@@ -1,0 +1,21 @@
+[
+  {
+    "origin": [
+      "http://localhost:3001",
+      "https://edu-affairs-v2-web-staff.vercel.app"
+    ],
+    "method": [
+      "GET",
+      "HEAD",
+      "PUT",
+      "POST",
+      "OPTIONS"
+    ],
+    "responseHeader": [
+      "Content-Type",
+      "Content-Disposition",
+      "x-goog-resumable"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

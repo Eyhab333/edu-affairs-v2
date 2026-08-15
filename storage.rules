@@ -108,6 +108,35 @@ service firebase.storage {
       allow delete: if canManageOrg(orgId);
     }
 
+    function staffPortfolioItemPath(orgId, itemId) {
+      return /databases/(default)/documents/orgs/$(orgId)/staffPortfolioItems/$(itemId);
+    }
+
+    function staffPortfolioItemExists(orgId, itemId) {
+      return firestore.exists(staffPortfolioItemPath(orgId, itemId));
+    }
+
+    function staffPortfolioItemData(orgId, itemId) {
+      return firestore.get(staffPortfolioItemPath(orgId, itemId)).data;
+    }
+
+    match /orgs/{orgId}/staffPortfolioItems/{itemId}/{fileName} {
+      /* Evidence is read only through a short-lived URL issued by an authorized
+       * Callable; no public or permanent download URLs are stored. */
+      allow read: if false;
+
+      allow create: if membershipExists(orgId)
+        && staffPortfolioItemExists(orgId, itemId)
+        && staffPortfolioItemData(orgId, itemId).uploadPending == true
+        && staffPortfolioItemData(orgId, itemId).ownerUid == request.auth.uid
+        && staffPortfolioItemData(orgId, itemId).file.storagePath
+          == "orgs/" + orgId + "/staffPortfolioItems/" + itemId + "/" + fileName
+        && request.resource.contentType == "application/pdf"
+        && request.resource.size <= 25 * 1024 * 1024;
+
+      allow update, delete: if false;
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

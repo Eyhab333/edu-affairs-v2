@@ -16,6 +16,7 @@ import {
   Star,
   Users,
   MessageSquare,
+  NotebookPen,
   CalendarDays,
   Ruler,
   TrendingDown,
@@ -38,6 +39,10 @@ import {
   getStaffActorDisplayName,
   getStaffActorPrimaryRole,
 } from "@/lib/staff-actor";
+import { canAccessWorkDocumentation } from "@/lib/work-documentation";
+import { canManagePdfResources, isTeacherPdfResourceActor } from "@/lib/pdf-resources";
+import { canReviewTeacherPortfolios, canUseMyStaffPortfolio } from "@/lib/staff-portfolio";
+import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 
 import {
   getStaffActorStats,
@@ -50,7 +55,12 @@ const navItems: Array<{
   href: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
-  moduleKey: StaffHomeVisibleModule | "TASKS";
+  moduleKey?: StaffHomeVisibleModule | "TASKS";
+  documentationOnly?: boolean;
+  pdfDocuments?: "MY_DOCUMENTS" | "MANAGE";
+  teachingResources?: boolean;
+  staffPortfolio?: "MY" | "REVIEW";
+  performanceImprovement?: boolean;
 }> = [
   {
     href: "/staff",
@@ -69,6 +79,42 @@ const navItems: Array<{
     label: "مهامي",
     icon: ClipboardList,
     moduleKey: "TASKS",
+  },
+  {
+    href: "/staff/my-documents",
+    label: "مهام وظيفتي",
+    icon: FileText,
+    pdfDocuments: "MY_DOCUMENTS",
+  },
+  {
+    href: "/staff/teaching-resources",
+    label: "المصادر التعليمية",
+    icon: FileText,
+    teachingResources: true,
+  },
+  {
+    href: "/staff/my-portfolio",
+    label: "ملف إنجازي",
+    icon: FileText,
+    staffPortfolio: "MY",
+  },
+  {
+    href: "/staff/teacher-portfolio",
+    label: "إنجازات المعلمين",
+    icon: FileText,
+    staffPortfolio: "REVIEW",
+  },
+  {
+    href: "/staff/documents/manage",
+    label: "إدارة المستندات",
+    icon: FileText,
+    pdfDocuments: "MANAGE",
+  },
+  {
+    href: "/staff/work-documentation",
+    label: "توثيق العمل",
+    icon: NotebookPen,
+    documentationOnly: true,
   },
 
   {
@@ -135,6 +181,7 @@ const navItems: Array<{
     label: "خطط تحسين الأداء",
     icon: TrendingUp,
     moduleKey: "MY_EVALUATIONS",
+    performanceImprovement: true,
   },
   {
     href: "/staff/messages",
@@ -189,9 +236,42 @@ function StaffShell({ children }: { children: ReactNode }) {
 );
 
   const requiredModule = getRequiredModuleForPath(pathname);
+  const isWorkDocumentationRoute =
+    pathname === "/staff/work-documentation" ||
+    pathname.startsWith("/staff/work-documentation/");
+  const canAccessDocumentation = canAccessWorkDocumentation(actor.roles);
+  const canManageDocuments = canManagePdfResources(actor.roles);
+  const canAccessTeachingResources = isTeacherPdfResourceActor(actor);
+  const isPdfManagementRoute =
+    pathname === "/staff/documents/manage" ||
+    pathname.startsWith("/staff/documents/manage/");
+  const isTeachingResourcesRoute =
+    pathname === "/staff/teaching-resources" ||
+    pathname.startsWith("/staff/teaching-resources/");
+  const isMyPortfolioRoute = pathname === "/staff/my-portfolio" || pathname.startsWith("/staff/my-portfolio/");
+  const isTeacherPortfolioRoute = pathname === "/staff/teacher-portfolio" || pathname.startsWith("/staff/teacher-portfolio/");
+  const canAccessMyPortfolio = canUseMyStaffPortfolio(actor);
+  const canAccessTeacherPortfolio = canReviewTeacherPortfolios(actor);
+  const isPerformanceImprovementRoute =
+    pathname === "/staff/performance-improvement" ||
+    pathname.startsWith("/staff/performance-improvement/");
+  const canAccessPerformanceImprovementRoute =
+    canAccessPerformanceImprovement(actor);
 
   const canAccessCurrentRoute =
-    !requiredModule || visibleModuleSet.has(requiredModule);
+    isPerformanceImprovementRoute
+      ? canAccessPerformanceImprovementRoute
+      : isWorkDocumentationRoute
+      ? canAccessDocumentation
+      : isPdfManagementRoute
+        ? canManageDocuments
+      : isTeachingResourcesRoute
+        ? canAccessTeachingResources
+      : isMyPortfolioRoute
+        ? canAccessMyPortfolio
+      : isTeacherPortfolioRoute
+        ? canAccessTeacherPortfolio
+      : !requiredModule || visibleModuleSet.has(requiredModule);
 
   useEffect(() => {
     if (!canAccessCurrentRoute) {
@@ -204,7 +284,22 @@ function StaffShell({ children }: { children: ReactNode }) {
   ]);
 
   const visibleNavItems = navItems.filter((item) => {
+    if (item.performanceImprovement) {
+      return canAccessPerformanceImprovementRoute;
+    }
+
+    if (item.documentationOnly) {
+      return canAccessDocumentation;
+    }
+
+    if (item.pdfDocuments === "MY_DOCUMENTS") return true;
+    if (item.pdfDocuments === "MANAGE") return canManageDocuments;
+    if (item.teachingResources) return canAccessTeachingResources;
+    if (item.staffPortfolio === "MY") return canAccessMyPortfolio;
+    if (item.staffPortfolio === "REVIEW") return canAccessTeacherPortfolio;
+
     return (
+      !!item.moduleKey &&
       visibleModuleSet.has(item.moduleKey) &&
       !hiddenFromAsideModuleKeys.has(item.moduleKey)
     );

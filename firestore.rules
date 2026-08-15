@@ -208,6 +208,25 @@ function canManageSchoolEvaluations(orgId, schoolId) {
     );
 }
 
+function canUseWorkDocumentation(orgId, schoolId, roleKey) {
+  return hasSchoolAccess(orgId, schoolId)
+    && roleKey == orgRole(orgId)
+    && roleKey in [
+      "ACTIVITY_COORD",
+      "BOYS_STUDENT_GUIDE",
+      "GIRLS_STUDENT_COUNSELOR",
+      "BOYS_PRINCIPAL",
+      "GIRLS_PRINCIPAL",
+      "KG_PRINCIPAL",
+      "BOYS_VP",
+      "BOYS_EDU_VP",
+      "BOYS_STUDENTS_VP",
+      "BOYS_TEACHERS_VP",
+      "GIRLS_VP",
+      "KG_VP"
+    ];
+}
+
 
     function ownsNotificationLog(orgId, notificationData) {
       return signedIn()
@@ -1404,6 +1423,89 @@ match /schoolActivityResults/{resultId} {
     );
 }
 
+/* Work documentation: each staff member can read and edit only their own records. */
+match /workDocumentation/{recordId} {
+  allow get, list: if resource.data.personId == currentUserPersonId()
+    && resource.data.roleKey == orgRole(orgId)
+    && resource.data.schoolId is string
+    && canUseWorkDocumentation(
+      orgId,
+      resource.data.schoolId,
+      resource.data.roleKey
+    );
+
+  allow create: if request.resource.data.keys().hasOnly([
+      "orgId",
+      "schoolId",
+      "academicYearId",
+      "termId",
+      "personId",
+      "roleKey",
+      "templateKey",
+      "templateTitle",
+      "instanceId",
+      "instanceMode",
+      "data",
+      "createdAt",
+      "updatedAt"
+    ])
+    && request.resource.data.orgId == orgId
+    && request.resource.data.schoolId is string
+    && request.resource.data.academicYearId is string
+    && request.resource.data.termId is string
+    && request.resource.data.personId == currentUserPersonId()
+    && request.resource.data.roleKey is string
+    && request.resource.data.templateKey is string
+    && request.resource.data.templateTitle is string
+    && (
+      (
+        !("instanceId" in request.resource.data)
+        && !("instanceMode" in request.resource.data)
+      )
+      || (
+        request.resource.data.instanceId is string
+        && request.resource.data.instanceId != ""
+        && request.resource.data.instanceMode == "MULTIPLE"
+      )
+    )
+    && request.resource.data.data is map
+    && request.resource.data.createdAt is int
+    && request.resource.data.updatedAt is int
+    && request.resource.data.updatedAt >= request.resource.data.createdAt
+    && canUseWorkDocumentation(
+      orgId,
+      request.resource.data.schoolId,
+      request.resource.data.roleKey
+    );
+
+  allow update: if resource.data.personId == currentUserPersonId()
+    && resource.data.roleKey == orgRole(orgId)
+    && resource.data.schoolId is string
+    && canUseWorkDocumentation(
+      orgId,
+      resource.data.schoolId,
+      resource.data.roleKey
+    )
+    && request.resource.data.orgId == resource.data.orgId
+    && request.resource.data.schoolId == resource.data.schoolId
+    && request.resource.data.academicYearId == resource.data.academicYearId
+    && request.resource.data.termId == resource.data.termId
+    && request.resource.data.personId == resource.data.personId
+    && request.resource.data.roleKey == resource.data.roleKey
+    && request.resource.data.templateKey == resource.data.templateKey
+    && request.resource.data.templateTitle == resource.data.templateTitle
+    && request.resource.data.createdAt == resource.data.createdAt
+    && request.resource.data.data is map
+    && request.resource.data.updatedAt is int
+    && request.resource.data.updatedAt >= resource.data.updatedAt
+    && request.resource.data
+      .diff(resource.data)
+      .affectedKeys()
+      .hasOnly(["data", "updatedAt"]);
+
+  allow delete: if false;
+}
+
 
 
 /*gamificationReasons*/
@@ -1648,6 +1750,12 @@ match /pdfResources/{resourceId} {
      */
     allow update, delete: if false;
   }
+}
+
+/* Staff portfolio is server-mediated: trusted owner/school snapshots and
+ * reviewer filtering are resolved by Callables, never by client queries. */
+match /staffPortfolioItems/{itemId} {
+  allow read, write: if false;
 }
 
 

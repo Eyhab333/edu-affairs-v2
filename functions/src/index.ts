@@ -27,7 +27,17 @@ export { updatePerformanceImprovementSettings } from "./evaluations/update-perfo
 export * from "./student-directory";
 export { getStudentCaseReferralOptions } from "./student-cases/get-student-case-referral-options";
 export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-resource-acknowledgement-report";
+export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
+export { listMyTeachingPdfResources } from "./pdf-resources/list-my-teaching-pdf-resources";
 export { getMyGuardianChildren } from "./guardian/get-my-guardian-children";
+export {
+  archiveStaffPortfolioItem,
+  beginStaffPortfolioItem,
+  completeStaffPortfolioUpload,
+  getStaffPortfolioFileUrl,
+  listMyStaffPortfolioItems,
+  listTeacherPortfolioItems,
+} from "./staff-portfolio/staff-portfolio";
 
 export const functionsHealth = onRequest(
   {

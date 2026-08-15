@@ -36,13 +36,7 @@ import {
   updatePerformanceImprovementSettings,
   type PerformanceImprovementWorkspace,
 } from "@/lib/performance-improvement";
-
-const FULL_MANAGEMENT_ROLES = new Set([
-  "platform_owner",
-  "platform_admin",
-  "org_owner",
-  "org_admin",
-]);
+import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 
 function formatScore(value: number): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
@@ -638,19 +632,7 @@ export default function PerformanceImprovementPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const membership = useMemo(
-    () =>
-      actor.memberships.find(
-        (item) => item.orgId === actor.orgId && item.isActive !== false,
-      ),
-    [actor.memberships, actor.orgId],
-  );
-  const roleKey = String(membership?.roleKey ?? membership?.role ?? "");
-  const canManage = Boolean(
-    membership?.permissions?.manageEvaluations ||
-      membership?.permissions?.manageOrg ||
-      FULL_MANAGEMENT_ROLES.has(roleKey),
-  );
+  const canManage = canAccessPerformanceImprovement(actor);
   const schoolIds = useMemo(
     () => actor.schools.map((school) => school.id).filter(Boolean),
     [actor.schools],

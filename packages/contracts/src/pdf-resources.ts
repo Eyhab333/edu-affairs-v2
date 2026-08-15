@@ -4,6 +4,12 @@ const IdSchema = z.string().trim().min(1);
 const TimestampMsSchema = z.number().int().nonnegative();
 const OptionalIdSchema = z.string().trim().optional().default("");
 const OptionalTextSchema = z.string().trim().optional().default("");
+const TeachingRoleKeys = new Set([
+  "teacher",
+  "BOYS_TEACHER",
+  "GIRLS_TEACHER",
+  "KG_TEACHER",
+]);
 
 /**
  * نوع ملف الـ PDF.
@@ -12,6 +18,7 @@ const OptionalTextSchema = z.string().trim().optional().default("");
 export const PdfResourceKindSchema = z.enum([
   "JOB_TASKS",
   "ENRICHMENT_MATERIAL",
+  "CURRICULUM_DISTRIBUTION",
 ]);
 
 export type PdfResourceKind = z.infer<typeof PdfResourceKindSchema>;
@@ -60,6 +67,12 @@ termId: OptionalIdSchema,
 
 
     targetRoleKeys: z.array(IdSchema).default([]),
+
+    /**
+     * Authoritative assignment targets for teaching resources. Empty preserves
+     * the existing JOB_TASKS and student-resource document shape.
+     */
+    classSubjectOfferingIds: z.array(IdSchema).default([]),
 
     schoolIds: z.array(IdSchema).default([]),
     gradeIds: z.array(IdSchema).default([]),
@@ -111,7 +124,7 @@ export type PdfResourceFile = z.infer<
 /**
  * ملف PDF داخل المكتبة العامة.
  */
-export const PdfResourceSchema = z.object({
+const PdfResourceSchemaBase = z.object({
   id: IdSchema,
   orgId: IdSchema,
 
@@ -139,6 +152,52 @@ export const PdfResourceSchema = z.object({
   createdAt: TimestampMsSchema,
   updatedAt: TimestampMsSchema,
 });
+
+export const PdfResourceSchema = PdfResourceSchemaBase.superRefine(
+  (resource, ctx) => {
+    const isTeachingResource =
+      resource.kind === "ENRICHMENT_MATERIAL" ||
+      resource.kind === "CURRICULUM_DISTRIBUTION";
+
+    if (!isTeachingResource) return;
+
+    if (resource.audience.kind !== "STAFF_ROLES") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "المصادر التعليمية تستهدف أدوار الموظفين فقط",
+        path: ["audience", "kind"],
+      });
+    }
+
+    if (resource.audience.classSubjectOfferingIds.length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "يجب تحديد offering واحد على الأقل للمصدر التعليمي",
+        path: ["audience", "classSubjectOfferingIds"],
+      });
+    }
+
+    if (
+      resource.audience.targetRoleKeys.some(
+        (roleKey) => !TeachingRoleKeys.has(roleKey),
+      )
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "المصادر التعليمية تستهدف أدوار المعلمين فقط",
+        path: ["audience", "targetRoleKeys"],
+      });
+    }
+
+    if (resource.requiresAcknowledgement) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "المصادر التعليمية لا تدعم الإقرار بالاطلاع",
+        path: ["requiresAcknowledgement"],
+      });
+    }
+  },
+);
 
 export type PdfResource = z.infer<
   typeof PdfResourceSchema

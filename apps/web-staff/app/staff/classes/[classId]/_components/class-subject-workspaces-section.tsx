@@ -30,7 +30,9 @@ import type {
 
 const CLASS_TEACHER_DOMAIN_KEYS = new Set([
   "QURAN",
+  "ADHKAR_IDENTITY_ANTHEMS",
   "LEARNING_GARDENS",
+  "COUNT_AND_CALCULATE",
   "NUMBERS",
   "ARABIC",
   "KG_QURAN",
@@ -49,6 +51,11 @@ const VALUES_DOMAIN_KEYS = new Set([
 const CORNERS_DOMAIN_KEYS = new Set(["CORNERS", "ACTIVITIES", "KG_CORNERS"]);
 
 const HOMEROOM_ASSIGNMENT_KEYS = new Set(["CLASS", "HOMEROOM"]);
+const HIDDEN_WORKSPACE_OPERATION_KEYS = new Set([
+  "NOTES",
+  "CURRICULUM_PLAN",
+  "RESOURCES",
+]);
 
 function getWorkspaceSubjectKey(workspace: ClassSubjectWorkspace) {
   return normalizeSubjectKey(workspace.subjectKey || workspace.subjectId);
@@ -93,7 +100,7 @@ function getWorkspaceGroupMeta(groupKey: WorkspaceGroupKey): {
       return {
         title: "مجالات معلمة الصف",
         description:
-          "القرآن، بساتين المعرفة، والأرقام تُدرّس أو تُتابع من خلال معلمة الصف.",
+          "القرآن الكريم، الأذكار والهوية الوطنية والأناشيد، بساتين المعرفة، ونعد ونحسب.",
         icon: BookOpen,
         toneClassName:
           "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
@@ -237,6 +244,41 @@ function buildSubjectOperationHref(params: {
     }`;
   };
 
+  const buildClassModuleHref = (modulePath: string) => {
+    const query = new URLSearchParams();
+
+    if (params.classInfo.schoolId) {
+      query.set("schoolId", params.classInfo.schoolId);
+    }
+
+    if (params.classInfo.academicYearId) {
+      query.set("academicYearId", params.classInfo.academicYearId);
+    }
+
+    if (params.classInfo.gradeId) {
+      query.set("gradeId", params.classInfo.gradeId);
+    }
+
+    if (params.currentTerm?.id) {
+      query.set("termId", params.currentTerm.id);
+      query.set("termTitle", params.currentTerm.title || "");
+      query.set("termShortTitle", params.currentTerm.shortTitle || "");
+    }
+
+    query.set("classSubjectOfferingId", params.offeringId);
+    query.set("subjectKey", params.subjectKey);
+
+    if (params.teacherAssignmentId) {
+      query.set("teacherAssignmentId", params.teacherAssignmentId);
+    }
+
+    const queryString = query.toString();
+
+    return `/staff/classes/${encodeURIComponent(
+      params.classInfo.id,
+    )}/${modulePath}${queryString ? `?${queryString}` : ""}`;
+  };
+
   switch (params.operationKey) {
     case "STUDENT_MEASUREMENTS":
       return buildNewMeasurementBatchHref(params.classInfo, subjectContext);
@@ -248,10 +290,10 @@ function buildSubjectOperationHref(params: {
       return buildSubjectModuleHref("lesson-prep");
 
     case "HOMEWORK":
-      return buildSubjectModuleHref("homework");
+      return buildClassModuleHref("homework");
 
     case "QUESTION_BANK":
-      return buildSubjectModuleHref("question-bank");
+      return buildClassModuleHref("question-bank");
 
     case "GAMIFICATION":
       return buildSubjectModuleHref("gamification");
@@ -434,7 +476,10 @@ function ClassSubjectWorkspaceCard({
   const isHomeroom = groupKey === "HOMEROOM_ASSIGNMENT";
   const availableOperations = isHomeroom
     ? []
-    : (workspace.availableOperations ?? []);
+    : (workspace.availableOperations ?? []).filter(
+        (operation) =>
+          !HIDDEN_WORKSPACE_OPERATION_KEYS.has(operation.operationKey),
+      );
 
   return (
     <div className="rounded-3xl border border-slate-100 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
