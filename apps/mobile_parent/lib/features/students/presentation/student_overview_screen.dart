@@ -12,8 +12,8 @@ import '../../attendance/presentation/student_attendance_tab.dart';
 import '../../guardian/data/guardian_children_service.dart';
 import '../../guardian/models/parent_student_summary.dart';
 import '../../notes/presentation/student_notes_tab.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../virtual_classes/data/student_virtual_classes_service.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StudentOverviewScreen extends StatefulWidget {
@@ -375,7 +375,7 @@ class StudentVirtualClassesTab extends StatefulWidget {
 class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
   late Future<List<_VirtualClassBundle>> _future;
 
-  final _firestore = FirebaseFirestore.instance;
+  final _virtualClassesService = StudentVirtualClassesService();
 
   @override
   void initState() {
@@ -390,57 +390,19 @@ class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
   }
 
   Future<List<_VirtualClassBundle>> _loadVirtualClasses() async {
-    final orgId = widget.student.orgId;
     final studentId = widget.student.studentId;
 
-    if (orgId.isEmpty || studentId.isEmpty) {
+    if (studentId.isEmpty) {
       return [];
     }
 
-    final participantsSnap = await _firestore
-        .collection('orgs/$orgId/virtualClassParticipants')
-        .where('studentId', isEqualTo: studentId)
-        .get();
-
-    final bundles = <_VirtualClassBundle>[];
-
-    for (final participantDoc in participantsSnap.docs) {
-      final participant = _VirtualClassParticipant.fromDoc(participantDoc);
-
-      if (participant.sessionId.isEmpty) {
-        continue;
-      }
-
-      final sessionDoc = await _firestore
-          .doc('orgs/$orgId/virtualClassSessions/${participant.sessionId}')
-          .get();
-
-      if (!sessionDoc.exists || sessionDoc.data() == null) {
-        continue;
-      }
-
-      final session = _VirtualClassSession.fromDoc(sessionDoc);
-
-      if (session.isArchived) {
-        continue;
-      }
-
-      if (session.schoolId != widget.student.schoolId) {
-        continue;
-      }
-
-      if (session.academicYearId != widget.student.academicYearId) {
-        continue;
-      }
-
-      if (session.classId != widget.student.classId) {
-        continue;
-      }
-
-      bundles.add(
-        _VirtualClassBundle(session: session, participant: participant),
-      );
-    }
+    final rawClasses = await _virtualClassesService.loadStudentVirtualClasses(studentId: studentId);
+    final bundles = rawClasses.map(_VirtualClassBundle.fromMap).where((bundle) =>
+      !bundle.session.isArchived &&
+      (bundle.session.schoolId.isEmpty || bundle.session.schoolId == widget.student.schoolId) &&
+      (bundle.session.academicYearId.isEmpty || bundle.session.academicYearId == widget.student.academicYearId) &&
+      (bundle.session.classId.isEmpty || bundle.session.classId == widget.student.classId),
+    ).toList();
 
     bundles.sort((a, b) {
       final aStart = a.session.startsAt ?? 0;
@@ -558,24 +520,11 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
       });
 
       try {
-        final now = DateTime.now().millisecondsSinceEpoch;
-        final guardianUid = FirebaseAuth.instance.currentUser?.uid ?? '';
-
-        await FirebaseFirestore.instance
-            .doc(
-              'orgs/${student.orgId}/virtualClassParticipants/${participant.id}',
-            )
-            .update({
-              'platformJoinStatus': 'JOIN_CLICKED',
-              'joinClickedAt': now,
-
-              // مؤقتًا نخزن uid في الحقل القديم للتوافق
-              'joinClickedByGuardianId': guardianUid,
-
-              // الحقل الصحيح لقواعد Firestore
-              'joinClickedByGuardianUid': guardianUid,
-
-              'updatedAt': now,
+        await FirebaseFunctions.instanceFor(region: 'me-central2')
+            .httpsCallable('markMyGuardianVirtualClassJoin')
+            .call({
+              'studentId': student.studentId,
+              'participantId': participant.id,
             });
 
         widget.onRefresh();
@@ -753,6 +702,13 @@ class _VirtualClassBundle {
 
   final _VirtualClassSession session;
   final _VirtualClassParticipant participant;
+
+  factory _VirtualClassBundle.fromMap(Map<String, dynamic> data) {
+    return _VirtualClassBundle(
+      session: _VirtualClassSession.fromMap(data),
+      participant: _VirtualClassParticipant.fromMap(data),
+    );
+  }
 }
 
 class _VirtualClassSession {
@@ -784,13 +740,9 @@ class _VirtualClassSession {
   final int? endsAt;
   final bool isArchived;
 
-  factory _VirtualClassSession.fromDoc(
-    DocumentSnapshot<Map<String, dynamic>> doc,
-  ) {
-    final data = doc.data() ?? {};
-
+  factory _VirtualClassSession.fromMap(Map<String, dynamic> data) {
     return _VirtualClassSession(
-      id: doc.id,
+      id: _readString(data, 'sessionId'),
       schoolId: _readString(data, 'schoolId'),
       academicYearId: _readString(data, 'academicYearId'),
       classId: _readString(data, 'classId'),
@@ -804,6 +756,47 @@ class _VirtualClassSession {
       isArchived: data['isArchived'] == true,
     );
   }
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // factory _VirtualClassSession.fromDoc(
+  //   DocumentSnapshot<Map<String, dynamic>> doc,
+  // ) {
+  //   final data = doc.data() ?? {};
+
+  //   return _VirtualClassSession(
+  //     id: doc.id,
+  //     schoolId: _readString(data, 'schoolId'),
+  //     academicYearId: _readString(data, 'academicYearId'),
+  //     classId: _readString(data, 'classId'),
+  //     subjectKey: _readString(data, 'subjectKey'),
+  //     subjectTitle: _readString(data, 'subjectTitle'),
+  //     title: _readString(data, 'title'),
+  //     status: _readString(data, 'status'),
+  //     joinUrl: _readString(data, 'joinUrl'),
+  //     startsAt: _readInt(data, 'startsAt'),
+  //     endsAt: _readInt(data, 'endsAt'),
+  //     isArchived: data['isArchived'] == true,
+  //   );
+  // }
+
+
+
+
+
+
+
+
+
+
 }
 
 class _VirtualClassParticipant {
@@ -823,13 +816,9 @@ class _VirtualClassParticipant {
   final String finalAttendanceStatus;
   final int? joinClickedAt;
 
-  factory _VirtualClassParticipant.fromDoc(
-    QueryDocumentSnapshot<Map<String, dynamic>> doc,
-  ) {
-    final data = doc.data();
-
+  factory _VirtualClassParticipant.fromMap(Map<String, dynamic> data) {
     return _VirtualClassParticipant(
-      id: doc.id,
+      id: _readString(data, 'participantId'),
       sessionId: _readString(data, 'sessionId'),
       platformJoinStatus: _readString(data, 'platformJoinStatus'),
       providerAttendanceStatus: _readString(data, 'providerAttendanceStatus'),
@@ -837,6 +826,21 @@ class _VirtualClassParticipant {
       joinClickedAt: _readInt(data, 'joinClickedAt'),
     );
   }
+
+  // factory _VirtualClassParticipant.fromDoc(
+  //   QueryDocumentSnapshot<Map<String, dynamic>> doc,
+  // ) {
+  //   final data = doc.data();
+
+  //   return _VirtualClassParticipant(
+  //     id: doc.id,
+  //     sessionId: _readString(data, 'sessionId'),
+  //     platformJoinStatus: _readString(data, 'platformJoinStatus'),
+  //     providerAttendanceStatus: _readString(data, 'providerAttendanceStatus'),
+  //     finalAttendanceStatus: _readString(data, 'finalAttendanceStatus'),
+  //     joinClickedAt: _readInt(data, 'joinClickedAt'),
+  //   );
+  // }
 }
 
 String _readString(Map<String, dynamic> data, String key) {

@@ -1,29 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 import '../models/student_attendance_summary.dart';
 
 class StudentAttendanceService {
   StudentAttendanceService({
-    FirebaseFirestore? firestore,
-    this.orgId = 'takween',
-  }) : _firestore = firestore ?? FirebaseFirestore.instance;
+    FirebaseFunctions? functions,
+  }) : _functions = functions ?? FirebaseFunctions.instanceFor(region: 'me-central2');
 
-  final FirebaseFirestore _firestore;
-  final String orgId;
+  final FirebaseFunctions _functions;
 
   Future<StudentAttendanceSummary> loadStudentAttendance({
     required String studentId,
   }) async {
-    final snap = await _firestore
-        .collection('orgs/$orgId/studentAttendanceRecords')
-        .where('studentId', isEqualTo: studentId)
-        .get();
+    final result = await _functions.httpsCallable('getMyGuardianAttendance').call<Map<String, dynamic>>({'studentId': studentId});
+    final rawRecords = result.data['records'];
+    if (rawRecords is! List) throw StateError('استجابة الحضور غير صالحة.');
 
-    final items = snap.docs.map((doc) {
-      final data = doc.data();
+    final items = rawRecords.whereType<Map>().map((raw) {
+      final data = Map<String, dynamic>.from(raw);
 
       return StudentAttendanceItem(
-        id: _readString(data, 'id', fallback: doc.id),
+        id: _readString(data, 'id'),
         studentId: _readString(data, 'studentId'),
         schoolDayId: _readString(data, 'schoolDayId'),
         status: _readString(data, 'status', fallback: 'NOT_RECORDED'),
@@ -101,9 +98,7 @@ class StudentAttendanceService {
 
     if (value is double) return value.toInt();
 
-    if (value is Timestamp) {
-      return value.millisecondsSinceEpoch;
-    }
+    if (value is DateTime) return value.millisecondsSinceEpoch;
 
     return 0;
   }

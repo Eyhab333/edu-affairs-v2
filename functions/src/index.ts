@@ -30,6 +30,10 @@ export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-res
 export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
 export { listMyTeachingPdfResources } from "./pdf-resources/list-my-teaching-pdf-resources";
 export { getMyGuardianChildren } from "./guardian/get-my-guardian-children";
+export { getMyGuardianAttendance } from "./guardian/get-my-guardian-attendance";
+export { getMyGuardianNotes } from "./guardian/get-my-guardian-notes";
+export { getMyGuardianVirtualClasses } from "./guardian/get-my-guardian-virtual-classes";
+export { markMyGuardianVirtualClassJoin } from "./guardian/mark-my-guardian-virtual-class-join";
 export {
   archiveStaffPortfolioItem,
   beginStaffPortfolioItem,

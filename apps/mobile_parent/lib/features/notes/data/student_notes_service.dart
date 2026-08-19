@@ -1,35 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 import '../models/student_notes_summary.dart';
 
 class StudentNotesService {
   StudentNotesService({
-    FirebaseFirestore? firestore,
-    this.orgId = 'takween',
-  }) : _firestore = firestore ?? FirebaseFirestore.instance;
+    FirebaseFunctions? functions,
+  }) : _functions = functions ?? FirebaseFunctions.instanceFor(region: 'me-central2');
 
-  final FirebaseFirestore _firestore;
-  final String orgId;
+  final FirebaseFunctions _functions;
 
   Future<StudentNotesSummary> loadStudentNotes({
     required String studentId,
   }) async {
-    final snap = await _firestore
-        .collection('orgs/$orgId/studentNotes')
-        .where('studentId', isEqualTo: studentId)
-        .get();
+    final result = await _functions.httpsCallable('getMyGuardianNotes').call<Map<String, dynamic>>({'studentId': studentId});
+    final rawNotes = result.data['notes'];
+    if (rawNotes is! List) throw StateError('استجابة الملاحظات غير صالحة.');
 
     final items = <StudentNoteItem>[];
 
-    for (final doc in snap.docs) {
-      final data = doc.data();
-
-      if (!_isVisibleToGuardian(data)) {
-        continue;
-      }
+    for (final raw in rawNotes.whereType<Map>()) {
+      final data = Map<String, dynamic>.from(raw);
 
       final item = StudentNoteItem(
-        id: _readString(data, 'id', fallback: doc.id),
+        id: _readString(data, 'id'),
         studentId: _readString(data, 'studentId'),
         title: _readString(data, 'title', fallback: 'ملاحظة'),
         body: _readString(data, 'body'),
@@ -78,19 +71,6 @@ class StudentNotesService {
     );
   }
 
-  bool _isVisibleToGuardian(Map<String, dynamic> data) {
-    final visibility = _readString(data, 'visibility');
-    final guardianVisibility = _readString(data, 'guardianVisibility');
-    final visibleToGuardian = data['visibleToGuardian'];
-
-    if (visibility == 'PARENT_VISIBLE') return true;
-    if (visibility == 'GUARDIAN_VISIBLE') return true;
-    if (guardianVisibility == 'VISIBLE') return true;
-    if (visibleToGuardian == true) return true;
-
-    return false;
-  }
-
   String _readString(
     Map<String, dynamic> data,
     String key, {
@@ -112,9 +92,7 @@ class StudentNotesService {
 
     if (value is double) return value.toInt();
 
-    if (value is Timestamp) {
-      return value.millisecondsSinceEpoch;
-    }
+    if (value is DateTime) return value.millisecondsSinceEpoch;
 
     return 0;
   }
