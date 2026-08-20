@@ -4,7 +4,6 @@ import Link from "next/link";
 import { type ComponentType } from "react";
 import {
   BookOpen,
-  ChevronLeft,
   ClipboardCheck,
   FileText,
   MessageSquareText,
@@ -288,21 +287,21 @@ function buildVirtualClassesHref(
 function getOperationActionLabel(operationKey: string) {
   switch (operationKey) {
     case "STUDENT_MEASUREMENTS":
-      return "إدخال قياس / اختبار";
+      return "قياس / اختبار";
     case "LEARNING_LOSS":
-      return "الفاقد";
+      return "الفاقد التعليمي";
     case "NOTES":
       return "ملاحظات";
     case "GAMIFICATION":
-      return "تحفيز";
+      return "التحفيز";
     case "VIRTUAL_CLASSES":
       return "حصص افتراضية";
     case "HOMEWORK":
-      return "واجبات";
+      return "الواجبات";
     case "LESSON_PREP":
-      return "تحضير";
+      return "التحضير";
     case "QUESTION_BANK":
-      return "بنك أسئلة";
+      return "بنك الأسئلة";
     case "CURRICULUM_PLAN":
       return "توزيع المنهج";
     case "RESOURCES":
@@ -378,6 +377,7 @@ function buildOperationHref(params: {
         classSubjectOfferingId: subjectContext.classSubjectOfferingId,
         subjectKey: subjectContext.subjectKey,
         subjectTitle: getSubjectDisplayName(params.workspace),
+        currentTerm: params.currentTerm,
       });
 
     case "VIRTUAL_CLASSES":
@@ -397,13 +397,24 @@ function buildOperationHref(params: {
 }
 
 function getSubjectDisplayName(workspace: ClassSubjectWorkspace) {
-  return (
-    workspace.displayName ||
-    workspace.subjectTitle ||
-    workspace.subjectKey ||
-    workspace.subjectId ||
-    "مادة"
-  );
+  return workspace.displayName || workspace.subjectTitle || "مادة";
+}
+
+function getWorkspaceStatusLabel(status: string | undefined) {
+  switch (status) {
+    case "ACTIVE":
+      return null;
+    case "DRAFT":
+      return "قيد الإعداد";
+    case "PAUSED":
+      return "متوقفة مؤقتًا";
+    case "ENDED":
+      return "منتهية";
+    case "ARCHIVED":
+      return "مؤرشفة";
+    default:
+      return status || null;
+  }
 }
 
 export function PrimaryClassSubjectsSection({
@@ -426,36 +437,35 @@ export function PrimaryClassSubjectsSection({
   return (
     <section
       id="class-domains"
-      className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+      className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
-      <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
-        <div className="flex items-center gap-5">
-          <div className="rounded-2xl bg-violet-50 p-3 text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
+        <div className="flex items-center gap-3">
+          <div className="rounded-xl bg-violet-50 p-2.5 text-violet-700 dark:bg-violet-950 dark:text-violet-300">
             <BookOpen className="h-5 w-5" />
           </div>
 
           <div>
             <h2 className="font-bold">مواد الفصل</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              المواد المفعّلة داخل هذا الفصل حسب المدرسة والسنة والفصل المحدد.
+              اختر المادة ثم المهمة التي تريد تنفيذها.
             </p>
           </div>
         </div>
 
-        <div className="rounded-2xl bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 dark:bg-slate-950 dark:text-slate-200">
+        <div className="rounded-xl bg-slate-50 px-3 py-1.5 text-sm font-semibold text-slate-700 dark:bg-slate-950 dark:text-slate-200">
           {visibleWorkspaces.length.toLocaleString("ar-SA")} مادة
         </div>
       </div>
 
       {visibleWorkspaces.length === 0 ? (
-        <div className="mt-5 rounded-3xl border border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
-          <h3 className="font-bold">لا توجد مواد مفعّلة داخل هذا الفصل</h3>
-          <p className="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">
-            تأكد من وجود ClassSubjectOffering مطابق للمدرسة والسنة والفصل.
-          </p>
+        <div className="mt-4 rounded-2xl border border-dashed border-slate-300 p-6 text-center dark:border-slate-700">
+          <h3 className="font-bold">
+            لا توجد مواد مسندة إليك في هذا الفصل حاليًا
+          </h3>
         </div>
       ) : (
-        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {visibleWorkspaces.map((workspace) => (
             <PrimaryClassSubjectCard
               key={workspace.offeringId}
@@ -479,36 +489,31 @@ function PrimaryClassSubjectCard({
   workspace: ClassSubjectWorkspace;
   currentTerm?: StaffActorCurrentTerm | null;
 }) {
-  const subjectKey = normalizeSubjectKey(
-    workspace.subjectKey || workspace.subjectId,
-  );
-
   const operations = (workspace.availableOperations ?? []).filter(
     (operation) =>
       !HIDDEN_WORKSPACE_OPERATION_KEYS.has(operation.operationKey),
   );
+  const statusLabel = getWorkspaceStatusLabel(workspace.status);
 
   return (
-    <article className="rounded-3xl border border-slate-100 bg-slate-50 p-4 transition hover:border-violet-200 hover:bg-white dark:border-slate-800 dark:bg-slate-950 dark:hover:border-violet-900 dark:hover:bg-slate-900">
+    <article className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:border-violet-200 hover:bg-white dark:border-slate-800 dark:bg-slate-950 dark:hover:border-violet-900 dark:hover:bg-slate-900">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="truncate text-lg font-bold">
             {getSubjectDisplayName(workspace)}
           </h3>
-
-          <p className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">
-            {subjectKey || "NO_SUBJECT_KEY"}
-          </p>
         </div>
 
-        <span className="shrink-0 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900">
-          {workspace.status === "ACTIVE" ? "نشطة" : workspace.status}
-        </span>
+        {statusLabel ? (
+          <span className="shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+            {statusLabel}
+          </span>
+        ) : null}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 grid grid-cols-2 gap-2">
         {operations.length === 0 ? (
-          <span className="rounded-2xl bg-slate-100 px-3 py-2 text-xs text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+          <span className="col-span-2 rounded-xl bg-slate-100 px-3 py-3 text-center text-sm text-slate-500 dark:bg-slate-800 dark:text-slate-400">
             لا توجد عمليات متاحة الآن
           </span>
         ) : null}
@@ -536,7 +541,7 @@ function PrimaryClassSubjectCard({
             return (
               <span
                 key={operation.operationKey}
-                className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-400 dark:border-slate-800 dark:bg-slate-900"
+                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-400 opacity-70 dark:border-slate-800 dark:bg-slate-900"
               >
                 {content}
               </span>
@@ -549,8 +554,8 @@ function PrimaryClassSubjectCard({
               href={href}
               className={
                 operation.isPrimary
-                  ? "inline-flex h-9 items-center gap-1.5 rounded-2xl bg-violet-600 px-3 text-xs font-semibold text-white transition hover:bg-violet-700"
-                  : "inline-flex h-9 items-center gap-1.5 rounded-2xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                  ? "inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-violet-600 px-3 text-sm font-semibold text-white transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-500/20"
+                  : "inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               }
             >
               {content}
@@ -558,74 +563,6 @@ function PrimaryClassSubjectCard({
           );
         })}
       </div>
-
-      <div className="mt-4 grid gap-2 text-xs">
-        <div className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3 py-2 dark:bg-slate-900">
-          <span className="text-slate-500 dark:text-slate-400">الإسنادات</span>
-          <span className="font-semibold">
-            {(workspace.teacherAssignmentIds ?? []).length}
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3 py-2 dark:bg-slate-900">
-          <span className="text-slate-500 dark:text-slate-400">offering</span>
-          <span className="max-w-[12rem] truncate font-mono">
-            {workspace.offeringId}
-          </span>
-        </div>
-      </div>
-
-      {/* <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-        <Link
-          href={buildNewMeasurementBatchHref(classInfo, {
-            classSubjectOfferingId: workspace.offeringId,
-            subjectKey,
-            teacherAssignmentId: workspace.teacherAssignmentIds?.[0],
-            currentTerm,
-          })}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-violet-100 dark:border-violet-900 dark:bg-violet-950/40 dark:text-violet-300 dark:hover:bg-violet-950"
-        >
-          إدخال قياس / اختبار
-          <ChevronLeft className="h-4 w-4" />
-        </Link>
-
-        <Link
-          href={buildQuestionBankHref(classInfo, {
-            classSubjectOfferingId: workspace.offeringId,
-            subjectKey,
-            currentTerm,
-          })}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
-          بنك الأسئلة
-          <ChevronLeft className="h-4 w-4" />
-        </Link>
-
-        <Link
-          href={buildHomeworkListHref(classInfo, {
-            classSubjectOfferingId: workspace.offeringId,
-            subjectKey,
-            currentTerm,
-          })}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-950"
-        >
-          الواجبات
-          <ChevronLeft className="h-4 w-4" />
-        </Link>
-
-        <Link
-          href={buildGamificationHref(classInfo, {
-            classSubjectOfferingId: workspace.offeringId,
-            subjectKey,
-            subjectTitle: getSubjectDisplayName(workspace),
-            currentTerm,
-          })}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-100 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-950"
-        >
-          التحفيز
-          <Sparkles className="h-4 w-4" />
-        </Link>
-      </div> */}
     </article>
   );
 }

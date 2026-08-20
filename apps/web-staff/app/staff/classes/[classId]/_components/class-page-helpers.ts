@@ -13,7 +13,6 @@ import type { ClassSubjectOffering } from "@takween/contracts";
 
 import type {
   OperationCard,
-  StaffActorCurrentTerm,
   StaffActorLike,
   StaffVisibleClass,
 } from "./class-page-types";
@@ -21,10 +20,6 @@ import type {
 export function getParamValue(value: string | string[] | undefined) {
   if (Array.isArray(value)) return value[0] ?? "";
   return value ?? "";
-}
-
-export function getClassTitle(item: StaffVisibleClass) {
-  return item.title || item.code || item.id;
 }
 
 export function getStudentCount(item: StaffVisibleClass) {
@@ -208,11 +203,6 @@ export function getCurrentTermForClass(
     actor.currentTerm ??
     null
   );
-}
-
-export function getTermDisplayTitle(term: StaffActorCurrentTerm | null) {
-  if (!term) return "غير محدد";
-  return term.title || term.shortTitle || term.id;
 }
 
 export function buildOperationCards(

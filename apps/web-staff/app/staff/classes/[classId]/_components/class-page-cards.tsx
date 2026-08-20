@@ -1,37 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import type { ComponentType } from "react";
 import { ChevronLeft } from "lucide-react";
 
 import type { OperationCard } from "./class-page-types";
-
-export function SummaryCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex items-start gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        <div className="min-w-0">
-          <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-          <p className="mt-1 truncate font-bold text-slate-950 dark:text-slate-50">
-            {value}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function InfoRow({ label, value }: { label: string; value: string }) {
   return (
