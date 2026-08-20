@@ -33,6 +33,54 @@ const REPORT_FILE = path.resolve(
   "teacher-assignments-preview-5.json",
 );
 
+const RECONCILE_MODES = new Set([
+  "TEACHER_SCOPE",
+  "FULL_SCOPE",
+]);
+
+const DEFAULT_RECONCILE_MODE =
+  "TEACHER_SCOPE";
+
+const MANAGED_ASSIGNMENT_ID_PREFIX =
+  "teacher-provisioning__";
+
+const OPERATION_KINDS = [
+  "STUDENT_MEASUREMENT",
+  "LEARNING_LOSS_FOLLOWUP",
+  "LESSON_PREP",
+  "STUDENT_GAMIFICATION",
+  "STUDENT_NOTES",
+  "VIRTUAL_CLASS",
+];
+
+const DESIRED_ASSIGNMENT_FIELDS = [
+  "id",
+  "orgId",
+  "schoolId",
+  "academicYearId",
+  "termId",
+  "teacherPersonId",
+  "teacherEmail",
+  "assignmentKind",
+  "targetScopeType",
+  "targetScopeId",
+  "coverageMode",
+  "subjectId",
+  "subjectKey",
+  "classId",
+  "classSubjectOfferingId",
+  "gradeId",
+  "streamId",
+  "isHomeroom",
+  "roleInAssignment",
+  "status",
+  "note",
+  "operationKinds",
+  "active",
+  "managedBy",
+  "assignmentSource",
+];
+
 function parseArgs() {
   const result = {};
 
@@ -47,6 +95,187 @@ function parseArgs() {
   }
 
   return result;
+}
+
+function resolveReconcileMode(args) {
+  const reconcileMode =
+    args.reconcileMode ||
+    DEFAULT_RECONCILE_MODE;
+
+  if (!RECONCILE_MODES.has(reconcileMode)) {
+    throw new Error(
+      `Invalid reconcileMode: ${reconcileMode}. ` +
+        "Use TEACHER_SCOPE or FULL_SCOPE.",
+    );
+  }
+
+  return reconcileMode;
+}
+
+function safeDocumentId(value) {
+  return String(value)
+    .replaceAll("/", "-")
+    .replace(/\s+/g, "-");
+}
+
+function buildTeacherAssignmentId({
+  personId,
+  schoolId,
+  academicYearId,
+  termId,
+  classSubjectOfferingId,
+}) {
+  return safeDocumentId(
+    [
+      "teacher-provisioning",
+      personId,
+      schoolId,
+      academicYearId,
+      termId,
+      classSubjectOfferingId,
+    ].join("__"),
+  );
+}
+
+function assignmentIdentityKey({
+  teacherPersonId,
+  schoolId,
+  academicYearId,
+  termId,
+  classSubjectOfferingId,
+}) {
+  return [
+    teacherPersonId,
+    schoolId,
+    academicYearId,
+    termId,
+    classSubjectOfferingId,
+  ].join("\u001f");
+}
+
+function reconcileScopeKey({
+  schoolId,
+  academicYearId,
+  termId,
+}) {
+  return [
+    schoolId,
+    academicYearId,
+    termId,
+  ].join("\u001f");
+}
+
+function getReconcileScope(item) {
+  if (
+    !item.schoolId ||
+    !item.academicYearId ||
+    !item.termId
+  ) {
+    return null;
+  }
+
+  return {
+    schoolId: item.schoolId,
+    academicYearId: item.academicYearId,
+    termId: item.termId,
+  };
+}
+
+function buildDesiredTeacherAssignment({
+  row,
+  assignmentId,
+}) {
+  const isActive =
+    row.assignmentStatus === "ACTIVE";
+
+  return {
+    id: assignmentId,
+
+    orgId: ORG_ID,
+    schoolId: row.schoolId,
+    academicYearId: row.academicYearId,
+    termId: row.termId,
+
+    teacherPersonId: row.personId,
+    teacherEmail: row.email,
+
+    assignmentKind: "SUBJECT_TEACHER",
+
+    targetScopeType: "CLASS",
+    targetScopeId: row.classId,
+
+    coverageMode: "EXPLICIT_CLASSES",
+
+    subjectId: "",
+    subjectKey: row.subjectKey,
+
+    classId: row.classId,
+    classSubjectOfferingId:
+      row.classSubjectOfferingId,
+
+    gradeId: row.gradeId,
+    streamId: row.streamId,
+
+    isHomeroom: false,
+    roleInAssignment: "MAIN",
+
+    status: isActive
+      ? "ACTIVE"
+      : "ENDED",
+
+    note: "تم إنشاؤه بواسطة استيراد توزيع المعلمين",
+
+    operationKinds: OPERATION_KINDS,
+
+    active: isActive,
+
+    managedBy: "TEACHER_PROVISIONING",
+    assignmentSource: "OFFICIAL_IMPORT",
+  };
+}
+
+function valuesEqual(left, right) {
+  return JSON.stringify(left) ===
+    JSON.stringify(right);
+}
+
+function buildChangedValues({
+  currentAssignment,
+  desiredAssignment,
+}) {
+  const changedFields = [];
+  const currentValues = {};
+  const desiredValues = {};
+
+  for (const field of DESIRED_ASSIGNMENT_FIELDS) {
+    const currentValue = currentAssignment[field];
+    const desiredValue = desiredAssignment[field];
+
+    if (valuesEqual(currentValue, desiredValue)) {
+      continue;
+    }
+
+    changedFields.push(field);
+    currentValues[field] = currentValue;
+    desiredValues[field] = desiredValue;
+  }
+
+  return {
+    changedFields,
+    currentValues,
+    desiredValues,
+  };
+}
+
+function isImporterManagedAssignment(assignment) {
+  return String(assignment.id || "").startsWith(
+    MANAGED_ASSIGNMENT_ID_PREFIX,
+  );
+}
+
+function isActiveNonEndedAssignment(assignment) {
+  return assignment.status !== "ENDED" &&
+    assignment.active !== false;
 }
 
 function readCellText(cell) {
@@ -371,14 +600,6 @@ async function inspectAssignmentRow({
   documentReads.push(
     db
       .doc(
-        `orgs/${ORG_ID}/academicYears/${row.academicYearId}`,
-      )
-      .get(),
-  );
-
-  documentReads.push(
-    db
-      .doc(
         `orgs/${ORG_ID}/academicYears/${row.academicYearId}/terms/${row.termId}`,
       )
       .get(),
@@ -442,7 +663,6 @@ async function inspectAssignmentRow({
 
   const [
     schoolSnap,
-    academicYearSnap,
     termSnap,
     classSnap,
     offeringSnap,
@@ -454,12 +674,6 @@ async function inspectAssignmentRow({
   if (!schoolSnap.exists) {
     errors.push(
       `المدرسة غير موجودة: ${row.schoolId}`,
-    );
-  }
-
-  if (!academicYearSnap.exists) {
-    errors.push(
-      `السنة الدراسية غير موجودة: ${row.academicYearId}`,
     );
   }
 
@@ -506,99 +720,362 @@ async function inspectAssignmentRow({
     );
   }
 
-  let existingAssignments = [];
+  const classData =
+    classSnap.exists
+      ? classSnap.data()
+      : {};
 
-  if (personId) {
-    const assignmentsSnap = await db
-      .collection(
-        `orgs/${ORG_ID}/teacherAssignments`,
-      )
-      .where(
-        "teacherPersonId",
-        "==",
-        personId,
-      )
-      .get();
+  const offeringData =
+    offeringSnap.exists
+      ? offeringSnap.data()
+      : {};
 
-    existingAssignments =
-      assignmentsSnap.docs
-        .map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-        .filter((assignment) => {
-          return (
-            assignment.schoolId ===
-              row.schoolId &&
-            assignment.academicYearId ===
-              row.academicYearId &&
-            assignment.classSubjectOfferingId ===
-              row.classSubjectOfferingId &&
-            assignment.status !== "ENDED"
-          );
-        });
-  }
+  const gradeId =
+    classData.gradeId ||
+    offeringData.gradeId ||
+    "";
 
-  let action = "CREATE";
+  const streamId =
+    classData.streamId ||
+    offeringData.streamId ||
+    "";
 
-  if (errors.length > 0) {
-    action = "BLOCKED";
-  } else if (
-    existingAssignments.length > 0
-  ) {
-    action = "KEEP_EXISTING";
-  }
+  const resolvedClassTitle =
+    classData.title ||
+    classData.name ||
+    row.classTitle ||
+    row.classId;
+
+  const resolvedSubjectTitle =
+    offeringData.subjectTitleSnapshot ||
+    offeringData.subjectTitle ||
+    offeringData.displayName ||
+    row.subjectTitle ||
+    row.subjectKey;
 
   return {
-    rowNumber: row.rowNumber,
+    ...row,
 
-    email: row.email,
     uid,
     personId,
 
-    schoolId: row.schoolId,
-    academicYearId: row.academicYearId,
-    termId: row.termId,
+    gradeId,
+    streamId,
+    classTitle: resolvedClassTitle,
+    subjectTitle: resolvedSubjectTitle,
 
-    classId: row.classId,
-    classTitle:
-      classSnap.exists
-        ? classSnap.data().title || row.classTitle
-        : row.classTitle,
-
-    classSubjectOfferingId:
-      row.classSubjectOfferingId,
-
-    subjectKey: row.subjectKey,
-    subjectTitle:
-      offeringSnap.exists
-        ? offeringSnap.data()
-            .subjectTitleSnapshot ||
-          offeringSnap.data().displayName ||
-          row.subjectTitle
-        : row.subjectTitle,
-
-    assignmentStatus:
-      row.assignmentStatus,
-
-    existingAssignmentIds:
-      existingAssignments.map(
-        (assignment) => assignment.id,
-      ),
-
-    action,
     errors,
   };
 }
 
+async function loadExistingTeacherAssignments(db) {
+  const snapshot = await db
+    .collection(
+      `orgs/${ORG_ID}/teacherAssignments`,
+    )
+    .get();
+
+  return snapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+}
+
+function planDesiredRows({
+  inspectedRows,
+  existingAssignments,
+}) {
+  const existingById = new Map(
+    existingAssignments.map((assignment) => [
+      assignment.id,
+      assignment,
+    ]),
+  );
+
+  const managedAssignmentsByIdentity = new Map();
+
+  for (const assignment of existingAssignments) {
+    if (!isImporterManagedAssignment(assignment)) {
+      continue;
+    }
+
+    const identity = assignmentIdentityKey(assignment);
+
+    if (!managedAssignmentsByIdentity.has(identity)) {
+      managedAssignmentsByIdentity.set(
+        identity,
+        [],
+      );
+    }
+
+    managedAssignmentsByIdentity
+      .get(identity)
+      .push(assignment);
+  }
+
+  return inspectedRows.map((row) => {
+    const errors = [...row.errors];
+
+    if (errors.length > 0) {
+      return {
+        ...row,
+        action: "BLOCKED",
+        errors,
+        assignmentId: "",
+        assignmentIdentity: "",
+        existingAssignmentId: "",
+        existingAssignmentIds: [],
+        changedFields: [],
+        currentValues: {},
+        desiredValues: {},
+      };
+    }
+
+    const assignmentId = buildTeacherAssignmentId({
+      personId: row.personId,
+      schoolId: row.schoolId,
+      academicYearId: row.academicYearId,
+      termId: row.termId,
+      classSubjectOfferingId:
+        row.classSubjectOfferingId,
+    });
+
+    const desiredAssignment =
+      buildDesiredTeacherAssignment({
+        row,
+        assignmentId,
+      });
+
+    const assignmentIdentity =
+      assignmentIdentityKey(desiredAssignment);
+
+    const existingAssignment =
+      existingById.get(assignmentId) || null;
+
+    const sameIdentityManagedAssignments =
+      managedAssignmentsByIdentity.get(
+        assignmentIdentity,
+      ) || [];
+
+    if (
+      !existingAssignment &&
+      sameIdentityManagedAssignments.length > 0
+    ) {
+      errors.push(
+        "يوجد إسناد مستورد بنفس الهوية لكن بمعرّف مستند غير متوافق؛ تمت حماية الصف من الإنشاء المكرر.",
+      );
+    }
+
+    if (
+      existingAssignment &&
+      assignmentIdentityKey(existingAssignment) !==
+        assignmentIdentity
+    ) {
+      errors.push(
+        "معرّف الإسناد الموجود لا يطابق هوية الإسناد المخزنة؛ لن يتم اقتراح UPDATE أو إنشاء بديل تلقائياً.",
+      );
+    }
+
+    if (errors.length > 0) {
+      return {
+        ...row,
+        action: "BLOCKED",
+        errors,
+        assignmentId,
+        assignmentIdentity,
+        existingAssignmentId:
+          existingAssignment?.id || "",
+        existingAssignmentIds:
+          sameIdentityManagedAssignments.map(
+            (assignment) => assignment.id,
+          ),
+        changedFields: [],
+        currentValues: {},
+        desiredValues: {},
+        desiredAssignment,
+      };
+    }
+
+    if (!existingAssignment) {
+      return {
+        ...row,
+        action: "CREATE",
+        errors,
+        assignmentId,
+        assignmentIdentity,
+        existingAssignmentId: "",
+        existingAssignmentIds: [],
+        changedFields: [],
+        currentValues: {},
+        desiredValues: {},
+        desiredAssignment,
+      };
+    }
+
+    const changed = buildChangedValues({
+      currentAssignment: existingAssignment,
+      desiredAssignment,
+    });
+
+    return {
+      ...row,
+      action:
+        changed.changedFields.length > 0
+          ? "UPDATE"
+          : "KEEP_EXISTING",
+      errors,
+      assignmentId,
+      assignmentIdentity,
+      existingAssignmentId: existingAssignment.id,
+      existingAssignmentIds: [existingAssignment.id],
+      ...changed,
+      desiredAssignment,
+    };
+  });
+}
+
+function buildReconcilePlan({
+  desiredRows,
+  existingAssignments,
+  reconcileMode,
+}) {
+  const scopes = new Map();
+  const emailByPersonId = new Map();
+
+  for (const row of desiredRows) {
+    const scope = getReconcileScope(row);
+
+    if (!scope) {
+      continue;
+    }
+
+    const key = reconcileScopeKey(scope);
+
+    if (!scopes.has(key)) {
+      scopes.set(key, {
+        ...scope,
+        blocked: false,
+        blockedRowNumbers: [],
+        desiredIdentityKeys: new Set(),
+        teacherPersonIds: new Set(),
+      });
+    }
+
+    const scopeState = scopes.get(key);
+
+    if (row.personId) {
+      scopeState.teacherPersonIds.add(row.personId);
+
+      if (row.email) {
+        emailByPersonId.set(row.personId, row.email);
+      }
+    }
+
+    if (row.action === "BLOCKED") {
+      scopeState.blocked = true;
+      scopeState.blockedRowNumbers.push(
+        row.rowNumber,
+      );
+      continue;
+    }
+
+    scopeState.desiredIdentityKeys.add(
+      row.assignmentIdentity,
+    );
+  }
+
+  const suppressedReconcileScopes = Array.from(
+    scopes.values(),
+  )
+    .filter((scope) => scope.blocked)
+    .map((scope) => ({
+      schoolId: scope.schoolId,
+      academicYearId: scope.academicYearId,
+      termId: scope.termId,
+      blockedRowNumbers: scope.blockedRowNumbers,
+      reason: "BLOCKED_DESIRED_ROWS",
+    }));
+
+  const obsoleteAssignments = [];
+
+  for (const assignment of existingAssignments) {
+    if (
+      !isImporterManagedAssignment(assignment) ||
+      !isActiveNonEndedAssignment(assignment)
+    ) {
+      continue;
+    }
+
+    const scope = getReconcileScope(assignment);
+
+    if (!scope) {
+      continue;
+    }
+
+    const scopeState = scopes.get(
+      reconcileScopeKey(scope),
+    );
+
+    if (!scopeState || scopeState.blocked) {
+      continue;
+    }
+
+    if (
+      reconcileMode === "TEACHER_SCOPE" &&
+      !scopeState.teacherPersonIds.has(
+        assignment.teacherPersonId,
+      )
+    ) {
+      continue;
+    }
+
+    if (
+      scopeState.desiredIdentityKeys.has(
+        assignmentIdentityKey(assignment),
+      )
+    ) {
+      continue;
+    }
+
+    obsoleteAssignments.push({
+      email:
+        assignment.teacherEmail ||
+        emailByPersonId.get(
+          assignment.teacherPersonId,
+        ) ||
+        "",
+      personId: assignment.teacherPersonId || "",
+      existingAssignmentId: assignment.id,
+      schoolId: assignment.schoolId || "",
+      academicYearId: assignment.academicYearId || "",
+      termId: assignment.termId || "",
+      classId: assignment.classId || "",
+      classSubjectOfferingId:
+        assignment.classSubjectOfferingId || "",
+      subjectKey: assignment.subjectKey || "",
+      action: "END_OBSOLETE",
+    });
+  }
+
+  return {
+    obsoleteAssignments,
+    suppressedReconcileScopes,
+  };
+}
+
 async function main() {
+  const args = parseArgs();
+  const reconcileMode = resolveReconcileMode(args);
+
   console.log(
-    "Previewing teacher assignments import...",
+    "Previewing teacher assignments full reconcile...",
   );
 
   console.log({
     orgId: ORG_ID,
     inputFile: INPUT_FILE,
+    reconcileMode,
+    mode: "DRY_RUN_NO_FIRESTORE_WRITES",
   });
 
   await initializeFirebase();
@@ -614,14 +1091,14 @@ async function main() {
     );
   }
 
-  const results = [];
+  const inspectedRows = [];
 
   for (const row of rows) {
     console.log(
       `Checking row ${row.rowNumber}: ${row.email}`,
     );
 
-    results.push(
+    inspectedRows.push(
       await inspectAssignmentRow({
         auth,
         db,
@@ -630,30 +1107,61 @@ async function main() {
     );
   }
 
+  const existingAssignments =
+    await loadExistingTeacherAssignments(db);
+
+  const results = planDesiredRows({
+    inspectedRows,
+    existingAssignments,
+  });
+
+  const {
+    obsoleteAssignments,
+    suppressedReconcileScopes,
+  } = buildReconcilePlan({
+    desiredRows: results,
+    existingAssignments,
+    reconcileMode,
+  });
+
   const distinctTeachers = new Set(
-    results.map((item) => item.email),
+    results
+      .map(
+        (item) =>
+          item.personId || item.email,
+      )
+      .filter(Boolean),
   ).size;
 
   const summary = {
-    totalRows: results.length,
+    totalDesiredRows: results.length,
     distinctTeachers,
 
-    readyToCreate: results.filter(
+    createCount: results.filter(
       (item) => item.action === "CREATE",
     ).length,
 
-    existingAssignments: results.filter(
+    keepExistingCount: results.filter(
       (item) =>
         item.action === "KEEP_EXISTING",
     ).length,
 
-    blockedRows: results.filter(
+    updateCount: results.filter(
+      (item) => item.action === "UPDATE",
+    ).length,
+
+    endObsoleteCount:
+      obsoleteAssignments.length,
+
+    blockedCount: results.filter(
       (item) => item.action === "BLOCKED",
     ).length,
+
+    reconcileMode,
   };
 
   console.log("\n==============================");
-  console.log("Firebase assignment preview");
+  console.log("Desired rows");
   console.log("==============================");
 
   console.table(
@@ -665,10 +1173,32 @@ async function main() {
       offeringId:
         item.classSubjectOfferingId,
       subjectKey: item.subjectKey,
+      existingAssignmentId:
+        item.existingAssignmentId || "—",
       action: item.action,
+      changedFields:
+        item.changedFields.join(", ") || "—",
       errors: item.errors.length,
     })),
   );
+
+  console.log("\n==============================");
+  console.log("Obsolete assignments");
+  console.log("==============================");
+
+  console.table(obsoleteAssignments);
+
+  if (suppressedReconcileScopes.length > 0) {
+    console.log("\n==============================");
+    console.log("Suppressed reconciliation scopes");
+    console.log("==============================");
+
+    console.table(suppressedReconcileScopes);
+
+    console.warn(
+      "END_OBSOLETE was suppressed for the scopes above because their desired rows are not fully valid.",
+    );
+  }
 
   for (const item of results) {
     if (item.errors.length === 0) continue;
@@ -699,13 +1229,16 @@ async function main() {
     REPORT_FILE,
     JSON.stringify(
       {
-        generatedAt:
-          new Date().toISOString(),
+         generatedAt:
+           new Date().toISOString(),
 
-        orgId: ORG_ID,
-        summary,
-        results,
-      },
+         orgId: ORG_ID,
+         reconcileMode,
+         summary,
+         results,
+         obsoleteAssignments,
+         suppressedReconcileScopes,
+       },
       null,
       2,
     ),
@@ -720,7 +1253,7 @@ async function main() {
     "No teacher assignments or Firebase documents were created.",
   );
 
-  if (summary.blockedRows > 0) {
+  if (summary.blockedCount > 0) {
     process.exitCode = 1;
   }
 }

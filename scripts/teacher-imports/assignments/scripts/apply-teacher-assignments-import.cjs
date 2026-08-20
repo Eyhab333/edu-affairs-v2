@@ -73,6 +73,45 @@ const OPERATION_PERMISSIONS = [
   "SUBMIT",
 ];
 
+const RECONCILE_MODES = new Set([
+  "TEACHER_SCOPE",
+  "FULL_SCOPE",
+]);
+
+const DEFAULT_RECONCILE_MODE =
+  "TEACHER_SCOPE";
+
+const MANAGED_ASSIGNMENT_ID_PREFIX =
+  "teacher-provisioning__";
+
+const DESIRED_ASSIGNMENT_FIELDS = [
+  "id",
+  "orgId",
+  "schoolId",
+  "academicYearId",
+  "termId",
+  "teacherPersonId",
+  "teacherEmail",
+  "assignmentKind",
+  "targetScopeType",
+  "targetScopeId",
+  "coverageMode",
+  "subjectId",
+  "subjectKey",
+  "classId",
+  "classSubjectOfferingId",
+  "gradeId",
+  "streamId",
+  "isHomeroom",
+  "roleInAssignment",
+  "status",
+  "note",
+  "operationKinds",
+  "active",
+  "managedBy",
+  "assignmentSource",
+];
+
 function parseArgs() {
   const result = {};
 
@@ -87,6 +126,21 @@ function parseArgs() {
   }
 
   return result;
+}
+
+function resolveReconcileMode(args) {
+  const reconcileMode =
+    args.reconcileMode ||
+    DEFAULT_RECONCILE_MODE;
+
+  if (!RECONCILE_MODES.has(reconcileMode)) {
+    throw new Error(
+      `Invalid reconcileMode: ${reconcileMode}. ` +
+        "Use TEACHER_SCOPE or FULL_SCOPE.",
+    );
+  }
+
+  return reconcileMode;
 }
 
 function readCellText(cell) {
@@ -162,6 +216,66 @@ function buildTeacherAssignmentId({
       classSubjectOfferingId,
     ].join("__"),
   );
+}
+
+function assignmentIdentityKey({
+  teacherPersonId,
+  schoolId,
+  academicYearId,
+  termId,
+  classSubjectOfferingId,
+}) {
+  return [
+    teacherPersonId,
+    schoolId,
+    academicYearId,
+    termId,
+    classSubjectOfferingId,
+  ].join("\u001f");
+}
+
+function reconcileScopeKey({
+  schoolId,
+  academicYearId,
+  termId,
+}) {
+  return [
+    schoolId,
+    academicYearId,
+    termId,
+  ].join("\u001f");
+}
+
+function getReconcileScope(item) {
+  if (
+    !item.schoolId ||
+    !item.academicYearId ||
+    !item.termId
+  ) {
+    return null;
+  }
+
+  return {
+    schoolId: item.schoolId,
+    academicYearId: item.academicYearId,
+    termId: item.termId,
+  };
+}
+
+function valuesEqual(left, right) {
+  return JSON.stringify(left) ===
+    JSON.stringify(right);
+}
+
+function isImporterManagedAssignment(assignment) {
+  return String(assignment.id || "").startsWith(
+    MANAGED_ASSIGNMENT_ID_PREFIX,
+  );
+}
+
+function isActiveNonEndedAssignment(assignment) {
+  return assignment.status !== "ENDED" &&
+    assignment.active !== false;
 }
 
 function buildClassLinkId({
@@ -500,6 +614,7 @@ async function inspectRow({
 
   const [
     schoolSnap,
+    termSnap,
     classSnap,
     offeringSnap,
     personSnap,
@@ -509,6 +624,12 @@ async function inspectRow({
     db
       .doc(
         `orgs/${ORG_ID}/schools/${row.schoolId}`,
+      )
+      .get(),
+
+    db
+      .doc(
+        `orgs/${ORG_ID}/academicYears/${row.academicYearId}/terms/${row.termId}`,
       )
       .get(),
 
@@ -552,6 +673,12 @@ async function inspectRow({
   if (!schoolSnap.exists) {
     errors.push(
       `المدرسة غير موجودة: ${row.schoolId}`,
+    );
+  }
+
+  if (!termSnap.exists) {
+    errors.push(
+      `الفصل الدراسي غير موجود: ${row.termId}`,
     );
   }
 
@@ -605,6 +732,12 @@ async function inspectRow({
       : {};
 
   if (offeringSnap.exists) {
+    if (offeringData.orgId !== ORG_ID) {
+      errors.push(
+        "إسناد المادة تابع لمؤسسة أخرى.",
+      );
+    }
+
     if (
       offeringData.schoolId !==
       row.schoolId
@@ -745,6 +878,8 @@ function buildUpdatedScopes({
       : {};
 
   return {
+    ...scopes,
+
     schoolIds: uniqueStrings([
       ...(scopes.schoolIds || []),
       ...rows.map(
@@ -999,6 +1134,349 @@ function buildOperationalAssignment({
   };
 }
 
+function buildDesiredAssignmentForComparison({
+  row,
+  assignmentId,
+}) {
+  const payload = buildTeacherAssignment({
+    row,
+    assignmentId,
+    now: 0,
+  });
+
+  delete payload.startAt;
+  delete payload.createdAt;
+  delete payload.updatedAt;
+
+  return payload;
+}
+
+function buildChangedValues({
+  currentAssignment,
+  desiredAssignment,
+}) {
+  const changedFields = [];
+  const currentValues = {};
+  const desiredValues = {};
+
+  for (const field of DESIRED_ASSIGNMENT_FIELDS) {
+    const currentValue = currentAssignment[field];
+    const desiredValue = desiredAssignment[field];
+
+    if (valuesEqual(currentValue, desiredValue)) {
+      continue;
+    }
+
+    changedFields.push(field);
+    currentValues[field] = currentValue;
+    desiredValues[field] = desiredValue;
+  }
+
+  return {
+    changedFields,
+    currentValues,
+    desiredValues,
+  };
+}
+
+async function loadExistingTeacherAssignments(db) {
+  const snapshot = await db
+    .collection(
+      `orgs/${ORG_ID}/teacherAssignments`,
+    )
+    .get();
+
+  return snapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+}
+
+function planDesiredRows({
+  inspectedRows,
+  existingAssignments,
+}) {
+  const existingById = new Map(
+    existingAssignments.map((assignment) => [
+      assignment.id,
+      assignment,
+    ]),
+  );
+
+  const managedAssignmentsByIdentity = new Map();
+
+  for (const assignment of existingAssignments) {
+    if (!isImporterManagedAssignment(assignment)) {
+      continue;
+    }
+
+    const identity = assignmentIdentityKey(assignment);
+
+    if (!managedAssignmentsByIdentity.has(identity)) {
+      managedAssignmentsByIdentity.set(
+        identity,
+        [],
+      );
+    }
+
+    managedAssignmentsByIdentity
+      .get(identity)
+      .push(assignment);
+  }
+
+  return inspectedRows.map((row) => {
+    const errors = [...row.errors];
+
+    if (errors.length > 0) {
+      return {
+        ...row,
+        action: "BLOCKED",
+        errors,
+        assignmentId: "",
+        assignmentIdentity: "",
+        existingAssignmentId: "",
+        existingAssignmentIds: [],
+        changedFields: [],
+        currentValues: {},
+        desiredValues: {},
+      };
+    }
+
+    const assignmentId = buildTeacherAssignmentId({
+      personId: row.personId,
+      schoolId: row.schoolId,
+      academicYearId: row.academicYearId,
+      termId: row.termId,
+      classSubjectOfferingId:
+        row.classSubjectOfferingId,
+    });
+
+    const desiredAssignment =
+      buildDesiredAssignmentForComparison({
+        row,
+        assignmentId,
+      });
+
+    const assignmentIdentity =
+      assignmentIdentityKey(desiredAssignment);
+
+    const existingAssignment =
+      existingById.get(assignmentId) || null;
+
+    const sameIdentityManagedAssignments =
+      managedAssignmentsByIdentity.get(
+        assignmentIdentity,
+      ) || [];
+
+    if (
+      !existingAssignment &&
+      sameIdentityManagedAssignments.length > 0
+    ) {
+      errors.push(
+        "يوجد إسناد مستورد بنفس الهوية لكن بمعرّف مستند غير متوافق؛ تمت حماية الصف من الإنشاء المكرر.",
+      );
+    }
+
+    if (
+      existingAssignment &&
+      assignmentIdentityKey(existingAssignment) !==
+        assignmentIdentity
+    ) {
+      errors.push(
+        "معرّف الإسناد الموجود لا يطابق هوية الإسناد المخزنة؛ لن يتم اقتراح UPDATE أو إنشاء بديل تلقائياً.",
+      );
+    }
+
+    if (errors.length > 0) {
+      return {
+        ...row,
+        action: "BLOCKED",
+        errors,
+        assignmentId,
+        assignmentIdentity,
+        existingAssignmentId:
+          existingAssignment?.id || "",
+        existingAssignmentIds:
+          sameIdentityManagedAssignments.map(
+            (assignment) => assignment.id,
+          ),
+        changedFields: [],
+        currentValues: {},
+        desiredValues: {},
+        desiredAssignment,
+      };
+    }
+
+    if (!existingAssignment) {
+      return {
+        ...row,
+        action: "CREATE",
+        errors,
+        assignmentId,
+        assignmentIdentity,
+        existingAssignmentId: "",
+        existingAssignmentIds: [],
+        changedFields: [],
+        currentValues: {},
+        desiredValues: {},
+        desiredAssignment,
+      };
+    }
+
+    const changed = buildChangedValues({
+      currentAssignment: existingAssignment,
+      desiredAssignment,
+    });
+
+    return {
+      ...row,
+      action:
+        changed.changedFields.length > 0
+          ? "UPDATE"
+          : "KEEP_EXISTING",
+      errors,
+      assignmentId,
+      assignmentIdentity,
+      existingAssignmentId: existingAssignment.id,
+      existingAssignmentIds: [existingAssignment.id],
+      ...changed,
+      desiredAssignment,
+    };
+  });
+}
+
+function buildReconcilePlan({
+  desiredRows,
+  existingAssignments,
+  reconcileMode,
+}) {
+  const scopes = new Map();
+  const emailByPersonId = new Map();
+
+  for (const row of desiredRows) {
+    const scope = getReconcileScope(row);
+
+    if (!scope) {
+      continue;
+    }
+
+    const key = reconcileScopeKey(scope);
+
+    if (!scopes.has(key)) {
+      scopes.set(key, {
+        ...scope,
+        blocked: false,
+        blockedRowNumbers: [],
+        desiredIdentityKeys: new Set(),
+        teacherPersonIds: new Set(),
+      });
+    }
+
+    const scopeState = scopes.get(key);
+
+    if (row.personId) {
+      scopeState.teacherPersonIds.add(row.personId);
+
+      if (row.email) {
+        emailByPersonId.set(row.personId, row.email);
+      }
+    }
+
+    if (row.action === "BLOCKED") {
+      scopeState.blocked = true;
+      scopeState.blockedRowNumbers.push(
+        row.rowNumber,
+      );
+      continue;
+    }
+
+    scopeState.desiredIdentityKeys.add(
+      row.assignmentIdentity,
+    );
+  }
+
+  const suppressedReconcileScopes = Array.from(
+    scopes.values(),
+  )
+    .filter((scope) => scope.blocked)
+    .map((scope) => ({
+      schoolId: scope.schoolId,
+      academicYearId: scope.academicYearId,
+      termId: scope.termId,
+      blockedRowNumbers: scope.blockedRowNumbers,
+      reason: "BLOCKED_DESIRED_ROWS",
+    }));
+
+  const obsoleteAssignments = [];
+
+  for (const assignment of existingAssignments) {
+    if (
+      !isImporterManagedAssignment(assignment) ||
+      !isActiveNonEndedAssignment(assignment)
+    ) {
+      continue;
+    }
+
+    const scope = getReconcileScope(assignment);
+
+    if (!scope) {
+      continue;
+    }
+
+    const scopeState = scopes.get(
+      reconcileScopeKey(scope),
+    );
+
+    if (!scopeState || scopeState.blocked) {
+      continue;
+    }
+
+    if (
+      reconcileMode === "TEACHER_SCOPE" &&
+      !scopeState.teacherPersonIds.has(
+        assignment.teacherPersonId,
+      )
+    ) {
+      continue;
+    }
+
+    if (
+      scopeState.desiredIdentityKeys.has(
+        assignmentIdentityKey(assignment),
+      )
+    ) {
+      continue;
+    }
+
+    obsoleteAssignments.push({
+      action: "END_OBSOLETE",
+      email:
+        assignment.teacherEmail ||
+        emailByPersonId.get(
+          assignment.teacherPersonId,
+        ) ||
+        "",
+      personId: assignment.teacherPersonId || "",
+      assignmentId: assignment.id,
+      existingAssignmentId: assignment.id,
+      schoolId: assignment.schoolId || "",
+      academicYearId: assignment.academicYearId || "",
+      termId: assignment.termId || "",
+      classId: assignment.classId || "",
+      classSubjectOfferingId:
+        assignment.classSubjectOfferingId || "",
+      subjectKey: assignment.subjectKey || "",
+      existingAssignment: assignment,
+      pathsWritten: [],
+    });
+  }
+
+  return {
+    obsoleteAssignments,
+    suppressedReconcileScopes,
+  };
+}
+
 async function applyTeacherGroup({
   db,
   group,
@@ -1242,7 +1720,628 @@ async function applyTeacherGroup({
   };
 }
 
-async function main() {
+function groupActionsByTeacher(rows) {
+  const groups = new Map();
+
+  for (const row of rows) {
+    const key = [
+      row.uid,
+      row.personId,
+      row.email,
+    ].join("\u001f");
+
+    if (!groups.has(key)) {
+      groups.set(key, {
+        email: row.email,
+        uid: row.uid,
+        personId: row.personId,
+        rows: [],
+      });
+    }
+
+    groups.get(key).rows.push(row);
+  }
+
+  return Array.from(groups.values());
+}
+
+function buildAssignmentGraph({
+  db,
+  row,
+  assignmentId,
+  now,
+}) {
+  const classLinkId = buildClassLinkId({
+    assignmentId,
+    classId: row.classId,
+  });
+
+  const teacherAssignment =
+    buildTeacherAssignment({
+      row,
+      assignmentId,
+      now,
+    });
+
+  const classLink = buildClassLink({
+    row,
+    assignmentId,
+    classLinkId,
+    now,
+  });
+
+  const operationalAssignments =
+    OPERATION_DEFINITIONS.map((definition) =>
+      buildOperationalAssignment({
+        row,
+        assignmentId,
+        definition,
+        now,
+      }),
+    );
+
+  return {
+    teacherAssignment: {
+      ref: db.doc(
+        `orgs/${ORG_ID}/teacherAssignments/${assignmentId}`,
+      ),
+      payload: teacherAssignment,
+      generatedTimestampFields: [
+        "createdAt",
+        "startAt",
+      ],
+    },
+    classLink: {
+      ref: db.doc(
+        `orgs/${ORG_ID}/teacherAssignmentClassLinks/${classLinkId}`,
+      ),
+      payload: classLink,
+      generatedTimestampFields: [
+        "createdAt",
+      ],
+    },
+    operationalAssignments:
+      operationalAssignments.map((payload) => ({
+        ref: db.doc(
+          `orgs/${ORG_ID}/operationalAssignments/${payload.id}`,
+        ),
+        payload,
+        generatedTimestampFields: [
+          "createdAt",
+          "startAt",
+        ],
+      })),
+  };
+}
+
+function buildExistingAssignmentGraphRefs({
+  db,
+  assignment,
+}) {
+  const assignmentId = assignment.id;
+  const classLinkId = buildClassLinkId({
+    assignmentId,
+    classId: assignment.classId,
+  });
+
+  return {
+    teacherAssignmentRef: db.doc(
+      `orgs/${ORG_ID}/teacherAssignments/${assignmentId}`,
+    ),
+    classLinkRef: db.doc(
+      `orgs/${ORG_ID}/teacherAssignmentClassLinks/${classLinkId}`,
+    ),
+    operationalRefs: OPERATION_DEFINITIONS.map(
+      (definition) =>
+        db.doc(
+          `orgs/${ORG_ID}/operationalAssignments/${buildOperationalAssignmentId({
+            assignmentId,
+            operationKind: definition.operationKind,
+          })}`,
+        ),
+    ),
+  };
+}
+
+function preserveExistingGeneratedTimestamps({
+  payload,
+  existing,
+  generatedTimestampFields,
+}) {
+  if (!existing) {
+    return payload;
+  }
+
+  const updatePayload = {
+    ...payload,
+  };
+
+  for (const field of generatedTimestampFields) {
+    delete updatePayload[field];
+  }
+
+  return updatePayload;
+}
+
+function buildActionReport({
+  row,
+  pathsWritten,
+}) {
+  return {
+    action: row.action,
+    email: row.email,
+    personId: row.personId,
+    assignmentId: row.assignmentId,
+    schoolId: row.schoolId,
+    academicYearId: row.academicYearId,
+    termId: row.termId,
+    classId: row.classId,
+    classSubjectOfferingId:
+      row.classSubjectOfferingId,
+    subjectKey: row.subjectKey,
+    existingAssignmentId:
+      row.existingAssignmentId || "",
+    changedFields: row.changedFields || [],
+    pathsWritten,
+  };
+}
+
+async function applyTeacherReconcileGroup({
+  db,
+  group,
+}) {
+  const now = Date.now();
+  const rows = group.rows;
+  const firstRow = rows[0];
+
+  const userRef = db.doc(
+    `users/${firstRow.uid}`,
+  );
+
+  const personRef = db.doc(
+    `orgs/${ORG_ID}/people/${firstRow.personId}`,
+  );
+
+  const userMembershipRef = db.doc(
+    `users/${firstRow.uid}/orgMemberships/${ORG_ID}`,
+  );
+
+  const orgMembershipRef = db.doc(
+    `orgs/${ORG_ID}/memberships/${firstRow.uid}`,
+  );
+
+  const graphs = rows.map((row) => ({
+    row,
+    graph: buildAssignmentGraph({
+      db,
+      row,
+      assignmentId: row.assignmentId,
+      now,
+    }),
+  }));
+
+  const existingGraphRefs = [];
+
+  for (const item of graphs) {
+    if (item.row.action !== "UPDATE") {
+      continue;
+    }
+
+    existingGraphRefs.push(
+      item.graph.teacherAssignment.ref,
+      item.graph.classLink.ref,
+      ...item.graph.operationalAssignments.map(
+        (operation) => operation.ref,
+      ),
+    );
+  }
+
+  const [
+    currentUserMembershipSnap,
+    currentOrgMembershipSnap,
+    ...existingGraphSnaps
+  ] = await Promise.all([
+    userMembershipRef.get(),
+    orgMembershipRef.get(),
+    ...existingGraphRefs.map((ref) => ref.get()),
+  ]);
+
+  const existingGraphByPath = new Map(
+    existingGraphSnaps.map((snap) => [
+      snap.ref.path,
+      snap.exists,
+    ]),
+  );
+
+  const currentUserMembership =
+    currentUserMembershipSnap.exists
+      ? currentUserMembershipSnap.data()
+      : {};
+
+  const currentOrgMembership =
+    currentOrgMembershipSnap.exists
+      ? currentOrgMembershipSnap.data()
+      : {};
+
+  const activeRows = rows.filter(
+    (row) =>
+      row.assignmentStatus === "ACTIVE",
+  );
+
+  const updatedUserScopes =
+    buildUpdatedScopes({
+      currentScopes:
+        currentUserMembership.scopes,
+      rows: activeRows,
+    });
+
+  const updatedOrgScopes =
+    buildUpdatedScopes({
+      currentScopes:
+        currentOrgMembership.scopes,
+      rows: activeRows,
+    });
+
+  const batch = db.batch();
+  const membershipProfilePaths = [
+    userRef.path,
+    personRef.path,
+    userMembershipRef.path,
+    orgMembershipRef.path,
+  ];
+
+  batch.set(
+    userRef,
+    {
+      provisioningStatus: "ASSIGNED",
+      assignmentStatus: "ACTIVE",
+      updatedAt: now,
+    },
+    { merge: true },
+  );
+
+  batch.set(
+    personRef,
+    {
+      provisioningStatus: "ASSIGNED",
+      assignmentStatus: "ACTIVE",
+      updatedAt: now,
+    },
+    { merge: true },
+  );
+
+  batch.set(
+    userMembershipRef,
+    {
+      provisioningStatus: "ASSIGNED",
+      assignmentStatus: "ACTIVE",
+      scopes: updatedUserScopes,
+      updatedAt: now,
+    },
+    { merge: true },
+  );
+
+  batch.set(
+    orgMembershipRef,
+    {
+      provisioningStatus: "ASSIGNED",
+      assignmentStatus: "ACTIVE",
+      scopes: updatedOrgScopes,
+      updatedAt: now,
+    },
+    { merge: true },
+  );
+
+  const actionReports = [];
+
+  for (const item of graphs) {
+    const isCreate = item.row.action === "CREATE";
+    const pathsWritten = [];
+
+    const teacherAssignmentPayload =
+      preserveExistingGeneratedTimestamps({
+        payload: item.graph.teacherAssignment.payload,
+        existing:
+          !isCreate &&
+          existingGraphByPath.get(
+            item.graph.teacherAssignment.ref.path,
+          ) === true,
+        generatedTimestampFields:
+          item.graph.teacherAssignment
+            .generatedTimestampFields,
+      });
+
+    batch.set(
+      item.graph.teacherAssignment.ref,
+      teacherAssignmentPayload,
+      { merge: true },
+    );
+
+    pathsWritten.push(
+      item.graph.teacherAssignment.ref.path,
+    );
+
+    const classLinkPayload =
+      preserveExistingGeneratedTimestamps({
+        payload: item.graph.classLink.payload,
+        existing:
+          !isCreate &&
+          existingGraphByPath.get(
+            item.graph.classLink.ref.path,
+          ) === true,
+        generatedTimestampFields:
+          item.graph.classLink
+            .generatedTimestampFields,
+      });
+
+    batch.set(
+      item.graph.classLink.ref,
+      classLinkPayload,
+      { merge: true },
+    );
+
+    pathsWritten.push(item.graph.classLink.ref.path);
+
+    for (
+      const operation of item.graph
+        .operationalAssignments
+    ) {
+      const operationPayload =
+        preserveExistingGeneratedTimestamps({
+          payload: operation.payload,
+          existing:
+            !isCreate &&
+            existingGraphByPath.get(
+              operation.ref.path,
+            ) === true,
+          generatedTimestampFields:
+            operation.generatedTimestampFields,
+        });
+
+      batch.set(
+        operation.ref,
+        operationPayload,
+        { merge: true },
+      );
+
+      pathsWritten.push(operation.ref.path);
+    }
+
+    actionReports.push(
+      buildActionReport({
+        row: item.row,
+        pathsWritten,
+      }),
+    );
+  }
+
+  await batch.commit();
+
+  return {
+    email: group.email,
+    uid: group.uid,
+    personId: group.personId,
+    actions: actionReports,
+    membershipProfilePaths,
+    scopeRemovalPolicy:
+      "PRESERVE_EXISTING_BROADER_SCOPES",
+  };
+}
+
+function buildEndUpdate({
+  existingData,
+  now,
+  operational,
+}) {
+  const update = operational
+    ? {
+        status: "ENDED",
+        isActive: false,
+        active: false,
+        updatedAt: now,
+      }
+    : {
+        status: "ENDED",
+        active: false,
+        updatedAt: now,
+      };
+
+  if (!existingData.endedAt) {
+    update.endedAt = now;
+  }
+
+  return update;
+}
+
+async function applyEndObsoleteAssignment({
+  db,
+  action,
+}) {
+  const graph = buildExistingAssignmentGraphRefs({
+    db,
+    assignment: action.existingAssignment,
+  });
+
+  const [
+    assignmentSnap,
+    classLinkSnap,
+    ...operationalSnaps
+  ] = await Promise.all([
+    graph.teacherAssignmentRef.get(),
+    graph.classLinkRef.get(),
+    ...graph.operationalRefs.map((ref) => ref.get()),
+  ]);
+
+  const requiredSnaps = [
+    assignmentSnap,
+    classLinkSnap,
+    ...operationalSnaps,
+  ];
+
+  const missingPaths = requiredSnaps
+    .filter((snap) => !snap.exists)
+    .map((snap) => snap.ref.path);
+
+  if (missingPaths.length > 0) {
+    throw new Error(
+      `Cannot END_OBSOLETE ${action.existingAssignmentId}; missing managed graph documents: ${missingPaths.join(", ")}`,
+    );
+  }
+
+  const now = Date.now();
+  const batch = db.batch();
+
+  batch.update(
+    graph.teacherAssignmentRef,
+    buildEndUpdate({
+      existingData: assignmentSnap.data(),
+      now,
+      operational: false,
+    }),
+  );
+
+  batch.update(
+    graph.classLinkRef,
+    {
+      active: false,
+      updatedAt: now,
+    },
+  );
+
+  for (
+    let index = 0;
+    index < graph.operationalRefs.length;
+    index += 1
+  ) {
+    batch.update(
+      graph.operationalRefs[index],
+      buildEndUpdate({
+        existingData: operationalSnaps[index].data(),
+        now,
+        operational: true,
+      }),
+    );
+  }
+
+  await batch.commit();
+
+  const pathsWritten = [
+    graph.teacherAssignmentRef.path,
+    graph.classLinkRef.path,
+    ...graph.operationalRefs.map((ref) => ref.path),
+  ];
+
+  return {
+    action: action.action,
+    email: action.email,
+    personId: action.personId,
+    assignmentId: action.assignmentId,
+    existingAssignmentId:
+      action.existingAssignmentId,
+    schoolId: action.schoolId,
+    academicYearId: action.academicYearId,
+    termId: action.termId,
+    classId: action.classId,
+    classSubjectOfferingId:
+      action.classSubjectOfferingId,
+    subjectKey: action.subjectKey,
+    changedFields: [
+      "status",
+      "active",
+      "endedAt",
+    ],
+    pathsWritten,
+  };
+}
+
+async function validateEndObsoleteGraphs({
+  db,
+  actions,
+}) {
+  for (const action of actions) {
+    const graph = buildExistingAssignmentGraphRefs({
+      db,
+      assignment: action.existingAssignment,
+    });
+
+    const snapshots = await Promise.all([
+      graph.teacherAssignmentRef.get(),
+      graph.classLinkRef.get(),
+      ...graph.operationalRefs.map((ref) => ref.get()),
+    ]);
+
+    const missingPaths = snapshots
+      .filter((snap) => !snap.exists)
+      .map((snap) => snap.ref.path);
+
+    if (missingPaths.length > 0) {
+      throw new Error(
+        `Cannot END_OBSOLETE ${action.existingAssignmentId}; missing managed graph documents: ${missingPaths.join(", ")}`,
+      );
+    }
+  }
+}
+
+function buildWritePlan({
+  desiredRows,
+  obsoleteAssignments,
+}) {
+  const createRows = desiredRows.filter(
+    (row) => row.action === "CREATE",
+  );
+
+  const updateRows = desiredRows.filter(
+    (row) => row.action === "UPDATE",
+  );
+
+  const actionGroups = groupActionsByTeacher([
+    ...createRows,
+    ...updateRows,
+  ]);
+
+  const assignmentGraphDocuments =
+    2 + OPERATION_DEFINITIONS.length;
+
+  const writeCounts = {
+    create:
+      createRows.length *
+      assignmentGraphDocuments,
+    update:
+      updateRows.length *
+      assignmentGraphDocuments,
+    endObsolete:
+      obsoleteAssignments.length *
+      assignmentGraphDocuments,
+    membershipProfile:
+      actionGroups.length * 4,
+  };
+
+  return {
+    actionGroups,
+    assignmentGraphDocuments,
+    writeCounts,
+    documentsCreatedOrUpdated:
+      writeCounts.create +
+      writeCounts.update +
+      writeCounts.endObsolete +
+      writeCounts.membershipProfile,
+  };
+}
+
+function writeReport(report) {
+  fs.mkdirSync(
+    path.dirname(REPORT_FILE),
+    { recursive: true },
+  );
+
+  fs.writeFileSync(
+    REPORT_FILE,
+    JSON.stringify(report, null, 2),
+    "utf8",
+  );
+}
+
+async function legacyApplyMain() {
   const args = parseArgs();
 
   const applyMode =
@@ -1526,6 +2625,405 @@ async function main() {
 
   console.log(
     "\nAll teacher assignments were applied successfully.",
+  );
+}
+
+async function main() {
+  const args = parseArgs();
+  const reconcileMode = resolveReconcileMode(args);
+  const applyMode =
+    args.apply === APPLY_CONFIRMATION;
+
+  if (
+    args.apply &&
+    args.apply !== APPLY_CONFIRMATION
+  ) {
+    throw new Error(
+      `Invalid apply confirmation. Expected --apply=${APPLY_CONFIRMATION}.`,
+    );
+  }
+
+  console.log(
+    "Teacher assignments full reconcile",
+  );
+
+  console.log({
+    orgId: ORG_ID,
+    inputFile: INPUT_FILE,
+    reconcileMode,
+    mode: applyMode
+      ? "APPLY"
+      : "DRY_RUN_NO_WRITES",
+  });
+
+  await initializeFirebase();
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  const inputRows = await readExcelRows();
+
+  if (inputRows.length === 0) {
+    throw new Error(
+      "ملف التوزيع لا يحتوي على أي إسنادات مكتملة.",
+    );
+  }
+
+  const inspectedRows = [];
+
+  for (const row of inputRows) {
+    console.log(
+      `Checking row ${row.rowNumber}: ${row.email}`,
+    );
+
+    inspectedRows.push(
+      await inspectRow({
+        auth,
+        db,
+        row,
+      }),
+    );
+  }
+
+  const duplicateKeys = new Map();
+
+  for (const row of inspectedRows) {
+    const key = [
+      row.email,
+      row.schoolId,
+      row.academicYearId,
+      row.termId,
+      row.classId,
+      row.classSubjectOfferingId,
+    ].join("|");
+
+    if (duplicateKeys.has(key)) {
+      row.errors.push(
+        `الإسناد مكرر مع الصف ${duplicateKeys.get(key)}.`,
+      );
+      continue;
+    }
+
+    duplicateKeys.set(key, row.rowNumber);
+  }
+
+  const existingAssignments =
+    await loadExistingTeacherAssignments(db);
+
+  const desiredRows = planDesiredRows({
+    inspectedRows,
+    existingAssignments,
+  });
+
+  const {
+    obsoleteAssignments,
+    suppressedReconcileScopes,
+  } = buildReconcilePlan({
+    desiredRows,
+    existingAssignments,
+    reconcileMode,
+  });
+
+  const writePlan = buildWritePlan({
+    desiredRows,
+    obsoleteAssignments,
+  });
+
+  const distinctTeachers = new Set(
+    desiredRows
+      .map(
+        (row) => row.personId || row.email,
+      )
+      .filter(Boolean),
+  ).size;
+
+  const summary = {
+    desiredRows: desiredRows.length,
+    distinctTeachers,
+    createCount: desiredRows.filter(
+      (row) => row.action === "CREATE",
+    ).length,
+    keepExistingCount: desiredRows.filter(
+      (row) => row.action === "KEEP_EXISTING",
+    ).length,
+    updateCount: desiredRows.filter(
+      (row) => row.action === "UPDATE",
+    ).length,
+    endObsoleteCount:
+      obsoleteAssignments.length,
+    blockedCount: desiredRows.filter(
+      (row) => row.action === "BLOCKED",
+    ).length,
+    documentsCreatedOrUpdated: applyMode
+      ? 0
+      : writePlan.documentsCreatedOrUpdated,
+    failedTeachers: 0,
+  };
+
+  const obsoleteReportRows =
+    obsoleteAssignments.map(
+      ({ existingAssignment, ...item }) => item,
+    );
+
+  console.log("\n==============================");
+  console.log("Desired rows");
+  console.log("==============================");
+
+  console.table(
+    desiredRows.map((row) => ({
+      row: row.rowNumber,
+      email: row.email,
+      personId: row.personId,
+      classId: row.classId,
+      offeringId: row.classSubjectOfferingId,
+      subjectKey: row.subjectKey,
+      existingAssignmentId:
+        row.existingAssignmentId || "—",
+      action: row.action,
+      changedFields:
+        row.changedFields.join(", ") || "—",
+      errors: row.errors.length,
+    })),
+  );
+
+  console.log("\n==============================");
+  console.log("Obsolete assignments");
+  console.log("==============================");
+
+  console.table(obsoleteReportRows);
+
+  if (suppressedReconcileScopes.length > 0) {
+    console.log("\n==============================");
+    console.log("Suppressed reconciliation scopes");
+    console.log("==============================");
+
+    console.table(suppressedReconcileScopes);
+
+    console.warn(
+      "END_OBSOLETE was suppressed for the scopes above because their desired rows are not fully valid.",
+    );
+  }
+
+  for (const row of desiredRows) {
+    if (row.errors.length === 0) continue;
+
+    console.error(
+      `\nRow ${row.rowNumber} — ${row.email}`,
+    );
+
+    for (const error of row.errors) {
+      console.error(`- ${error}`);
+    }
+  }
+
+  console.log("\n==============================");
+  console.log("Reconcile summary");
+  console.log("==============================");
+
+  console.log({
+    reconcileMode,
+    ...summary,
+    plannedWriteCounts: writePlan.writeCounts,
+    scopeRemovalPolicy:
+      "PRESERVE_EXISTING_BROADER_SCOPES",
+  });
+
+  const report = {
+    generatedAt: new Date().toISOString(),
+    orgId: ORG_ID,
+    reconcileMode,
+    mode: applyMode ? "APPLY" : "DRY_RUN",
+    summary,
+    plannedWriteCounts: writePlan.writeCounts,
+    scopeRemovalPolicy:
+      "PRESERVE_EXISTING_BROADER_SCOPES",
+    scopeRemovalNote:
+      "Membership scopes are additive only. END_OBSOLETE does not shrink scopes because current provenance cannot safely distinguish assignment-derived scope values from other legitimate access.",
+    desiredRows,
+    obsoleteAssignments: obsoleteReportRows,
+    suppressedReconcileScopes,
+    executedActions: [],
+    membershipProfileChanges: [],
+    failures: [],
+  };
+
+  if (!applyMode) {
+    writeReport(report);
+
+    console.log(
+      `\nDRY_RUN completed. Report written to: ${REPORT_FILE}`,
+    );
+    console.log(
+      "No teacher assignments or Firebase documents were created or updated.",
+    );
+    console.log(
+      `To apply later, use --apply=${APPLY_CONFIRMATION}`,
+    );
+    return;
+  }
+
+  if (summary.blockedCount > 0) {
+    report.failures.push({
+      message:
+        "Blocked desired rows were found. Apply was stopped before all Firestore writes.",
+    });
+    summary.failedTeachers = new Set(
+      desiredRows
+        .filter((row) => row.action === "BLOCKED")
+        .map((row) => row.personId || row.email)
+        .filter(Boolean),
+    ).size;
+
+    writeReport(report);
+    console.error(
+      "Apply blocked before writes because the desired state is not fully valid.",
+    );
+    process.exitCode = 1;
+    return;
+  }
+
+  try {
+    await validateEndObsoleteGraphs({
+      db,
+      actions: obsoleteAssignments,
+    });
+  } catch (error) {
+    report.failures.push({
+      message:
+        error instanceof Error
+          ? error.message
+          : String(error),
+    });
+    summary.failedTeachers = 1;
+    writeReport(report);
+    throw error;
+  }
+
+  for (const group of writePlan.actionGroups) {
+    try {
+      const result =
+        await applyTeacherReconcileGroup({
+          db,
+          group,
+        });
+
+      report.executedActions.push(
+        ...result.actions,
+      );
+
+      report.membershipProfileChanges.push({
+        email: result.email,
+        personId: result.personId,
+        pathsWritten: result.membershipProfilePaths,
+        scopeRemovalPolicy:
+          result.scopeRemovalPolicy,
+      });
+    } catch (error) {
+      report.failures.push({
+        email: group.email,
+        personId: group.personId,
+        message:
+          error instanceof Error
+            ? error.message
+            : String(error),
+      });
+      break;
+    }
+  }
+
+  if (report.failures.length === 0) {
+    for (const action of obsoleteAssignments) {
+      try {
+        report.executedActions.push(
+          await applyEndObsoleteAssignment({
+            db,
+            action,
+          }),
+        );
+      } catch (error) {
+        report.failures.push({
+          email: action.email,
+          personId: action.personId,
+          existingAssignmentId:
+            action.existingAssignmentId,
+          message:
+            error instanceof Error
+              ? error.message
+              : String(error),
+        });
+        break;
+      }
+    }
+  }
+
+  const actualWriteCounts = {
+    create: report.executedActions
+      .filter((action) => action.action === "CREATE")
+      .reduce(
+        (total, action) =>
+          total + action.pathsWritten.length,
+        0,
+      ),
+    update: report.executedActions
+      .filter((action) => action.action === "UPDATE")
+      .reduce(
+        (total, action) =>
+          total + action.pathsWritten.length,
+        0,
+      ),
+    endObsolete: report.executedActions
+      .filter(
+        (action) =>
+          action.action === "END_OBSOLETE",
+      )
+      .reduce(
+        (total, action) =>
+          total + action.pathsWritten.length,
+        0,
+      ),
+    membershipProfile:
+      report.membershipProfileChanges.reduce(
+        (total, item) =>
+          total + item.pathsWritten.length,
+        0,
+      ),
+  };
+
+  summary.documentsCreatedOrUpdated =
+    actualWriteCounts.create +
+    actualWriteCounts.update +
+    actualWriteCounts.endObsolete +
+    actualWriteCounts.membershipProfile;
+
+  summary.failedTeachers = new Set(
+    report.failures
+      .map((failure) =>
+        failure.personId || failure.email || "unknown",
+      )
+      .filter(Boolean),
+  ).size;
+
+  report.actualWriteCounts = actualWriteCounts;
+
+  writeReport(report);
+
+  console.log("\n==============================");
+  console.log("Apply summary");
+  console.log("==============================");
+  console.log({
+    reconcileMode,
+    ...summary,
+    actualWriteCounts,
+  });
+  console.log(`Report written to: ${REPORT_FILE}`);
+
+  if (report.failures.length > 0) {
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log(
+    "Teacher assignment reconcile applied successfully.",
   );
 }
 

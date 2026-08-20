@@ -292,15 +292,15 @@ async function main() {
     }
   }
 
-  if (distinctTeacherEmails.size !== 5) {
-    errors.push({
-      rowNumber: 0,
-      email: "",
-      errors: [
-        `التجربة الحالية تتوقع توزيع 5 معلمين مختلفين، لكن الملف يحتوي على ${distinctTeacherEmails.size}.`,
-      ],
-    });
-  }
+  // if (distinctTeacherEmails.size !== 5) {
+  //   errors.push({
+  //     rowNumber: 0,
+  //     email: "",
+  //     errors: [
+  //       `التجربة الحالية تتوقع توزيع 5 معلمين مختلفين، لكن الملف يحتوي على ${distinctTeacherEmails.size}.`,
+  //     ],
+  //   });
+  // }
 
   console.log("\n==============================");
   console.log("Assignment preview");
