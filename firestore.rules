@@ -802,7 +802,8 @@ match /subjectLessonPreps/{lessonPrepId} {
         resource.data
       )
       && (
-        resource.data.teacherPersonId
+        resource.data.status != "DRAFT"
+        || resource.data.teacherPersonId
           == currentUserPersonId()
         || resource.data.reviewerPersonId
           == currentUserPersonId()

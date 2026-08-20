@@ -14,6 +14,11 @@ import {
 
 import { db } from "@/lib/firebase";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import {
+  getFriendlyClassTitle,
+  isTechnicalIdentifier,
+  normalizeText,
+} from "@/lib/class-presentation";
 
 type VisibleClass = {
   id: string;
@@ -24,6 +29,20 @@ type VisibleClass = {
   academicYearId?: string;
   gradeId?: string;
   gradeTitle?: string;
+  streamId?: string;
+  sectionLabel?: string;
+};
+
+type VisibleOffering = {
+  id: string;
+  classId?: string;
+  displayName?: string;
+  shortLabel?: string;
+  subjectTitleSnapshot?: string;
+  subjectKey?: string;
+  subjectId?: string;
+  status?: string;
+  isArchived?: boolean;
 };
 
 type StaffLearningLossActor = {
@@ -33,6 +52,7 @@ type StaffLearningLossActor = {
   roles?: string[];
   roleKeys?: string[];
   visibleClasses?: VisibleClass[];
+  classSubjectOfferings?: VisibleOffering[];
   currentTermsByAcademicYear: Record<
   string,
   {
@@ -68,6 +88,7 @@ type ManualForm = {
   classKey: string;
   studentId: string;
   subjectKey: string;
+  classSubjectOfferingId: string;
   title: string;
   reason: string;
   skillTitle: string;
@@ -112,13 +133,60 @@ function getVisibleClassKey(item: VisibleClass) {
   ].join(":");
 }
 
-function getClassLabel(classInfo: VisibleClass) {
-  return classInfo.title || classInfo.code || classInfo.id;
+function getClassLabel(classInfo: VisibleClass, classes: VisibleClass[]) {
+  return getFriendlyClassTitle(classInfo, classes) || "الفصل الحالي";
 }
 
 function getSchoolLabel(classInfo?: VisibleClass) {
-  if (!classInfo) return "غير محدد";
-  return classInfo.schoolName || classInfo.schoolId || "غير محدد";
+  if (!classInfo) return "مدرسة أخرى";
+  return classInfo.schoolName || "مدرسة أخرى";
+}
+
+function getSubjectLabel(
+  subjectKey: string | undefined,
+  offeringId: string | undefined,
+  offerings: VisibleOffering[],
+) {
+  const offering = offerings.find(
+    (item) =>
+      (offeringId && item.id === offeringId) ||
+      (subjectKey && item.subjectKey === subjectKey),
+  );
+
+  return (
+    [offering?.displayName, offering?.shortLabel, offering?.subjectTitleSnapshot]
+      .map((value) => normalizeText(value))
+      .find(
+        (value) =>
+          Boolean(value) &&
+          !isTechnicalIdentifier(value) &&
+          ![
+            subjectKey,
+            offeringId,
+            offering?.id,
+            offering?.subjectId,
+            offering?.subjectKey,
+          ]
+            .filter(Boolean)
+            .some(
+              (identifier) =>
+                value.toLowerCase() === identifier!.toLowerCase(),
+            ),
+      ) || null
+  );
+}
+
+function getSeverityLabel(value: ManualForm["severity"]) {
+  switch (value) {
+    case "LOW":
+      return "منخفض";
+    case "MEDIUM":
+      return "متوسط";
+    case "HIGH":
+      return "مرتفع";
+    case "CRITICAL":
+      return "حرج";
+  }
 }
 
 function dedupeVisibleClasses(classes: VisibleClass[]) {
@@ -139,8 +207,8 @@ function dedupeVisibleClasses(classes: VisibleClass[]) {
     const schoolCompare = aSchool.localeCompare(bSchool, "ar");
     if (schoolCompare !== 0) return schoolCompare;
 
-    const aTitle = getClassLabel(a);
-    const bTitle = getClassLabel(b);
+    const aTitle = getClassLabel(a, classes);
+    const bTitle = getClassLabel(b, classes);
 
     return aTitle.localeCompare(bTitle, "ar");
   });
@@ -441,6 +509,7 @@ export default function ManualLearningLossPage() {
     classKey: "",
     studentId: "",
     subjectKey: "",
+    classSubjectOfferingId: "",
     title: "",
     reason: "",
     skillTitle: "",
@@ -452,6 +521,35 @@ export default function ManualLearningLossPage() {
   const visibleClasses = useMemo(() => {
     return dedupeVisibleClasses(currentActor?.visibleClasses ?? []);
   }, [currentActor]);
+
+  const visibleOfferings = useMemo(() => {
+    return currentActor?.classSubjectOfferings ?? [];
+  }, [currentActor]);
+
+  const hasMultipleSchools = useMemo(() => {
+    return (
+      new Set(
+        visibleClasses
+          .map((item) => item.schoolId)
+          .filter((value): value is string => Boolean(value)),
+      ).size > 1
+    );
+  }, [visibleClasses]);
+
+  const hasSubjectContext = Boolean(
+    contextFilter.subjectKey || contextFilter.classSubjectOfferingId,
+  );
+
+  const contextOffering = useMemo(
+    () =>
+      visibleOfferings.find(
+        (item) => item.id === contextFilter.classSubjectOfferingId,
+      ),
+    [contextFilter.classSubjectOfferingId, visibleOfferings],
+  );
+
+  const contextSubjectKey =
+    contextFilter.subjectKey || contextOffering?.subjectKey || "";
 
   const visibleClassMap = useMemo(() => {
     return new Map(
@@ -474,19 +572,96 @@ export default function ManualLearningLossPage() {
     return visibleClassMap.get(form.classKey) ?? null;
   }, [form.classKey, visibleClassMap]);
 
+  const subjectOptions = useMemo(() => {
+    if (!selectedClass) return [];
+
+    const byKey = new Map<string, VisibleOffering>();
+
+    for (const offering of visibleOfferings) {
+      if (offering.classId !== selectedClass.id) continue;
+      if (
+        offering.isArchived ||
+        (offering.status && offering.status !== "ACTIVE")
+      ) {
+        continue;
+      }
+
+      const label = getSubjectLabel(
+        offering.subjectKey,
+        offering.id,
+        [offering],
+      );
+
+      if (!label || !offering.subjectKey) continue;
+
+      const key = offering.subjectKey + ":" + offering.id;
+      byKey.set(key, offering);
+    }
+
+    return Array.from(byKey.values()).sort((a, b) => {
+      const aLabel =
+        getSubjectLabel(a.subjectKey, a.id, [a]) || "مادة غير محددة";
+      const bLabel =
+        getSubjectLabel(b.subjectKey, b.id, [b]) || "مادة غير محددة";
+
+      return aLabel.localeCompare(bLabel, "ar");
+    });
+  }, [selectedClass, visibleOfferings]);
+
   const selectedStudent = useMemo(() => {
     return students.find((item) => item.id === form.studentId) ?? null;
   }, [form.studentId, students]);
 
+  const selectedSubjectLabel = useMemo(
+    () =>
+      getSubjectLabel(
+        form.subjectKey || contextSubjectKey,
+        form.classSubjectOfferingId || contextFilter.classSubjectOfferingId,
+        visibleOfferings,
+      ),
+    [
+      contextFilter.classSubjectOfferingId,
+      contextSubjectKey,
+      form.classSubjectOfferingId,
+      form.subjectKey,
+      visibleOfferings,
+    ],
+  );
+
+  const contextSummary = useMemo(() => {
+    const contextClass = classKeyFromContext
+      ? visibleClassMap.get(classKeyFromContext) || null
+      : null;
+    const labels = [
+      contextClass ? getClassLabel(contextClass, visibleClasses) : null,
+      selectedSubjectLabel,
+    ].filter((value): value is string => Boolean(value));
+
+    return labels.join(" · ");
+  }, [
+    classKeyFromContext,
+    selectedSubjectLabel,
+    visibleClasses,
+    visibleClassMap,
+  ]);
+
   useEffect(() => {
-    if (!classKeyFromContext && !contextFilter.subjectKey) return;
+    if (!classKeyFromContext && !contextSubjectKey) return;
 
     setForm((current) => ({
       ...current,
       classKey: current.classKey || classKeyFromContext,
-      subjectKey: current.subjectKey || contextFilter.subjectKey,
+      subjectKey: current.subjectKey || contextSubjectKey,
+      classSubjectOfferingId:
+        current.classSubjectOfferingId ||
+        contextFilter.classSubjectOfferingId ||
+        "",
     }));
-  }, [classKeyFromContext, contextFilter.subjectKey]);
+  }, [
+    classKeyFromContext,
+    contextFilter.classSubjectOfferingId,
+    contextSubjectKey,
+  ]);
 
   const loadStudents = useCallback(async () => {
     if (!currentActor?.orgId || !selectedClass) {
@@ -605,7 +780,7 @@ export default function ManualLearningLossPage() {
         form.subjectKey.trim() || contextFilter.subjectKey || "";
 
       const resolvedClassSubjectOfferingId =
-        contextFilter.classSubjectOfferingId || "";
+        form.classSubjectOfferingId || contextFilter.classSubjectOfferingId || "";
 
       const planTitle =
         form.title.trim() ||
@@ -739,19 +914,9 @@ export default function ManualLearningLossPage() {
       <section className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">
-              10.5K — فتح فاقد يدوي مع سياق المادة
-            </p>
-
             <h1 className="text-2xl font-bold tracking-tight">
               فتح خطة فاقد يدويًا
             </h1>
-
-            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              استخدم هذه الصفحة لفتح خطة فاقد لطالب حتى لو لم يكن لديه سجل قياس
-              مرشح تلقائيًا، مع حفظ الفصل والمادة وClassSubjectOffering إن كان
-              الرابط قادمًا من سياق مادة.
-            </p>
           </div>
 
           <button
@@ -765,28 +930,8 @@ export default function ManualLearningLossPage() {
       </section>
 
       {hasContextFilter(contextFilter) ? (
-        <section className="rounded-2xl border border-violet-500/30 bg-violet-500/10 p-5 text-sm leading-7 text-violet-800 dark:text-violet-200">
-          <div className="font-semibold">سياق المادة القادم من الرابط</div>
-
-          <div className="mt-3 grid gap-3 md:grid-cols-5">
-            <ContextItem label="الفصل" value={contextFilter.classId || "—"} />
-            <ContextItem
-              label="المدرسة"
-              value={contextFilter.schoolId || "—"}
-            />
-            <ContextItem
-              label="السنة"
-              value={contextFilter.academicYearId || "—"}
-            />
-            <ContextItem
-              label="المادة"
-              value={contextFilter.subjectKey || "—"}
-            />
-            <ContextItem
-              label="ClassSubjectOffering"
-              value={contextFilter.classSubjectOfferingId || "—"}
-            />
-          </div>
+        <section className="rounded-2xl border bg-card px-4 py-3 text-sm text-muted-foreground shadow-sm">
+          {contextSummary || "السياق المحدد"}
         </section>
       ) : null}
 
@@ -806,11 +951,20 @@ export default function ManualLearningLossPage() {
                 <span className="text-sm font-medium">الفصل</span>
                 <select
                   value={form.classKey}
-                  disabled={saving}
+                  disabled={
+                    saving ||
+                    (hasSubjectContext && Boolean(classKeyFromContext))
+                  }
                   onChange={(event) =>
                     setForm((current) => ({
                       ...current,
                       classKey: event.target.value,
+                      ...(hasSubjectContext
+                        ? {}
+                        : {
+                            subjectKey: "",
+                            classSubjectOfferingId: "",
+                          }),
                     }))
                   }
                   className="h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
@@ -822,8 +976,10 @@ export default function ManualLearningLossPage() {
 
                     return (
                       <option key={classKey} value={classKey}>
-                        {getClassLabel(item)} — {getSchoolLabel(item)} —{" "}
-                        {item.academicYearId || "بدون سنة"}
+                        {getClassLabel(item, visibleClasses)}
+                        {hasMultipleSchools
+                          ? " — " + getSchoolLabel(item)
+                          : ""}
                       </option>
                     );
                   })}
@@ -866,27 +1022,19 @@ export default function ManualLearningLossPage() {
             </div>
 
             {form.classKey && selectedClass ? (
-              <div className="mt-4 rounded-xl border bg-muted/30 p-4 text-sm text-muted-foreground">
-                <p>
-                  الفصل المحدد:{" "}
-                  <span className="font-medium text-foreground">
-                    {getClassLabel(selectedClass)}
-                  </span>
-                </p>
-                <p className="mt-1">
-                  المدرسة: {getSchoolLabel(selectedClass)} — السنة:{" "}
-                  {selectedClass.academicYearId || "غير محدد"}
-                </p>
-              </div>
+              <p className="mt-3 text-sm text-muted-foreground">
+                الفصل المحدد:{" "}
+                <span className="font-medium text-foreground">
+                  {getClassLabel(selectedClass, visibleClasses)}
+                </span>
+              </p>
             ) : null}
 
             {form.classKey &&
             studentsStatus === "success" &&
             students.length === 0 ? (
               <p className="mt-4 rounded-xl border bg-muted/40 p-4 text-sm text-muted-foreground">
-                لا يوجد طلاب ظاهرون لهذا الفصل. إذا كنت متأكدًا أن الفصل به
-                طلاب، راجع مسار تسجيلات الطلاب أو اسم Collection الخاص بالـ
-                enrollments.
+                لا يوجد طلاب مسجلون في هذا الفصل حاليًا.
               </p>
             ) : null}
           </section>
@@ -914,19 +1062,45 @@ export default function ManualLearningLossPage() {
 
               <label className="space-y-2">
                 <span className="text-sm font-medium">المجال / المادة</span>
-                <input
-                  type="text"
-                  value={form.subjectKey}
-                  disabled={saving}
-                  placeholder="مثال: QURAN, GENERAL, KG_VALUES"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      subjectKey: event.target.value,
-                    }))
-                  }
-                  className="h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
-                />
+                {hasSubjectContext ? (
+                  <div className="flex h-10 items-center rounded-xl border bg-muted/30 px-3 text-sm">
+                    {selectedSubjectLabel || "المادة المحددة"}
+                  </div>
+                ) : (
+                  <select
+                    value={form.classSubjectOfferingId}
+                    disabled={saving || !selectedClass}
+                    onChange={(event) => {
+                      const offering = subjectOptions.find(
+                        (item) => item.id === event.target.value,
+                      );
+
+                      setForm((current) => ({
+                        ...current,
+                        subjectKey: offering?.subjectKey || "",
+                        classSubjectOfferingId: offering?.id || "",
+                      }));
+                    }}
+                    className="h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <option value="">
+                      {!selectedClass
+                        ? "اختر الفصل أولًا"
+                        : subjectOptions.length > 0
+                          ? "اختر المادة أو المجال"
+                          : "لا توجد مواد متاحة لهذا الفصل"}
+                    </option>
+                    {subjectOptions.map((offering) => (
+                      <option key={offering.id} value={offering.id}>
+                        {getSubjectLabel(
+                          offering.subjectKey,
+                          offering.id,
+                          [offering],
+                        ) || "مادة غير محددة"}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </label>
 
               <label className="space-y-2">
@@ -1038,32 +1212,34 @@ export default function ManualLearningLossPage() {
             <div className="mt-4 space-y-3 text-sm">
               <SummaryRow
                 label="الفصل"
-                value={selectedClass ? getClassLabel(selectedClass) : "لم يحدد"}
-              />
-              <SummaryRow
-                label="المدرسة"
                 value={
-                  selectedClass ? getSchoolLabel(selectedClass) : "لم يحدد"
+                  selectedClass
+                    ? getClassLabel(selectedClass, visibleClasses)
+                    : "لم يحدد"
                 }
-              />
-              <SummaryRow
-                label="السنة"
-                value={selectedClass?.academicYearId || "لم يحدد"}
               />
               <SummaryRow
                 label="الطالب"
                 value={selectedStudent?.displayName || "لم يحدد"}
               />
               <SummaryRow
-                label="المادة"
-                value={form.subjectKey || contextFilter.subjectKey || "لم تحدد"}
+                label="المادة / المجال"
+                value={selectedSubjectLabel || "لم تحدد"}
               />
               <SummaryRow
-                label="ClassSubjectOffering"
-                value={contextFilter.classSubjectOfferingId || "لا يوجد"}
+                label="المهارة المفقودة"
+                value={form.skillTitle || "غير محددة"}
               />
-              <SummaryRow label="نوع الفتح" value="يدوي" />
-              <SummaryRow label="الحالة" value="نشطة" />
+              <SummaryRow
+                label="شدة الفاقد"
+                value={getSeverityLabel(form.severity)}
+              />
+              {form.baselineScore.trim() && form.baselineMaxScore.trim() ? (
+                <SummaryRow
+                  label="القياس الأساسي"
+                  value={form.baselineScore + " / " + form.baselineMaxScore}
+                />
+              ) : null}
             </div>
 
             <button
@@ -1072,23 +1248,12 @@ export default function ManualLearningLossPage() {
               disabled={saving}
               className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {saving ? "جاري إنشاء الخطة..." : "إنشاء خطة فاقد"}
+              {saving ? "جاري إنشاء الخطة..." : "إنشاء الخطة"}
             </button>
           </section>
         </div>
       </section>
     </main>
-  );
-}
-
-function ContextItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl bg-white/70 p-3 dark:bg-slate-950/40">
-      <p className="text-xs text-violet-700 dark:text-violet-300">{label}</p>
-      <p className="mt-1 break-words font-mono text-sm font-semibold">
-        {value}
-      </p>
-    </div>
   );
 }
 

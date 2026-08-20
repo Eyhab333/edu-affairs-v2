@@ -19,6 +19,10 @@ import {
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
+import {
+  hasActiveLessonPrepWorkspaceAccess,
+  type LessonPrepWorkspaceActor,
+} from "@/lib/lesson-prep-workspace-access";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 import {
@@ -27,9 +31,7 @@ import {
   getSubjectLessonPrepStatusLabel,
 } from "@takween/domain";
 
-type StaffActorLike = {
-  uid?: string;
-  personId?: string;
+type StaffActorLike = LessonPrepWorkspaceActor & {
   orgId?: string;
 };
 
@@ -119,6 +121,19 @@ export default function EditSubjectLessonPrepPage() {
   const lessonPrepId = decodeURIComponent(getParamValue(params.lessonPrepId));
 
   const orgId = staffActor?.orgId || searchParams.get("orgId") || "";
+  const schoolId = searchParams.get("schoolId");
+  const academicYearId = searchParams.get("academicYearId");
+  const termId = searchParams.get("termId");
+  const hasActiveWorkspaceAccess = useMemo(() => {
+    return hasActiveLessonPrepWorkspaceAccess({
+      actor: staffActor,
+      classId,
+      offeringId,
+      schoolId,
+      academicYearId,
+      termId,
+    });
+  }, [staffActor, classId, offeringId, schoolId, academicYearId, termId]);
 
   const [prep, setPrep] = useState<SubjectLessonPrep | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,9 +156,9 @@ export default function EditSubjectLessonPrepPage() {
   )}`;
 
   const loadPrep = useCallback(async () => {
-    if (!orgId) {
+    if (!orgId || !hasActiveWorkspaceAccess) {
       setPrep(null);
-      setLoadError("لم يتم تحديد orgId من بيانات المستخدم.");
+      setLoadError("هذا الفصل أو المادة خارج نطاق إسنادك الحالي.");
       setLoading(false);
       return;
     }
@@ -205,11 +220,24 @@ export default function EditSubjectLessonPrepPage() {
     } finally {
       setLoading(false);
     }
-  }, [orgId, lessonPrepId, classId, offeringId]);
+  }, [orgId, hasActiveWorkspaceAccess, lessonPrepId, classId, offeringId]);
 
   useEffect(() => {
     void loadPrep();
   }, [loadPrep]);
+
+  if (!hasActiveWorkspaceAccess) {
+    return (
+      <main className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6">
+        <section className="mx-auto max-w-3xl rounded-3xl border border-amber-200 bg-amber-50 p-6 text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
+          <h1 className="font-bold">لا يمكن تعديل هذا التحضير</h1>
+          <p className="mt-2 text-sm leading-7">
+            هذا الفصل أو المادة خارج نطاق إسنادك الحالي.
+          </p>
+        </section>
+      </main>
+    );
+  }
 
   async function handleSaveEdit(formData: FormData) {
     if (!orgId) {

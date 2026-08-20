@@ -6,6 +6,10 @@ import { useParams, useSearchParams } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
+import {
+  hasActiveLessonPrepWorkspaceAccess,
+  type LessonPrepWorkspaceActor,
+} from "@/lib/lesson-prep-workspace-access";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   ArrowRight,
@@ -34,12 +38,6 @@ function buildQueryString(searchParams: URLSearchParams) {
   return query ? `?${query}` : "";
 }
 
-type StaffActorLike = {
-  uid?: string;
-  personId?: string;
-  orgId?: string;
-};
-
 type SubjectLessonPrepStatus =
   | "DRAFT"
   | "SUBMITTED"
@@ -47,6 +45,18 @@ type SubjectLessonPrepStatus =
   | "RETURNED"
   | "LOCKED"
   | "CANCELLED";
+
+type StaffActorLike = LessonPrepWorkspaceActor & {
+  orgId?: string;
+};
+
+const SHARED_LESSON_PREP_STATUSES: SubjectLessonPrepStatus[] = [
+  "SUBMITTED",
+  "APPROVED",
+  "RETURNED",
+  "LOCKED",
+  "CANCELLED",
+];
 
 type SubjectLessonPrepRow = {
   id: string;
@@ -148,6 +158,16 @@ export default function SubjectLessonPrepListPage() {
   const orgId = staffActor?.orgId || "";
 
   const teacherPersonId = staffActor?.personId || staffActor?.uid || "";
+  const hasActiveWorkspaceAccess = useMemo(() => {
+    return hasActiveLessonPrepWorkspaceAccess({
+      actor: staffActor,
+      classId,
+      offeringId,
+      schoolId,
+      academicYearId,
+      termId,
+    });
+  }, [staffActor, classId, offeringId, schoolId, academicYearId, termId]);
 
   const preservedQuery = useMemo(() => {
     const next = new URLSearchParams(searchParams.toString());
@@ -177,6 +197,7 @@ export default function SubjectLessonPrepListPage() {
     if (
       !orgId ||
       !teacherPersonId ||
+      !hasActiveWorkspaceAccess ||
       !schoolId ||
       !academicYearId ||
       !termId ||
@@ -194,20 +215,35 @@ export default function SubjectLessonPrepListPage() {
     try {
       const ref = collection(db, "orgs", orgId, "subjectLessonPreps");
 
-      const snap = await getDocs(
-        query(
-          ref,
-          where("teacherPersonId", "==", teacherPersonId),
-          where("schoolId", "==", schoolId),
-          where("academicYearId", "==", academicYearId),
-          where("termId", "==", termId),
-          where("classId", "==", classId),
-          where("subjectKey", "==", subjectKey),
-          where("classSubjectOfferingId", "==", offeringId),
+      const [sharedSnap, ownDraftsSnap] = await Promise.all([
+        getDocs(
+          query(
+            ref,
+            where("schoolId", "==", schoolId),
+            where("academicYearId", "==", academicYearId),
+            where("termId", "==", termId),
+            where("classId", "==", classId),
+            where("subjectKey", "==", subjectKey),
+            where("classSubjectOfferingId", "==", offeringId),
+            where("status", "in", SHARED_LESSON_PREP_STATUSES),
+          ),
         ),
-      );
+        getDocs(
+          query(
+            ref,
+            where("teacherPersonId", "==", teacherPersonId),
+            where("schoolId", "==", schoolId),
+            where("academicYearId", "==", academicYearId),
+            where("termId", "==", termId),
+            where("classId", "==", classId),
+            where("subjectKey", "==", subjectKey),
+            where("classSubjectOfferingId", "==", offeringId),
+            where("status", "==", "DRAFT"),
+          ),
+        ),
+      ]);
 
-      const nextRows = snap.docs
+      const nextRows = [...sharedSnap.docs, ...ownDraftsSnap.docs]
         .map((docSnap) => {
           return {
             id: docSnap.id,
@@ -241,6 +277,7 @@ export default function SubjectLessonPrepListPage() {
   }, [
     orgId,
     teacherPersonId,
+    hasActiveWorkspaceAccess,
     offeringId,
     classId,
     schoolId,
@@ -252,6 +289,19 @@ export default function SubjectLessonPrepListPage() {
   useEffect(() => {
     void loadRows();
   }, [loadRows]);
+
+  if (!hasActiveWorkspaceAccess) {
+    return (
+      <main className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6">
+        <section className="mx-auto max-w-3xl rounded-3xl border border-amber-200 bg-amber-50 p-6 text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
+          <h1 className="font-bold">لا يمكن فتح تحضيرات هذه المادة</h1>
+          <p className="mt-2 text-sm leading-7">
+            هذا الفصل أو المادة خارج نطاق إسنادك الحالي.
+          </p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main

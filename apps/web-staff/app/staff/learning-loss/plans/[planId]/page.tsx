@@ -20,6 +20,11 @@ import {
 
 import { db } from "@/lib/firebase";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import {
+  getFriendlyClassTitle,
+  isTechnicalIdentifier,
+  normalizeText,
+} from "@/lib/class-presentation";
 
 type VisibleClass = {
   id: string;
@@ -30,6 +35,18 @@ type VisibleClass = {
   academicYearId?: string;
   gradeId?: string;
   gradeTitle?: string;
+  streamId?: string;
+  sectionLabel?: string;
+};
+
+type VisibleOffering = {
+  id: string;
+  classId?: string;
+  displayName?: string;
+  shortLabel?: string;
+  subjectTitleSnapshot?: string;
+  subjectKey?: string;
+  subjectId?: string;
 };
 
 type StaffLearningLossActor = {
@@ -39,6 +56,7 @@ type StaffLearningLossActor = {
   roles?: string[];
   roleKeys?: string[];
   visibleClasses?: VisibleClass[];
+  classSubjectOfferings?: VisibleOffering[];
 };
 
 type LearningLossPlanDoc = StudentLearningLossPlan & {
@@ -233,16 +251,79 @@ function getPlanClassKey(item: {
   ].join(":");
 }
 
-function getClassLabel(classInfo: VisibleClass | null, classId?: string) {
-  if (!classInfo) return classId || "غير محدد";
+function getClassLabel(
+  classInfo: VisibleClass | null,
+  visibleClasses: VisibleClass[],
+) {
+  if (!classInfo) return "الفصل الحالي";
 
-  return classInfo.title || classInfo.code || classInfo.id;
+  return getFriendlyClassTitle(classInfo, visibleClasses) || "الفصل الحالي";
 }
 
-function getSchoolLabel(classInfo: VisibleClass | null, schoolId?: string) {
-  if (!classInfo) return schoolId || "غير محدد";
+function getSubjectLabel(
+  plan: LearningLossPlanDoc,
+  offerings: VisibleOffering[],
+) {
+  const offering = offerings.find(
+    (item) => item.id === plan.classSubjectOfferingId,
+  );
 
-  return classInfo.schoolName || classInfo.schoolId || schoolId || "غير محدد";
+  const candidates = [
+    offering?.displayName,
+    offering?.shortLabel,
+    offering?.subjectTitleSnapshot,
+  ];
+
+  return (
+    candidates
+      .map((value) => normalizeText(value))
+      .find(
+        (value) =>
+          Boolean(value) &&
+          !isTechnicalIdentifier(value) &&
+          ![
+            plan.classSubjectOfferingId,
+            offering?.subjectId,
+            offering?.subjectKey,
+            plan.subjectKey,
+          ]
+            .filter(Boolean)
+            .some(
+              (identifier) =>
+                value.toLowerCase() === identifier!.toLowerCase(),
+            ),
+      ) || null
+  );
+}
+
+function getSkillSeverityLabel(value?: string) {
+  switch (value) {
+    case "LOW":
+      return "منخفضة";
+    case "MEDIUM":
+      return "متوسطة";
+    case "HIGH":
+      return "مرتفعة";
+    case "CRITICAL":
+      return "عاجلة";
+    default:
+      return value || "غير محددة";
+  }
+}
+
+function getRemediationActionStatusLabel(value?: string) {
+  switch (value) {
+    case "PLANNED":
+      return "مخطط لها";
+    case "IN_PROGRESS":
+      return "قيد التنفيذ";
+    case "COMPLETED":
+      return "مكتملة";
+    case "CANCELLED":
+      return "ملغاة";
+    default:
+      return value || "غير محددة";
+  }
 }
 
 function buildLearningLossListHref(plan: LearningLossPlanDoc) {
@@ -418,6 +499,10 @@ export default function LearningLossPlanPage() {
     return currentActor?.visibleClasses ?? [];
   }, [currentActor]);
 
+  const visibleOfferings = useMemo(() => {
+    return currentActor?.classSubjectOfferings ?? [];
+  }, [currentActor]);
+
   const visibleClassMap = useMemo(() => {
     return new Map(
       visibleClasses.map((item) => [getVisibleClassKey(item), item]),
@@ -439,6 +524,16 @@ export default function LearningLossPlanPage() {
 
     return null;
   }, [plan, visibleClassMap, visibleClasses]);
+
+  const classLabel = useMemo(
+    () => getClassLabel(classInfo, visibleClasses),
+    [classInfo, visibleClasses],
+  );
+
+  const subjectLabel = useMemo(
+    () => (plan ? getSubjectLabel(plan, visibleOfferings) : null),
+    [plan, visibleOfferings],
+  );
 
   const hasAccessToPlan = useMemo(() => {
     if (!plan) return true;
@@ -755,17 +850,13 @@ export default function LearningLossPlanPage() {
       <section className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">
-              10.5L — تفاصيل خطة الفاقد مع سياق المادة
-            </p>
-
             <h1 className="text-2xl font-bold tracking-tight">
-              {plan.planTitle || "خطة فاقد تعليمي"}
+              {student?.displayName || plan.planTitle || "خطة الفاقد"}
             </h1>
 
-            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              متابعة خطة الفاقد، وتسجيل القياس الأول والثاني، مع عرض سياق المادة
-              ومصدر القياس ودفعة القياس المرتبطة إن وجدت.
+            <p className="text-sm text-muted-foreground">
+              {[classLabel, subjectLabel].filter(Boolean).join(" · ") ||
+                "خطة متابعة تعليمية"}
             </p>
           </div>
 
@@ -774,7 +865,7 @@ export default function LearningLossPlanPage() {
             onClick={() => router.push(learningLossListHref)}
             className="inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-medium transition hover:bg-muted"
           >
-            الرجوع للقائمة
+            الرجوع للفاقد
           </button>
         </div>
       </section>
@@ -801,117 +892,44 @@ export default function LearningLossPlanPage() {
         </section>
       ) : null}
 
-      <section className="grid gap-4 md:grid-cols-5">
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">حالة الخطة</p>
-          <p className="mt-2 text-2xl font-bold">
-            {getStatusLabel(plan.status)}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">حالة المتابعة</p>
-          <p className="mt-2 text-2xl font-bold">
-            {getLearningLossFollowUpStateLabel(followUpState)}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">مؤشر التحسن</p>
-          <p className="mt-2 text-2xl font-bold">
-            {getIndicatorLabel(plan.improvementIndicator)}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">فرق الدرجة</p>
-          <p className="mt-2 text-2xl font-bold">
-            {typeof improvement.delta === "number"
-              ? improvement.delta.toLocaleString("ar-SA")
-              : "—"}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">فرق النسبة</p>
-          <p className="mt-2 text-2xl font-bold">
-            {typeof improvement.percentage === "number"
-              ? `${improvement.percentage.toFixed(1)}%`
-              : "—"}
-          </p>
-        </div>
-      </section>
-
-      <section className="rounded-2xl border border-violet-500/30 bg-violet-500/10 p-5 text-sm leading-7 text-violet-800 dark:text-violet-200">
-        <div className="font-semibold">سياق المادة ومصدر الخطة</div>
-
-        <div className="mt-3 grid gap-3 md:grid-cols-4">
-          <ContextItem
-            label="الفصل"
-            value={getClassLabel(classInfo, plan.classId)}
+      <section className="flex flex-wrap items-center gap-2 rounded-2xl border bg-card p-3 text-sm shadow-sm">
+        <SummaryBadge label="حالة الخطة" value={getStatusLabel(plan.status)} />
+        <SummaryBadge
+          label="المتابعة"
+          value={getLearningLossFollowUpStateLabel(followUpState)}
+        />
+        <SummaryBadge
+          label="التحسن"
+          value={getIndicatorLabel(plan.improvementIndicator)}
+        />
+        {typeof improvement.delta === "number" ? (
+          <SummaryBadge
+            label="فرق الدرجة"
+            value={improvement.delta.toLocaleString("ar-SA")}
           />
-          <ContextItem
-            label="المدرسة"
-            value={getSchoolLabel(classInfo, plan.schoolId)}
+        ) : null}
+        {typeof improvement.percentage === "number" ? (
+          <SummaryBadge
+            label="فرق النسبة"
+            value={`${improvement.percentage.toFixed(1)}%`}
           />
-          <ContextItem label="السنة" value={plan.academicYearId || "—"} />
-          <ContextItem label="المادة" value={plan.subjectKey || "—"} />
-          <ContextItem
-            label="ClassSubjectOffering"
-            value={plan.classSubjectOfferingId || "—"}
-          />
-          <ContextItem label="Source Batch" value={plan.sourceBatchId || "—"} />
-          <ContextItem
-            label="Source Assessment"
-            value={plan.sourceAssessmentRecordId || "—"}
-          />
-
-          <ContextItem
-            label="Source Tracker"
-            value={plan.sourceTrackerEntryId || "—"}
-          />
-
-          <ContextItem
-            label="Source Template"
-            value={plan.sourceTemplateId || "—"}
-          />
-        </div>
-      </section>
-
-      <section className="rounded-2xl border bg-card p-5 shadow-sm">
-        <h2 className="text-lg font-semibold">طريقة حساب التحسن الحالية</h2>
-
-        <p className="mt-2 text-sm leading-7 text-muted-foreground">
-          {improvement.comparisonLabel}
-        </p>
+        ) : null}
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <section className="rounded-2xl border bg-card p-5 shadow-sm">
+        <div className="flex flex-col gap-6 lg:col-span-2">
+          <section className="order-4 rounded-2xl border bg-card p-5 shadow-sm">
             <h2 className="text-lg font-semibold">بيانات الطالب والخطة</h2>
 
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <InfoItem
                 label="الطالب"
-                value={student?.displayName || plan.studentId}
+                value={student?.displayName || "غير محدد"}
               />
-              <InfoItem
-                label="الفصل"
-                value={getClassLabel(classInfo, plan.classId)}
-              />
-              <InfoItem
-                label="المدرسة"
-                value={getSchoolLabel(classInfo, plan.schoolId)}
-              />
-              <InfoItem
-                label="المجال / المادة"
-                value={plan.subjectKey || "غير محدد"}
-              />
-              <InfoItem
-                label="ClassSubjectOffering"
-                value={plan.classSubjectOfferingId || "غير محدد"}
-              />
+              <InfoItem label="الفصل" value={classLabel} />
+              {subjectLabel ? (
+                <InfoItem label="المادة / المجال" value={subjectLabel} />
+              ) : null}
               <InfoItem
                 label="بداية الخطة"
                 value={formatDate(plan.planStartAt)}
@@ -923,7 +941,7 @@ export default function LearningLossPlanPage() {
             </div>
           </section>
 
-          <section className="rounded-2xl border bg-card p-5 shadow-sm">
+          <section className="order-3 rounded-2xl border bg-card p-5 shadow-sm">
             <h2 className="text-lg font-semibold">مصدر الفاقد</h2>
 
             <div className="mt-4 grid gap-4 md:grid-cols-2">
@@ -938,41 +956,6 @@ export default function LearningLossPlanPage() {
                   sourceRecord?.assessmentSlot ||
                   sourceTrackerEntry?.topicTitle ||
                   sourceTrackerEntry?.lessonTitle ||
-                  "غير محدد"
-                }
-              />
-              <InfoItem
-                label="القالب"
-                value={
-                  plan.sourceTemplateId ||
-                  sourceRecord?.templateId ||
-                  sourceTrackerEntry?.templateId ||
-                  "غير محدد"
-                }
-              />
-              <InfoItem
-                label="دفعة القياس"
-                value={
-                  plan.sourceBatchId ||
-                  sourceRecord?.batchId ||
-                  sourceTrackerEntry?.batchId ||
-                  "غير محدد"
-                }
-              />
-              <InfoItem
-                label="سجل القياس المصدر"
-                value={plan.sourceAssessmentRecordId || "غير محدد"}
-              />
-              <InfoItem
-                label="سجل المتابعة المصدر"
-                value={plan.sourceTrackerEntryId || "غير محدد"}
-              />
-              <InfoItem
-                label="ClassSubjectOffering المصدر"
-                value={
-                  plan.classSubjectOfferingId ||
-                  sourceRecord?.classSubjectOfferingId ||
-                  sourceTrackerEntry?.classSubjectOfferingId ||
                   "غير محدد"
                 }
               />
@@ -998,7 +981,7 @@ export default function LearningLossPlanPage() {
             </div>
           </section>
 
-          <section className="rounded-2xl border bg-card p-5 shadow-sm">
+          <section className="order-1 rounded-2xl border bg-card p-5 shadow-sm">
             <h2 className="text-lg font-semibold">المهارات المفقودة</h2>
 
             {plan.lostSkills.length === 0 ? (
@@ -1021,7 +1004,7 @@ export default function LearningLossPlanPage() {
                       </div>
 
                       <span className="w-fit rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                        {skill.severity}
+                        {getSkillSeverityLabel(skill.severity)}
                       </span>
                     </div>
                   </div>
@@ -1030,7 +1013,7 @@ export default function LearningLossPlanPage() {
             )}
           </section>
 
-          <section className="rounded-2xl border bg-card p-5 shadow-sm">
+          <section className="order-2 rounded-2xl border bg-card p-5 shadow-sm">
             <h2 className="text-lg font-semibold">الخطة العلاجية</h2>
 
             <p className="mt-4 whitespace-pre-wrap rounded-xl bg-muted/50 p-4 text-sm leading-7 text-muted-foreground">
@@ -1059,7 +1042,7 @@ export default function LearningLossPlanPage() {
                       </div>
 
                       <span className="w-fit rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                        {action.status}
+                        {getRemediationActionStatusLabel(action.status)}
                       </span>
                     </div>
                   </div>
@@ -1151,9 +1134,50 @@ export default function LearningLossPlanPage() {
                 )}`}
               />
             </div>
+            {improvement.comparisonLabel ? (
+              <p className="mt-4 text-sm text-muted-foreground">
+                {improvement.comparisonLabel}
+              </p>
+            ) : null}
           </section>
         </div>
       </section>
+
+      <details className="rounded-2xl border bg-card p-4 text-sm shadow-sm">
+        <summary className="cursor-pointer font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          تفاصيل تقنية
+        </summary>
+
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          <TechnicalRow label="معرّف الخطة" value={plan.id} />
+          <TechnicalRow label="معرّف الطالب" value={plan.studentId} />
+          <TechnicalRow label="معرّف المدرسة" value={plan.schoolId} />
+          <TechnicalRow
+            label="معرّف السنة الدراسية"
+            value={plan.academicYearId}
+          />
+          <TechnicalRow label="معرّف الفصل" value={plan.classId} />
+          <TechnicalRow label="معرّف الفصل الدراسي" value={plan.termId} />
+          <TechnicalRow label="مفتاح المادة" value={plan.subjectKey} />
+          <TechnicalRow
+            label="معرّف عرض المادة"
+            value={plan.classSubjectOfferingId}
+          />
+          <TechnicalRow label="معرّف دفعة المصدر" value={plan.sourceBatchId} />
+          <TechnicalRow
+            label="معرّف سجل القياس المصدر"
+            value={plan.sourceAssessmentRecordId}
+          />
+          <TechnicalRow
+            label="معرّف سجل المتابعة المصدر"
+            value={plan.sourceTrackerEntryId}
+          />
+          <TechnicalRow
+            label="معرّف قالب المصدر"
+            value={plan.sourceTemplateId}
+          />
+        </div>
+      </details>
     </main>
   );
 }
@@ -1167,13 +1191,20 @@ function InfoItem({ label, value }: { label: string; value: string }) {
   );
 }
 
-function ContextItem({ label, value }: { label: string; value: string }) {
+function SummaryBadge({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-white/70 p-3 dark:bg-slate-950/40">
-      <p className="text-xs text-violet-700 dark:text-violet-300">{label}</p>
-      <p className="mt-1 break-words font-mono text-sm font-semibold">
-        {value}
-      </p>
+    <div className="rounded-xl border bg-background px-3 py-2">
+      <span className="text-xs text-muted-foreground">{label}: </span>
+      <span className="font-medium">{value}</span>
+    </div>
+  );
+}
+
+function TechnicalRow({ label, value }: { label: string; value?: string }) {
+  return (
+    <div className="flex min-w-0 items-center justify-between gap-3 rounded-lg border bg-muted/30 px-3 py-2">
+      <span className="text-muted-foreground">{label}</span>
+      <code className="break-all text-xs">{value || "—"}</code>
     </div>
   );
 }

@@ -19,6 +19,11 @@ import type {
 
 import { db } from "@/lib/firebase";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import {
+  getFriendlyClassTitle,
+  isTechnicalIdentifier,
+  normalizeText,
+} from "@/lib/class-presentation";
 
 type VisibleClass = {
   id: string;
@@ -29,6 +34,18 @@ type VisibleClass = {
   academicYearId?: string;
   gradeId?: string;
   gradeTitle?: string;
+  streamId?: string;
+  sectionLabel?: string;
+};
+
+type VisibleOffering = {
+  id: string;
+  classId?: string;
+  displayName?: string;
+  shortLabel?: string;
+  subjectTitleSnapshot?: string;
+  subjectKey?: string;
+  subjectId?: string;
 };
 
 type StaffLearningLossActor = {
@@ -38,6 +55,7 @@ type StaffLearningLossActor = {
   roles?: string[];
   roleKeys?: string[];
   visibleClasses?: VisibleClass[];
+  classSubjectOfferings?: VisibleOffering[];
 };
 
 type CandidateSourceType = "ASSESSMENT_RECORD" | "TRACKER_ENTRY";
@@ -175,16 +193,48 @@ function getRecordClassKey(item: {
   ].join(":");
 }
 
-function getClassLabel(classInfo: VisibleClass | null, classId?: string) {
-  if (!classInfo) return classId || "غير محدد";
-  return classInfo.title || classInfo.code || classInfo.id;
+function getClassLabel(
+  classInfo: VisibleClass | null,
+  visibleClasses: VisibleClass[],
+) {
+  if (!classInfo) return "الفصل الحالي";
+
+  return getFriendlyClassTitle(classInfo, visibleClasses) || "الفصل الحالي";
 }
 
-function getSchoolLabel(classInfo: VisibleClass | null, schoolId?: string) {
-  if (!classInfo) return schoolId || "غير محدد";
-  return classInfo.schoolName || classInfo.schoolId || schoolId || "غير محدد";
-}
+function getSubjectLabel(
+  subjectKey: string | undefined,
+  offeringId: string | undefined,
+  offerings: VisibleOffering[],
+) {
+  const offering = offerings.find(
+    (item) =>
+      (offeringId && item.id === offeringId) ||
+      (subjectKey && item.subjectKey === subjectKey),
+  );
 
+  return (
+    [offering?.displayName, offering?.shortLabel, offering?.subjectTitleSnapshot]
+      .map((value) => normalizeText(value))
+      .find(
+        (value) =>
+          Boolean(value) &&
+          !isTechnicalIdentifier(value) &&
+          ![
+            subjectKey,
+            offeringId,
+            offering?.id,
+            offering?.subjectId,
+            offering?.subjectKey,
+          ]
+            .filter(Boolean)
+            .some(
+              (identifier) =>
+                value.toLowerCase() === identifier!.toLowerCase(),
+            ),
+      ) || null
+  );
+}
 function resolveActorPersonId(actor: StaffLearningLossActor) {
   return actor.personId || actor.uid || "unknown";
 }
@@ -520,6 +570,10 @@ export default function StaffLearningLossPage() {
     return currentActor?.visibleClasses ?? [];
   }, [currentActor]);
 
+  const visibleOfferings = useMemo(() => {
+    return currentActor?.classSubjectOfferings ?? [];
+  }, [currentActor]);
+
   const visibleSchoolIds = useMemo(() => {
     return Array.from(
       new Set(
@@ -576,6 +630,32 @@ export default function StaffLearningLossPage() {
     },
     [visibleClassMap, visibleClasses],
   );
+
+  const contextClassInfo = useMemo(
+    () => getClassInfoForRow(contextFilter),
+    [contextFilter, getClassInfoForRow],
+  );
+
+  const contextSummary = useMemo(() => {
+    const labels = [
+      contextClassInfo
+        ? getClassLabel(contextClassInfo, visibleClasses)
+        : null,
+      getSubjectLabel(
+        contextFilter.subjectKey,
+        contextFilter.classSubjectOfferingId,
+        visibleOfferings,
+      ),
+    ].filter((value): value is string => Boolean(value));
+
+    return labels.join(" · ");
+  }, [
+    contextClassInfo,
+    contextFilter.classSubjectOfferingId,
+    contextFilter.subjectKey,
+    visibleClasses,
+    visibleOfferings,
+  ]);
 
   const loadAssessmentCandidates = useCallback(async () => {
     if (!currentActor?.orgId) return [];
@@ -1022,40 +1102,11 @@ export default function StaffLearningLossPage() {
   const candidatesSummary = useMemo(() => {
     const total = candidates.length;
 
-    const classesCount = new Set(
-      candidates.map((item) => getRecordClassKey(item.record)).filter(Boolean),
-    ).size;
-
-    const studentsCount = new Set(candidates.map((item) => item.student.id))
-      .size;
-
-    const subjectsCount = new Set(
-      candidates.map((item) => item.record.subjectKey).filter(Boolean),
-    ).size;
-
-    const assessmentCount = candidates.filter((item) => {
-      return item.record.sourceType === "ASSESSMENT_RECORD";
-    }).length;
-
-    const trackerCount = candidates.filter((item) => {
-      return item.record.sourceType === "TRACKER_ENTRY";
-    }).length;
-
-    return {
-      total,
-      classesCount,
-      studentsCount,
-      subjectsCount,
-      assessmentCount,
-      trackerCount,
-    };
+    return { total };
   }, [candidates]);
 
   const plansSummary = useMemo(() => {
     const total = openPlans.length;
-
-    const studentsCount = new Set(openPlans.map((item) => item.student.id))
-      .size;
 
     const needsFirstCheck = openPlans.filter(
       (item) => typeof item.plan.firstCheckScore !== "number",
@@ -1067,21 +1118,10 @@ export default function StaffLearningLossPage() {
         typeof item.plan.secondCheckScore !== "number",
     ).length;
 
-    const subjectsCount = new Set(
-      openPlans.map((item) => item.plan.subjectKey).filter(Boolean),
-    ).size;
-
-    const trackerPlans = openPlans.filter((item) => {
-      return item.plan.sourceType === "TRACKER_ENTRY";
-    }).length;
-
     return {
       total,
-      studentsCount,
       needsFirstCheck,
       needsSecondCheck,
-      subjectsCount,
-      trackerPlans,
     };
   }, [openPlans]);
 
@@ -1104,19 +1144,9 @@ export default function StaffLearningLossPage() {
       <section className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">
-              10.5M-3 — الفاقد من القياسات والمتابعات
-            </p>
-
             <h1 className="text-2xl font-bold tracking-tight">
               إدارة الفاقد التعليمي
             </h1>
-
-            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              تعرض هذه الصفحة الطلاب المرشحين لفتح خطة فاقد من القياسات الرسمية
-              أو من متابعات الروضة، وكذلك خطط الفاقد المفتوحة مع سياق المادة
-              ودفعة الإدخال المصدر.
-            </p>
           </div>
 
           <div className="flex flex-wrap gap-2">
@@ -1128,7 +1158,7 @@ export default function StaffLearningLossPage() {
               disabled={isLoading || creatingPlanRecordId !== null}
               className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              فتح فاقد يدوي
+              فتح خطة يدوية
             </button>
 
             <button
@@ -1144,74 +1174,19 @@ export default function StaffLearningLossPage() {
       </section>
 
       {hasContextFilter(contextFilter) ? (
-        <section className="rounded-2xl border border-violet-500/30 bg-violet-500/10 p-5 text-sm leading-7 text-violet-800 dark:text-violet-200">
-          <div className="font-semibold">فلترة حسب سياق محدد</div>
-
-          <div className="mt-3 grid gap-3 md:grid-cols-5">
-            <ContextItem label="الفصل" value={contextFilter.classId || "—"} />
-            <ContextItem
-              label="المدرسة"
-              value={contextFilter.schoolId || "—"}
-            />
-            <ContextItem
-              label="السنة"
-              value={contextFilter.academicYearId || "—"}
-            />
-            <ContextItem
-              label="المادة"
-              value={contextFilter.subjectKey || "—"}
-            />
-            <ContextItem
-              label="ClassSubjectOffering"
-              value={contextFilter.classSubjectOfferingId || "—"}
-            />
-          </div>
+        <section className="rounded-2xl border bg-card px-4 py-3 text-sm text-muted-foreground shadow-sm">
+          {contextSummary || "السياق المحدد"}
         </section>
       ) : null}
 
-      <section className="grid gap-4 md:grid-cols-4">
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">مرشحون لفتح خطة</p>
-          <p className="mt-2 text-3xl font-bold">
-            {candidatesSummary.total.toLocaleString("ar-SA")}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">خطط مفتوحة</p>
-          <p className="mt-2 text-3xl font-bold">
-            {plansSummary.total.toLocaleString("ar-SA")}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">تحتاج القياس الأول</p>
-          <p className="mt-2 text-3xl font-bold">
-            {plansSummary.needsFirstCheck.toLocaleString("ar-SA")}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">تحتاج القياس الثاني</p>
-          <p className="mt-2 text-3xl font-bold">
-            {plansSummary.needsSecondCheck.toLocaleString("ar-SA")}
-          </p>
-        </div>
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-6">
-        <MiniStat label="من قياسات" value={candidatesSummary.assessmentCount} />
-        <MiniStat label="من متابعات" value={candidatesSummary.trackerCount} />
-        <MiniStat label="طلاب مرشحون" value={candidatesSummary.studentsCount} />
-        <MiniStat
-          label="فصول بها فاقد"
-          value={candidatesSummary.classesCount}
-        />
-        <MiniStat
-          label="مواد في المرشحين"
-          value={candidatesSummary.subjectsCount}
-        />
-        <MiniStat label="خطط من متابعات" value={plansSummary.trackerPlans} />
+      <section className="rounded-2xl border bg-card px-4 py-3 text-sm shadow-sm">
+        <p className="text-muted-foreground">
+          {candidatesSummary.total.toLocaleString("ar-SA")} مرشحًا ·{" "}
+          {plansSummary.total.toLocaleString("ar-SA")} خطط مفتوحة ·{" "}
+          {plansSummary.needsFirstCheck.toLocaleString("ar-SA")} تحتاج القياس
+          الأول · {plansSummary.needsSecondCheck.toLocaleString("ar-SA")} تحتاج
+          القياس الثاني
+        </p>
       </section>
 
       {successMessage ? (
@@ -1230,8 +1205,7 @@ export default function StaffLearningLossPage() {
         <div className="border-b p-5">
           <h2 className="text-lg font-semibold">خطط الفاقد المفتوحة</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            الخطط النشطة أو قيد المتابعة، سواء فُتحت تلقائيًا من قياس أو متابعة،
-            أو فُتحت يدويًا.
+            الخطط التي تحتاج متابعة أو قياسًا لاحقًا.
           </p>
         </div>
 
@@ -1245,7 +1219,7 @@ export default function StaffLearningLossPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[1240px] text-right text-sm">
+            <table className="w-full min-w-[960px] text-right text-sm">
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
@@ -1255,19 +1229,10 @@ export default function StaffLearningLossPage() {
                     الفصل
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    المدرسة
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
                     المادة
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    Offering
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
                     المصدر
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    Batch
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
                     الحالة
@@ -1300,27 +1265,19 @@ export default function StaffLearningLossPage() {
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {getClassLabel(item.classInfo, plan.classId)}
+                        {getClassLabel(item.classInfo, visibleClasses)}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {getSchoolLabel(item.classInfo, plan.schoolId)}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {plan.subjectKey || "—"}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-xs">
-                        {plan.classSubjectOfferingId || "—"}
+                        {getSubjectLabel(
+                          plan.subjectKey,
+                          plan.classSubjectOfferingId,
+                          visibleOfferings,
+                        ) || "غير محدد"}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
                         {getSourceLabel(plan.sourceType)}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-xs">
-                        {plan.sourceBatchId || "—"}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1363,8 +1320,8 @@ export default function StaffLearningLossPage() {
         <div className="border-b p-5">
           <h2 className="text-lg font-semibold">الطلاب المرشحون لخطة فاقد</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            يظهر هنا أي سجل قياس أو متابعة يحمل: يحتاج فاقدًا + لا توجد خطة فاقد
-            مرتبطة به.
+            طلاب ظهرت لديهم حاجة إلى خطة علاجية بناءً على نتائج القياس أو
+            المتابعة.
           </p>
         </div>
 
@@ -1377,8 +1334,8 @@ export default function StaffLearningLossPage() {
             لا توجد سجلات تحتاج فتح خطة فاقد ضمن السياق الحالي.
           </div>
         ) : (
-          <div className=" bg-red-50 w-full overflow-x-auto">
-            <table className="w-full min-w-[1920px] text-right text-sm">
+          <div className="w-full overflow-x-auto">
+            <table className="w-full min-w-[1280px] text-right text-sm">
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
@@ -1388,19 +1345,10 @@ export default function StaffLearningLossPage() {
                     الفصل
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    المدرسة
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    المصدر
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
                     المادة
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    Offering
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    Batch
+                    المصدر
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
                     القالب / العنوان
@@ -1438,11 +1386,15 @@ export default function StaffLearningLossPage() {
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {getClassLabel(item.classInfo, record.classId)}
+                        {getClassLabel(item.classInfo, visibleClasses)}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {getSchoolLabel(item.classInfo, record.schoolId)}
+                        {getSubjectLabel(
+                          record.subjectKey,
+                          record.classSubjectOfferingId,
+                          visibleOfferings,
+                        ) || "غير محدد"}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1450,24 +1402,7 @@ export default function StaffLearningLossPage() {
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {record.subjectKey || "—"}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-xs">
-                        {record.classSubjectOfferingId || "—"}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-xs">
-                        {record.batchId || "—"}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3">
-                        <div className="space-y-1">
-                          <p>{getCandidateTitle(record)}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {record.templateId}
-                          </p>
-                        </div>
+                        {getCandidateTitle(record)}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1509,22 +1444,3 @@ export default function StaffLearningLossPage() {
   );
 }
 
-function MiniStat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-2xl border bg-card p-5 shadow-sm">
-      <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="mt-2 text-3xl font-bold">{value.toLocaleString("ar-SA")}</p>
-    </div>
-  );
-}
-
-function ContextItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl bg-white/70 p-3 dark:bg-slate-950/40">
-      <p className="text-xs text-violet-700 dark:text-violet-300">{label}</p>
-      <p className="mt-1 break-words font-mono text-sm font-semibold">
-        {value}
-      </p>
-    </div>
-  );
-}

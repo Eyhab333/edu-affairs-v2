@@ -6,20 +6,14 @@ import { useParams, useSearchParams } from "next/navigation";
 import {
   AlertTriangle,
   ArrowRight,
-  BookOpen,
   CalendarDays,
-  CheckCircle2,
   ChevronLeft,
   ClipboardList,
   FileText,
-  GraduationCap,
-  Layers3,
   Save,
-  School,
   Send,
   UsersRound,
 } from "lucide-react";
-import type { ComponentType } from "react";
 import { collection, doc, setDoc, writeBatch } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
@@ -34,6 +28,7 @@ import {
   type StaffMeasurementTemplateOption,
   type StaffTemplateItem,
 } from "@/hooks/use-class-measurement-templates";
+import { getFriendlyClassTitle } from "@/lib/class-presentation";
 
 type StaffVisibleClass = {
   id: string;
@@ -98,13 +93,6 @@ type BatchDraftRow = {
 
 type BatchDraftRows = Record<string, BatchDraftRow>;
 
-type StepCard = {
-  title: string;
-  description: string;
-  status: "ACTIVE" | "NEXT" | "FUTURE";
-  icon: ComponentType<{ className?: string }>;
-};
-
 type LearningLossPolicyFields = {
   requiresLearningLossFollowUp?: boolean;
   learningLossThresholdScore?: number;
@@ -126,30 +114,6 @@ type StaffActorWithTerms = {
   currentTerm?: StaffActorCurrentTerm | null;
   currentTermsByAcademicYear?: Record<string, StaffActorCurrentTerm>;
 };
-
-const steps: StepCard[] = [
-  {
-    title: "اختيار المجال",
-    description:
-      "الدفعة الآن تبدأ من مجال واضح داخل الفصل: قرآن، بساتين معرفة، أرقام، قيم أو أركان.",
-    status: "ACTIVE",
-    icon: Layers3,
-  },
-  {
-    title: "اختيار قالب مناسب",
-    description:
-      "تُفلتر القوالب حسب المجال ومستوى الفصل، ولا تُعرض قوالب CLASS كمدخل قياس.",
-    status: "ACTIVE",
-    icon: ClipboardList,
-  },
-  {
-    title: "إدخال النتائج",
-    description:
-      "بعد اختيار القالب تُدخل النتائج لكل طالب، ثم تحفظ المسودة أو ترسل الدفعة.",
-    status: "ACTIVE",
-    icon: FileText,
-  },
-];
 
 const BLOCKED_SUBJECT_KEYS = new Set(["CLASS", "HOMEROOM"]);
 
@@ -209,21 +173,12 @@ function getCurrentTermForAcademicYear(
   );
 }
 
-function getTermDisplayTitle(term: StaffActorCurrentTerm | null) {
-  if (!term) return "غير محدد";
-  return term.title || term.shortTitle || term.id;
-}
-
 function buildTermContext(term: StaffActorCurrentTerm | null) {
   return {
     termId: term?.id ?? "",
     termTitle: term?.title ?? "",
     termShortTitle: term?.shortTitle ?? "",
   };
-}
-
-function getClassTitle(item: StaffVisibleClass) {
-  return item.title || item.code || item.id;
 }
 
 function getStudentCount(item: StaffVisibleClass) {
@@ -279,19 +234,6 @@ function buildClassHref(item: StaffVisibleClass) {
   const query = params.toString();
 
   return `/staff/classes/${encodeURIComponent(item.id)}${
-    query ? `?${query}` : ""
-  }`;
-}
-
-function buildMeasurementsHref(item: StaffVisibleClass) {
-  const params = new URLSearchParams();
-
-  if (item.schoolId) params.set("schoolId", item.schoolId);
-  if (item.academicYearId) params.set("academicYearId", item.academicYearId);
-
-  const query = params.toString();
-
-  return `/staff/classes/${encodeURIComponent(item.id)}/measurements${
     query ? `?${query}` : ""
   }`;
 }
@@ -374,20 +316,6 @@ function templateMatchesSubject(
   }
 
   return false;
-}
-
-function getContextTitle(
-  offering: StaffClassSubjectOffering | null,
-  subjectKey: string,
-) {
-  return (
-    offering?.displayName ||
-    offering?.subjectTitle ||
-    offering?.subjectTitleSnapshot ||
-    offering?.shortLabel ||
-    subjectKey ||
-    "غير محدد"
-  );
 }
 
 function getErrorMessage(error: unknown) {
@@ -818,7 +746,7 @@ function validateDraftRowsForSubmit(params: {
   });
 
   if (completedRows.length === 0) {
-    return "يجب إدخال نتيجة مكتملة لطالب واحد على الأقل قبل إرسال الدفعة.";
+    return "يجب إدخال نتيجة مكتملة لطالب واحد على الأقل قبل إرسال النتائج.";
   }
 
   for (const row of completedRows) {
@@ -1282,39 +1210,39 @@ export default function StaffNewMeasurementBatchPage() {
     }
 
     if (!canUseCurrentContext) {
-      setDraftSaveError("سياق المجال الحالي غير صالح لإنشاء دفعة.");
+      setDraftSaveError("لا يمكن استخدام سياق المادة الحالي لإدخال النتائج.");
       return;
     }
 
     if (!currentTerm) {
       setDraftSaveError(
-        "لا يمكن حفظ الدفعة قبل تحديد الفصل الدراسي الحالي لهذه السنة.",
+        "لا يمكن حفظ المسودة قبل تحديد الفصل الدراسي الحالي لهذه السنة.",
       );
       return;
     }
 
     if (unitSelectionRequired && !selectedUnit) {
-      setDraftSaveError("يجب اختيار الوحدة قبل حفظ دفعة القيم أو الأركان.");
+      setDraftSaveError("يجب اختيار الوحدة قبل حفظ نتائج القيم أو الأركان.");
       return;
     }
 
     if (!resolvedOrgId) {
-      setDraftSaveError("لا يوجد orgId واضح لحفظ الدفعة.");
+      setDraftSaveError("تعذّر تحديد جهة العمل لحفظ المسودة.");
       return;
     }
 
     if (!resolvedSchoolId) {
-      setDraftSaveError("لا يوجد schoolId واضح لحفظ الدفعة.");
+      setDraftSaveError("تعذّر تحديد المدرسة لحفظ المسودة.");
       return;
     }
 
     if (!resolvedAcademicYearId) {
-      setDraftSaveError("لا يوجد academicYearId واضح لحفظ الدفعة.");
+      setDraftSaveError("تعذّر تحديد السنة الدراسية لحفظ المسودة.");
       return;
     }
 
     if (batchStudentRows.length === 0) {
-      setDraftSaveError("لا يمكن حفظ دفعة بدون طلاب.");
+      setDraftSaveError("لا يمكن حفظ المسودة دون طلاب.");
       return;
     }
 
@@ -1431,44 +1359,44 @@ export default function StaffNewMeasurementBatchPage() {
 
   async function submitBatch() {
     if (!staffActor || !classInfo || !selectedTemplate) {
-      setSubmitError("يجب اختيار قالب قياس أو متابعة قبل إرسال الدفعة.");
+      setSubmitError("يرجى اختيار قالب قياس أو متابعة قبل إرسال النتائج.");
       return;
     }
 
     if (!canUseCurrentContext) {
-      setSubmitError("سياق المجال الحالي غير صالح لإنشاء دفعة.");
+      setSubmitError("لا يمكن استخدام سياق المادة الحالي لإدخال النتائج.");
       return;
     }
 
     if (!currentTerm) {
       setSubmitError(
-        "لا يمكن إرسال الدفعة قبل تحديد الفصل الدراسي الحالي لهذه السنة.",
+        "لا يمكن إرسال النتائج قبل تحديد الفصل الدراسي الحالي لهذه السنة.",
       );
       return;
     }
 
     if (unitSelectionRequired && !selectedUnit) {
-      setSubmitError("يجب اختيار الوحدة قبل إرسال دفعة القيم أو الأركان.");
+      setSubmitError("يجب اختيار الوحدة قبل إرسال نتائج القيم أو الأركان.");
       return;
     }
 
     if (!resolvedOrgId) {
-      setSubmitError("لا يوجد orgId واضح لإرسال الدفعة.");
+      setSubmitError("تعذّر تحديد جهة العمل لإرسال النتائج.");
       return;
     }
 
     if (!resolvedSchoolId) {
-      setSubmitError("لا يوجد schoolId واضح لإرسال الدفعة.");
+      setSubmitError("تعذّر تحديد المدرسة لإرسال النتائج.");
       return;
     }
 
     if (!resolvedAcademicYearId) {
-      setSubmitError("لا يوجد academicYearId واضح لإرسال الدفعة.");
+      setSubmitError("تعذّر تحديد السنة الدراسية لإرسال النتائج.");
       return;
     }
 
     if (batchStudentRows.length === 0) {
-      setSubmitError("لا يمكن إرسال دفعة بدون طلاب.");
+      setSubmitError("لا يمكن إرسال النتائج دون طلاب.");
       return;
     }
 
@@ -1740,22 +1668,12 @@ export default function StaffNewMeasurementBatchPage() {
           الرجوع إلى فصولي
         </Link>
 
-        <div className="rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center shadow-sm dark:border-amber-900/60 dark:bg-amber-950/30">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">
-            <AlertTriangle className="h-6 w-6" />
-          </div>
-
-          <h1 className="mt-4 text-xl font-bold">الفصل غير موجود</h1>
-
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-8 text-center dark:border-amber-900/60 dark:bg-amber-950/30">
+          <AlertTriangle className="mx-auto h-6 w-6 text-amber-700 dark:text-amber-300" />
+          <h1 className="mt-4 text-xl font-bold">لم يتم العثور على الفصل</h1>
           <p className="mx-auto mt-2 max-w-2xl text-sm leading-7 text-amber-900 dark:text-amber-100">
-            لم يتم العثور على هذا الفصل داخل{" "}
-            <span className="font-mono">actor.visibleClasses</span>.
+            لم يتم العثور على الفصل أو أنه خارج نطاق صلاحياتك.
           </p>
-
-          <div className="mt-5 rounded-2xl bg-white/70 p-4 text-sm text-amber-900 dark:bg-slate-950/40 dark:text-amber-100">
-            <span className="font-semibold">classId:</span>{" "}
-            <span className="font-mono">{classId}</span>
-          </div>
         </div>
       </PageShell>
     );
@@ -1763,124 +1681,80 @@ export default function StaffNewMeasurementBatchPage() {
 
   const estimatedStudentCount = getStudentCount(classInfo);
   const studentCount = classStudents.data?.totalCount ?? estimatedStudentCount;
+  const subjectTitle =
+    selectedClassSubjectOffering?.displayName ||
+    selectedClassSubjectOffering?.subjectTitle ||
+    selectedClassSubjectOffering?.subjectTitleSnapshot ||
+    selectedClassSubjectOffering?.shortLabel ||
+    "";
+  const termTitle =
+    currentTerm?.title ||
+    currentTerm?.shortTitle ||
+    (currentTerm ? "الفصل الدراسي الحالي" : null);
+  const headerMetadata = [
+    getFriendlyClassTitle(classInfo, classes),
+    termTitle,
+    studentCount !== null
+      ? `${studentCount.toLocaleString("ar-SA")} طالبًا`
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <PageShell>
-      <div className="flex flex-wrap gap-2">
-        {/* <Link
-          href={buildMeasurementsHref(classInfo)}
-          className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
-          <ArrowRight className="h-4 w-4" />
-          الرجوع إلى قياسات الفصل
-        </Link> */}
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="space-y-3">
+          <Link
+            href={buildClassHref(classInfo)}
+            className="inline-flex w-fit items-center gap-2 text-sm text-slate-500 transition hover:text-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 dark:text-slate-400 dark:hover:text-emerald-400"
+          >
+            <ArrowRight className="h-4 w-4" />
+            الرجوع إلى الفصل
+          </Link>
 
-        {/* <Link
-          href={buildClassHref(classInfo)}
-          className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-        >
-          <BookOpen className="h-4 w-4" />
-          فتح الفصل
-        </Link> */}
-      </div>
-
-      <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="border-b border-slate-100 bg-gradient-to-l from-emerald-50 via-white to-white p-6 dark:border-slate-800 dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-8">
-          <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                <Layers3 className="h-3.5 w-3.5" />
-                10.5N-3 — إدخال النتائج من مجال الفصل
-              </div>
-
-              <div className="space-y-2">
-                <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
-                  إدخال نتائج — {getClassTitle(classInfo)}
-                </h1>
-
-                <p className="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400">
-                  هذه الصفحة تنشئ دفعة قياس أو متابعة من مجال محدد داخل الفصل.
-                  في الروضة يجب الدخول من مجال مثل القرآن أو بساتين المعرفة أو
-                  الأرقام أو القيم أو الأركان، وليس من إسناد CLASS العام.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                disabled={!canSaveDraft}
-                onClick={() => void saveDraftBatch()}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300"
-              >
-                <Save className="h-4 w-4" />
-                {savingDraft
-                  ? "جاري الحفظ..."
-                  : savedBatchId
-                    ? "تحديث المسودة"
-                    : "حفظ مسودة"}
-              </button>
-
-              <button
-                type="button"
-                disabled={!canSubmitBatch}
-                onClick={() => void submitBatch()}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-700 dark:hover:bg-emerald-600"
-              >
-                <Send className="h-4 w-4" />
-                {submittingBatch
-                  ? "جاري الإرسال..."
-                  : submittedBatchId
-                    ? "تم الإرسال"
-                    : "إرسال الدفعة"}
-              </button>
-            </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              {subjectTitle ? `إدخال نتائج ${subjectTitle}` : "إدخال النتائج"}
+            </h1>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+              {headerMetadata}
+            </p>
           </div>
         </div>
 
-        <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
-          <SummaryCard
-            icon={School}
-            label="المدرسة"
-            value={classInfo.schoolName || classInfo.schoolId || "غير محدد"}
-          />
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            disabled={!canSaveDraft}
+            onClick={() => void saveDraftBatch()}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300"
+          >
+            <Save className="h-4 w-4" />
+            {savingDraft
+              ? "جاري الحفظ..."
+              : savedBatchId
+                ? "تحديث المسودة"
+                : "حفظ مسودة"}
+          </button>
 
-          <SummaryCard
-            icon={CalendarDays}
-            label="السنة الدراسية"
-            value={
-              classInfo.academicYearTitle ||
-              classInfo.academicYearId ||
-              "غير محدد"
-            }
-          />
-
-          <SummaryCard
-            icon={GraduationCap}
-            label="الصف / المستوى"
-            value={classInfo.gradeTitle || classInfo.gradeId || "غير محدد"}
-          />
-
-          <SummaryCard
-            icon={UsersRound}
-            label="طلاب الدفعة"
-            value={
-              classStudents.loading
-                ? "جاري القراءة..."
-                : studentCount !== null
-                  ? `${studentCount} طالب`
-                  : "لا يوجد طلاب"
-            }
-          />
+          <button
+            type="button"
+            disabled={!canSubmitBatch}
+            onClick={() => void submitBatch()}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-700 dark:hover:bg-emerald-600"
+          >
+            <Send className="h-4 w-4" />
+            {submittingBatch
+              ? "جاري الإرسال..."
+              : submittedBatchId
+                ? "تم الإرسال"
+                : "إرسال النتائج"}
+          </button>
         </div>
-      </div>
+      </header>
 
       <SubjectContextPanel
-        classInfo={classInfo}
-        selectedClassSubjectOffering={selectedClassSubjectOffering}
-        subjectKey={effectiveSubjectKey}
-        classSubjectOfferingId={resolvedClassSubjectOfferingId}
-        teacherAssignmentId={resolvedTeacherAssignmentId}
         subjectKeyIsBlocked={subjectKeyIsBlocked}
         missingKgDomainContext={missingKgDomainContext}
         unknownKgDomainContext={unknownKgDomainContext}
@@ -1894,83 +1768,54 @@ export default function StaffNewMeasurementBatchPage() {
         />
       ) : null}
 
-      {draftSaveError ? <ErrorPanel>{draftSaveError}</ErrorPanel> : null}
-
-      {savedBatchId ? (
-        <SuccessPanel>
-          تم حفظ المسودة بنجاح.
-          <span className="mx-1 font-semibold">رقم الدفعة:</span>
-          <span className="font-mono">{savedBatchId}</span>
-        </SuccessPanel>
+      {!currentTerm ? (
+        <ErrorPanel>
+          لم يتم تحديد الفصل الدراسي الحالي. لن يمكن الحفظ أو الإرسال حتى يتم
+          تحديده.
+        </ErrorPanel>
       ) : null}
 
-      {submitError ? <ErrorPanel>{submitError}</ErrorPanel> : null}
-
-      {submittedBatchId ? (
-        <SuccessPanel>
-          تم إرسال الدفعة بنجاح، وإنشاء السجلات الفردية للطلاب المكتملين فقط.
-          <span className="mx-1 font-semibold">رقم الدفعة:</span>
-          <span className="font-mono">{submittedBatchId}</span>
-        </SuccessPanel>
-      ) : null}
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <CurrentTermPanel
-          academicYearId={resolvedAcademicYearId}
-          currentTerm={currentTerm}
-        />
-
-        <TemplatePickerSection
-          data={
-            classTemplates.data
-              ? {
-                  ...classTemplates.data,
-                  options: templateOptions,
-                  totalCount: templateOptions.length,
-                  assessmentCount: templateOptions.filter(
-                    (item) => item.templateKind === "ASSESSMENT",
-                  ).length,
-                  trackerCount: templateOptions.filter(
-                    (item) => item.templateKind === "TRACKER",
-                  ).length,
-                }
-              : null
-          }
-          loading={classTemplates.loading}
-          error={classTemplates.error}
-          selectedTemplateOptionId={selectedTemplateOptionId}
-          onSelectTemplate={setSelectedTemplateOptionId}
-          canUseCurrentContext={canUseCurrentContext}
-          effectiveSubjectKey={effectiveSubjectKey}
-        />
-
-        <Panel className="lg:col-span-2">
-          <div className="flex items-center gap-3">
-            <div className="rounded-2xl bg-sky-50 p-3 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-              <CheckCircle2 className="h-5 w-5" />
-            </div>
-
-            <div>
-              <h2 className="font-bold">خطوات الدفعة</h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                اختر المجال والقالب ثم أدخل النتائج واحفظ أو أرسل.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            {steps.map((item) => (
-              <StepPlaceholderCard key={item.title} item={item} />
-            ))}
-          </div>
-        </Panel>
-      </div>
+      <TemplatePickerSection
+        data={
+          classTemplates.data
+            ? {
+                ...classTemplates.data,
+                options: templateOptions,
+                totalCount: templateOptions.length,
+                assessmentCount: templateOptions.filter(
+                  (item) => item.templateKind === "ASSESSMENT",
+                ).length,
+                trackerCount: templateOptions.filter(
+                  (item) => item.templateKind === "TRACKER",
+                ).length,
+              }
+            : null
+        }
+        loading={classTemplates.loading}
+        error={classTemplates.error}
+        selectedTemplateOptionId={selectedTemplateOptionId}
+        onSelectTemplate={setSelectedTemplateOptionId}
+        canUseCurrentContext={canUseCurrentContext}
+        effectiveSubjectKey={effectiveSubjectKey}
+      />
 
       {selectedTemplate ? (
         <SelectedTemplateSummary
           template={selectedTemplate}
           effectiveSubjectKey={effectiveSubjectKey}
         />
+      ) : null}
+
+      {draftSaveError ? <ErrorPanel>{draftSaveError}</ErrorPanel> : null}
+
+      {savedBatchId ? (
+        <SuccessPanel>تم حفظ المسودة بنجاح.</SuccessPanel>
+      ) : null}
+
+      {submitError ? <ErrorPanel>{submitError}</ErrorPanel> : null}
+
+      {submittedBatchId ? (
+        <SuccessPanel>تم إرسال النتائج بنجاح.</SuccessPanel>
       ) : null}
 
       <BatchResultsTable
@@ -1983,12 +1828,6 @@ export default function StaffNewMeasurementBatchPage() {
         onUpdateItemScore={updateDraftItemScore}
         onSetAllStatus={setAllRowsStatus}
       />
-
-      <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5 text-sm leading-7 text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100">
-        <span className="font-semibold">تنبيه تشغيلي:</span> بعد نجاح هذه الخطوة
-        نختبر كل مجال على حدة: القرآن، بساتين المعرفة، الأرقام، القيم، ثم
-        الأركان.
-      </div>
     </PageShell>
   );
 }
@@ -2089,136 +1928,54 @@ function SuccessPanel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function SummaryCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex items-start gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        <div className="min-w-0">
-          <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-          <p className="mt-1 truncate font-bold text-slate-950 dark:text-slate-50">
-            {value}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function SubjectContextPanel({
-  classInfo,
-  selectedClassSubjectOffering,
-  subjectKey,
-  classSubjectOfferingId,
-  teacherAssignmentId,
   subjectKeyIsBlocked,
   missingKgDomainContext,
   unknownKgDomainContext,
 }: {
-  classInfo: StaffVisibleClass;
-  selectedClassSubjectOffering: StaffClassSubjectOffering | null;
-  subjectKey: string;
-  classSubjectOfferingId: string;
-  teacherAssignmentId: string;
   subjectKeyIsBlocked: boolean;
   missingKgDomainContext: boolean;
   unknownKgDomainContext: boolean;
 }) {
-  const contextTitle = getContextTitle(
-    selectedClassSubjectOffering,
-    subjectKey,
-  );
+  const warning = subjectKeyIsBlocked
+    ? {
+        title: "تعذر بدء إدخال النتائج",
+        message:
+          "اختر مادة أو مجالًا محددًا من صفحة الفصل قبل إدخال النتائج.",
+      }
+    : missingKgDomainContext
+      ? {
+          title: "اختر مجال الروضة",
+          message:
+            "اختر مجال الروضة المطلوب من صفحة الفصل قبل إدخال النتائج.",
+        }
+      : unknownKgDomainContext
+        ? {
+            title: "تعذر تحديد المجال",
+            message: "ارجع إلى صفحة الفصل واختر المجال مرة أخرى.",
+          }
+        : null;
 
-  const hasProblem =
-    subjectKeyIsBlocked || missingKgDomainContext || unknownKgDomainContext;
+  if (!warning) return null;
 
   return (
     <section
-      className={
-        hasProblem
-          ? "rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-950 shadow-sm dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100"
-          : "rounded-3xl border border-violet-200 bg-violet-50 p-5 text-sm leading-7 text-violet-950 shadow-sm dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-violet-100"
-      }
+      role="alert"
+      className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100"
     >
       <div className="flex items-start gap-3">
-        <div
-          className={
-            hasProblem
-              ? "rounded-2xl bg-amber-100 p-3 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200"
-              : "rounded-2xl bg-violet-100 p-3 text-violet-700 dark:bg-violet-900/40 dark:text-violet-200"
-          }
-        >
-          {hasProblem ? (
-            <AlertTriangle className="h-5 w-5" />
-          ) : (
-            <Layers3 className="h-5 w-5" />
-          )}
+        <div className="rounded-xl bg-amber-100 p-2 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200">
+          <AlertTriangle className="h-5 w-5" />
         </div>
 
         <div className="min-w-0 flex-1">
-          <h2 className="font-bold">سياق المجال</h2>
-
-          <div className="mt-3 grid gap-2 sm:grid-cols-3">
-            <ContextItem label="المجال" value={contextTitle} />
-            <ContextItem label="subjectKey" value={subjectKey || "—"} />
-            <ContextItem
-              label="offering"
-              value={classSubjectOfferingId || "—"}
-            />
-            <ContextItem
-              label="assignment"
-              value={teacherAssignmentId || "—"}
-            />
-            <ContextItem label="الفصل" value={getClassTitle(classInfo)} />
-            <ContextItem label="المستوى" value={classInfo.gradeId || "—"} />
-          </div>
-
-          {subjectKeyIsBlocked ? (
-            <div className="mt-4 rounded-2xl bg-white/70 p-4 dark:bg-slate-950/40">
-              `CLASS` هو إسناد عام للفصل وليس مجال قياس أو متابعة. ارجع إلى صفحة
-              الفصل واختر القرآن أو بساتين المعرفة أو الأرقام أو القيم أو
-              الأركان.
-            </div>
-          ) : null}
-
-          {missingKgDomainContext ? (
-            <div className="mt-4 rounded-2xl bg-white/70 p-4 dark:bg-slate-950/40">
-              هذا فصل روضة، ويجب بدء الدفعة من مجال محدد داخل صفحة الفصل. لا
-              نعرض قوالب عامة بدون مجال حتى لا تختلط القوالب.
-            </div>
-          ) : null}
-
-          {unknownKgDomainContext ? (
-            <div className="mt-4 rounded-2xl bg-white/70 p-4 dark:bg-slate-950/40">
-              المجال الحالي غير معروف ضمن مجالات الروضة المعتمدة. راجع
-              `subjectKey` أو بيانات `ClassSubjectOffering`.
-            </div>
-          ) : null}
+          <h2 className="font-bold">{warning.title}</h2>
+          <p className="mt-1 leading-6 text-amber-900 dark:text-amber-100">
+            {warning.message}
+          </p>
         </div>
       </div>
     </section>
-  );
-}
-
-function ContextItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-2xl bg-white/70 p-3 dark:bg-slate-950/40">
-      <p className="text-xs opacity-70">{label}</p>
-      <p className="mt-1 break-words font-mono text-sm font-semibold">
-        {value}
-      </p>
-    </div>
   );
 }
 
@@ -2352,31 +2109,6 @@ function MiniStat({ label, value }: { label: string; value: number }) {
     <div className="rounded-2xl bg-slate-50 p-3 text-center dark:bg-slate-950">
       <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
       <p className="mt-1 text-xl font-bold">{value.toLocaleString("ar-SA")}</p>
-    </div>
-  );
-}
-
-function StepPlaceholderCard({ item }: { item: StepCard }) {
-  const Icon = item.icon;
-
-  return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-      <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-        <Icon className="h-5 w-5" />
-      </div>
-
-      <h3 className="mt-4 font-bold">{item.title}</h3>
-      <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-        {item.description}
-      </p>
-
-      <span className="mt-4 inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900">
-        {item.status === "ACTIVE"
-          ? "مفعل"
-          : item.status === "NEXT"
-            ? "التالي"
-            : "لاحقًا"}
-      </span>
     </div>
   );
 }
@@ -2774,61 +2506,6 @@ function BatchResultsTable({
           </table>
         </div>
       )}
-    </Panel>
-  );
-}
-
-function CurrentTermPanel({
-  academicYearId,
-  currentTerm,
-}: {
-  academicYearId: string;
-  currentTerm: StaffActorCurrentTerm | null;
-}) {
-  return (
-    <Panel>
-      <div className="flex items-center gap-3">
-        <div className="rounded-2xl bg-sky-50 p-3 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-          <CalendarDays className="h-5 w-5" />
-        </div>
-
-        <div>
-          <h2 className="font-bold">الفصل الدراسي</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            سيتم حفظ الدفعة والنتائج داخل الفصل الدراسي الحالي.
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            السنة الدراسية
-          </p>
-          <p className="mt-1 font-semibold">{academicYearId || "غير محدد"}</p>
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            الفصل الحالي
-          </p>
-          <p className="mt-1 font-semibold">
-            {getTermDisplayTitle(currentTerm)}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-          <p className="text-xs text-slate-500 dark:text-slate-400">termId</p>
-          <p className="mt-1 font-mono text-sm">{currentTerm?.id || "—"}</p>
-        </div>
-      </div>
-
-      {!currentTerm ? (
-        <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
-          لا يوجد فصل دراسي حالي لهذه السنة. لن يمكن حفظ أو إرسال الدفعة حتى يتم
-          تحديد الفصل الدراسي الحالي.
-        </div>
-      ) : null}
     </Panel>
   );
 }
