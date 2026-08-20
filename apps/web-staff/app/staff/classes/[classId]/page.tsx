@@ -201,7 +201,7 @@ export default function StaffClassDetailsPage() {
           />
         )}
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        {/* <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <div className="flex items-center gap-3">
             <div className="rounded-2xl bg-sky-50 p-3 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
               <HeartHandshake className="h-5 w-5" />
@@ -220,7 +220,7 @@ export default function StaffClassDetailsPage() {
               <OperationWorkspaceCard key={item.title} item={item} />
             ))}
           </div>
-        </section>
+        </section> */}
 
         <ClassStudentsSection
           data={classStudents.data}
