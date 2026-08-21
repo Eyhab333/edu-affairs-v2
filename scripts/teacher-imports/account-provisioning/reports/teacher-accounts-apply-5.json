@@ -1,108 +1,164 @@
 {
-  "generatedAt": "2026-07-30T15:32:35.922Z",
+  "generatedAt": "2026-08-21T12:51:11.614Z",
   "orgId": "takween",
   "summary": {
-    "requested": 7,
-    "created": 7,
+    "requested": 11,
+    "created": 11,
     "failed": 0
   },
   "results": [
     {
-      "uid": "oSB81HJNmLZBZR35zA8qVTyqrBj2",
-      "personId": "p-n-almosa",
-      "email": "n.almosa@qz.org.sa",
-      "displayName": "ندى عبدالله الموسى",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "uid": "HLLwOxztPzM29JeV9Xc5Spm2yKB2",
+      "personId": "p-a-m-atyar",
+      "email": "a-m-atyar@qz.org.sa",
+      "displayName": "عبدالله محمد الطيار",
+      "schoolId": "mrb-boys-sayh",
+      "roleKey": "BOYS_TEACHER",
       "paths": [
-        "users/oSB81HJNmLZBZR35zA8qVTyqrBj2",
-        "users/oSB81HJNmLZBZR35zA8qVTyqrBj2/orgMemberships/takween",
-        "orgs/takween/people/p-n-almosa",
-        "orgs/takween/memberships/oSB81HJNmLZBZR35zA8qVTyqrBj2"
+        "users/HLLwOxztPzM29JeV9Xc5Spm2yKB2",
+        "users/HLLwOxztPzM29JeV9Xc5Spm2yKB2/orgMemberships/takween",
+        "orgs/takween/people/p-a-m-atyar",
+        "orgs/takween/memberships/HLLwOxztPzM29JeV9Xc5Spm2yKB2"
       ]
     },
     {
-      "uid": "9mhPR9OFgQgyAPPPJGjEue7I1KE2",
-      "personId": "p-g-alfahid",
-      "email": "g.alfahid@qz.org.sa",
-      "displayName": "جواهر عبدالله دخيل الفهيد",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "uid": "9zZsBqHg3TPI1rdy6PYQrTWO4Cp2",
+      "personId": "p-a-s-alabdelmnem",
+      "email": "a-s-alabdelmnem@qz.org.sa",
+      "displayName": "أحمد بن سعدون العبدالمنعم",
+      "schoolId": "mrb-boys-sayh",
+      "roleKey": "BOYS_TEACHER",
       "paths": [
-        "users/9mhPR9OFgQgyAPPPJGjEue7I1KE2",
-        "users/9mhPR9OFgQgyAPPPJGjEue7I1KE2/orgMemberships/takween",
-        "orgs/takween/people/p-g-alfahid",
-        "orgs/takween/memberships/9mhPR9OFgQgyAPPPJGjEue7I1KE2"
+        "users/9zZsBqHg3TPI1rdy6PYQrTWO4Cp2",
+        "users/9zZsBqHg3TPI1rdy6PYQrTWO4Cp2/orgMemberships/takween",
+        "orgs/takween/people/p-a-s-alabdelmnem",
+        "orgs/takween/memberships/9zZsBqHg3TPI1rdy6PYQrTWO4Cp2"
       ]
     },
     {
-      "uid": "X8mIh8oLzrMPLliTH8vCP5I6Mn43",
-      "personId": "p-an-alslman",
-      "email": "an.alslman@qz.org.sa",
-      "displayName": "انفال عبدالله أحمد السلمان",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "uid": "7wPRWwrE48YnDOTDJgDF6dY6xx22",
+      "personId": "p-b-h-elbhlal",
+      "email": "b-h-elbhlal@qz.org.sa",
+      "displayName": "بسام هلال البهلال",
+      "schoolId": "mrb-boys-sayh",
+      "roleKey": "BOYS_TEACHER",
       "paths": [
-        "users/X8mIh8oLzrMPLliTH8vCP5I6Mn43",
-        "users/X8mIh8oLzrMPLliTH8vCP5I6Mn43/orgMemberships/takween",
-        "orgs/takween/people/p-an-alslman",
-        "orgs/takween/memberships/X8mIh8oLzrMPLliTH8vCP5I6Mn43"
+        "users/7wPRWwrE48YnDOTDJgDF6dY6xx22",
+        "users/7wPRWwrE48YnDOTDJgDF6dY6xx22/orgMemberships/takween",
+        "orgs/takween/people/p-b-h-elbhlal",
+        "orgs/takween/memberships/7wPRWwrE48YnDOTDJgDF6dY6xx22"
       ]
     },
     {
-      "uid": "PfCXoWplJrhhkEJXxunVermH9co1",
-      "personId": "p-a-alttayar",
-      "email": "a.alttayar@qz.org.sa",
-      "displayName": "اروى يوسف احمد الطيار",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "uid": "vSSxIPq5dSXrkLSNn6qv9aDvtB43",
+      "personId": "p-m-f-elhmien",
+      "email": "m-f-elhmien@qz.org.sa",
+      "displayName": "محمد فهد الحمين",
+      "schoolId": "mrb-boys-sayh",
+      "roleKey": "BOYS_TEACHER",
       "paths": [
-        "users/PfCXoWplJrhhkEJXxunVermH9co1",
-        "users/PfCXoWplJrhhkEJXxunVermH9co1/orgMemberships/takween",
-        "orgs/takween/people/p-a-alttayar",
-        "orgs/takween/memberships/PfCXoWplJrhhkEJXxunVermH9co1"
+        "users/vSSxIPq5dSXrkLSNn6qv9aDvtB43",
+        "users/vSSxIPq5dSXrkLSNn6qv9aDvtB43/orgMemberships/takween",
+        "orgs/takween/people/p-m-f-elhmien",
+        "orgs/takween/memberships/vSSxIPq5dSXrkLSNn6qv9aDvtB43"
       ]
     },
     {
-      "uid": "uy60CMhBPLUDXWRJ8NlmemfwfDe2",
-      "personId": "p-s-bader",
-      "email": "s.bader@qz.org.sa",
-      "displayName": "ساره عبدالله علي البدر",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "uid": "V5RdTTEOSJPmIRxVFrVjnWgSkZ92",
+      "personId": "p-s-s-agedie",
+      "email": "s-s-agedie@qz.org.sa",
+      "displayName": "سهيل بن سعود الجديع",
+      "schoolId": "mrb-boys-sayh",
+      "roleKey": "BOYS_TEACHER",
       "paths": [
-        "users/uy60CMhBPLUDXWRJ8NlmemfwfDe2",
-        "users/uy60CMhBPLUDXWRJ8NlmemfwfDe2/orgMemberships/takween",
-        "orgs/takween/people/p-s-bader",
-        "orgs/takween/memberships/uy60CMhBPLUDXWRJ8NlmemfwfDe2"
+        "users/V5RdTTEOSJPmIRxVFrVjnWgSkZ92",
+        "users/V5RdTTEOSJPmIRxVFrVjnWgSkZ92/orgMemberships/takween",
+        "orgs/takween/people/p-s-s-agedie",
+        "orgs/takween/memberships/V5RdTTEOSJPmIRxVFrVjnWgSkZ92"
       ]
     },
     {
-      "uid": "MxbFiC4pOCgz4CTUqANyt1ySPSW2",
-      "personId": "p-n-alkhunini",
-      "email": "n.alkhunini@qz.org.sa",
-      "displayName": "نوره سليمان صالح الخنيني",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "uid": "9A6FNz0SvfYlsysrmSBbhxUXa9C3",
+      "personId": "p-b-e-arweshid",
+      "email": "b-e-arweshid@qz.org.sa",
+      "displayName": "بدر إبراهيم عبدالله الرويشد",
+      "schoolId": "mrb-boys-faleh",
+      "roleKey": "BOYS_TEACHER",
       "paths": [
-        "users/MxbFiC4pOCgz4CTUqANyt1ySPSW2",
-        "users/MxbFiC4pOCgz4CTUqANyt1ySPSW2/orgMemberships/takween",
-        "orgs/takween/people/p-n-alkhunini",
-        "orgs/takween/memberships/MxbFiC4pOCgz4CTUqANyt1ySPSW2"
+        "users/9A6FNz0SvfYlsysrmSBbhxUXa9C3",
+        "users/9A6FNz0SvfYlsysrmSBbhxUXa9C3/orgMemberships/takween",
+        "orgs/takween/people/p-b-e-arweshid",
+        "orgs/takween/memberships/9A6FNz0SvfYlsysrmSBbhxUXa9C3"
       ]
     },
     {
-      "uid": "L2TfIFKmkCV6ilLiOq6odsxe0lJ3",
-      "personId": "p-sh-aldhuwaikh",
-      "email": "sh.aldhuwaikh@qz.org.sa",
-      "displayName": "شروق يوسف عبدالله الذويخ",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "uid": "Chqvm3BwrVRDGYN3kpimavzYdfo1",
+      "personId": "p-kh-a-atriqi",
+      "email": "kh-a-atriqi@qz.org.sa",
+      "displayName": "خالد بن عبدالله الطريقي",
+      "schoolId": "mrb-boys-faleh",
+      "roleKey": "BOYS_TEACHER",
       "paths": [
-        "users/L2TfIFKmkCV6ilLiOq6odsxe0lJ3",
-        "users/L2TfIFKmkCV6ilLiOq6odsxe0lJ3/orgMemberships/takween",
-        "orgs/takween/people/p-sh-aldhuwaikh",
-        "orgs/takween/memberships/L2TfIFKmkCV6ilLiOq6odsxe0lJ3"
+        "users/Chqvm3BwrVRDGYN3kpimavzYdfo1",
+        "users/Chqvm3BwrVRDGYN3kpimavzYdfo1/orgMemberships/takween",
+        "orgs/takween/people/p-kh-a-atriqi",
+        "orgs/takween/memberships/Chqvm3BwrVRDGYN3kpimavzYdfo1"
+      ]
+    },
+    {
+      "uid": "ixxqdXwVN0P9MuEW4Kg6hJV1RZ13",
+      "personId": "p-kh-m-asyhemi",
+      "email": "kh-m-asyhemi@qz.org.sa",
+      "displayName": "خالد بن محمد السحيمي",
+      "schoolId": "mrb-boys-faleh",
+      "roleKey": "BOYS_TEACHER",
+      "paths": [
+        "users/ixxqdXwVN0P9MuEW4Kg6hJV1RZ13",
+        "users/ixxqdXwVN0P9MuEW4Kg6hJV1RZ13/orgMemberships/takween",
+        "orgs/takween/people/p-kh-m-asyhemi",
+        "orgs/takween/memberships/ixxqdXwVN0P9MuEW4Kg6hJV1RZ13"
+      ]
+    },
+    {
+      "uid": "h44xqjudI9MHivXbiUbNaqQrq152",
+      "personId": "p-m-f-elfahd",
+      "email": "m-f-elfahd@qz.org.sa",
+      "displayName": "مؤيد فهد عبداللطيف الفهد",
+      "schoolId": "mrb-boys-faleh",
+      "roleKey": "BOYS_TEACHER",
+      "paths": [
+        "users/h44xqjudI9MHivXbiUbNaqQrq152",
+        "users/h44xqjudI9MHivXbiUbNaqQrq152/orgMemberships/takween",
+        "orgs/takween/people/p-m-f-elfahd",
+        "orgs/takween/memberships/h44xqjudI9MHivXbiUbNaqQrq152"
+      ]
+    },
+    {
+      "uid": "jKFxO5lgmRbYLA0tAdttjzNn2qh2",
+      "personId": "p-r-a-atriqi",
+      "email": "r-a-atriqi@qz.org.sa",
+      "displayName": "ريان عبدالرحمن سليمان الطريقي",
+      "schoolId": "mrb-boys-faleh",
+      "roleKey": "BOYS_TEACHER",
+      "paths": [
+        "users/jKFxO5lgmRbYLA0tAdttjzNn2qh2",
+        "users/jKFxO5lgmRbYLA0tAdttjzNn2qh2/orgMemberships/takween",
+        "orgs/takween/people/p-r-a-atriqi",
+        "orgs/takween/memberships/jKFxO5lgmRbYLA0tAdttjzNn2qh2"
+      ]
+    },
+    {
+      "uid": "6uycpJm1aBOlI8536EA5V1rHIPk2",
+      "personId": "p-t-aldawsari",
+      "email": "t.aldawsari@qz.org.sa",
+      "displayName": "طيف علي الدوسري",
+      "schoolId": "mrb-girls",
+      "roleKey": "GIRLS_TEACHER",
+      "paths": [
+        "users/6uycpJm1aBOlI8536EA5V1rHIPk2",
+        "users/6uycpJm1aBOlI8536EA5V1rHIPk2/orgMemberships/takween",
+        "orgs/takween/people/p-t-aldawsari",
+        "orgs/takween/memberships/6uycpJm1aBOlI8536EA5V1rHIPk2"
       ]
     }
   ],
