@@ -52,7 +52,7 @@ export default function WebStaffLandingPage() {
           
           <Card className="w-full max-w-md border-dashed text-center">
             <CardHeader>
-              <CardTitle>مرحبًا بك في بوابة تكوين</CardTitle>
+              <CardTitle>مرحبًا بك في مدار</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground">
               جاري تجهيز مساحة العمل الخاصة بك.
@@ -77,9 +77,9 @@ export default function WebStaffLandingPage() {
 
               <div>
                 <div className="text-sm text-muted-foreground">
-                  بوابة الموظفين
+                  مدار
                 </div>
-                <div className="font-semibold">تكوين المعرفة للتعليم</div>
+                <div className="font-semibold">شركة تكوين المعرفة للتعليم</div>
               </div>
             </div>
 
