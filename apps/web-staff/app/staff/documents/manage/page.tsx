@@ -53,7 +53,7 @@ export default function ManageDocumentsPage() {
   const [schoolIds, setSchoolIds] = useState<string[]>([]);
   const [requiresAcknowledgement, setRequiresAcknowledgement] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [schoolId, setSchoolId] = useState("");
+  const [selectedSchoolIds, setSelectedSchoolIds] = useState<string[]>([]);
   const [academicYearId, setAcademicYearId] = useState("");
   const [termId, setTermId] = useState("");
   const [gradeId, setGradeId] = useState("");
@@ -73,39 +73,60 @@ export default function ManageDocumentsPage() {
   }, [actor.orgId, canManage]);
   useEffect(() => { void load(); }, [load]);
 
-  const academicYearIds = useMemo(() => Array.from(new Set(actor.classSubjectOfferings.filter((item) => item.schoolId === schoolId).map((item) => item.academicYearId))), [actor.classSubjectOfferings, schoolId]);
-  const gradeIds = useMemo(() => Array.from(new Set(actor.classSubjectOfferings.filter((item) => item.schoolId === schoolId && item.academicYearId === academicYearId).map((item) => item.gradeId).filter(Boolean))), [actor.classSubjectOfferings, schoolId, academicYearId]);
-  const subjectKeys = useMemo(() => Array.from(new Set(actor.classSubjectOfferings.filter((item) => item.schoolId === schoolId && item.academicYearId === academicYearId && item.gradeId === gradeId).map((item) => item.subjectKey).filter(Boolean))), [actor.classSubjectOfferings, schoolId, academicYearId, gradeId]);
-  const matchingOfferings = useMemo(() => getSelectedTeachingOfferings({ offerings: actor.classSubjectOfferings, schoolId, academicYearId, gradeId, subjectKey }), [actor.classSubjectOfferings, schoolId, academicYearId, gradeId, subjectKey]);
+  const scopedTeachingOfferings = useMemo(() => actor.classSubjectOfferings.filter((item) => item.status === "ACTIVE" && item.isArchived !== true && selectedSchoolIds.includes(item.schoolId)), [actor.classSubjectOfferings, selectedSchoolIds]);
+  const academicYearIds = useMemo(() => Array.from(new Set(scopedTeachingOfferings.map((item) => item.academicYearId))), [scopedTeachingOfferings]);
+  const gradeIds = useMemo(() => Array.from(new Set(scopedTeachingOfferings.filter((item) => item.academicYearId === academicYearId).map((item) => item.gradeId).filter(Boolean))), [scopedTeachingOfferings, academicYearId]);
+  const subjectKeys = useMemo(() => Array.from(new Set(scopedTeachingOfferings.filter((item) => item.academicYearId === academicYearId && item.gradeId === gradeId).map((item) => item.subjectKey).filter(Boolean))), [scopedTeachingOfferings, academicYearId, gradeId]);
+  const matchingOfferings = useMemo(() => getSelectedTeachingOfferings({ offerings: actor.classSubjectOfferings, schoolIds: selectedSchoolIds, academicYearId, gradeId, subjectKey }), [actor.classSubjectOfferings, selectedSchoolIds, academicYearId, gradeId, subjectKey]);
+  const matchingOfferingsBySchool = useMemo(() => selectedSchoolIds.map((id) => ({
+    schoolId: id,
+    offerings: matchingOfferings.filter((offering) => offering.schoolId === id),
+  })), [matchingOfferings, selectedSchoolIds]);
   const classNames = useMemo(() => new Map(actor.classes.map((item) => [item.id, item.title || item.sectionLabel || item.id])), [actor.classes]);
 
   useEffect(() => {
-    setAcademicYearId(""); setTermId(""); setGradeId(""); setSubjectKey(""); setTerms([]); setSelectedOfferingIds([]);
-  }, [schoolId]);
-  useEffect(() => { setTermId(""); setGradeId(""); setSubjectKey(""); setSelectedOfferingIds([]); }, [academicYearId]);
-  useEffect(() => { setSubjectKey(""); setSelectedOfferingIds([]); }, [gradeId]);
-  useEffect(() => { setSelectedOfferingIds(matchingOfferings.map((item) => item.id)); }, [academicYearId, gradeId, subjectKey, schoolId]);
+    if (academicYearId && !academicYearIds.includes(academicYearId)) {
+      setAcademicYearId(""); setTermId(""); setGradeId(""); setSubjectKey("");
+    }
+  }, [academicYearId, academicYearIds]);
+  useEffect(() => {
+    if (gradeId && !gradeIds.includes(gradeId)) {
+      setGradeId("");
+      setSubjectKey("");
+    }
+  }, [gradeId, gradeIds]);
+  useEffect(() => {
+    if (subjectKey && !subjectKeys.includes(subjectKey)) setSubjectKey("");
+  }, [subjectKey, subjectKeys]);
+  useEffect(() => {
+    const matchingIds = matchingOfferings.map((item) => item.id);
+    const matchingIdSet = new Set(matchingIds);
+    setSelectedOfferingIds((current) => Array.from(new Set([
+      ...current.filter((item) => matchingIdSet.has(item)),
+      ...matchingIds,
+    ])));
+  }, [matchingOfferings]);
   useEffect(() => {
     let active = true;
     async function loadTermsAndGrades() {
-      if (!schoolId || !academicYearId) { if (active) { setTerms([]); setGradeNames(new Map()); } return; }
+      if (selectedSchoolIds.length === 0 || !academicYearId) { if (active) { setTerms([]); setGradeNames(new Map()); } return; }
       try {
         const [termsSnapshot, gradesSnapshot] = await Promise.all([
           getDocs(collection(db, "orgs", actor.orgId, "academicYears", academicYearId, "terms")),
-          getDocs(collection(db, "orgs", actor.orgId, "schools", schoolId, "academicYears", academicYearId, "grades")),
+          Promise.all(selectedSchoolIds.map((schoolId) => getDocs(collection(db, "orgs", actor.orgId, "schools", schoolId, "academicYears", academicYearId, "grades")))),
         ]);
         if (!active) return;
         setTerms(termsSnapshot.docs.map((item) => ({ id: item.id, title: String(item.data().title || item.data().shortTitle || item.id) })));
-        setGradeNames(new Map(gradesSnapshot.docs.map((item) => [item.id, String(item.data().title || item.id)])));
+        setGradeNames(new Map(gradesSnapshot.flatMap((snapshot) => snapshot.docs.map((item) => [item.id, String(item.data().title || item.id)] as const))));
       } catch (loadError) { if (active) toast.error(errorMessage(loadError)); }
     }
     void loadTermsAndGrades();
     return () => { active = false; };
-  }, [actor.orgId, academicYearId, schoolId]);
+  }, [actor.orgId, academicYearId, selectedSchoolIds]);
 
   function resetForm() {
     setKind("JOB_TASKS"); setTitle(""); setDescription(""); setTargetRoles([]); setSchoolIds([]); setRequiresAcknowledgement(false); setFile(null);
-    setSchoolId(""); setAcademicYearId(""); setTermId(""); setGradeId(""); setSubjectKey(""); setSelectedOfferingIds([]); setShowForm(false);
+    setSelectedSchoolIds([]); setAcademicYearId(""); setTermId(""); setGradeId(""); setSubjectKey(""); setSelectedOfferingIds([]); setShowForm(false);
   }
   function changeKind(nextKind: PdfResourceKind) {
     setKind(nextKind);
@@ -114,14 +135,14 @@ export default function ManageDocumentsPage() {
   async function publish() {
     if (!title.trim() || !file) { toast.error("أدخل العنوان واختر ملف PDF."); return; }
     if (!isTeaching && targetRoles.length === 0) { toast.error("حدد دوراً واحداً على الأقل."); return; }
-    if (isTeaching && (!schoolId || !academicYearId || !termId || !gradeId || !subjectKey || selectedOfferingIds.length === 0)) {
+    if (isTeaching && (selectedSchoolIds.length === 0 || !academicYearId || !termId || !gradeId || !subjectKey || selectedOfferingIds.length === 0)) {
       toast.error("أكمل استهداف المدرسة والسنة والفصل والصف والمادة، ثم اختر فصلاً واحداً على الأقل."); return;
     }
     setBusyId("publish");
     try {
       if (isTeaching) {
         const selectedOfferings = matchingOfferings.filter((item) => selectedOfferingIds.includes(item.id));
-        await publishTeachingPdfResource({ actor, kind: kind as "ENRICHMENT_MATERIAL" | "CURRICULUM_DISTRIBUTION", title, description, targetRoleKeys: TEACHER_ROLES, schoolId, academicYearId, termId, gradeId, subjectKey, classIds: selectedOfferings.map((item) => item.classId), classSubjectOfferingIds: selectedOfferingIds, file });
+        await publishTeachingPdfResource({ actor, kind: kind as "ENRICHMENT_MATERIAL" | "CURRICULUM_DISTRIBUTION", title, description, targetRoleKeys: TEACHER_ROLES, schoolIds: selectedSchoolIds, academicYearId, termId, gradeId, subjectKey, classIds: selectedOfferings.map((item) => item.classId), classSubjectOfferingIds: selectedOfferings.map((item) => item.id), file });
       } else {
         await publishPdfResource({ actor, title, description, targetRoleKeys: targetRoles, schoolIds, requiresAcknowledgement, file });
       }
@@ -151,8 +172,7 @@ export default function ManageDocumentsPage() {
       <label className="block space-y-2 text-sm"><span className="font-medium">نوع المورد</span><select value={kind} onChange={(event) => changeKind(event.target.value as PdfResourceKind)} className="h-11 w-full rounded-xl border bg-background px-3 md:max-w-md">{(Object.keys(RESOURCE_TYPE_LABELS) as PdfResourceKind[]).map((item) => <option key={item} value={item}>{RESOURCE_TYPE_LABELS[item]}</option>)}</select></label>
       <div className="grid gap-4 md:grid-cols-2"><label className="space-y-2 text-sm"><span className="font-medium">العنوان</span><input value={title} onChange={(event) => setTitle(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label><label className="space-y-2 text-sm"><span className="font-medium">ملف PDF</span><input type="file" accept="application/pdf,.pdf" onChange={(event) => setFile(event.target.files?.[0] ?? null)} className="block w-full text-sm" /><span className="text-xs text-muted-foreground">PDF فقط، بحد أقصى 25 ميجابايت.</span></label></div>
       <label className="block space-y-2 text-sm"><span className="font-medium">الوصف</span><textarea value={description} onChange={(event) => setDescription(event.target.value)} className="min-h-24 w-full rounded-xl border bg-background p-3" /></label>
-      {isTeaching ? <section className="space-y-4 rounded-2xl border bg-muted/20 p-4"><div><h3 className="font-semibold">استهداف الإسنادات التعليمية</h3><p className="mt-1 text-sm text-muted-foreground">يستهدف المورد معلمي الـ offerings المختارة فقط، دون تكرار ملف PDF.</p></div><div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3"><label className="space-y-2 text-sm"><span>المدرسة</span><select value={schoolId} onChange={(event) => setSchoolId(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر المدرسة</option>{actor.schools.map((school) => <option key={school.id} value={school.id}>{school.name}</option>)}</select></label><label className="space-y-2 text-sm"><span>السنة الدراسية</span><select value={academicYearId} disabled={!schoolId} onChange={(event) => setAcademicYearId(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر السنة</option>{academicYearIds.map((item) => <option key={item} value={item}>{item}</option>)}</select></label><label className="space-y-2 text-sm"><span>الفصل الدراسي</span><select value={termId} disabled={!academicYearId} onChange={(event) => setTermId(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر الفصل</option>{terms.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}</select></label><label className="space-y-2 text-sm"><span>الصف</span><select value={gradeId} disabled={!academicYearId} onChange={(event) => setGradeId(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر الصف</option>{gradeIds.map((item) => <option key={item} value={item}>{gradeNames.get(item) ?? item}</option>)}</select></label><label className="space-y-2 text-sm"><span>المادة</span><select value={subjectKey} disabled={!gradeId} onChange={(event) => setSubjectKey(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر المادة</option>{subjectKeys.map((item) => <option key={item} value={item}>{actor.classSubjectOfferings.find((offering) => offering.subjectKey === item)?.subjectTitleSnapshot || item}</option>)}</select></label></div>
-      {subjectKey ? <div className="space-y-2"><p className="text-sm font-medium">الفصول / الـ offerings المطابقة</p>{matchingOfferings.length === 0 ? <p className="rounded-xl border border-dashed p-3 text-sm text-muted-foreground">لا توجد offerings فعالة مطابقة لهذا الاختيار.</p> : <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{matchingOfferings.map((offering) => <label key={offering.id} className="flex items-center gap-2 rounded-xl border bg-background p-3 text-sm"><input type="checkbox" checked={selectedOfferingIds.includes(offering.id)} onChange={(event) => setSelectedOfferingIds((current) => event.target.checked ? [...current, offering.id] : current.filter((item) => item !== offering.id))} /><span><span className="block font-medium">{gradeNames.get(offering.gradeId) ?? offering.gradeId} — {offering.subjectTitleSnapshot || offering.subjectKey}</span><span className="text-muted-foreground">{classNames.get(offering.classId) ?? offering.classId}</span></span></label>)}</div>}</div> : null}</section> : <><fieldset className="space-y-2"><legend className="text-sm font-medium">الأدوار المستهدفة</legend><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{MembershipRole.options.map((role) => <label key={role} className="flex items-center gap-2 rounded-xl border p-3 text-sm"><input type="checkbox" checked={targetRoles.includes(role)} onChange={(event) => setTargetRoles((current) => event.target.checked ? [...current, role] : current.filter((item) => item !== role))} /> {getArabicRoleLabel(role)}</label>)}</div></fieldset>{actor.schools.length > 0 ? <fieldset className="space-y-2"><legend className="text-sm font-medium">استهداف المدارس <span className="font-normal text-muted-foreground">(اختياري — اتركه فارغاً لجميع المدارس)</span></legend><div className="flex flex-wrap gap-2">{actor.schools.map((school) => <label key={school.id} className="flex items-center gap-2 rounded-xl border px-3 py-2 text-sm"><input type="checkbox" checked={schoolIds.includes(school.id)} onChange={(event) => setSchoolIds((current) => event.target.checked ? [...current, school.id] : current.filter((item) => item !== school.id))} /> {school.name}</label>)}</div></fieldset> : null}<label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={requiresAcknowledgement} onChange={(event) => setRequiresAcknowledgement(event.target.checked)} /> يتطلب إقرار الموظف بالاطلاع</label></>}
+      {isTeaching ? <section className="space-y-4 rounded-2xl border bg-muted/20 p-4"><div><h3 className="font-semibold">استهداف الإسنادات التعليمية</h3><p className="mt-1 text-sm text-muted-foreground">اختر مدرسة واحدة أو أكثر؛ سيستهدف المورد الـ offerings المطابقة المختارة فقط، دون تكرار ملف PDF.</p></div><fieldset className="space-y-2"><legend className="text-sm font-medium">المدارس المستهدفة <span className="font-normal text-muted-foreground">(اختر مدرسة واحدة على الأقل)</span></legend><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{actor.schools.map((school) => <label key={school.id} className="flex items-center gap-2 rounded-xl border bg-background p-3 text-sm"><input type="checkbox" checked={selectedSchoolIds.includes(school.id)} onChange={(event) => setSelectedSchoolIds((current) => event.target.checked ? Array.from(new Set([...current, school.id])) : current.filter((item) => item !== school.id))} /> {school.name}</label>)}</div></fieldset><div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4"><label className="space-y-2 text-sm"><span>السنة الدراسية</span><select value={academicYearId} disabled={selectedSchoolIds.length === 0} onChange={(event) => setAcademicYearId(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر السنة</option>{academicYearIds.map((item) => <option key={item} value={item}>{item}</option>)}</select></label><label className="space-y-2 text-sm"><span>الفصل الدراسي</span><select value={termId} disabled={!academicYearId} onChange={(event) => setTermId(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر الفصل</option>{terms.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}</select></label><label className="space-y-2 text-sm"><span>الصف</span><select value={gradeId} disabled={!academicYearId} onChange={(event) => setGradeId(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر الصف</option>{gradeIds.map((item) => <option key={item} value={item}>{gradeNames.get(item) ?? item}</option>)}</select></label><label className="space-y-2 text-sm"><span>المادة</span><select value={subjectKey} disabled={!gradeId} onChange={(event) => setSubjectKey(event.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="">اختر المادة</option>{subjectKeys.map((item) => <option key={item} value={item}>{actor.classSubjectOfferings.find((offering) => offering.subjectKey === item)?.subjectTitleSnapshot || item}</option>)}</select></label></div>{subjectKey ? <div className="space-y-3"><p className="text-sm font-medium">الفصول / الـ offerings المطابقة حسب المدرسة</p>{matchingOfferingsBySchool.map(({ schoolId, offerings }) => <div key={schoolId} className="rounded-xl border bg-background p-3"><p className="font-semibold">{schoolNames.get(schoolId) ?? schoolId}</p>{offerings.length === 0 ? <p className="mt-2 text-sm text-muted-foreground">لا توجد offerings فعالة مطابقة لهذه المدرسة.</p> : <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{offerings.map((offering) => <label key={offering.id} className="flex items-center gap-2 rounded-xl border p-3 text-sm"><input type="checkbox" checked={selectedOfferingIds.includes(offering.id)} onChange={(event) => setSelectedOfferingIds((current) => event.target.checked ? Array.from(new Set([...current, offering.id])) : current.filter((item) => item !== offering.id))} /><span><span className="block font-medium">{classNames.get(offering.classId) ?? offering.classId}</span><span className="text-muted-foreground">{gradeNames.get(offering.gradeId) ?? offering.gradeId} — {offering.subjectTitleSnapshot || offering.subjectKey}</span></span></label>)}</div>}</div>)}</div> : null}</section> : <><fieldset className="space-y-2"><legend className="text-sm font-medium">الأدوار المستهدفة</legend><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{MembershipRole.options.map((role) => <label key={role} className="flex items-center gap-2 rounded-xl border p-3 text-sm"><input type="checkbox" checked={targetRoles.includes(role)} onChange={(event) => setTargetRoles((current) => event.target.checked ? [...current, role] : current.filter((item) => item !== role))} /> {getArabicRoleLabel(role)}</label>)}</div></fieldset>{actor.schools.length > 0 ? <fieldset className="space-y-2"><legend className="text-sm font-medium">استهداف المدارس <span className="font-normal text-muted-foreground">(اختياري — اتركه فارغاً لجميع المدارس)</span></legend><div className="flex flex-wrap gap-2">{actor.schools.map((school) => <label key={school.id} className="flex items-center gap-2 rounded-xl border px-3 py-2 text-sm"><input type="checkbox" checked={schoolIds.includes(school.id)} onChange={(event) => setSchoolIds((current) => event.target.checked ? [...current, school.id] : current.filter((item) => item !== school.id))} /> {school.name}</label>)}</div></fieldset> : null}<label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={requiresAcknowledgement} onChange={(event) => setRequiresAcknowledgement(event.target.checked)} /> يتطلب إقرار الموظف بالاطلاع</label></>}
       <Button disabled={busyId === "publish"} onClick={() => void publish()}>{busyId === "publish" ? <Loader2 className="size-4 animate-spin" /> : <FilePlus2 className="size-4" />} نشر المستند</Button>
     </CardContent></Card> : null}
     {error ? <Card className="border-destructive/40"><CardContent className="p-5 text-sm text-destructive">{error}</CardContent></Card> : null}

@@ -153,16 +153,18 @@ export async function listMyTeachingPdfResources(actor: StaffActorData) {
 
 export function getSelectedTeachingOfferings(params: {
   offerings: ClassSubjectOffering[];
-  schoolId: string;
+  schoolIds: string[];
   academicYearId: string;
   gradeId: string;
   subjectKey: string;
 }) {
+  const schoolIds = new Set(params.schoolIds);
+
   return params.offerings.filter(
     (offering) =>
       offering.status === "ACTIVE" &&
       offering.isArchived !== true &&
-      offering.schoolId === params.schoolId &&
+      schoolIds.has(offering.schoolId) &&
       offering.academicYearId === params.academicYearId &&
       offering.gradeId === params.gradeId &&
       offering.subjectKey === params.subjectKey,
@@ -254,7 +256,7 @@ export async function publishTeachingPdfResource(params: {
   title: string;
   description: string;
   targetRoleKeys: MembershipRole[];
-  schoolId: string;
+  schoolIds: string[];
   academicYearId: string;
   termId: string;
   gradeId: string;
@@ -274,6 +276,22 @@ export async function publishTeachingPdfResource(params: {
   const fileName = safePdfFileName(params.file.name);
   const storagePath = `orgs/${params.actor.orgId}/pdfResources/${resourceRef.id}/${fileName}`;
   const fileRef = ref(storage, storagePath);
+  const schoolIds = Array.from(new Set(params.schoolIds.map((schoolId) => schoolId.trim()).filter(Boolean)));
+  if (schoolIds.length === 0) {
+    throw new Error("At least one school is required for a teaching PDF resource.");
+  }
+  const selectedOfferings = getSelectedTeachingOfferings({
+    offerings: params.actor.classSubjectOfferings,
+    schoolIds,
+    academicYearId: params.academicYearId,
+    gradeId: params.gradeId,
+    subjectKey: params.subjectKey,
+  }).filter((offering) => params.classSubjectOfferingIds.includes(offering.id));
+  const selectedOfferingIds = Array.from(new Set(selectedOfferings.map((offering) => offering.id)));
+  const classIds = Array.from(new Set(selectedOfferings.map((offering) => offering.classId)));
+  if (selectedOfferingIds.length === 0) {
+    throw new Error("At least one teaching offering is required for a teaching PDF resource.");
+  }
   await uploadBytes(fileRef, params.file, { contentType: "application/pdf" });
   const now = Date.now();
   const resource = PdfResourceSchema.parse({
@@ -281,10 +299,10 @@ export async function publishTeachingPdfResource(params: {
     title: params.title.trim(), description: params.description.trim(),
     audience: {
       kind: "STAFF_ROLES", academicYearId: params.academicYearId, termId: params.termId,
-      targetRoleKeys: Array.from(new Set(params.targetRoleKeys)), schoolIds: [params.schoolId],
-      gradeIds: [params.gradeId], classIds: Array.from(new Set(params.classIds)),
+      targetRoleKeys: Array.from(new Set(params.targetRoleKeys)), schoolIds,
+      gradeIds: [params.gradeId], classIds,
       subjectKeys: [params.subjectKey],
-      classSubjectOfferingIds: Array.from(new Set(params.classSubjectOfferingIds)),
+      classSubjectOfferingIds: selectedOfferingIds,
     },
     requiresAcknowledgement: false, status: "PUBLISHED",
     file: { storagePath, originalName: params.file.name.trim() || fileName, contentType: "application/pdf", sizeBytes: params.file.size },

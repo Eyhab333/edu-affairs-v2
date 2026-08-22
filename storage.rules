@@ -19,14 +19,29 @@ service firebase.storage {
       return firestore.get(membershipPath(orgId)).data;
     }
 
+    function membershipIsActive(orgId) {
+      return membershipExists(orgId)
+        && (
+          membershipData(orgId).isActive == true
+          || membershipData(orgId).active == true
+        );
+    }
+
     function orgRole(orgId) {
       return membershipData(orgId).role != null
         ? membershipData(orgId).role
         : membershipData(orgId).roleKey;
     }
 
+    function pdfResourceRole(orgId) {
+      return membershipData(orgId).roleKey != null
+        && membershipData(orgId).roleKey != ""
+        ? membershipData(orgId).roleKey
+        : membershipData(orgId).role;
+    }
+
     function canManageOrg(orgId) {
-      return membershipExists(orgId)
+      return membershipIsActive(orgId)
         && (
           orgRole(orgId) == "platform_owner"
           || orgRole(orgId) == "platform_admin"
@@ -75,11 +90,21 @@ service firebase.storage {
               resourceId
             ).audience.schoolIds
           )
+        )
+
+        || (
+          "scopeType" in membershipData(orgId)
+          && "scopeId" in membershipData(orgId)
+          && membershipData(orgId).scopeType == "SCHOOL"
+          && membershipData(orgId).scopeId in pdfResourceData(
+            orgId,
+            resourceId
+          ).audience.schoolIds
         );
     }
 
     function canReadStaffPdfResource(orgId, resourceId) {
-      return membershipExists(orgId)
+      return membershipIsActive(orgId)
         && pdfResourceExists(orgId, resourceId)
         && pdfResourceData(orgId, resourceId).status == "PUBLISHED"
         && pdfResourceData(
@@ -90,7 +115,7 @@ service firebase.storage {
           orgId,
           resourceId
         ).audience.targetRoleKeys.hasAny([
-          orgRole(orgId)
+          pdfResourceRole(orgId)
         ])
         && hasTargetSchoolAccess(orgId, resourceId);
     }

@@ -25,10 +25,16 @@ import {
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 import {
+  buildSubjectLessonPrepApprovePatch,
+  buildSubjectLessonPrepReturnPatch,
   buildSubjectLessonPrepSubmitPatch,
   canSubmitSubjectLessonPrep,
   getSubjectLessonPrepStatusLabel,
 } from "@takween/domain";
+import {
+  canReviewLessonPrepAtSchool,
+  getLessonPrepReviewSchoolIds,
+} from "@/lib/lesson-prep-review-policy";
 
 type StaffActorLike = LessonPrepWorkspaceActor & {
   orgId?: string;
@@ -164,6 +170,9 @@ export default function SubjectLessonPrepDetailsPage() {
   const termTitle = searchParams.get("termTitle");
   const termShortTitle = searchParams.get("termShortTitle");
   const subjectKey = searchParams.get("subjectKey");
+  const actorPersonId = staffActor?.personId || "";
+  const canAttemptReviewerAccess =
+    getLessonPrepReviewSchoolIds(actorPersonId).length > 0;
   const hasActiveWorkspaceAccess = useMemo(() => {
     return hasActiveLessonPrepWorkspaceAccess({
       actor: staffActor,
@@ -182,19 +191,22 @@ export default function SubjectLessonPrepDetailsPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [actionError, setActionError] = useState("");
   const [actionMessage, setActionMessage] = useState("");
+  const [returnReason, setReturnReason] = useState("");
 
   const preservedQuery = useMemo(() => {
     return new URLSearchParams(searchParams.toString());
   }, [searchParams]);
 
-  const listHref = `/staff/classes/${encodeURIComponent(
-    classId,
-  )}/subjects/${encodeURIComponent(offeringId)}/lesson-prep${buildQueryString(
-    preservedQuery,
-  )}`;
+  const listHref = hasActiveWorkspaceAccess
+    ? `/staff/classes/${encodeURIComponent(
+        classId,
+      )}/subjects/${encodeURIComponent(offeringId)}/lesson-prep${buildQueryString(
+        preservedQuery,
+      )}`
+    : "/staff/lesson-prep/approvals";
 
   const loadPrep = useCallback(async () => {
-    if (!orgId || !hasActiveWorkspaceAccess) {
+    if (!orgId || (!hasActiveWorkspaceAccess && !canAttemptReviewerAccess)) {
       setPrep(null);
       setLoadError("هذا الفصل أو المادة خارج نطاق إسنادك الحالي.");
       setLoading(false);
@@ -228,6 +240,19 @@ export default function SubjectLessonPrepDetailsPage() {
         return;
       }
 
+      const canReviewThisPrep =
+        data.status === "SUBMITTED" &&
+        canReviewLessonPrepAtSchool({
+          personId: actorPersonId,
+          schoolId: data.schoolId,
+        });
+
+      if (!hasActiveWorkspaceAccess && !canReviewThisPrep) {
+        setPrep(null);
+        setLoadError("لا تملك صلاحية فتح هذا التحضير.");
+        return;
+      }
+
       setPrep(data);
     } catch (error) {
       setPrep(null);
@@ -237,13 +262,21 @@ export default function SubjectLessonPrepDetailsPage() {
     } finally {
       setLoading(false);
     }
-  }, [orgId, hasActiveWorkspaceAccess, lessonPrepId, classId, offeringId]);
+  }, [
+    orgId,
+    hasActiveWorkspaceAccess,
+    canAttemptReviewerAccess,
+    lessonPrepId,
+    classId,
+    offeringId,
+    actorPersonId,
+  ]);
 
   useEffect(() => {
     void loadPrep();
   }, [loadPrep]);
 
-  if (!hasActiveWorkspaceAccess) {
+  if (!hasActiveWorkspaceAccess && !canAttemptReviewerAccess) {
     return (
       <main className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6">
         <section className="mx-auto max-w-3xl rounded-3xl border border-amber-200 bg-amber-50 p-6 text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
@@ -254,6 +287,45 @@ export default function SubjectLessonPrepDetailsPage() {
         </section>
       </main>
     );
+  }
+
+  const canReviewCurrentPrep = Boolean(
+    prep &&
+      prep.status === "SUBMITTED" &&
+      canReviewLessonPrepAtSchool({
+        personId: actorPersonId,
+        schoolId: prep.schoolId,
+      }),
+  );
+
+  async function getCurrentSubmittedPrep() {
+    if (!orgId || !actorPersonId) {
+      throw new Error("تعذر تحديد بيانات المراجع.");
+    }
+
+    const ref = doc(db, "orgs", orgId, "subjectLessonPreps", lessonPrepId);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      throw new Error("لم يتم العثور على هذا التحضير.");
+    }
+
+    const current = { id: snap.id, ...snap.data() } as SubjectLessonPrep;
+
+    if (current.status !== "SUBMITTED") {
+      throw new Error("تمت مراجعة هذا التحضير بالفعل.");
+    }
+
+    if (
+      !canReviewLessonPrepAtSchool({
+        personId: actorPersonId,
+        schoolId: current.schoolId,
+      })
+    ) {
+      throw new Error("لا تملك صلاحية مراجعة هذا التحضير.");
+    }
+
+    return { ref, current };
   }
 
   async function handleSubmitPrep() {
@@ -313,6 +385,11 @@ export default function SubjectLessonPrepDetailsPage() {
       return;
     }
 
+    if (!canReviewCurrentPrep) {
+      setActionError("لا تملك صلاحية اعتماد هذا التحضير.");
+      return;
+    }
+
     if (!prep) {
       setActionError("لم يتم تحميل التحضير بعد.");
       return;
@@ -327,28 +404,21 @@ export default function SubjectLessonPrepDetailsPage() {
     setActionError("");
     setActionMessage("");
 
-    const now = Date.now();
-    const actorPersonId = staffActor?.personId || staffActor?.uid || "";
-
     try {
-      const ref = doc(db, "orgs", orgId, "subjectLessonPreps", lessonPrepId);
-
-      await updateDoc(ref, {
-        status: "APPROVED",
-        approvedAt: now,
-        approvedByPersonId: actorPersonId,
-        updatedAt: now,
+      const { ref } = await getCurrentSubmittedPrep();
+      const approvePatch = buildSubjectLessonPrepApprovePatch({
+        actorPersonId,
+        now: Date.now(),
       });
+
+      await updateDoc(ref, approvePatch);
 
       setPrep((current) => {
         if (!current) return current;
 
         return {
           ...current,
-          status: "APPROVED",
-          approvedAt: now,
-          approvedByPersonId: actorPersonId,
-          updatedAt: now,
+          ...approvePatch,
         };
       });
 
@@ -368,6 +438,11 @@ export default function SubjectLessonPrepDetailsPage() {
       return;
     }
 
+    if (!canReviewCurrentPrep) {
+      setActionError("لا تملك صلاحية إعادة هذا التحضير.");
+      return;
+    }
+
     if (!prep) {
       setActionError("لم يتم تحميل التحضير بعد.");
       return;
@@ -378,38 +453,37 @@ export default function SubjectLessonPrepDetailsPage() {
       return;
     }
 
+    const normalizedReturnReason = returnReason.trim();
+
+    if (!normalizedReturnReason) {
+      setActionError("سبب الإعادة مطلوب.");
+      return;
+    }
+
     setActionLoading(true);
     setActionError("");
     setActionMessage("");
 
-    const now = Date.now();
-    const actorPersonId = staffActor?.personId || staffActor?.uid || "";
-    const returnReason = "يرجى مراجعة التحضير وإجراء التعديلات المطلوبة.";
-
     try {
-      const ref = doc(db, "orgs", orgId, "subjectLessonPreps", lessonPrepId);
-
-      await updateDoc(ref, {
-        status: "RETURNED",
-        returnedAt: now,
-        returnedByPersonId: actorPersonId,
-        returnReason,
-        updatedAt: now,
+      const { ref } = await getCurrentSubmittedPrep();
+      const returnPatch = buildSubjectLessonPrepReturnPatch({
+        actorPersonId,
+        returnReason: normalizedReturnReason,
+        now: Date.now(),
       });
+
+      await updateDoc(ref, returnPatch);
 
       setPrep((current) => {
         if (!current) return current;
 
         return {
           ...current,
-          status: "RETURNED",
-          returnedAt: now,
-          returnedByPersonId: actorPersonId,
-          returnReason,
-          updatedAt: now,
+          ...returnPatch,
         };
       });
 
+      setReturnReason("");
       setActionMessage("تمت إعادة التحضير للتعديل.");
     } catch (error) {
       setActionError(
@@ -680,6 +754,44 @@ export default function SubjectLessonPrepDetailsPage() {
                           ? "إعادة إرسال التحضير"
                           : "إرسال التحضير"}
                     </button>
+                  ) : prep.status === "SUBMITTED" && canReviewCurrentPrep ? (
+                    <div className="space-y-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm leading-7 text-foreground">
+                      <div>
+                        <p className="font-bold">مراجعة التحضير</p>
+                        <p className="mt-1 text-muted-foreground">
+                          يمكنك اعتماد التحضير أو إعادته إلى المعلم مع توضيح المطلوب.
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => void handleApprovePrep()}
+                        disabled={actionLoading}
+                        className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {actionLoading ? "جارٍ الاعتماد..." : "اعتماد التحضير"}
+                      </button>
+
+                      <label className="block">
+                        <span className="mb-1 block font-medium">سبب الإعادة</span>
+                        <textarea
+                          value={returnReason}
+                          onChange={(event) => setReturnReason(event.target.value)}
+                          rows={3}
+                          placeholder="اكتب الملاحظات المطلوبة من المعلم"
+                          className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none transition focus:border-primary"
+                        />
+                      </label>
+
+                      <button
+                        type="button"
+                        onClick={() => void handleReturnPrep()}
+                        disabled={actionLoading || !returnReason.trim()}
+                        className="inline-flex h-11 w-full items-center justify-center rounded-2xl border border-amber-300 bg-amber-50 px-4 text-sm font-semibold text-amber-900 shadow-sm transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100 dark:hover:bg-amber-950/50"
+                      >
+                        {actionLoading ? "جارٍ الإعادة..." : "إعادة إلى المعلم"}
+                      </button>
+                    </div>
                   ) : prep.status === "SUBMITTED" ? (
                     <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm leading-7 text-sky-900 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100">
                       <p className="font-bold">تم إرسال التحضير</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type ComponentType } from "react";
+import { useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { addDoc, collection } from "firebase/firestore";
 
@@ -14,15 +14,8 @@ import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   ArrowRight,
   BookOpenCheck,
-  CalendarDays,
-  CheckCircle2,
   ClipboardList,
-  FileText,
-  GraduationCap,
-  Layers3,
-  Lightbulb,
   Save,
-  School,
 } from "lucide-react";
 
 function getParamValue(value: string | string[] | undefined) {
@@ -47,6 +40,8 @@ export default function NewSubjectLessonPrepPage() {
 
   const staffActor = actor as (LessonPrepWorkspaceActor & {
     orgId?: string;
+    person?: { displayName?: string } | null;
+    userProfile?: { displayName?: string } | null;
   }) | null;
 
   const [saving, setSaving] = useState(false);
@@ -63,6 +58,7 @@ export default function NewSubjectLessonPrepPage() {
   const termTitle = searchParams.get("termTitle");
   const termShortTitle = searchParams.get("termShortTitle");
   const subjectKey = searchParams.get("subjectKey");
+  const subjectTitle = searchParams.get("subjectTitle");
   const teacherAssignmentId = searchParams.get("teacherAssignmentId");
   const hasActiveWorkspaceAccess = useMemo(() => {
     return hasActiveLessonPrepWorkspaceAccess({
@@ -135,6 +131,10 @@ export default function NewSubjectLessonPrepPage() {
           subjectKey: subjectKey || "",
 
           teacherPersonId: staffActor?.personId || staffActor?.uid || "",
+          teacherDisplayName:
+            staffActor?.person?.displayName ||
+            staffActor?.userProfile?.displayName ||
+            "",
           teacherAssignmentId: teacherAssignmentId || "",
 
           lessonTitle,
@@ -210,128 +210,110 @@ export default function NewSubjectLessonPrepPage() {
       dir="rtl"
       className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6"
     >
-      <section className="mx-auto flex max-w-7xl flex-col gap-6">
-        <div className="flex flex-col gap-4">
-          <Link
-            href={listHref}
-            className="inline-flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-          >
-            <ArrowRight className="h-4 w-4" />
-            الرجوع إلى تحضير الدروس
-          </Link>
+      <section className="mx-auto flex max-w-5xl flex-col gap-6">
+        <Link
+          href={listHref}
+          className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+        >
+          <ArrowRight className="h-4 w-4" />
+          الرجوع إلى تحضير الدروس
+        </Link>
 
-          <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="border-b border-slate-100 bg-gradient-to-l from-emerald-50 via-white to-white p-6 dark:border-slate-800 dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-8">
-              <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-                <div className="space-y-3">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                    <BookOpenCheck className="h-3.5 w-3.5" />
-                    Milestone 15C
-                  </div>
-
-                  <div className="space-y-2">
-                    <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
-                      تحضير درس جديد
-                    </h1>
-
-                    <p className="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400">
-                      هذه نسخة مبدئية من نموذج تحضير الدرس. في هذه الخطوة نثبت
-                      شكل الإدخال وتجربة المستخدم، ثم نضيف الحفظ كمسودة أو
-                      الإرسال في الخطوة التالية.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-fit rounded-3xl bg-slate-950 px-5 py-3 text-white dark:bg-slate-50 dark:text-slate-950">
-                  <p className="text-xs opacity-70">الفصل الدراسي</p>
-                  <p className="text-2xl font-bold">
-                    {getSafeText(termShortTitle || termTitle || termId)}
-                  </p>
-                </div>
-              </div>
+        <header className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+              <BookOpenCheck className="h-6 w-6" />
             </div>
 
-            <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
-              <ContextCard
-                icon={School}
-                label="المدرسة"
-                value={getSafeText(schoolId)}
-              />
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                تحضير درس جديد
+              </h1>
 
-              <ContextCard
-                icon={CalendarDays}
-                label="السنة الدراسية"
-                value={getSafeText(academicYearId)}
-              />
+              <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
+                أضف تفاصيل الدرس واحفظ التحضير كمسودة للعودة إليه لاحقًا.
+              </p>
 
-              <ContextCard
-                icon={GraduationCap}
-                label="الصف"
-                value={getSafeText(gradeId)}
-              />
-
-              <ContextCard
-                icon={Layers3}
-                label="المادة"
-                value={getSafeText(subjectKey)}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <form
-            action={handleSaveDraft}
-            className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-          >
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                <ClipboardList className="h-5 w-5" />
-              </div>
-
-              <div>
-                <h2 className="font-bold">بيانات التحضير</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  أدخل عناصر التحضير الأساسية للدرس.
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <p>
+                  <span className="text-slate-500 dark:text-slate-400">المادة:</span>{" "}
+                  <span className="font-semibold">
+                    {getSafeText(subjectTitle, "المادة")}
+                  </span>
+                </p>
+                <p>
+                  <span className="text-slate-500 dark:text-slate-400">
+                    الفصل الدراسي:
+                  </span>{" "}
+                  <span className="font-semibold">
+                    {getSafeText(termShortTitle || termTitle)}
+                  </span>
                 </p>
               </div>
             </div>
+          </div>
+        </header>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <TextField
-                label="عنوان الدرس"
-                name="lessonTitle"
-                placeholder="مثال: جمع الكسور المتشابهة"
-              />
-
-              <TextField
-                label="الوحدة"
-                name="unitTitle"
-                placeholder="مثال: الوحدة الثالثة"
-              />
-
-              <TextField
-                label="الأسبوع"
-                name="weekLabel"
-                placeholder="مثال: الأسبوع الخامس"
-              />
-
-              <TextField label="تاريخ الدرس" name="lessonDate" type="date" />
-
-              <TextField
-                label="زمن الحصة"
-                name="durationMinutes"
-                placeholder="مثال: 45 دقيقة"
-              />
-
-              <TextField
-                label="رقم الحصة / الدرس"
-                name="lessonNumber"
-                placeholder="مثال: الدرس الثاني"
-              />
+        <form
+          action={handleSaveDraft}
+          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-7"
+        >
+          <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-slate-800">
+            <div className="rounded-xl bg-emerald-50 p-2.5 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+              <ClipboardList className="h-5 w-5" />
             </div>
 
-            <div className="mt-6 grid gap-4">
+            <div>
+              <h2 className="font-bold">بيانات التحضير</h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                أدخل عناصر التحضير الأساسية للدرس.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            <TextField
+              label="عنوان الدرس"
+              name="lessonTitle"
+              placeholder="مثال: جمع الكسور المتشابهة"
+            />
+
+            <TextField
+              label="الوحدة"
+              name="unitTitle"
+              placeholder="مثال: الوحدة الثالثة"
+            />
+
+            <TextField
+              label="الأسبوع"
+              name="weekLabel"
+              placeholder="مثال: الأسبوع الخامس"
+            />
+
+            <TextField label="تاريخ الدرس" name="lessonDate" type="date" />
+
+            <TextField
+              label="زمن الحصة"
+              name="durationMinutes"
+              placeholder="مثال: 45 دقيقة"
+            />
+
+            <TextField
+              label="رقم الحصة / الدرس"
+              name="lessonNumber"
+              placeholder="مثال: الدرس الثاني"
+            />
+          </div>
+
+          <div className="mt-8 border-t border-slate-100 pt-6 dark:border-slate-800">
+            <div className="mb-5">
+              <h3 className="font-bold">تفاصيل الدرس</h3>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                وضّح أهداف الدرس وتسلسله وطرق تقويم تعلم الطلاب.
+              </p>
+            </div>
+
+            <div className="grid gap-5">
               <TextareaField
                 label="أهداف الدرس"
                 name="objectives"
@@ -381,151 +363,46 @@ export default function NewSubjectLessonPrepPage() {
                 placeholder="واجب مرتبط أو ملاحظات للدرس..."
               />
             </div>
+          </div>
 
-            {saveError ? (
-              <div className="mt-6 rounded-3xl border border-rose-200 bg-rose-50 p-4 text-sm leading-7 text-rose-900 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-100">
-                {saveError}
-              </div>
-            ) : null}
+          {saveError ? (
+            <div className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm leading-7 text-rose-900 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-100">
+              {saveError}
+            </div>
+          ) : null}
 
-            {savedLessonPrepId ? (
-              <div className="mt-6 rounded-3xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-7 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100">
-                <p className="font-bold">تم حفظ مسودة التحضير بنجاح.</p>
+          {savedLessonPrepId ? (
+            <div className="mt-6 flex flex-col gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100 sm:flex-row sm:items-center sm:justify-between">
+              <p className="font-bold">تم حفظ مسودة التحضير بنجاح.</p>
 
-                <div className="mt-2 font-mono text-xs">
-                  {savedLessonPrepId}
-                </div>
-
-                <div className="mt-4">
-                  <Link
-                    href={`/staff/classes/${encodeURIComponent(
-                      classId,
-                    )}/subjects/${encodeURIComponent(
-                      offeringId,
-                    )}/lesson-prep/${encodeURIComponent(
-                      savedLessonPrepId,
-                    )}${buildQueryString(preservedQuery)}`}
-                    className="inline-flex h-10 items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
-                  >
-                    فتح التحضير
-                  </Link>
-                </div>
-              </div>
-            ) : null}
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
-              <button
-                type="submit"
-                disabled={saving}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              <Link
+                href={`/staff/classes/${encodeURIComponent(
+                  classId,
+                )}/subjects/${encodeURIComponent(
+                  offeringId,
+                )}/lesson-prep/${encodeURIComponent(
+                  savedLessonPrepId,
+                )}${buildQueryString(preservedQuery)}`}
+                className="inline-flex h-10 items-center justify-center rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
               >
-                <Save className="h-4 w-4" />
-                {saving ? "جاري الحفظ..." : "حفظ مسودة"}
-              </button>
+                فتح التحضير
+              </Link>
             </div>
-          </form>
+          ) : null}
 
-          <aside className="flex flex-col gap-4">
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex items-center gap-3">
-                <div className="rounded-2xl bg-sky-50 p-3 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-                  <Lightbulb className="h-5 w-5" />
-                </div>
-
-                <div>
-                  <h2 className="font-bold">اقتراح تنظيم التحضير</h2>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    نموذج مبسط قابل للتطوير.
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 space-y-3 text-sm leading-7 text-slate-600 dark:text-slate-400">
-                <p>ابدأ بعنوان واضح، ثم اكتب أهدافًا قابلة للملاحظة والقياس.</p>
-                <p>اجعل خطوات الدرس مرتبة: تمهيد، عرض، نشاط، تقويم، إغلاق.</p>
-                <p>لاحقًا يمكن ربط التحضير ببنك الأسئلة والواجبات والموارد.</p>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex items-center gap-3">
-                <div className="rounded-2xl bg-violet-50 p-3 text-violet-700 dark:bg-violet-950 dark:text-violet-300">
-                  <FileText className="h-5 w-5" />
-                </div>
-
-                <div>
-                  <h2 className="font-bold">سياق الحفظ القادم</h2>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    هذه القيم ستدخل في سجل التحضير.
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-2 text-sm">
-                <InfoRow label="classId" value={classId} />
-                <InfoRow label="offeringId" value={offeringId} />
-                <InfoRow label="schoolId" value={getSafeText(schoolId)} />
-                <InfoRow
-                  label="academicYearId"
-                  value={getSafeText(academicYearId)}
-                />
-                <InfoRow label="gradeId" value={getSafeText(gradeId)} />
-                <InfoRow label="termId" value={getSafeText(termId)} />
-                <InfoRow label="termTitle" value={getSafeText(termTitle)} />
-                <InfoRow
-                  label="termShortTitle"
-                  value={getSafeText(termShortTitle)}
-                />
-                <InfoRow label="subjectKey" value={getSafeText(subjectKey)} />
-                <InfoRow
-                  label="teacherAssignmentId"
-                  value={getSafeText(teacherAssignmentId)}
-                />
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-sm leading-7 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100">
-              <div className="flex items-center gap-2 font-bold">
-                <CheckCircle2 className="h-4 w-4" />
-                المرحلة الحالية
-              </div>
-
-              <p className="mt-2">
-                عند نجاح البناء وفتح الصفحة، ننتقل إلى 15D: تعريف سجل التحضير
-                وحفظه كمسودة في Firestore.
-              </p>
-            </div>
-          </aside>
-        </div>
+          <div className="mt-8 flex justify-start border-t border-slate-100 pt-5 dark:border-slate-800">
+            <button
+              type="submit"
+              disabled={saving}
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+            >
+              <Save className="h-4 w-4" />
+              {saving ? "جاري الحفظ..." : "حفظ مسودة"}
+            </button>
+          </div>
+        </form>
       </section>
     </main>
-  );
-}
-
-function ContextCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex items-start gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        <div className="min-w-0">
-          <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-          <p className="mt-1 truncate font-bold text-slate-950 dark:text-slate-50">
-            {value}
-          </p>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -541,7 +418,7 @@ function TextField({
   type?: string;
 }) {
   return (
-    <label className="grid gap-2">
+    <label className="grid gap-1.5">
       <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
         {label}
       </span>
@@ -550,7 +427,7 @@ function TextField({
         name={name}
         type={type}
         placeholder={placeholder}
-        className="h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-emerald-700 dark:focus:ring-emerald-950"
+        className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-emerald-700 dark:focus:ring-emerald-950"
       />
     </label>
   );
@@ -568,7 +445,7 @@ function TextareaField({
   rows?: number;
 }) {
   return (
-    <label className="grid gap-2">
+    <label className="grid gap-1.5">
       <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
         {label}
       </span>
@@ -577,19 +454,8 @@ function TextareaField({
         name={name}
         rows={rows}
         placeholder={placeholder}
-        className="resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-emerald-700 dark:focus:ring-emerald-950"
+        className="resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-emerald-700 dark:focus:ring-emerald-950"
       />
     </label>
-  );
-}
-
-function InfoRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl border border-slate-100 px-3 py-2 dark:border-slate-800">
-      <span className="text-slate-500 dark:text-slate-400">{label}</span>
-      <span className="max-w-[12rem] truncate text-left font-mono text-xs font-medium text-slate-800 dark:text-slate-100">
-        {value}
-      </span>
-    </div>
   );
 }

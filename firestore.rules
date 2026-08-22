@@ -47,6 +47,13 @@ service cloud.firestore {
         : membershipData(orgId).roleKey;
     }
 
+    function pdfResourceRole(orgId) {
+      return membershipData(orgId).roleKey != null
+        && membershipData(orgId).roleKey != ""
+        ? membershipData(orgId).roleKey
+        : membershipData(orgId).role;
+    }
+
     function hasOrgMembership(orgId) {
       return membershipIsActive(orgId);
     }
@@ -114,7 +121,7 @@ function isTargetedStaffPdfResource(orgId, resourceData) {
     && resourceData.audience is map
     && resourceData.audience.kind == "STAFF_ROLES"
     && resourceData.audience.targetRoleKeys is list
-    && orgRole(orgId) in resourceData.audience.targetRoleKeys
+    && pdfResourceRole(orgId) in resourceData.audience.targetRoleKeys
     && resourceData.audience.schoolIds is list
     && hasPdfResourceSchoolAccess(
       orgId,
@@ -184,6 +191,21 @@ function hasAssignedClassSubjectAccess(
     && membershipData(orgId).scopes.subjectKeys is list
     && sessionData.subjectKey
       in membershipData(orgId).scopes.subjectKeys;
+}
+
+function isTemporaryLessonPrepReviewerForSchool(orgId, schoolId) {
+  return hasOrgMembership(orgId)
+    && (
+      (
+        currentUserPersonId() in ["p-s-sayed", "p-n-alshaya"]
+        && schoolId in ["mrb-boys-sayh", "mrb-boys-faleh", "mrb-girls"]
+      )
+      || (
+        currentUserPersonId()
+          in ["p-t-altwala", "p-malrameh", "p-f-alhamaad", "p-a-almansur"]
+        && schoolId in ["kg-01", "kg-02", "kg-03", "kg-04"]
+      )
+    );
 }
 
 
@@ -797,6 +819,13 @@ match /studentHomeworkAssignments/{homeworkId} {
 match /subjectLessonPreps/{lessonPrepId} {
   allow get, list: if canManageOrg(orgId)
     || (
+      resource.data.status == "SUBMITTED"
+      && isTemporaryLessonPrepReviewerForSchool(
+        orgId,
+        resource.data.schoolId
+      )
+    )
+    || (
       hasAssignedClassSubjectAccess(
         orgId,
         resource.data
@@ -856,6 +885,48 @@ match /subjectLessonPreps/{lessonPrepId} {
           resource.data.status == "RETURNED"
           && request.resource.data.status
             in ["RETURNED", "SUBMITTED"]
+        )
+      )
+    )
+    || (
+      resource.data.status == "SUBMITTED"
+      && isTemporaryLessonPrepReviewerForSchool(
+        orgId,
+        resource.data.schoolId
+      )
+      && (
+        (
+          request.resource.data.status == "APPROVED"
+          && request.resource.data.approvedByPersonId
+            == currentUserPersonId()
+          && request.resource.data.approvedAt is number
+          && request.resource.data.updatedAt
+            == request.resource.data.approvedAt
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly([
+              "status",
+              "approvedAt",
+              "approvedByPersonId",
+              "updatedAt"
+            ])
+        )
+        || (
+          request.resource.data.status == "RETURNED"
+          && request.resource.data.returnedByPersonId
+            == currentUserPersonId()
+          && request.resource.data.returnedAt is number
+          && request.resource.data.updatedAt
+            == request.resource.data.returnedAt
+          && request.resource.data.returnReason is string
+          && request.resource.data.returnReason.size() > 0
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly([
+              "status",
+              "returnedAt",
+              "returnedByPersonId",
+              "returnReason",
+              "updatedAt"
+            ])
         )
       )
     );
@@ -1738,7 +1809,7 @@ match /pdfResources/{resourceId} {
 
       && request.resource.data.uid == request.auth.uid
       && request.resource.data.personId == actorId
-      && request.resource.data.roleKey == orgRole(orgId)
+      && request.resource.data.roleKey == pdfResourceRole(orgId)
 
       && request.resource.data.displayName is string
       && request.resource.data.displayName != ""

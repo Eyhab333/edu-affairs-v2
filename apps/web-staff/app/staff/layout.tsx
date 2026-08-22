@@ -43,6 +43,7 @@ import { canAccessWorkDocumentation } from "@/lib/work-documentation";
 import { canManagePdfResources, isTeacherPdfResourceActor } from "@/lib/pdf-resources";
 import { canReviewTeacherPortfolios, canUseMyStaffPortfolio } from "@/lib/staff-portfolio";
 import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
+import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
 
 import {
   getStaffActorStats,
@@ -61,6 +62,7 @@ const navItems: Array<{
   teachingResources?: boolean;
   staffPortfolio?: "MY" | "REVIEW";
   performanceImprovement?: boolean;
+  lessonPrepApprovals?: boolean;
 }> = [
   {
     href: "/staff",
@@ -79,6 +81,12 @@ const navItems: Array<{
     label: "مهامي",
     icon: ClipboardList,
     moduleKey: "TASKS",
+  },
+  {
+    href: "/staff/lesson-prep/approvals",
+    label: "اعتماد التحاضير",
+    icon: ClipboardList,
+    lessonPrepApprovals: true,
   },
   {
     href: "/staff/my-documents",
@@ -257,9 +265,19 @@ function StaffShell({ children }: { children: ReactNode }) {
     pathname.startsWith("/staff/performance-improvement/");
   const canAccessPerformanceImprovementRoute =
     canAccessPerformanceImprovement(actor);
+  const canAccessLessonPrepApprovals =
+    getLessonPrepReviewSchoolIds(actor.personId).length > 0;
+  const isLessonPrepApprovalsRoute =
+    pathname === "/staff/lesson-prep/approvals" ||
+    pathname.startsWith("/staff/lesson-prep/approvals/");
+  const isLessonPrepReviewerDetailRoute =
+    pathname.startsWith("/staff/classes/") &&
+    pathname.includes("/lesson-prep/");
 
   const canAccessCurrentRoute =
-    isPerformanceImprovementRoute
+    isLessonPrepApprovalsRoute || isLessonPrepReviewerDetailRoute
+      ? canAccessLessonPrepApprovals
+      : isPerformanceImprovementRoute
       ? canAccessPerformanceImprovementRoute
       : isWorkDocumentationRoute
       ? canAccessDocumentation
@@ -284,6 +302,8 @@ function StaffShell({ children }: { children: ReactNode }) {
   ]);
 
   const visibleNavItems = navItems.filter((item) => {
+    if (item.lessonPrepApprovals) return canAccessLessonPrepApprovals;
+
     if (item.performanceImprovement) {
       return canAccessPerformanceImprovementRoute;
     }
