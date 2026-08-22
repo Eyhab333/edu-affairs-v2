@@ -558,11 +558,7 @@ function ClassSubjectWorkspaceCard({
               <Link
                 key={operation.operationKey}
                 href={href}
-                className={
-                  operation.isPrimary
-                    ? "inline-flex h-9 items-center gap-1.5 rounded-2xl bg-emerald-600 px-3 text-xs font-semibold text-white transition hover:bg-emerald-700"
-                    : "inline-flex h-9 items-center gap-1.5 rounded-2xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-                }
+                className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 {content}
               </Link>
