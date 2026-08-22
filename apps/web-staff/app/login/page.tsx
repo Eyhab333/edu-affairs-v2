@@ -92,7 +92,7 @@ export default function LoginPage() {
         <div className="hidden space-y-8 lg:block">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/80 shadow-2xl backdrop-blur">
             <Sparkles className="size-4 text-teal-300" />
-            بوابة تكوين للموظفين
+            مدار
           </div>
 
           <div className="space-y-5">
@@ -126,22 +126,17 @@ export default function LoginPage() {
         <div className="mx-auto w-full max-w-md">
           <section className="rounded-[2rem] border border-white/15 bg-white/92 p-6 text-slate-950 shadow-2xl backdrop-blur-xl md:p-8">
             <div className="mb-7 text-center">
-              <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-teal-700 text-white shadow-lg shadow-teal-900/20">
-                <ShieldCheck className="size-7" />
-              </div>
+              <img
+                src="/takween-logo.png"
+                alt="شركة تكوين المعرفة للتعليم"
+                className="mx-auto mb-3 h-28 w-auto object-contain"
+              />
 
-              <p className="text-sm font-semibold text-teal-700">
-                تكوين المعرفة للتعليم
-              </p>
+              <p className="text-xl font-bold text-teal-700">مدار</p>
 
-              <h1 className="mt-2 text-2xl font-bold text-slate-950">
+              <h1 className="mt-3 text-2xl font-bold text-slate-950">
                 تسجيل الدخول
               </h1>
-
-              <p className="mt-3 text-sm leading-7 text-slate-500">
-                سجّل دخولك للوصول إلى مساحة عملك اليومية ومتابعة أعمالك
-                التعليمية والإدارية.
-              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">

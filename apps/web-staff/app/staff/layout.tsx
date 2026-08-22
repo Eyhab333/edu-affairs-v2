@@ -272,7 +272,8 @@ function StaffShell({ children }: { children: ReactNode }) {
     pathname.startsWith("/staff/lesson-prep/approvals/");
   const isLessonPrepReviewerDetailRoute =
     pathname.startsWith("/staff/classes/") &&
-    pathname.includes("/lesson-prep/");
+    pathname.includes("/lesson-prep/") &&
+    !pathname.endsWith("/lesson-prep/new");
 
   const canAccessCurrentRoute =
     isLessonPrepApprovalsRoute || isLessonPrepReviewerDetailRoute
@@ -351,7 +352,7 @@ function StaffShell({ children }: { children: ReactNode }) {
 
             <div>
               <p className="text-sm font-semibold text-foreground">
-                بوابة الموظفين
+                مدار
               </p>
               <p className="text-xs text-muted-foreground">
                 {actorName}
