@@ -369,7 +369,7 @@ useEffect(() => {
     return (
       <main className="mx-auto max-w-7xl p-6">
         <div className="rounded-2xl border bg-card p-6">
-          جاري تحميل تقييماتي...
+          جاري تحميل تقييم الموظفين...
         </div>
       </main>
     );

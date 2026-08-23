@@ -158,13 +158,13 @@ export const staffNavItems: StaffNavItem[] = [
   },
   {
     href: "/staff/evaluations",
-    label: "تقييماتي",
+    label: "تقييم الموظفين",
     icon: GraduationCap,
     moduleKey: "EVALUATIONS",
   },
   {
     href: "/staff/my-evaluations",
-    label: "التقييمات",
+    label: "تقييماتي",
     icon: GraduationCap,
     moduleKey: "MY_EVALUATIONS",
   },
