@@ -26,6 +26,10 @@ export { dismissPerformanceImprovementSignal } from "./evaluations/dismiss-perfo
 export { updatePerformanceImprovementSettings } from "./evaluations/update-performance-improvement-settings";
 export * from "./student-directory";
 export { getStudentCaseReferralOptions } from "./student-cases/get-student-case-referral-options";
+export {
+  getTeacherWorkDetail,
+  getTeacherWorkOverview,
+} from "./teacher-work/teacher-work";
 export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-resource-acknowledgement-report";
 export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
 export { listMyTeachingPdfResources } from "./pdf-resources/list-my-teaching-pdf-resources";

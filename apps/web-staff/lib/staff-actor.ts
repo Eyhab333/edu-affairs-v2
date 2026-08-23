@@ -454,8 +454,9 @@ async function getTeacherAssignmentClassLinks(params: {
     "teacherAssignmentClassLinks",
   );
 
-  const chunks = chunkArray(params.assignmentIds, 10);
   const links: TeacherAssignmentClassLink[] = [];
+
+  const chunks = chunkArray(params.assignmentIds, 10);
 
   for (const chunk of chunks) {
     const snap = await getDocs(

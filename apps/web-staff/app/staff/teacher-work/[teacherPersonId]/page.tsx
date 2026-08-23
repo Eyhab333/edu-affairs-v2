@@ -76,7 +76,14 @@ export default function TeacherWorkDetailPage() {
     setLoading(true);
     setError(null);
     try {
-      setTeacher(await loadTeacherWorkSummary({ actor, teacherPersonId, period }));
+      setTeacher(
+        await loadTeacherWorkSummary({
+          orgId: actor.orgId,
+          academicYearId: actor.currentTerm?.academicYearId,
+          teacherPersonId,
+          period,
+        }),
+      );
     } catch (nextError) {
       setError(errorMessage(nextError));
     } finally {

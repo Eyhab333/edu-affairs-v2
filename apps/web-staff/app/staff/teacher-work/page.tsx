@@ -93,7 +93,12 @@ export default function TeacherWorkPage() {
     setLoading(true);
     setError(null);
     try {
-      setTeachers(await loadTeacherWorkSummaries({ actor }));
+      setTeachers(
+        await loadTeacherWorkSummaries({
+          orgId: actor.orgId,
+          academicYearId: actor.currentTerm?.academicYearId,
+        }),
+      );
     } catch (nextError) {
       setError(errorMessage(nextError));
     } finally {
