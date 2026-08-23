@@ -441,7 +441,7 @@ export default function LessonPrepApprovalsPage() {
             لا توجد تحاضير بانتظار المراجعة
           </h2>
           <p className="mt-2 text-sm leading-6 text-emerald-800/80 dark:text-emerald-200/80">
-            تمت معالجة جميع التحاضير المرسلة حاليًا.
+            لا توجد تحاضير مرسلة بانتظار المراجعة حاليًا.
           </p>
         </section>
       ) : (
