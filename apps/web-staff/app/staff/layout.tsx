@@ -44,6 +44,7 @@ import { canManagePdfResources, isTeacherPdfResourceActor } from "@/lib/pdf-reso
 import { canReviewTeacherPortfolios, canUseMyStaffPortfolio } from "@/lib/staff-portfolio";
 import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
+import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 
 import {
   getStaffActorStats,
@@ -63,6 +64,7 @@ const navItems: Array<{
   staffPortfolio?: "MY" | "REVIEW";
   performanceImprovement?: boolean;
   lessonPrepApprovals?: boolean;
+  teacherWork?: boolean;
 }> = [
   {
     href: "/staff",
@@ -77,6 +79,12 @@ const navItems: Array<{
     moduleKey: "CLASSES",
   },
   {
+    href: "/staff/my-documents",
+    label: "مهام وظيفتي",
+    icon: FileText,
+    pdfDocuments: "MY_DOCUMENTS",
+  },
+  {
     href: "/staff/tasks",
     label: "مهامي",
     icon: ClipboardList,
@@ -88,12 +96,7 @@ const navItems: Array<{
     icon: ClipboardList,
     lessonPrepApprovals: true,
   },
-  {
-    href: "/staff/my-documents",
-    label: "مهام وظيفتي",
-    icon: FileText,
-    pdfDocuments: "MY_DOCUMENTS",
-  },
+  
   {
     href: "/staff/teaching-resources",
     label: "المصادر التعليمية",
@@ -111,6 +114,12 @@ const navItems: Array<{
     label: "إنجازات المعلمين",
     icon: FileText,
     staffPortfolio: "REVIEW",
+  },
+  {
+    href: "/staff/teacher-work",
+    label: "متابعة أعمال المعلمين",
+    icon: UsersRound,
+    teacherWork: true,
   },
   {
     href: "/staff/documents/manage",
@@ -267,11 +276,16 @@ function StaffShell({ children }: { children: ReactNode }) {
     canAccessPerformanceImprovement(actor);
   const canAccessLessonPrepApprovals =
     getLessonPrepReviewSchoolIds(actor.personId).length > 0;
+  const isTeacherWorkRoute =
+    pathname === "/staff/teacher-work" || pathname.startsWith("/staff/teacher-work/");
+  const canAccessTeacherWorkRoute = canAccessTeacherWork(actor);
   const isLessonPrepApprovalsRoute =
     pathname === "/staff/lesson-prep/approvals" ||
     pathname.startsWith("/staff/lesson-prep/approvals/");
   const canAccessCurrentRoute =
-    isLessonPrepApprovalsRoute
+    isTeacherWorkRoute
+      ? canAccessTeacherWorkRoute
+      : isLessonPrepApprovalsRoute
       ? canAccessLessonPrepApprovals
       : isPerformanceImprovementRoute
       ? canAccessPerformanceImprovementRoute
@@ -298,6 +312,8 @@ function StaffShell({ children }: { children: ReactNode }) {
   ]);
 
   const visibleNavItems = navItems.filter((item) => {
+    if (item.teacherWork) return canAccessTeacherWorkRoute;
+
     if (item.lessonPrepApprovals) return canAccessLessonPrepApprovals;
 
     if (item.performanceImprovement) {

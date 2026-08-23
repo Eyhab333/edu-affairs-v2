@@ -168,6 +168,54 @@ function canReadPdfResource(orgId, resourceData) {
         );
     }
 
+    /*
+     * Read-only teacher-work monitoring. The role check mirrors the existing
+     * Web Staff leadership/supervision convention, while hasSchoolAccess below
+     * still limits every school-scoped record to the actor's assigned schools.
+     */
+    function canMonitorTeacherWork(orgId) {
+      return hasOrgMembership(orgId)
+        && (
+          canManageOrg(orgId)
+          || (
+            orgRole(orgId) in [
+              "EDU_SUPERVISOR",
+              "BOYS_EDU_SUPERVISOR",
+              "GIRLS_EDU_SUPERVISOR",
+              "KG_EDU_SUPERVISOR",
+              "ORG_SUPERVISION_HEAD",
+              "BOYS_SUPERVISION_HEAD",
+              "school_admin",
+              "school_manager",
+              "BOYS_PRINCIPAL",
+              "BOYS_VP",
+              "BOYS_EDU_VP",
+              "BOYS_TEACHERS_VP",
+              "GIRLS_PRINCIPAL",
+              "GIRLS_VP",
+              "KG_PRINCIPAL",
+              "KG_VP"
+            ]
+            && (
+              (
+                "scopes" in membershipData(orgId)
+                && membershipData(orgId).scopes is map
+                && "schoolIds" in membershipData(orgId).scopes
+                && membershipData(orgId).scopes.schoolIds is list
+                && membershipData(orgId).scopes.schoolIds.size() > 0
+              )
+              || (
+                "scopeType" in membershipData(orgId)
+                && "scopeId" in membershipData(orgId)
+                && membershipData(orgId).scopeType == "SCHOOL"
+                && membershipData(orgId).scopeId is string
+                && membershipData(orgId).scopeId != ""
+              )
+            )
+          )
+        );
+    }
+
 
 function hasAssignedClassSubjectAccess(
   orgId,
@@ -407,7 +455,9 @@ function canUseWorkDocumentation(orgId, schoolId, roleKey) {
           || (
             hasOrgMembership(orgId)
             && currentUserPersonId() == personId
-          );
+          )
+          // Targeted lookups only, after teacherAssignments identifies a person.
+          || canMonitorTeacherWork(orgId);
 
         allow list: if canManageOrg(orgId);
         allow create, update, delete: if canManageOrg(orgId);
@@ -444,6 +494,11 @@ function canUseWorkDocumentation(orgId, schoolId, roleKey) {
       match /teacherAssignments/{assignmentId} {
         allow get, list: if canManageOrg(orgId)
           || (
+            canMonitorTeacherWork(orgId)
+            && resource.data.schoolId is string
+            && hasSchoolAccess(orgId, resource.data.schoolId)
+          )
+          || (
             hasOrgMembership(orgId)
             && resource.data.teacherPersonId == currentUserPersonId()
           );
@@ -453,6 +508,11 @@ function canUseWorkDocumentation(orgId, schoolId, roleKey) {
 
       match /teacherAssignmentClassLinks/{linkId} {
       allow get, list: if canManageOrg(orgId)
+      || (
+        canMonitorTeacherWork(orgId)
+        && resource.data.schoolId is string
+        && hasSchoolAccess(orgId, resource.data.schoolId)
+      )
       || (
       hasOrgMembership(orgId)
       && resource.data.assignmentId is string
@@ -770,6 +830,11 @@ match /questionBankItems/{questionId} {
 
 match /studentHomeworkAssignments/{homeworkId} {
   allow get, list: if canManageOrg(orgId)
+    || (
+      canMonitorTeacherWork(orgId)
+      && resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    )
     || hasAssignedClassSubjectAccess(
       orgId,
       resource.data
@@ -818,6 +883,11 @@ match /studentHomeworkAssignments/{homeworkId} {
 
 match /subjectLessonPreps/{lessonPrepId} {
   allow get, list: if canManageOrg(orgId)
+    || (
+      canMonitorTeacherWork(orgId)
+      && resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    )
     || (
       resource.data.status == "SUBMITTED"
       && isTemporaryLessonPrepReviewerForSchool(
@@ -1495,6 +1565,17 @@ match /schoolActivityResults/{resultId} {
     );
 }
 
+match /studentNotes/{noteId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      canMonitorTeacherWork(orgId)
+      && resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    );
+
+  allow create, update, delete: if false;
+}
+
 /* Work documentation: each staff member can read and edit only their own records. */
 match /workDocumentation/{recordId} {
   allow get, list: if resource.data.personId == currentUserPersonId()
@@ -1608,6 +1689,11 @@ match /gamificationAchievementRules/{ruleId} {
 
 match /studentGamificationEvents/{eventId} {
   allow get, list: if canManageOrg(orgId)
+    || (
+      canMonitorTeacherWork(orgId)
+      && resource.data.schoolId is string
+      && hasSchoolAccess(orgId, resource.data.schoolId)
+    )
     || hasAssignedClassSubjectAccess(
       orgId,
       resource.data
