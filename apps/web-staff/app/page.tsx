@@ -128,7 +128,7 @@ export default function WebStaffLandingPage() {
 
             <Card className="border-primary/15 bg-card/80 shadow-xl backdrop-blur">
               <CardHeader>
-                <CardTitle>لماذا بوابة تكوين؟</CardTitle>
+                <CardTitle>لماذا مدار؟</CardTitle>
               </CardHeader>
 
               <CardContent className="space-y-4 text-sm leading-7 text-muted-foreground">

@@ -270,13 +270,8 @@ function StaffShell({ children }: { children: ReactNode }) {
   const isLessonPrepApprovalsRoute =
     pathname === "/staff/lesson-prep/approvals" ||
     pathname.startsWith("/staff/lesson-prep/approvals/");
-  const isLessonPrepReviewerDetailRoute =
-    pathname.startsWith("/staff/classes/") &&
-    pathname.includes("/lesson-prep/") &&
-    !pathname.endsWith("/lesson-prep/new");
-
   const canAccessCurrentRoute =
-    isLessonPrepApprovalsRoute || isLessonPrepReviewerDetailRoute
+    isLessonPrepApprovalsRoute
       ? canAccessLessonPrepApprovals
       : isPerformanceImprovementRoute
       ? canAccessPerformanceImprovementRoute

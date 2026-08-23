@@ -221,6 +221,7 @@ function buildLessonPrepHref(
   subjectContext: {
     classSubjectOfferingId: string;
     subjectKey: string;
+    subjectTitle?: string;
     teacherAssignmentId?: string;
     currentTerm?: StaffActorCurrentTerm | null;
   },
@@ -236,6 +237,7 @@ function buildLessonPrepHref(
   appendTermContext(params, subjectContext.currentTerm);
 
   params.set("subjectKey", subjectContext.subjectKey);
+  params.set("subjectTitle", subjectContext.subjectTitle ?? "");
   params.set("classSubjectOfferingId", subjectContext.classSubjectOfferingId);
 
   if (subjectContext.teacherAssignmentId) {
@@ -389,7 +391,10 @@ function buildOperationHref(params: {
       });
 
     case "LESSON_PREP":
-      return buildLessonPrepHref(params.classInfo, subjectContext);
+      return buildLessonPrepHref(params.classInfo, {
+        ...subjectContext,
+        subjectTitle: getSubjectDisplayName(params.workspace),
+      });
 
     default:
       return "";

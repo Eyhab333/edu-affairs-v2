@@ -1,19 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import type { ComponentType } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
-  BookOpenCheck,
   CalendarDays,
   CheckCircle2,
-  ClipboardList,
-  FileText,
-  GraduationCap,
-  Layers3,
-  School,
+  Clock3,
+  Pencil,
+  RotateCcw,
+  Send,
 } from "lucide-react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
@@ -118,20 +115,6 @@ function buildQueryString(searchParams: URLSearchParams) {
   return query ? `?${query}` : "";
 }
 
-function formatDateTime(value?: number | null) {
-  if (!value) return "غير محدد";
-
-  try {
-    return new Intl.DateTimeFormat("ar-SA", {
-      dateStyle: "medium",
-      timeStyle: "short",
-      timeZone: "Asia/Riyadh",
-    }).format(new Date(value));
-  } catch {
-    return "غير محدد";
-  }
-}
-
 function getStatusClassName(status: SubjectLessonPrepStatus) {
   switch (status) {
     case "DRAFT":
@@ -165,11 +148,10 @@ export default function SubjectLessonPrepDetailsPage() {
   const orgId = staffActor?.orgId || searchParams.get("orgId") || "";
   const schoolId = searchParams.get("schoolId");
   const academicYearId = searchParams.get("academicYearId");
-  const gradeId = searchParams.get("gradeId");
   const termId = searchParams.get("termId");
   const termTitle = searchParams.get("termTitle");
   const termShortTitle = searchParams.get("termShortTitle");
-  const subjectKey = searchParams.get("subjectKey");
+  const subjectTitle = searchParams.get("subjectTitle");
   const actorPersonId = staffActor?.personId || "";
   const canAttemptReviewerAccess =
     getLessonPrepReviewSchoolIds(actorPersonId).length > 0;
@@ -192,6 +174,7 @@ export default function SubjectLessonPrepDetailsPage() {
   const [actionError, setActionError] = useState("");
   const [actionMessage, setActionMessage] = useState("");
   const [returnReason, setReturnReason] = useState("");
+  const [showReturnReason, setShowReturnReason] = useState(false);
 
   const preservedQuery = useMemo(() => {
     return new URLSearchParams(searchParams.toString());
@@ -509,206 +492,134 @@ export default function SubjectLessonPrepDetailsPage() {
             الرجوع إلى تحضير الدروس
           </Link>
 
-          <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="border-b border-slate-100 bg-gradient-to-l from-emerald-50 via-white to-white p-6 dark:border-slate-800 dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-8">
-              <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-                <div className="space-y-3">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                    <BookOpenCheck className="h-3.5 w-3.5" />
-                    Milestone 15F
+          <header className="border-b border-slate-200 pb-5 dark:border-slate-800">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  {prep?.lessonTitle || "تفاصيل التحضير"}
+                </h1>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                  {[subjectTitle, termTitle || termShortTitle || prep?.termTitle]
+                    .filter(Boolean)
+                    .join(" · ") || "تحضير درس"}
+                </p>
+                {prep ? (
+                  <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
+                    <span>{getSafeText(prep.weekLabel, "الأسبوع غير محدد")}</span>
+                    <span className="text-slate-300 dark:text-slate-700">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <CalendarDays className="h-4 w-4" />
+                      {getSafeText(prep.lessonDate, "التاريخ غير محدد")}
+                    </span>
+                    <span className="text-slate-300 dark:text-slate-700">•</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock3 className="h-4 w-4" />
+                      {prep.durationMinutes
+                        ? `${prep.durationMinutes} دقيقة`
+                        : "المدة غير محددة"}
+                    </span>
                   </div>
-
-                  <div className="space-y-2">
-                    <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
-                      {prep?.lessonTitle || "تفاصيل التحضير"}
-                    </h1>
-
-                    <p className="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400">
-                      صفحة عرض تفاصيل تحضير الدرس المحفوظ، مع سياق المادة والفصل
-                      الدراسي والحالة الحالية.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-fit rounded-3xl bg-slate-950 px-5 py-3 text-white dark:bg-slate-50 dark:text-slate-950">
-                  <p className="text-xs opacity-70">الحالة</p>
-                  <p className="text-2xl font-bold">
-                    {prep
-                      ? getSubjectLessonPrepStatusLabel(prep.status)
-                      : "غير محدد"}
-                  </p>
-                </div>
+                ) : null}
               </div>
+
+              <span
+                className={`inline-flex w-fit shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ${getStatusClassName(
+                  prep?.status || "DRAFT",
+                )}`}
+              >
+                {prep ? getSubjectLessonPrepStatusLabel(prep.status) : "غير محدد"}
+              </span>
             </div>
-
-            <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
-              <ContextCard
-                icon={School}
-                label="المدرسة"
-                value={getSafeText(prep?.schoolId || schoolId)}
-              />
-
-              <ContextCard
-                icon={CalendarDays}
-                label="السنة الدراسية"
-                value={getSafeText(prep?.academicYearId || academicYearId)}
-              />
-
-              <ContextCard
-                icon={GraduationCap}
-                label="الصف"
-                value={getSafeText(prep?.gradeId || gradeId)}
-              />
-
-              <ContextCard
-                icon={Layers3}
-                label="المادة"
-                value={getSafeText(prep?.subjectKey || subjectKey)}
-              />
-            </div>
-          </div>
+          </header>
         </div>
 
         {loading ? (
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <p className="text-sm text-slate-500 dark:text-slate-400">
               جاري تحميل تفاصيل التحضير...
             </p>
           </div>
         ) : loadError ? (
-          <div className="rounded-3xl border border-rose-200 bg-rose-50 p-5 text-sm leading-7 text-rose-900 shadow-sm dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-100">
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5 text-sm leading-7 text-rose-900 shadow-sm dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-100">
             {loadError}
           </div>
         ) : prep ? (
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                    <ClipboardList className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <h2 className="font-bold">محتوى التحضير</h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      عناصر التحضير المحفوظة في المسودة.
-                    </p>
-                  </div>
+            <div className="min-w-0 rounded-2xl bg-white px-5 py-6 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800 sm:px-7">
+              {prep.status === "RETURNED" && prep.returnReason ? (
+                <div className="mb-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-7 text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
+                  <p className="font-bold">أعيد التحضير للتعديل</p>
+                  <p className="mt-1">{prep.returnReason}</p>
                 </div>
+              ) : null}
 
-                <span
-                  className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold ring-1 ${getStatusClassName(
-                    prep.status,
-                  )}`}
-                >
-                  {getSubjectLessonPrepStatusLabel(prep.status)}
-                </span>
+              <section>
+                <SectionHeading title="بيانات الدرس" />
+                <div className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <DisplayField label="الوحدة" value={prep.unitTitle} />
+                  <DisplayField label="الأسبوع" value={prep.weekLabel} />
+                  <DisplayField label="تاريخ الدرس" value={prep.lessonDate} />
+                  <DisplayField
+                    label="رقم الحصة / الدرس"
+                    value={prep.lessonNumber}
+                  />
+                  <DisplayField label="زمن الحصة" value={`${prep.durationMinutes} دقيقة`} />
+                </div>
+              </section>
 
-                {prep.status === "RETURNED" && prep.returnReason ? (
-                  <div className="mt-5 rounded-3xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
-                    <p className="font-bold">سبب الإعادة:</p>
-                    <p className="mt-1">{prep.returnReason}</p>
-                  </div>
-                ) : null}
-              </div>
+              <section className="mt-10 border-t border-slate-100 pt-8 dark:border-slate-800">
+                <SectionHeading title="الأهداف ونواتج التعلم" />
+                <div className="mt-4 grid gap-5 md:grid-cols-2">
+                  <DisplayTextArea label="أهداف الدرس" value={prep.objectives} />
+                  <DisplayTextArea
+                    label="نواتج التعلم"
+                    value={prep.learningOutcomes}
+                  />
+                </div>
+              </section>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <DisplayField label="عنوان الدرس" value={prep.lessonTitle} />
-                <DisplayField label="الوحدة" value={prep.unitTitle} />
-                <DisplayField label="الأسبوع" value={prep.weekLabel} />
-                <DisplayField label="تاريخ الدرس" value={prep.lessonDate} />
-                <DisplayField label="زمن الحصة" value={prep.durationMinutes} />
-                <DisplayField
-                  label="رقم الحصة / الدرس"
-                  value={prep.lessonNumber}
-                />
-              </div>
+              <section className="mt-10 border-t border-slate-100 pt-8 dark:border-slate-800">
+                <SectionHeading title="تنفيذ الدرس" />
+                <div className="mt-4 grid gap-5 md:grid-cols-2">
+                  <DisplayTextArea label="التمهيد" value={prep.warmup} />
+                  <DisplayTextArea
+                    label="خطوات عرض الدرس"
+                    value={prep.lessonSteps}
+                  />
+                  <DisplayTextArea
+                    label="الاستراتيجيات المستخدمة"
+                    value={prep.strategies}
+                  />
+                  <DisplayTextArea
+                    label="الوسائل التعليمية"
+                    value={prep.resources}
+                  />
+                </div>
+              </section>
 
-              <div className="mt-6 grid gap-4">
-                <DisplayTextArea label="أهداف الدرس" value={prep.objectives} />
-                <DisplayTextArea
-                  label="نواتج التعلم"
-                  value={prep.learningOutcomes}
-                />
-                <DisplayTextArea label="التمهيد" value={prep.warmup} />
-                <DisplayTextArea
-                  label="خطوات عرض الدرس"
-                  value={prep.lessonSteps}
-                />
-                <DisplayTextArea
-                  label="الاستراتيجيات المستخدمة"
-                  value={prep.strategies}
-                />
-                <DisplayTextArea
-                  label="الوسائل التعليمية"
-                  value={prep.resources}
-                />
-                <DisplayTextArea label="التقويم" value={prep.assessment} />
-                <DisplayTextArea
-                  label="الواجب / الملاحظات"
-                  value={prep.homeworkNote}
-                />
-              </div>
+              <section className="mt-10 border-t border-slate-100 pt-8 dark:border-slate-800">
+                <SectionHeading title="التقويم والمتابعة" />
+                <div className="mt-4 grid gap-5 md:grid-cols-2">
+                  <DisplayTextArea label="التقويم" value={prep.assessment} />
+                  <DisplayTextArea
+                    label="الواجب / الملاحظات"
+                    value={prep.homeworkNote}
+                  />
+                </div>
+              </section>
             </div>
 
-            <aside className="flex flex-col gap-4">
-              <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <aside className="lg:sticky lg:top-6 lg:self-start">
+              <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
                 <div className="flex items-center gap-3">
-                  <div className="rounded-2xl bg-sky-50 p-3 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-                    <FileText className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <h2 className="font-bold">بيانات السجل</h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      سياق التحضير داخل Firestore.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-5 grid gap-2 text-sm">
-                  <InfoRow label="lessonPrepId" value={prep.id} />
-                  <InfoRow label="orgId" value={prep.orgId} />
-                  <InfoRow label="schoolId" value={prep.schoolId} />
-                  <InfoRow label="academicYearId" value={prep.academicYearId} />
-                  <InfoRow label="termId" value={prep.termId} />
-                  <InfoRow label="termTitle" value={prep.termTitle} />
-                  <InfoRow label="termShortTitle" value={prep.termShortTitle} />
-                  <InfoRow label="classId" value={prep.classId} />
-                  <InfoRow
-                    label="offeringId"
-                    value={prep.classSubjectOfferingId}
-                  />
-                  <InfoRow label="subjectKey" value={prep.subjectKey} />
-                  <InfoRow
-                    label="teacherPersonId"
-                    value={prep.teacherPersonId}
-                  />
-                  <InfoRow
-                    label="teacherAssignmentId"
-                    value={prep.teacherAssignmentId || "غير محدد"}
-                  />
-                  <InfoRow
-                    label="createdAt"
-                    value={formatDateTime(prep.createdAt)}
-                  />
-                  <InfoRow
-                    label="updatedAt"
-                    value={formatDateTime(prep.updatedAt)}
-                  />
-                </div>
-              </div>
-
-              <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                  <div className="rounded-xl bg-emerald-50 p-2.5 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                     <CheckCircle2 className="h-5 w-5" />
                   </div>
 
                   <div>
                     <h2 className="font-bold">إجراءات التحضير</h2>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                      إرسال التحضير للمراجعة أو الاعتماد.
+                      اختر الإجراء المناسب لحالة التحضير.
                     </p>
                   </div>
                 </div>
@@ -725,7 +636,7 @@ export default function SubjectLessonPrepDetailsPage() {
                   </div>
                 ) : null}
 
-                <div className="mt-5">
+                <div className="mt-5 space-y-3">
                   {prep.status === "DRAFT" || prep.status === "RETURNED" ? (
                     <Link
                       href={`/staff/classes/${encodeURIComponent(
@@ -735,8 +646,9 @@ export default function SubjectLessonPrepDetailsPage() {
                       )}/lesson-prep/${encodeURIComponent(lessonPrepId)}/edit${buildQueryString(
                         preservedQuery,
                       )}`}
-                      className="mb-3 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                      className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
+                      <Pencil className="h-4 w-4" />
                       تعديل التحضير
                     </Link>
                   ) : null}
@@ -746,81 +658,83 @@ export default function SubjectLessonPrepDetailsPage() {
                       type="button"
                       onClick={() => void handleSubmitPrep()}
                       disabled={actionLoading}
-                      className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
                     >
+                      <Send className="h-4 w-4" />
                       {actionLoading
                         ? "جاري الإرسال..."
                         : prep.status === "RETURNED"
                           ? "إعادة إرسال التحضير"
-                          : "إرسال التحضير"}
+                          : "إرسال للاعتماد"}
                     </button>
                   ) : prep.status === "SUBMITTED" && canReviewCurrentPrep ? (
-                    <div className="space-y-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm leading-7 text-foreground">
-                      <div>
-                        <p className="font-bold">مراجعة التحضير</p>
-                        <p className="mt-1 text-muted-foreground">
-                          يمكنك اعتماد التحضير أو إعادته إلى المعلم مع توضيح المطلوب.
-                        </p>
-                      </div>
-
+                    <div className="space-y-3 text-sm leading-7">
+                      <p className="font-bold">مراجعة التحضير</p>
                       <button
                         type="button"
                         onClick={() => void handleApprovePrep()}
                         disabled={actionLoading}
-                        className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
                       >
+                        <CheckCircle2 className="h-4 w-4" />
                         {actionLoading ? "جارٍ الاعتماد..." : "اعتماد التحضير"}
                       </button>
 
-                      <label className="block">
-                        <span className="mb-1 block font-medium">سبب الإعادة</span>
-                        <textarea
-                          value={returnReason}
-                          onChange={(event) => setReturnReason(event.target.value)}
-                          rows={3}
-                          placeholder="اكتب الملاحظات المطلوبة من المعلم"
-                          className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none transition focus:border-primary"
-                        />
-                      </label>
+                      {!showReturnReason ? (
+                        <button
+                          type="button"
+                          onClick={() => setShowReturnReason(true)}
+                          disabled={actionLoading}
+                          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-50 px-4 text-sm font-semibold text-amber-900 shadow-sm transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100 dark:hover:bg-amber-950/50"
+                        >
+                          <RotateCcw className="h-4 w-4" />
+                          إعادة إلى المعلم
+                        </button>
+                      ) : (
+                        <div className="space-y-3 rounded-xl border border-amber-200 bg-amber-50/70 p-3 dark:border-amber-900/60 dark:bg-amber-950/20">
+                          <label className="block">
+                            <span className="mb-1 block font-medium">سبب الإعادة</span>
+                            <textarea
+                              value={returnReason}
+                              onChange={(event) => setReturnReason(event.target.value)}
+                              rows={3}
+                              placeholder="اكتب الملاحظات المطلوبة من المعلم"
+                              className="w-full rounded-lg border border-amber-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-amber-500 dark:border-amber-900/60 dark:bg-slate-900 dark:text-slate-50"
+                            />
+                          </label>
 
-                      <button
-                        type="button"
-                        onClick={() => void handleReturnPrep()}
-                        disabled={actionLoading || !returnReason.trim()}
-                        className="inline-flex h-11 w-full items-center justify-center rounded-2xl border border-amber-300 bg-amber-50 px-4 text-sm font-semibold text-amber-900 shadow-sm transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100 dark:hover:bg-amber-950/50"
-                      >
-                        {actionLoading ? "جارٍ الإعادة..." : "إعادة إلى المعلم"}
-                      </button>
+                          <button
+                            type="button"
+                            onClick={() => void handleReturnPrep()}
+                            disabled={actionLoading || !returnReason.trim()}
+                            className="inline-flex h-10 w-full items-center justify-center rounded-lg border border-amber-300 bg-amber-100 px-4 text-sm font-semibold text-amber-950 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-60 dark:border-amber-900/60 dark:bg-amber-950/50 dark:text-amber-100 dark:hover:bg-amber-950/70"
+                          >
+                            {actionLoading ? "جارٍ الإعادة..." : "تأكيد الإعادة"}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ) : prep.status === "SUBMITTED" ? (
-                    <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm leading-7 text-sky-900 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100">
-                      <p className="font-bold">تم إرسال التحضير</p>
+                    <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm leading-7 text-sky-900 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100">
+                      <p className="font-bold">بانتظار المراجعة</p>
                       <p className="mt-1">
-                        التحضير مرسل حاليًا. سيتم تفعيل مسار المراجعة والاعتماد
-                        لاحقًا بعد ربط التحضير بالمراجع المسؤول.
+                        تم إرسال التحضير بنجاح، وهو الآن بانتظار مراجعة المشرف.
                       </p>
                     </div>
+                  ) : prep.status === "APPROVED" ? (
+                    <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-7 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100">
+                      <p className="font-bold">تم اعتماد التحضير</p>
+                      <p className="mt-1">تمت مراجعة هذا التحضير واعتماده بنجاح.</p>
+                    </div>
                   ) : (
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm leading-7 text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-                      لا توجد إجراءات متاحة حاليًا لأن حالة التحضير هي:{" "}
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                      حالة التحضير الحالية: {" "}
                       <span className="font-bold">
                         {getSubjectLessonPrepStatusLabel(prep.status)}
                       </span>
                     </div>
                   )}
                 </div>
-              </div>
-
-              <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-sm leading-7 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100">
-                <div className="flex items-center gap-2 font-bold">
-                  <CheckCircle2 className="h-4 w-4" />
-                  المرحلة الحالية
-                </div>
-
-                <p className="mt-2">
-                  تم تنفيذ إرسال التحضير. الخطوة التالية 15H ستكون اعتماد
-                  التحضير أو إعادته للتعديل.
-                </p>
               </div>
             </aside>
           </div>
@@ -830,40 +744,21 @@ export default function SubjectLessonPrepDetailsPage() {
   );
 }
 
-function ContextCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
+function SectionHeading({ title }: { title: string }) {
   return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex items-start gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        <div className="min-w-0">
-          <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-          <p className="mt-1 truncate font-bold text-slate-950 dark:text-slate-50">
-            {value}
-          </p>
-        </div>
-      </div>
-    </div>
+    <h2 className="text-lg font-bold tracking-tight text-slate-950 dark:text-slate-50">
+      {title}
+    </h2>
   );
 }
 
 function DisplayField({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
+    <div className="border-b border-slate-100 pb-3 dark:border-slate-800">
       <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
         {label}
       </p>
-      <p className="mt-2 font-bold text-slate-950 dark:text-slate-50">
+      <p className="mt-1.5 font-semibold text-slate-950 dark:text-slate-50">
         {getSafeText(value)}
       </p>
     </div>
@@ -872,24 +767,13 @@ function DisplayField({ label, value }: { label: string; value: string }) {
 
 function DisplayTextArea({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
+    <div className="min-w-0">
       <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
         {label}
       </p>
-      <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-slate-700 dark:text-slate-200">
+      <p className="mt-2 min-h-16 whitespace-pre-wrap text-sm leading-7 text-slate-700 dark:text-slate-200">
         {getSafeText(value)}
       </p>
-    </div>
-  );
-}
-
-function InfoRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl border border-slate-100 px-3 py-2 dark:border-slate-800">
-      <span className="text-slate-500 dark:text-slate-400">{label}</span>
-      <span className="max-w-[12rem] truncate text-left font-mono text-xs font-medium text-slate-800 dark:text-slate-100">
-        {value}
-      </span>
     </div>
   );
 }
