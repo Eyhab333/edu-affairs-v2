@@ -197,7 +197,12 @@ function isTemporaryLessonPrepReviewerForSchool(orgId, schoolId) {
   return hasOrgMembership(orgId)
     && (
       (
-        currentUserPersonId() in ["p-s-sayed", "p-n-alshaya"]
+        currentUserPersonId()
+          in [
+            "p-s-sayed",
+            "p-n-alshaya",
+            "staff-NOFByrx0XLVovqxuFjfwRWSokgs1"
+          ]
         && schoolId in ["mrb-boys-sayh", "mrb-boys-faleh", "mrb-girls"]
       )
       || (

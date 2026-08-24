@@ -1,6 +1,7 @@
 const TAKWEEN_REVIEWER_IDS = new Set([
   "p-s-sayed",
   "p-n-alshaya",
+  "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
 ]);
 
 const KINDERGARTEN_REVIEWER_IDS = new Set([

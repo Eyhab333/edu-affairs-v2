@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { MembershipRole } from "./index";
+import { MembershipRole } from "./membership-role";
 
 const TimestampMsSchema = z.number().int().nonnegative();
 const IdSchema = z.string().trim().min(1);
