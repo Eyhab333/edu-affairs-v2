@@ -1,20 +1,13 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const {
-  cert,
-  getApps,
-  initializeApp,
-} = require("firebase-admin/app");
+const { cert, getApps, initializeApp } = require("firebase-admin/app");
 
-const {
-  FieldValue,
-  getFirestore,
-} = require("firebase-admin/firestore");
+const { FieldValue, getFirestore } = require("firebase-admin/firestore");
 
 const ORG_ID = "takween";
 const ACADEMIC_YEAR_ID = "ay-1448";
-const EXPECTED_TARGET_COUNT = 106;
+const EXPECTED_TARGET_COUNT = 111;
 
 const ENABLED_MODULE_KEYS = [
   "ASSESSMENTS",
@@ -97,11 +90,7 @@ const SUBJECTS = {
   },
 };
 
-const SCHOOL_IDS = [
-  "mrb-boys-faleh",
-  "mrb-boys-sayh",
-  "mrb-girls",
-];
+const SCHOOL_IDS = ["mrb-boys-faleh", "mrb-boys-sayh", "mrb-girls"];
 
 const TARGET_OFFERING_IDS = [
   "mrb-boys-faleh-g1-general-1-art",
@@ -179,6 +168,7 @@ const TARGET_OFFERING_IDS = [
   "mrb-girls-g3-quran-2-math",
   "mrb-girls-g3-quran-2-pe",
   "mrb-girls-g3-quran-2-quran",
+  "mrb-girls-g3-quran-2-science",
   "mrb-girls-g4-general-1-quran",
   "mrb-girls-g4-quran-1-quran",
   "mrb-girls-g4-quran-1-tajweed",
@@ -191,6 +181,8 @@ const TARGET_OFFERING_IDS = [
   "mrb-girls-g4-quran-2-quran",
   "mrb-girls-g4-quran-2-social-studies",
   "mrb-girls-g4-quran-2-tajweed",
+  "mrb-girls-g4-quran-2-science",
+  "mrb-girls-g4-quran-2-digital",
   "mrb-girls-g5-general-1-art",
   "mrb-girls-g5-general-1-life-skills",
   "mrb-girls-g5-general-1-quran",
@@ -206,6 +198,8 @@ const TARGET_OFFERING_IDS = [
   "mrb-girls-g5-quran-2-quran",
   "mrb-girls-g5-quran-2-science",
   "mrb-girls-g5-quran-2-social-studies",
+  "mrb-girls-g5-quran-2-tajweed",
+  "mrb-girls-g5-quran-2-digital",
   "mrb-girls-g6-general-1-art",
   "mrb-girls-g6-general-1-life-skills",
   "mrb-girls-g6-quran-1-life-skills",
@@ -243,8 +237,8 @@ function initializeFirebase() {
 }
 
 function parseTarget(offeringId) {
-  const schoolId = SCHOOL_IDS.find(
-    (candidate) => offeringId.startsWith(`${candidate}-`),
+  const schoolId = SCHOOL_IDS.find((candidate) =>
+    offeringId.startsWith(`${candidate}-`),
   );
 
   if (!schoolId) {
@@ -252,8 +246,8 @@ function parseTarget(offeringId) {
   }
 
   const remainder = offeringId.slice(schoolId.length + 1);
-  const subjectSlug = Object.keys(SUBJECTS).find(
-    (candidate) => remainder.endsWith(`-${candidate}`),
+  const subjectSlug = Object.keys(SUBJECTS).find((candidate) =>
+    remainder.endsWith(`-${candidate}`),
   );
 
   if (!subjectSlug) {
@@ -278,9 +272,7 @@ if (
   TARGET_OFFERING_IDS.length !== EXPECTED_TARGET_COUNT ||
   new Set(TARGET_OFFERING_IDS).size !== EXPECTED_TARGET_COUNT
 ) {
-  throw new Error(
-    `Expected ${EXPECTED_TARGET_COUNT} unique target offerings.`,
-  );
+  throw new Error(`Expected ${EXPECTED_TARGET_COUNT} unique target offerings.`);
 }
 
 function classPath(target) {
@@ -351,7 +343,9 @@ async function inspectTargets(db) {
     ]);
 
     if (!classSnap.exists) {
-      throw new Error(`Required class document does not exist: ${classPath(target)}`);
+      throw new Error(
+        `Required class document does not exist: ${classPath(target)}`,
+      );
     }
 
     assertClass(target, classSnap.data());
@@ -419,9 +413,7 @@ async function createMissing(db, inspections) {
     const snapshots = [];
 
     for (const item of missing) {
-      snapshots.push(
-        await transaction.get(db.doc(item.offeringPath)),
-      );
+      snapshots.push(await transaction.get(db.doc(item.offeringPath)));
     }
 
     for (let index = 0; index < snapshots.length; index += 1) {
