@@ -3,7 +3,6 @@ import { z } from "zod";
 import { MembershipRole } from "./membership-role";
 
 export { MembershipRole } from "./membership-role";
-export type { MembershipRole } from "./membership-role";
 
 type SchemaMap = Record<string, z.ZodTypeAny>;
 

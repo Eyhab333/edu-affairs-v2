@@ -7,7 +7,7 @@
     "dev": "pnpm --parallel --filter @takween/contracts --filter web-admin dev",
     "dev:web": "pnpm --filter web-admin dev",
     "dev:contracts": "pnpm --filter @takween/contracts dev",
-    "build": "pnpm --filter @takween/contracts build && pnpm --filter web-admin build",
+    "build": "pnpm --filter @takween/contracts build && pnpm --filter @takween/domain build",
     "build:web": "pnpm --filter web-admin build",
     "build:contracts": "pnpm --filter @takween/contracts build",
     "lint": "pnpm --filter web-admin lint",
