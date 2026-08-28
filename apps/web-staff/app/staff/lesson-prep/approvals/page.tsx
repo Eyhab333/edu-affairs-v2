@@ -16,7 +16,13 @@ import {
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { db } from "@/lib/firebase";
-import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
+import {
+  canReviewLessonPrepAtSchool,
+  getLessonPrepReviewQueryScopes,
+  getLessonPrepReviewSchoolIds,
+} from "@/lib/lesson-prep-review-policy";
+import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
+import type { PersonSupervisionScope } from "@takween/contracts";
 
 type SubjectLessonPrepRow = {
   id: string;
@@ -162,9 +168,27 @@ function FilterSelect({
 export default function LessonPrepApprovalsPage() {
   const { actor } = useStaffActor();
   const personId = actor.personId || "";
+  const [supervisionScopes, setSupervisionScopes] = useState<
+    PersonSupervisionScope[]
+  >([]);
+  const [scopesLoading, setScopesLoading] = useState(true);
   const reviewSchoolIds = useMemo(
-    () => getLessonPrepReviewSchoolIds(personId),
-    [personId],
+    () =>
+      getLessonPrepReviewSchoolIds({
+        orgId: actor.orgId,
+        personId,
+        scopes: supervisionScopes,
+      }),
+    [actor.orgId, personId, supervisionScopes],
+  );
+  const reviewQueryScopes = useMemo(
+    () =>
+      getLessonPrepReviewQueryScopes({
+        orgId: actor.orgId,
+        personId,
+        scopes: supervisionScopes,
+      }),
+    [actor.orgId, personId, supervisionScopes],
   );
   const [rows, setRows] = useState<SubjectLessonPrepRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -201,8 +225,45 @@ export default function LessonPrepApprovalsPage() {
     [actor.classSubjectOfferings],
   );
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadScopes() {
+      if (!actor.orgId || !personId) {
+        if (!cancelled) {
+          setSupervisionScopes([]);
+          setScopesLoading(false);
+        }
+        return;
+      }
+
+      setScopesLoading(true);
+      try {
+        const nextScopes = await loadPersonSupervisionScopes({
+          orgId: actor.orgId,
+          personId,
+        });
+        if (!cancelled) setSupervisionScopes(nextScopes);
+      } catch {
+        if (!cancelled) setSupervisionScopes([]);
+      } finally {
+        if (!cancelled) setScopesLoading(false);
+      }
+    }
+
+    void loadScopes();
+    return () => {
+      cancelled = true;
+    };
+  }, [actor.orgId, personId]);
+
   const loadSubmittedPreps = useCallback(async () => {
-    if (!actor.orgId || reviewSchoolIds.length === 0) {
+    if (scopesLoading) {
+      setLoading(true);
+      return;
+    }
+
+    if (!actor.orgId || reviewQueryScopes.length === 0) {
       setRows([]);
       setLoading(false);
       return;
@@ -214,12 +275,15 @@ export default function LessonPrepApprovalsPage() {
     try {
       const prepsRef = collection(db, "orgs", actor.orgId, "subjectLessonPreps");
       const snapshots = await Promise.all(
-        reviewSchoolIds.map((schoolId) =>
+        reviewQueryScopes.map((scope) =>
           getDocs(
             query(
               prepsRef,
               where("status", "==", "SUBMITTED"),
-              where("schoolId", "==", schoolId),
+              where("schoolId", "==", scope.schoolId),
+              ...(scope.subjectKey
+                ? [where("subjectKey", "==", scope.subjectKey)]
+                : []),
             ),
           ),
         ),
@@ -231,7 +295,17 @@ export default function LessonPrepApprovalsPage() {
         ),
       );
 
-      setRows(nextRows);
+      setRows(
+        nextRows.filter((prep) =>
+          canReviewLessonPrepAtSchool({
+            orgId: actor.orgId,
+            personId,
+            schoolId: prep.schoolId,
+            subjectKey: prep.subjectKey,
+            scopes: supervisionScopes,
+          }),
+        ),
+      );
     } catch (error) {
       setRows([]);
       setLoadError(
@@ -242,7 +316,13 @@ export default function LessonPrepApprovalsPage() {
     } finally {
       setLoading(false);
     }
-  }, [actor.orgId, reviewSchoolIds]);
+  }, [
+    actor.orgId,
+    personId,
+    reviewQueryScopes,
+    scopesLoading,
+    supervisionScopes,
+  ]);
 
   useEffect(() => {
     void loadSubmittedPreps();
@@ -390,7 +470,7 @@ export default function LessonPrepApprovalsPage() {
     });
   }
 
-  if (reviewSchoolIds.length === 0) {
+  if (!scopesLoading && reviewSchoolIds.length === 0) {
     return (
       <main dir="rtl" className="mx-auto max-w-4xl p-4 sm:p-6">
         <section className="rounded-3xl border border-dashed bg-card p-8 text-center shadow-sm">

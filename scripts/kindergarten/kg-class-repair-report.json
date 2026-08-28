@@ -1,0 +1,2862 @@
+{
+  "metadata": {
+    "generatedAt": "2026-08-28T16:13:38.181Z",
+    "mode": "DRY_RUN",
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "source": "KG_CLASS_REPAIR",
+    "version": 1,
+    "writesPerformed": false,
+    "writeCollections": [
+      "schools/*/academicYears/*/classes",
+      "classSubjectOfferings"
+    ],
+    "protectedCollectionsNotWritten": [
+      "teacherAssignments",
+      "teacherAssignmentClassLinks",
+      "operationalAssignments",
+      "memberships",
+      "people",
+      "users"
+    ]
+  },
+  "desiredClasses": [
+    {
+      "schoolId": "kg-01",
+      "classId": "kg1-a",
+      "gradeId": "kg1",
+      "title": "فصل النجوم",
+      "sectionLabel": "النجوم"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg2-a",
+      "gradeId": "kg2",
+      "title": "فصل الغيوم",
+      "sectionLabel": "الغيوم"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg2-b",
+      "gradeId": "kg2",
+      "title": "فصل الخزامى",
+      "sectionLabel": "الخزامى"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg3-a",
+      "gradeId": "kg3",
+      "title": "فصل الكادي",
+      "sectionLabel": "الكادي"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg3-b",
+      "gradeId": "kg3",
+      "title": "فصل الأرجوان",
+      "sectionLabel": "الأرجوان"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg3-c",
+      "gradeId": "kg3",
+      "title": "فصل الياسمين",
+      "sectionLabel": "الياسمين"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg3-d",
+      "gradeId": "kg3",
+      "title": "فصل الإكليل",
+      "sectionLabel": "الإكليل"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg3-e",
+      "gradeId": "kg3",
+      "title": "فصل اللافندر",
+      "sectionLabel": "اللافندر"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg3-f",
+      "gradeId": "kg3",
+      "title": "فصل السوسن",
+      "sectionLabel": "السوسن"
+    },
+    {
+      "schoolId": "kg-01",
+      "classId": "kg3-g",
+      "gradeId": "kg3",
+      "title": "فصل الزهور",
+      "sectionLabel": "الزهور"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg1-a",
+      "gradeId": "kg1",
+      "title": "فصل الكادي",
+      "sectionLabel": "الكادي"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg2-a",
+      "gradeId": "kg2",
+      "title": "فصل الورود",
+      "sectionLabel": "الورود"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg2-b",
+      "gradeId": "kg2",
+      "title": "فصل الأوركيد",
+      "sectionLabel": "الأوركيد"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg3-a",
+      "gradeId": "kg3",
+      "title": "فصل الفل",
+      "sectionLabel": "الفل"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg3-b",
+      "gradeId": "kg3",
+      "title": "فصل التوليب",
+      "sectionLabel": "التوليب"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg3-c",
+      "gradeId": "kg3",
+      "title": "فصل البيلسان",
+      "sectionLabel": "البيلسان"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg3-d",
+      "gradeId": "kg3",
+      "title": "فصل الإكليل",
+      "sectionLabel": "الإكليل"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg3-e",
+      "gradeId": "kg3",
+      "title": "فصل الياسمين",
+      "sectionLabel": "الياسمين"
+    },
+    {
+      "schoolId": "kg-02",
+      "classId": "kg3-f",
+      "gradeId": "kg3",
+      "title": "فصل النرجس",
+      "sectionLabel": "النرجس"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg1-a",
+      "gradeId": "kg1",
+      "title": "فصل المرح",
+      "sectionLabel": "المرح"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg2-a",
+      "gradeId": "kg2",
+      "title": "فصل الفل",
+      "sectionLabel": "الفل"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg2-b",
+      "gradeId": "kg2",
+      "title": "فصل التوليب",
+      "sectionLabel": "التوليب"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg3-a",
+      "gradeId": "kg3",
+      "title": "فصل السحاب",
+      "sectionLabel": "السحاب"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg3-b",
+      "gradeId": "kg3",
+      "title": "فصل المروج",
+      "sectionLabel": "المروج"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg3-c",
+      "gradeId": "kg3",
+      "title": "فصل الغيوم",
+      "sectionLabel": "الغيوم"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg3-d",
+      "gradeId": "kg3",
+      "title": "فصل النجوم",
+      "sectionLabel": "النجوم"
+    },
+    {
+      "schoolId": "kg-03",
+      "classId": "kg3-e",
+      "gradeId": "kg3",
+      "title": "فصل الأصحاب",
+      "sectionLabel": "الأصحاب"
+    },
+    {
+      "schoolId": "kg-04",
+      "classId": "kg1-a",
+      "gradeId": "kg1",
+      "title": "فصل الوهج",
+      "sectionLabel": "الوهج"
+    },
+    {
+      "schoolId": "kg-04",
+      "classId": "kg2-a",
+      "gradeId": "kg2",
+      "title": "فصل الألوان",
+      "sectionLabel": "الألوان"
+    },
+    {
+      "schoolId": "kg-04",
+      "classId": "kg2-b",
+      "gradeId": "kg2",
+      "title": "فصل الغيوم",
+      "sectionLabel": "الغيوم"
+    },
+    {
+      "schoolId": "kg-04",
+      "classId": "kg3-a",
+      "gradeId": "kg3",
+      "title": "فصل الفرح",
+      "sectionLabel": "الفرح"
+    },
+    {
+      "schoolId": "kg-04",
+      "classId": "kg3-b",
+      "gradeId": "kg3",
+      "title": "فصل النجوم",
+      "sectionLabel": "النجوم"
+    },
+    {
+      "schoolId": "kg-04",
+      "classId": "kg3-c",
+      "gradeId": "kg3",
+      "title": "فصل البالونات",
+      "sectionLabel": "البالونات"
+    },
+    {
+      "schoolId": "kg-04",
+      "classId": "kg3-d",
+      "gradeId": "kg3",
+      "title": "فصل المرح",
+      "sectionLabel": "المرح"
+    }
+  ],
+  "schoolSummaries": [
+    {
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "KEEP": 82,
+      "BLOCKED": 1
+    },
+    {
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "KEEP": 61,
+      "BLOCKED": 0
+    },
+    {
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "KEEP": 54,
+      "BLOCKED": 0
+    },
+    {
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "KEEP": 53,
+      "BLOCKED": 2
+    }
+  ],
+  "actions": [
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "title": "فصل النجوم",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg1-a",
+      "action": "KEEP",
+      "existingTitle": "فصل النجوم"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "title": "فصل الغيوم",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg2-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الغيوم"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "title": "فصل الخزامى",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg2-b",
+      "action": "KEEP",
+      "existingTitle": "فصل الخزامى"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "title": "فصل الكادي",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الكادي"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "title": "فصل الأرجوان",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-b",
+      "action": "KEEP",
+      "existingTitle": "فصل الأرجوان"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "title": "فصل الياسمين",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-c",
+      "action": "KEEP",
+      "existingTitle": "فصل الياسمين"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "title": "فصل الإكليل",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-d",
+      "action": "KEEP",
+      "existingTitle": "فصل الإكليل"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "title": "فصل اللافندر",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-e",
+      "action": "KEEP",
+      "existingTitle": "فصل اللافندر"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "title": "فصل السوسن",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-f",
+      "action": "KEEP",
+      "existingTitle": "فصل السوسن"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "title": "فصل الزهور",
+      "path": "orgs/takween/schools/kg-01/academicYears/ay-1448/classes/kg3-g",
+      "action": "KEEP",
+      "existingTitle": "فصل الزهور"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "title": "فصل الكادي",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg1-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الكادي"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "title": "فصل الورود",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg2-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الورود"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "title": "فصل الأوركيد",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg2-b",
+      "action": "KEEP",
+      "existingTitle": "فصل الأوركيد"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "title": "فصل الفل",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الفل"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "title": "فصل التوليب",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-b",
+      "action": "KEEP",
+      "existingTitle": "فصل التوليب"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "title": "فصل البيلسان",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-c",
+      "action": "KEEP",
+      "existingTitle": "فصل البيلسان"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "title": "فصل الإكليل",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-d",
+      "action": "KEEP",
+      "existingTitle": "فصل الإكليل"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "title": "فصل الياسمين",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-e",
+      "action": "KEEP",
+      "existingTitle": "فصل الياسمين"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "title": "فصل النرجس",
+      "path": "orgs/takween/schools/kg-02/academicYears/ay-1448/classes/kg3-f",
+      "action": "KEEP",
+      "existingTitle": "فصل النرجس"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "title": "فصل المرح",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg1-a",
+      "action": "KEEP",
+      "existingTitle": "فصل المرح"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "title": "فصل الفل",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg2-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الفل"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "title": "فصل التوليب",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg2-b",
+      "action": "KEEP",
+      "existingTitle": "فصل التوليب"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "title": "فصل السحاب",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg3-a",
+      "action": "KEEP",
+      "existingTitle": "فصل السحاب"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "title": "فصل المروج",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg3-b",
+      "action": "KEEP",
+      "existingTitle": "فصل المروج"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "title": "فصل الغيوم",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg3-c",
+      "action": "KEEP",
+      "existingTitle": "فصل الغيوم"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "title": "فصل النجوم",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg3-d",
+      "action": "KEEP",
+      "existingTitle": "فصل النجوم"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "title": "فصل الأصحاب",
+      "path": "orgs/takween/schools/kg-03/academicYears/ay-1448/classes/kg3-e",
+      "action": "KEEP",
+      "existingTitle": "فصل الأصحاب"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "title": "فصل الوهج",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg1-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الوهج"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "title": "فصل الألوان",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg2-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الألوان"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "title": "فصل الغيوم",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg2-b",
+      "action": "KEEP",
+      "existingTitle": "فصل الغيوم"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "title": "فصل الفرح",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg3-a",
+      "action": "KEEP",
+      "existingTitle": "فصل الفرح"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "title": "فصل النجوم",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg3-b",
+      "action": "KEEP",
+      "existingTitle": "فصل النجوم"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "title": "فصل البالونات",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg3-c",
+      "action": "KEEP",
+      "existingTitle": "فصل البالونات"
+    },
+    {
+      "scope": "class",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "title": "فصل المرح",
+      "path": "orgs/takween/schools/kg-04/academicYears/ay-1448/classes/kg3-d",
+      "action": "KEEP",
+      "existingTitle": "فصل المرح"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg1-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg1-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg1-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg1-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg2-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg2-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg2-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg2-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg2-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg2-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg2-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg2-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg2-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg2-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg2-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg2-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg3-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg3-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg3-a-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg3-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg3-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg3-a-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg3-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg3-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg3-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg-01-kg3-b-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg3-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg3-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg3-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg-01-kg3-b-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg3-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg3-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg3-c-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg-01-kg3-c-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg3-c-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg3-c-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg3-c-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg-01-kg3-c-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg3-c-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg3-c-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg3-d-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg-01-kg3-d-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg3-d-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg3-d-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg3-d-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg-01-kg3-d-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg3-d-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg3-d-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg3-e-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg-01-kg3-e-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg3-e-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg3-e-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg3-e-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg-01-kg3-e-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg3-e-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg3-e-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg3-f-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg-01-kg3-f-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg3-f-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg3-f-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg3-f-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg-01-kg3-f-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg3-f-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg3-f-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-01-kg3-g-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg-01-kg3-g-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-01-kg3-g-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-01-kg3-g-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-01-kg3-g-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg-01-kg3-g-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-01-kg3-g-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-01",
+      "schoolName": "روضة واحة الرياحين الأولى",
+      "gradeId": "kg3",
+      "classId": "kg3-g",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-01-kg3-g-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg1-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg1-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg1-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg1-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg2-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg2-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg2-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg2-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg2-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg2-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg2-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg2-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg2-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg2-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg2-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg2-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg3-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg3-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg3-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg3-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg3-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg3-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg3-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg3-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg3-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg3-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg3-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg3-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg3-c-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg3-c-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg3-c-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg3-c-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg3-c-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg3-c-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg3-d-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg3-d-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg3-d-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg3-d-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg3-d-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg3-d-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg3-e-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg3-e-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg3-e-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg3-e-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg3-e-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg3-e-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-02-kg3-f-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-02-kg3-f-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-02-kg3-f-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-02-kg3-f-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-02-kg3-f-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-02",
+      "schoolName": "روضة واحة الرياحين الثانية",
+      "gradeId": "kg3",
+      "classId": "kg3-f",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-02-kg3-f-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg1-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg1-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg1-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg1-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg2-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-03-kg2-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg2-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg2-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg2-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-03-kg2-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg2-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-03-kg2-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg2-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg2-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg2-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-03-kg2-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg3-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-03-kg3-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg3-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg3-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg3-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-03-kg3-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg3-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-03-kg3-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg3-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg3-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg3-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-03-kg3-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg3-c-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-03-kg3-c-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg3-c-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg3-c-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg3-c-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-03-kg3-c-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg3-d-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-03-kg3-d-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg3-d-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg3-d-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg3-d-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-03-kg3-d-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-03-kg3-e-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-03-kg3-e-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-03-kg3-e-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-03-kg3-e-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-03-kg3-e-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-03",
+      "schoolName": "روضة واحة الرياحين الثالثة",
+      "gradeId": "kg3",
+      "classId": "kg3-e",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-03-kg3-e-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-04-kg1-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-04-kg1-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg1-a-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg1-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg1-a-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg1",
+      "classId": "kg1-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg1-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-04-kg2-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-04-kg2-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg2-a-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg2-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg2-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg2-a-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg2-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg2-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-04-kg2-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:CLASS",
+      "offeringId": "kg-04-kg2-b-class",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-04-kg2-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-04-kg2-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-04-kg2-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:NUMBERS",
+      "offeringId": "kg-04-kg2-b-numbers",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-04-kg2-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg2",
+      "classId": "kg2-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-04-kg2-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-04-kg3-a-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-04-kg3-a-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-04-kg3-a-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-04-kg3-a-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-04-kg3-a-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-a",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-04-kg3-a-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-04-kg3-b-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-04-kg3-b-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-04-kg3-b-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-04-kg3-b-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-04-kg3-b-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-b",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-04-kg3-b-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-04-kg3-c-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-04-kg3-c-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-04-kg3-c-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-04-kg3-c-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-04-kg3-c-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-c",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-04-kg3-c-values",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:ADHKAR_IDENTITY_ANTHEMS",
+      "offeringId": "kg-04-kg3-d-adhkar-identity-anthems",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:CORNERS",
+      "offeringId": "kg-04-kg3-d-corners",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:COUNT_AND_CALCULATE",
+      "offeringId": "kg-04-kg3-d-count-and-calculate",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:LEARNING_GARDENS",
+      "offeringId": "kg-04-kg3-d-learning-gardens",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:QURAN",
+      "offeringId": "kg-04-kg3-d-quran",
+      "action": "KEEP"
+    },
+    {
+      "scope": "offering",
+      "schoolId": "kg-04",
+      "schoolName": "روضة واحة الرياحين الرابعة",
+      "gradeId": "kg3",
+      "classId": "kg3-d",
+      "subjectKey": "KEY:VALUES",
+      "offeringId": "kg-04-kg3-d-values",
+      "action": "KEEP"
+    }
+  ],
+  "blockers": [
+    {
+      "schoolId": "kg-01",
+      "gradeId": "kg3",
+      "classId": "",
+      "subjectKey": "KEY:NUMBERS",
+      "type": "OFFERING_TEMPLATE_AMBIGUOUS",
+      "message": "Active KG offerings for the same school, grade, and subject disagree on their model or modules."
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "",
+      "subjectKey": "KEY:CLASS",
+      "type": "OFFERING_TEMPLATE_AMBIGUOUS",
+      "message": "Active KG offerings for the same school, grade, and subject disagree on their model or modules."
+    },
+    {
+      "schoolId": "kg-04",
+      "gradeId": "kg2",
+      "classId": "",
+      "subjectKey": "KEY:NUMBERS",
+      "type": "OFFERING_TEMPLATE_AMBIGUOUS",
+      "message": "Active KG offerings for the same school, grade, and subject disagree on their model or modules."
+    }
+  ],
+  "summary": {
+    "classes": {
+      "KEEP": 34
+    },
+    "offerings": {
+      "KEEP": 216
+    },
+    "writes": 0,
+    "blocked": 3
+  },
+  "_writes": []
+}

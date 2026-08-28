@@ -1,5 +1,8 @@
 import { initializeApp } from "firebase-admin/app";
+import { setGlobalOptions } from "firebase-functions/v2";
 import { onRequest } from "firebase-functions/v2/https";
+
+setGlobalOptions({ memory: "512MiB" });
 
 initializeApp();
 
@@ -35,6 +38,7 @@ export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
 export { listMyTeachingPdfResources } from "./pdf-resources/list-my-teaching-pdf-resources";
 export { getMyGuardianChildren } from "./guardian/get-my-guardian-children";
 export { getMyGuardianAttendance } from "./guardian/get-my-guardian-attendance";
+export { getMyGuardianGamification } from "./guardian/get-my-guardian-gamification";
 export { getMyGuardianNotes } from "./guardian/get-my-guardian-notes";
 export { getMyGuardianVirtualClasses } from "./guardian/get-my-guardian-virtual-classes";
 export { markMyGuardianVirtualClassJoin } from "./guardian/mark-my-guardian-virtual-class-join";

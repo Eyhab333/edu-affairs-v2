@@ -2,9 +2,14 @@ import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
   MembershipRole,
+  PersonSupervisionScopeSchema,
   type MembershipRole as MembershipRoleType,
+  type PersonSupervisionScope,
 } from "@takween/contracts";
-import { canReviewStaffPortfolio } from "@takween/domain";
+import {
+  canReviewStaffPortfolio,
+  hasPersonSupervisionSubjectAccess,
+} from "@takween/domain";
 
 const REGION = "me-central2";
 const TEACHER_WORK_COLLECTIONS = [
@@ -51,6 +56,45 @@ type TeacherWorkSummary = {
   metrics: Record<TeacherWorkMetricKey, TeacherWorkMetric>;
 };
 
+type TeacherWorkLessonPrep = {
+  id: string;
+  lessonTitle: string;
+  subjectLabel: string;
+  classLabel: string;
+  lessonDate: string;
+  status: string;
+  unitTitle: string;
+  weekLabel: string;
+  durationMinutes: string;
+  lessonNumber: string;
+  objectives: string;
+  learningOutcomes: string;
+  warmup: string;
+  lessonSteps: string;
+  strategies: string;
+  resources: string;
+  assessment: string;
+  homeworkNote: string;
+  approvalNote: string;
+  returnReason: string;
+};
+
+type TeacherWorkDrillDownKey = Exclude<TeacherWorkMetricKey, "lessonPrep">;
+
+type TeacherWorkDrillDownItem = {
+  id: string;
+  title: string;
+  status: string;
+  activityAt: number | null;
+  classLabel: string;
+  subjectLabel: string;
+};
+
+type TeacherWorkDrillDowns = Record<
+  TeacherWorkDrillDownKey,
+  TeacherWorkDrillDownItem[]
+>;
+
 type TeacherWorkResponse = {
   academicYearId: string;
   period: TeacherWorkPeriod;
@@ -65,6 +109,7 @@ type TeacherWorkActor = {
   personId: string;
   schoolIds: string[];
   schools: Array<{ id: string; name: string }>;
+  supervisionScopes: PersonSupervisionScope[];
 };
 
 function text(value: unknown) {
@@ -191,6 +236,16 @@ function emptyMetrics(): Record<TeacherWorkMetricKey, MetricAccumulator> {
   };
 }
 
+function emptyDrillDowns(): TeacherWorkDrillDowns {
+  return {
+    measurements: [],
+    learningLoss: [],
+    notes: [],
+    gamification: [],
+    homework: [],
+  };
+}
+
 function metricDto(metric: MetricAccumulator): TeacherWorkMetric {
   const result: TeacherWorkMetric = {
     count: metric.count,
@@ -266,10 +321,23 @@ async function resolveActor(params: {
     throw new HttpsError("permission-denied", "No school scope is available.");
   }
 
+  const supervisionScopeSnapshot = await db
+    .collection(`orgs/${params.orgId}/personSupervisionScopes`)
+    .where("personId", "==", personId)
+    .get();
+  const supervisionScopes = supervisionScopeSnapshot.docs.flatMap((document) => {
+    const parsed = PersonSupervisionScopeSchema.safeParse({
+      id: document.id,
+      ...document.data(),
+    });
+    return parsed.success ? [parsed.data] : [];
+  });
+
   return {
     personId,
     schoolIds: schools.map((school) => school.id),
     schools,
+    supervisionScopes,
   };
 }
 
@@ -351,6 +419,28 @@ function offeringLabel(offering: Row | undefined) {
   );
 }
 
+function subjectKeyFor(rowData: Row, offering?: Row) {
+  return text(rowData.subjectKey) || text(offering?.subjectKey);
+}
+
+function canViewTeacherWorkSubject(params: {
+  actor: TeacherWorkActor;
+  orgId: string;
+  schoolId: string;
+  subjectKey: string;
+}) {
+  return hasPersonSupervisionSubjectAccess({
+    scopes: params.actor.supervisionScopes,
+    request: {
+      orgId: params.orgId,
+      personId: params.actor.personId,
+      capability: "TEACHER_WORK_VIEW",
+      schoolId: params.schoolId,
+      subjectKey: params.subjectKey,
+    },
+  });
+}
+
 function addMetric(params: {
   metric: MetricAccumulator;
   activityAt: number | null;
@@ -408,11 +498,23 @@ async function buildTeacherWorkSummaries(params: {
   const offeringById = new Map(offeringRows.map((offering) => [text(offering.id), offering]));
   const periodStartAt = periodStart(params.period);
   const summaries = new Map<string, TeacherWorkSummary & { metrics: Record<TeacherWorkMetricKey, MetricAccumulator> }>();
+  const hasScopeFor = (rowData: Row) => {
+    const offering = offeringById.get(text(rowData.classSubjectOfferingId));
+    return canViewTeacherWorkSubject({
+      actor: params.actor,
+      orgId: params.orgId,
+      schoolId: text(rowData.schoolId),
+      subjectKey: subjectKeyFor(rowData, offering),
+    });
+  };
 
   for (const teacherPersonId of teacherPersonIds) {
     const teacherAssignments = assignments.filter(
-      (assignment) => text(assignment.teacherPersonId) === teacherPersonId,
+      (assignment) =>
+        text(assignment.teacherPersonId) === teacherPersonId &&
+        hasScopeFor(assignment),
     );
+    if (!teacherAssignments.length) continue;
     const teacherAssignmentIds = new Set(teacherAssignments.map((assignment) => text(assignment.id)));
     const teacherLinks = links.filter((link) => teacherAssignmentIds.has(text(link.assignmentId)));
     const classIds = unique([
@@ -451,6 +553,7 @@ async function buildTeacherWorkSummaries(params: {
 
   for (const rowData of measurementRows) {
     if (!isCurrentYear(rowData)) continue;
+    if (!hasScopeFor(rowData)) continue;
     const activityAt = rowActivity(rowData, ["measuredAt", "submittedAt", "createdAt"]);
     if (!isInPeriod(activityAt, periodStartAt)) continue;
     const summary = ownerSummary(text(rowData.createdByPersonId));
@@ -465,6 +568,7 @@ async function buildTeacherWorkSummaries(params: {
 
   for (const rowData of learningLossRows) {
     if (!isCurrentYear(rowData)) continue;
+    if (!hasScopeFor(rowData)) continue;
     const activityAt = rowActivity(rowData, ["createdAt"]);
     if (!isInPeriod(activityAt, periodStartAt)) continue;
     const summary = ownerSummary(text(rowData.createdByPersonId));
@@ -482,6 +586,7 @@ async function buildTeacherWorkSummaries(params: {
 
   for (const rowData of noteRows) {
     if (!isCurrentYear(rowData)) continue;
+    if (!hasScopeFor(rowData)) continue;
     const activityAt = rowActivity(rowData, ["recordedAt", "createdAt"]);
     if (!isInPeriod(activityAt, periodStartAt)) continue;
     const summary = ownerSummary(text(rowData.recordedByPersonId));
@@ -496,6 +601,7 @@ async function buildTeacherWorkSummaries(params: {
 
   for (const rowData of gamificationRows) {
     if (!isCurrentYear(rowData) || text(rowData.sourceType) !== "MANUAL") continue;
+    if (!hasScopeFor(rowData)) continue;
     const activityAt = rowActivity(rowData, ["occurredAt", "createdAt"]);
     if (!isInPeriod(activityAt, periodStartAt)) continue;
     const summary = ownerSummary(text(rowData.createdByPersonId));
@@ -510,6 +616,7 @@ async function buildTeacherWorkSummaries(params: {
 
   for (const rowData of homeworkRows) {
     if (!isCurrentYear(rowData)) continue;
+    if (!hasScopeFor(rowData)) continue;
     const activityAt = rowActivity(rowData, ["publishedAt", "createdAt"]);
     if (!isInPeriod(activityAt, periodStartAt)) continue;
     const summary = ownerSummary(text(rowData.createdByPersonId));
@@ -523,6 +630,7 @@ async function buildTeacherWorkSummaries(params: {
 
   for (const rowData of lessonPrepRows) {
     if (!isCurrentYear(rowData)) continue;
+    if (!hasScopeFor(rowData)) continue;
     const activityAt = rowActivity(rowData, ["updatedAt", "submittedAt", "approvedAt", "returnedAt", "createdAt"]);
     if (!isInPeriod(activityAt, periodStartAt)) continue;
     const summary = ownerSummary(text(rowData.teacherPersonId));
@@ -548,6 +656,240 @@ async function buildTeacherWorkSummaries(params: {
       },
     }))
     .sort((left, right) => left.displayName.localeCompare(right.displayName, "ar"));
+}
+
+async function buildTeacherLessonPrepDetails(params: {
+  orgId: string;
+  actor: TeacherWorkActor;
+  academicYearId: string;
+  period: TeacherWorkPeriod;
+  teacherPersonId: string;
+}): Promise<TeacherWorkLessonPrep[]> {
+  const [assignmentRows, linkRows, lessonPrepRows, offeringRows] = await Promise.all([
+    listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "teacherAssignments" }),
+    listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "teacherAssignmentClassLinks" }),
+    listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "subjectLessonPreps" }),
+    listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "classSubjectOfferings" }),
+  ]);
+
+  const now = Date.now();
+  const assignments = assignmentRows.filter(
+    (assignment) =>
+      text(assignment.teacherPersonId) === params.teacherPersonId &&
+      isActiveAssignment(assignment, now, params.academicYearId),
+  );
+  const assignmentIds = new Set(assignments.map((assignment) => text(assignment.id)));
+  const links = linkRows.filter((link) => assignmentIds.has(text(link.assignmentId)));
+  const classLabels = await loadClassLabels({
+    orgId: params.orgId,
+    assignments,
+    links,
+  });
+  const offeringById = new Map(offeringRows.map((offering) => [text(offering.id), offering]));
+  const periodStartAt = periodStart(params.period);
+
+  return lessonPrepRows
+    .filter((lessonPrep) => {
+      if (text(lessonPrep.teacherPersonId) !== params.teacherPersonId) return false;
+      if (params.academicYearId && text(lessonPrep.academicYearId) !== params.academicYearId) {
+        return false;
+      }
+      if (
+        !canViewTeacherWorkSubject({
+          actor: params.actor,
+          orgId: params.orgId,
+          schoolId: text(lessonPrep.schoolId),
+          subjectKey: subjectKeyFor(
+            lessonPrep,
+            offeringById.get(text(lessonPrep.classSubjectOfferingId)),
+          ),
+        })
+      ) {
+        return false;
+      }
+
+      return isInPeriod(
+        rowActivity(lessonPrep, ["updatedAt", "submittedAt", "approvedAt", "returnedAt", "createdAt"]),
+        periodStartAt,
+      );
+    })
+    .map((lessonPrep) => {
+      const offering = offeringById.get(text(lessonPrep.classSubjectOfferingId));
+      const activityAt = rowActivity(lessonPrep, ["updatedAt", "submittedAt", "approvedAt", "returnedAt", "createdAt"]);
+
+      return {
+        activityAt,
+        detail: {
+          id: text(lessonPrep.id),
+          lessonTitle: text(lessonPrep.lessonTitle),
+          subjectLabel: offeringLabel(offering) || text(lessonPrep.subjectKey),
+          classLabel: classLabels.get(text(lessonPrep.classId)) || text(lessonPrep.classId),
+          lessonDate: text(lessonPrep.lessonDate),
+          status: text(lessonPrep.status),
+          unitTitle: text(lessonPrep.unitTitle),
+          weekLabel: text(lessonPrep.weekLabel),
+          durationMinutes: text(lessonPrep.durationMinutes),
+          lessonNumber: text(lessonPrep.lessonNumber),
+          objectives: text(lessonPrep.objectives),
+          learningOutcomes: text(lessonPrep.learningOutcomes),
+          warmup: text(lessonPrep.warmup),
+          lessonSteps: text(lessonPrep.lessonSteps),
+          strategies: text(lessonPrep.strategies),
+          resources: text(lessonPrep.resources),
+          assessment: text(lessonPrep.assessment),
+          homeworkNote: text(lessonPrep.homeworkNote),
+          approvalNote: text(lessonPrep.approvalNote),
+          returnReason: text(lessonPrep.returnReason),
+        },
+      };
+    })
+    .sort((left, right) => (right.activityAt ?? 0) - (left.activityAt ?? 0))
+    .map(({ detail }) => detail);
+}
+
+async function buildTeacherWorkDrillDowns(params: {
+  orgId: string;
+  actor: TeacherWorkActor;
+  academicYearId: string;
+  period: TeacherWorkPeriod;
+  teacherPersonId: string;
+}): Promise<TeacherWorkDrillDowns> {
+  const [assignmentRows, linkRows, measurementRows, learningLossRows, noteRows, gamificationRows, homeworkRows, offeringRows] =
+    await Promise.all([
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "teacherAssignments" }),
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "teacherAssignmentClassLinks" }),
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "studentMeasurementBatches" }),
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "studentLearningLossPlans" }),
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "studentNotes" }),
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "studentGamificationEvents" }),
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "studentHomeworkAssignments" }),
+      listRowsForSchools({ orgId: params.orgId, schoolIds: params.actor.schoolIds, collectionName: "classSubjectOfferings" }),
+    ]);
+
+  const now = Date.now();
+  const assignments = assignmentRows.filter(
+    (assignment) =>
+      text(assignment.teacherPersonId) === params.teacherPersonId &&
+      isActiveAssignment(assignment, now, params.academicYearId),
+  );
+  const assignmentIds = new Set(assignments.map((assignment) => text(assignment.id)));
+  const links = linkRows.filter((link) => assignmentIds.has(text(link.assignmentId)));
+  const classLabels = await loadClassLabels({
+    orgId: params.orgId,
+    assignments,
+    links,
+  });
+  const offeringById = new Map(offeringRows.map((offering) => [text(offering.id), offering]));
+  const periodStartAt = periodStart(params.period);
+  const drillDowns = emptyDrillDowns();
+
+  const add = (item: {
+    key: TeacherWorkDrillDownKey;
+    rowData: Row;
+    title: string;
+    status: string;
+    activityFields: string[];
+  }) => {
+    if (
+      !canViewTeacherWorkSubject({
+        actor: params.actor,
+        orgId: params.orgId,
+        schoolId: text(item.rowData.schoolId),
+        subjectKey: subjectKeyFor(
+          item.rowData,
+          offeringById.get(text(item.rowData.classSubjectOfferingId)),
+        ),
+      })
+    ) {
+      return;
+    }
+
+    if (
+      params.academicYearId &&
+      text(item.rowData.academicYearId) !== params.academicYearId
+    ) {
+      return;
+    }
+
+    const activityAt = rowActivity(item.rowData, item.activityFields);
+    if (!isInPeriod(activityAt, periodStartAt)) return;
+
+    const offering = offeringById.get(text(item.rowData.classSubjectOfferingId));
+    drillDowns[item.key].push({
+      id: text(item.rowData.id),
+      title: item.title,
+      status: item.status,
+      activityAt,
+      classLabel: classLabels.get(text(item.rowData.classId)) || text(item.rowData.classId),
+      subjectLabel: offeringLabel(offering),
+    });
+  };
+
+  for (const rowData of measurementRows) {
+    if (text(rowData.createdByPersonId) !== params.teacherPersonId) continue;
+    add({
+      key: "measurements",
+      rowData,
+      title: "دفعة قياسات",
+      status: text(rowData.status),
+      activityFields: ["measuredAt", "submittedAt", "createdAt"],
+    });
+  }
+
+  for (const rowData of learningLossRows) {
+    if (text(rowData.createdByPersonId) !== params.teacherPersonId) continue;
+    add({
+      key: "learningLoss",
+      rowData,
+      title: "خطة فاقد تعليمي",
+      status: text(rowData.status),
+      activityFields: ["createdAt"],
+    });
+  }
+
+  for (const rowData of noteRows) {
+    if (text(rowData.recordedByPersonId) !== params.teacherPersonId) continue;
+    add({
+      key: "notes",
+      rowData,
+      title: "ملاحظة مسجلة",
+      status: "RECORDED",
+      activityFields: ["recordedAt", "createdAt"],
+    });
+  }
+
+  for (const rowData of gamificationRows) {
+    if (
+      text(rowData.createdByPersonId) !== params.teacherPersonId ||
+      text(rowData.sourceType) !== "MANUAL"
+    ) {
+      continue;
+    }
+    add({
+      key: "gamification",
+      rowData,
+      title: "تحفيز يدوي",
+      status: "RECORDED",
+      activityFields: ["occurredAt", "createdAt"],
+    });
+  }
+
+  for (const rowData of homeworkRows) {
+    if (text(rowData.createdByPersonId) !== params.teacherPersonId) continue;
+    add({
+      key: "homework",
+      rowData,
+      title: "واجب دراسي",
+      status: text(rowData.status),
+      activityFields: ["publishedAt", "createdAt"],
+    });
+  }
+
+  for (const key of Object.keys(drillDowns) as TeacherWorkDrillDownKey[]) {
+    drillDowns[key].sort((left, right) => (right.activityAt ?? 0) - (left.activityAt ?? 0));
+  }
+
+  return drillDowns;
 }
 
 async function getTeacherWork(params: {
@@ -583,8 +925,14 @@ export const getTeacherWorkOverview = onCall(
 );
 
 export const getTeacherWorkDetail = onCall(
-  { region: REGION, cors: true, invoker: "public" },
-  async (request): Promise<{ academicYearId: string; period: TeacherWorkPeriod; teacher: TeacherWorkSummary }> => {
+  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  async (request): Promise<{
+    academicYearId: string;
+    period: TeacherWorkPeriod;
+    teacher: TeacherWorkSummary;
+    lessonPreps: TeacherWorkLessonPrep[];
+    drillDowns: TeacherWorkDrillDowns;
+  }> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");
     }
@@ -600,10 +948,29 @@ export const getTeacherWorkDetail = onCall(
       throw new HttpsError("not-found", "Teacher is not available in your school scope.");
     }
 
+    const orgId = requireId(input.orgId, "orgId");
+    const actor = await resolveActor({ orgId, uid: request.auth.uid });
+    const lessonPreps = await buildTeacherLessonPrepDetails({
+      orgId,
+      actor,
+      academicYearId: result.academicYearId,
+      period: result.period,
+      teacherPersonId,
+    });
+    const drillDowns = await buildTeacherWorkDrillDowns({
+      orgId,
+      actor,
+      academicYearId: result.academicYearId,
+      period: result.period,
+      teacherPersonId,
+    });
+
     return {
       academicYearId: result.academicYearId,
       period: result.period,
       teacher,
+      lessonPreps,
+      drillDowns,
     };
   },
 );

@@ -89,7 +89,7 @@ export const createUrgentStudentRequest = onCall(
   {
     region: "me-central2",
     timeoutSeconds: 60,
-    memory: "256MiB",
+    memory: "512MiB",
   },
   async (request) => {
     const uid = request.auth?.uid;

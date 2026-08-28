@@ -168,6 +168,21 @@ function canReadPdfResource(orgId, resourceData) {
         );
     }
 
+    function hasStudentAttendanceRole(orgId) {
+      return hasOrgMembership(orgId)
+        && orgRole(orgId) in [
+          "BOYS_VP",
+          "GIRLS_VP",
+          "KG_VP",
+          "SCHOOL_MONITOR"
+        ];
+    }
+
+    function canManageStudentAttendance(orgId, schoolId) {
+      return hasStudentAttendanceRole(orgId)
+        && hasSchoolAccess(orgId, schoolId);
+    }
+
 
 function hasAssignedClassSubjectAccess(
   orgId,
@@ -195,21 +210,61 @@ function hasAssignedClassSubjectAccess(
 
 function isTemporaryLessonPrepReviewerForSchool(orgId, schoolId) {
   return hasOrgMembership(orgId)
+    && currentUserPersonId()
+      in ["p-t-altwala", "p-malrameh", "p-f-alhamaad", "p-a-almansur"]
+    && schoolId in ["kg-01", "kg-02", "kg-03", "kg-04"];
+}
+
+function personSupervisionScopeId(capability, schoolId) {
+  return currentUserPersonId() + "__" + capability + "__" + schoolId;
+}
+
+function personSupervisionScopePath(orgId, capability, schoolId) {
+  return /databases/$(database)/documents/orgs/$(orgId)/personSupervisionScopes/$(personSupervisionScopeId(capability, schoolId));
+}
+
+function hasPersonSupervisionSubjectAccess(orgId, capability, schoolId, subjectKey) {
+  return hasOrgMembership(orgId)
+    && subjectKey is string
+    && subjectKey != ""
+    && exists(personSupervisionScopePath(orgId, capability, schoolId))
+    && get(personSupervisionScopePath(orgId, capability, schoolId)).data.orgId == orgId
+    && get(personSupervisionScopePath(orgId, capability, schoolId)).data.personId
+      == currentUserPersonId()
+    && get(personSupervisionScopePath(orgId, capability, schoolId)).data.capability
+      == capability
+    && get(personSupervisionScopePath(orgId, capability, schoolId)).data.schoolId
+      == schoolId
+    && get(personSupervisionScopePath(orgId, capability, schoolId)).data.isActive == true
     && (
-      (
-        currentUserPersonId()
-          in [
-            "p-s-sayed",
-            "p-n-alshaya",
-            "staff-NOFByrx0XLVovqxuFjfwRWSokgs1"
-          ]
-        && schoolId in ["mrb-boys-sayh", "mrb-boys-faleh", "mrb-girls"]
-      )
+      !("startAt" in get(personSupervisionScopePath(orgId, capability, schoolId)).data)
+      || get(personSupervisionScopePath(orgId, capability, schoolId)).data.startAt
+        <= request.time.toMillis()
+    )
+    && (
+      !("endAt" in get(personSupervisionScopePath(orgId, capability, schoolId)).data)
+      || get(personSupervisionScopePath(orgId, capability, schoolId)).data.endAt
+        >= request.time.toMillis()
+    )
+    && (
+      get(personSupervisionScopePath(orgId, capability, schoolId)).data.subjectScope
+        == "ALL_SUBJECTS"
       || (
-        currentUserPersonId()
-          in ["p-t-altwala", "p-malrameh", "p-f-alhamaad", "p-a-almansur"]
-        && schoolId in ["kg-01", "kg-02", "kg-03", "kg-04"]
+        get(personSupervisionScopePath(orgId, capability, schoolId)).data.subjectScope
+          == "SUBJECT_KEYS"
+        && get(personSupervisionScopePath(orgId, capability, schoolId)).data.subjectKeys is list
+        && subjectKey in get(personSupervisionScopePath(orgId, capability, schoolId)).data.subjectKeys
       )
+    );
+}
+
+function canReviewLessonPrepSubject(orgId, schoolId, subjectKey) {
+  return isTemporaryLessonPrepReviewerForSchool(orgId, schoolId)
+    || hasPersonSupervisionSubjectAccess(
+      orgId,
+      "LESSON_PREP_REVIEW",
+      schoolId,
+      subjectKey
     );
 }
 
@@ -821,13 +876,24 @@ match /studentHomeworkAssignments/{homeworkId} {
 
 
 
+match /personSupervisionScopes/{scopeId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      hasOrgMembership(orgId)
+      && resource.data.personId == currentUserPersonId()
+    );
+
+  allow create, update, delete: if canManageOrg(orgId);
+}
+
 match /subjectLessonPreps/{lessonPrepId} {
   allow get, list: if canManageOrg(orgId)
     || (
       resource.data.status == "SUBMITTED"
-      && isTemporaryLessonPrepReviewerForSchool(
+      && canReviewLessonPrepSubject(
         orgId,
-        resource.data.schoolId
+        resource.data.schoolId,
+        resource.data.subjectKey
       )
     )
     || (
@@ -895,9 +961,10 @@ match /subjectLessonPreps/{lessonPrepId} {
     )
     || (
       resource.data.status == "SUBMITTED"
-      && isTemporaryLessonPrepReviewerForSchool(
+      && canReviewLessonPrepSubject(
         orgId,
-        resource.data.schoolId
+        resource.data.schoolId,
+        resource.data.subjectKey
       )
       && (
         (
@@ -905,6 +972,7 @@ match /subjectLessonPreps/{lessonPrepId} {
           && request.resource.data.approvedByPersonId
             == currentUserPersonId()
           && request.resource.data.approvedAt is number
+          && request.resource.data.approvalNote is string
           && request.resource.data.updatedAt
             == request.resource.data.approvedAt
           && request.resource.data.diff(resource.data).affectedKeys()
@@ -912,6 +980,7 @@ match /subjectLessonPreps/{lessonPrepId} {
               "status",
               "approvedAt",
               "approvedByPersonId",
+              "approvalNote",
               "updatedAt"
             ])
         )
@@ -1104,8 +1173,9 @@ match /studentLearningLossPlans/{planId} {
 match /studentAttendanceBatches/{batchId} {
   allow get, list: if canManageOrg(orgId)
     || (
-      resource.data.schoolId is string
-      && hasSchoolAccess(
+      resource.data.orgId == orgId
+      && resource.data.schoolId is string
+      && canManageStudentAttendance(
         orgId,
         resource.data.schoolId
       )
@@ -1113,8 +1183,9 @@ match /studentAttendanceBatches/{batchId} {
 
   allow create: if canManageOrg(orgId)
     || (
-      request.resource.data.schoolId is string
-      && hasSchoolAccess(
+      request.resource.data.orgId == orgId
+      && request.resource.data.schoolId is string
+      && canManageStudentAttendance(
         orgId,
         request.resource.data.schoolId
       )
@@ -1122,10 +1193,48 @@ match /studentAttendanceBatches/{batchId} {
 
   allow update: if canManageOrg(orgId)
     || (
-      resource.data.schoolId is string
+      resource.data.orgId == orgId
+      && request.resource.data.orgId == orgId
+      && resource.data.schoolId is string
       && request.resource.data.schoolId
         == resource.data.schoolId
-      && hasSchoolAccess(
+      && canManageStudentAttendance(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow delete: if canManageOrg(orgId);
+}
+
+match /studentAttendanceRecords/{recordId} {
+  allow get, list: if canManageOrg(orgId)
+    || (
+      resource.data.orgId == orgId
+      && resource.data.schoolId is string
+      && canManageStudentAttendance(
+        orgId,
+        resource.data.schoolId
+      )
+    );
+
+  allow create: if canManageOrg(orgId)
+    || (
+      request.resource.data.orgId == orgId
+      && request.resource.data.schoolId is string
+      && canManageStudentAttendance(
+        orgId,
+        request.resource.data.schoolId
+      )
+    );
+
+  allow update: if canManageOrg(orgId)
+    || (
+      resource.data.orgId == orgId
+      && request.resource.data.orgId == orgId
+      && resource.data.schoolId is string
+      && request.resource.data.schoolId == resource.data.schoolId
+      && canManageStudentAttendance(
         orgId,
         resource.data.schoolId
       )

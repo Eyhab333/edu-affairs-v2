@@ -52,6 +52,7 @@ export type SubjectLessonPrepApprovePatch = {
   status: "APPROVED";
   approvedAt: number;
   approvedByPersonId: string;
+  approvalNote: string;
   updatedAt: number;
 };
 
@@ -445,12 +446,14 @@ export function buildSubjectLessonPrepSubmitPatch(
 
 export function buildSubjectLessonPrepApprovePatch(params: {
   actorPersonId: string;
+  approvalNote?: string;
   now?: number;
 }): SubjectLessonPrepApprovePatch {
   return {
     status: "APPROVED",
     approvedAt: params.now ?? Date.now(),
     approvedByPersonId: params.actorPersonId,
+    approvalNote: params.approvalNote?.trim() || "",
     updatedAt: params.now ?? Date.now(),
   };
 }

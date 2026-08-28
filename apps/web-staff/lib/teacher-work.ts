@@ -37,6 +37,48 @@ export type TeacherWorkSummary = {
   metrics: Record<TeacherWorkMetricKey, TeacherWorkMetric>;
 };
 
+export type TeacherWorkLessonPrep = {
+  id: string;
+  lessonTitle: string;
+  subjectLabel: string;
+  classLabel: string;
+  lessonDate: string;
+  status: string;
+  unitTitle: string;
+  weekLabel: string;
+  durationMinutes: string;
+  lessonNumber: string;
+  objectives: string;
+  learningOutcomes: string;
+  warmup: string;
+  lessonSteps: string;
+  strategies: string;
+  resources: string;
+  assessment: string;
+  homeworkNote: string;
+  approvalNote: string;
+  returnReason: string;
+};
+
+export type TeacherWorkDrillDownKey = Exclude<
+  TeacherWorkMetricKey,
+  "lessonPrep"
+>;
+
+export type TeacherWorkDrillDownItem = {
+  id: string;
+  title: string;
+  status: string;
+  activityAt: number | null;
+  classLabel: string;
+  subjectLabel: string;
+};
+
+export type TeacherWorkDrillDowns = Record<
+  TeacherWorkDrillDownKey,
+  TeacherWorkDrillDownItem[]
+>;
+
 type TeacherWorkCallableInput = {
   orgId: string;
   academicYearId?: string;
@@ -57,6 +99,8 @@ type TeacherWorkDetailResponse = {
   academicYearId: string;
   period: TeacherWorkPeriod;
   teacher: TeacherWorkSummary;
+  lessonPreps: TeacherWorkLessonPrep[];
+  drillDowns: TeacherWorkDrillDowns;
 };
 
 const getTeacherWorkOverview = httpsCallable<
@@ -89,6 +133,16 @@ export async function loadTeacherWorkSummary(params: {
   teacherPersonId: string;
   period: TeacherWorkPeriod;
 }) {
+  const result = await loadTeacherWorkDetail(params);
+  return result?.teacher ?? null;
+}
+
+export async function loadTeacherWorkDetail(params: {
+  orgId: string;
+  academicYearId?: string;
+  teacherPersonId: string;
+  period: TeacherWorkPeriod;
+}) {
   try {
     const result = await getTeacherWorkDetail({
       orgId: params.orgId,
@@ -97,7 +151,7 @@ export async function loadTeacherWorkSummary(params: {
       period: params.period,
     });
 
-    return result.data.teacher;
+    return result.data;
   } catch (error) {
     if (
       error &&
@@ -118,7 +172,7 @@ export const teacherWorkMetricLabels: Record<TeacherWorkMetricKey, string> = {
   notes: "الملاحظات",
   gamification: "التحفيز",
   homework: "الواجبات",
-  lessonPrep: "التحضير",
+  lessonPrep: "تحضير الدروس",
 };
 
 export const teacherWorkMetricOrder: TeacherWorkMetricKey[] = [

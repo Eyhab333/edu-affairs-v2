@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -34,6 +34,9 @@ import {
   getStaffNavigationAccess,
   getVisibleStaffNavItems,
 } from "@/lib/staff-navigation";
+import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
+import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
+import type { PersonSupervisionScope } from "@takween/contracts";
 
 function isActiveHref(pathname: string, href: string) {
   if (href === "/staff") return pathname === "/staff";
@@ -49,6 +52,42 @@ function StaffShell({ children }: { children: ReactNode }) {
   const actorName = getStaffActorDisplayName(actor);
   const actorRole = getStaffActorPrimaryRole(actor);
   const stats = getStaffActorStats(actor);
+  const [supervisionScopes, setSupervisionScopes] = useState<
+    PersonSupervisionScope[]
+  >([]);
+  const [scopesLoading, setScopesLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadScopes() {
+      if (!actor.orgId || !actor.personId) {
+        if (!cancelled) {
+          setSupervisionScopes([]);
+          setScopesLoading(false);
+        }
+        return;
+      }
+
+      setScopesLoading(true);
+      try {
+        const nextScopes = await loadPersonSupervisionScopes({
+          orgId: actor.orgId,
+          personId: actor.personId,
+        });
+        if (!cancelled) setSupervisionScopes(nextScopes);
+      } catch {
+        if (!cancelled) setSupervisionScopes([]);
+      } finally {
+        if (!cancelled) setScopesLoading(false);
+      }
+    }
+
+    void loadScopes();
+    return () => {
+      cancelled = true;
+    };
+  }, [actor.orgId, actor.personId]);
 
   const navigationAccess = getStaffNavigationAccess(actor);
   const {
@@ -59,9 +98,24 @@ function StaffShell({ children }: { children: ReactNode }) {
     canAccessMyPortfolio,
     canAccessTeacherPortfolio,
     canAccessPerformanceImprovement: canAccessPerformanceImprovementRoute,
-    canAccessLessonPrepApprovals,
+    canAccessLessonPrepApprovals: canAccessLegacyLessonPrepApprovals,
     canAccessTeacherWork: canAccessTeacherWorkRoute,
   } = navigationAccess;
+  const canAccessLessonPrepApprovals = useMemo(
+    () =>
+      canAccessLegacyLessonPrepApprovals ||
+      getLessonPrepReviewSchoolIds({
+        orgId: actor.orgId,
+        personId: actor.personId,
+        scopes: supervisionScopes,
+      }).length > 0,
+    [
+      actor.orgId,
+      actor.personId,
+      canAccessLegacyLessonPrepApprovals,
+      supervisionScopes,
+    ],
+  );
 
   const requiredModule = getRequiredModuleForStaffPath(pathname);
   const isWorkDocumentationRoute =
@@ -87,7 +141,7 @@ function StaffShell({ children }: { children: ReactNode }) {
     isTeacherWorkRoute
       ? canAccessTeacherWorkRoute
       : isLessonPrepApprovalsRoute
-      ? canAccessLessonPrepApprovals
+      ? scopesLoading || canAccessLessonPrepApprovals
       : isPerformanceImprovementRoute
       ? canAccessPerformanceImprovementRoute
       : isWorkDocumentationRoute
@@ -108,7 +162,10 @@ function StaffShell({ children }: { children: ReactNode }) {
     }
   }, [canAccessCurrentRoute, router]);
 
-  const visibleNavItems = getVisibleStaffNavItems(navigationAccess);
+  const visibleNavItems = getVisibleStaffNavItems({
+    ...navigationAccess,
+    canAccessLessonPrepApprovals,
+  });
 
   async function handleLogout() {
     await signOut(auth);

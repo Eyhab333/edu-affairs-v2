@@ -350,6 +350,70 @@ export const SchoolContactSchema = z.object({
 });
 export type SchoolContact = z.infer<typeof SchoolContactSchema>;
 
+export const PersonSupervisionCapability = z.enum([
+  "TEACHER_WORK_VIEW",
+  "LESSON_PREP_REVIEW",
+]);
+export type PersonSupervisionCapability = z.infer<
+  typeof PersonSupervisionCapability
+>;
+
+export const PersonSupervisionSubjectScope = z.enum([
+  "ALL_SUBJECTS",
+  "SUBJECT_KEYS",
+]);
+export type PersonSupervisionSubjectScope = z.infer<
+  typeof PersonSupervisionSubjectScope
+>;
+
+export const PersonSupervisionScopeSchema = AuditFieldsSchema.merge(
+  z.object({
+    id: NonEmptyStringSchema,
+    orgId: NonEmptyStringSchema,
+    personId: NonEmptyStringSchema,
+    capability: PersonSupervisionCapability,
+    schoolId: NonEmptyStringSchema,
+
+    subjectScope: PersonSupervisionSubjectScope.default("ALL_SUBJECTS"),
+    subjectKeys: z.array(NonEmptyStringSchema).default([]),
+
+    isActive: z.boolean().default(true),
+    startAt: TimestampMsSchema.optional(),
+    endAt: TimestampMsSchema.optional(),
+  }),
+).superRefine((data, context) => {
+  if (data.subjectScope === "ALL_SUBJECTS" && data.subjectKeys.length > 0) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "subjectKeys يجب أن تكون فارغة عند استخدام ALL_SUBJECTS",
+      path: ["subjectKeys"],
+    });
+  }
+
+  if (data.subjectScope === "SUBJECT_KEYS" && data.subjectKeys.length === 0) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "subjectKeys مطلوبة عند استخدام SUBJECT_KEYS",
+      path: ["subjectKeys"],
+    });
+  }
+
+  if (
+    typeof data.startAt === "number" &&
+    typeof data.endAt === "number" &&
+    data.endAt < data.startAt
+  ) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "endAt لا يمكن أن يكون قبل startAt",
+      path: ["endAt"],
+    });
+  }
+});
+export type PersonSupervisionScope = z.infer<
+  typeof PersonSupervisionScopeSchema
+>;
+
 export const SchoolSchema = AuditFieldsSchema.merge(
   z.object({
     id: NonEmptyStringSchema,
@@ -2430,6 +2494,7 @@ export const SubjectLessonPrepSchema = AuditFieldsSchema.merge(
 
     approvedAt: NullableTimestampMsSchema,
     approvedByPersonId: z.string().optional().default(""),
+    approvalNote: z.string().optional().default(""),
 
     returnedAt: NullableTimestampMsSchema,
     returnedByPersonId: z.string().optional().default(""),

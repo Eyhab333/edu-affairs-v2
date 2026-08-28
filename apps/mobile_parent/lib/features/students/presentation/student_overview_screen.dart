@@ -9,6 +9,7 @@ import '../../../shared/widgets/app_info_row.dart';
 import '../../../shared/widgets/app_loading_state.dart';
 import '../../../shared/widgets/app_section_title.dart';
 import '../../attendance/presentation/student_attendance_tab.dart';
+import '../../gamification/data/student_gamification_service.dart';
 import '../../guardian/data/guardian_children_service.dart';
 import '../../guardian/models/parent_student_summary.dart';
 import '../../notes/presentation/student_notes_tab.dart';
@@ -148,11 +149,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
                 _SummaryTab(student: student),
                 StudentAttendanceTab(studentId: student.studentId),
                 StudentNotesTab(studentId: student.studentId),
-                const _PlaceholderTab(
-                  icon: Icons.emoji_events_rounded,
-                  title: 'التحفيز',
-                  message: 'سنظهر هنا نقاط وشارات وأحداث التحفيز.',
-                ),
+                StudentGamificationTab(student: student),
                 const _PlaceholderTab(
                   icon: Icons.analytics_rounded,
                   title: 'القياسات',
@@ -161,6 +158,183 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
                 StudentVirtualClassesTab(student: student),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class StudentGamificationTab extends StatefulWidget {
+  const StudentGamificationTab({super.key, required this.student});
+
+  final ParentStudentSummary student;
+
+  @override
+  State<StudentGamificationTab> createState() =>
+      _StudentGamificationTabState();
+}
+
+class _StudentGamificationTabState extends State<StudentGamificationTab> {
+  late Future<List<Map<String, dynamic>>> _future;
+
+  final _service = StudentGamificationService();
+
+  @override
+  void initState() {
+    super.initState();
+    _future = _loadEvents();
+  }
+
+  Future<List<Map<String, dynamic>>> _loadEvents() {
+    if (widget.student.studentId.isEmpty) return Future.value([]);
+
+    return _service.loadStudentGamification(
+      studentId: widget.student.studentId,
+    );
+  }
+
+  void _reload() {
+    setState(() {
+      _future = _loadEvents();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const AppLoadingState(message: 'جاري تحميل أحداث التحفيز...');
+        }
+
+        if (snapshot.hasError) {
+          return AppErrorState(
+            title: 'تعذر تحميل التحفيز',
+            message: snapshot.error.toString(),
+            onRetry: _reload,
+          );
+        }
+
+        final events = snapshot.data ?? [];
+
+        if (events.isEmpty) {
+          return AppEmptyState(
+            icon: Icons.emoji_events_outlined,
+            title: 'لا توجد أحداث تحفيز',
+            message: 'لا توجد نقاط أو شارات ظاهرة لولي الأمر حتى الآن.',
+            action: OutlinedButton.icon(
+              onPressed: _reload,
+              icon: const Icon(Icons.refresh_rounded),
+              label: const Text('تحديث'),
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () async => _reload(),
+          child: ListView.separated(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            itemCount: events.length,
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+            itemBuilder: (context, index) =>
+                _GamificationEventCard(event: events[index]),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _GamificationEventCard extends StatelessWidget {
+  const _GamificationEventCard({required this.event});
+
+  final Map<String, dynamic> event;
+
+  @override
+  Widget build(BuildContext context) {
+    final title = _firstNonEmpty([
+      _readString(event, 'reasonTitle'),
+      _readString(event, 'title'),
+      _readString(event, 'categoryTitle'),
+      _readString(event, 'eventType'),
+    ]);
+    final description = _readString(event, 'description');
+    final value = _gamificationValueLabel(event);
+    final badge = _firstNonEmpty([
+      _readString(event, 'badgeTitle'),
+      _readString(event, 'badgeKey'),
+    ]);
+    final subject = _firstNonEmpty([
+      _readString(event, 'subjectTitle'),
+      _readString(event, 'subjectKey'),
+    ]);
+    final note = _readString(event, 'note');
+    final occurredAt = _formatDateTime(_readInt(event, 'occurredAt'));
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CircleAvatar(
+                child: Icon(Icons.emoji_events_rounded),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(
+                  title.isEmpty ? 'حدث تحفيزي' : title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          if (description.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Text(description),
+          ],
+          if (value.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            _InfoRow(
+              icon: Icons.add_chart_rounded,
+              label: 'القيمة',
+              value: value,
+            ),
+          ],
+          if (badge.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _InfoRow(
+              icon: Icons.military_tech_rounded,
+              label: 'الشارة',
+              value: badge,
+            ),
+          ],
+          if (subject.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _InfoRow(
+              icon: Icons.menu_book_rounded,
+              label: 'المادة',
+              value: subject,
+            ),
+          ],
+          if (note.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _InfoRow(
+              icon: Icons.notes_rounded,
+              label: 'ملاحظة',
+              value: note,
+            ),
+          ],
+          const SizedBox(height: AppSpacing.sm),
+          _InfoRow(
+            icon: Icons.schedule_rounded,
+            label: 'التاريخ',
+            value: occurredAt,
           ),
         ],
       ),
@@ -917,6 +1091,44 @@ String _attendanceStatusLabel(String status) {
       return 'غير معروف';
     default:
       return status.isEmpty ? 'غير معروف' : status;
+  }
+}
+
+String _firstNonEmpty(Iterable<String> values) {
+  for (final value in values) {
+    if (value.trim().isNotEmpty) return value.trim();
+  }
+
+  return '';
+}
+
+String _gamificationValueLabel(Map<String, dynamic> data) {
+  final value = data['value'];
+  if (value is! num) return '';
+
+  final valueKind = _gamificationValueKindLabel(
+    _readString(data, 'valueKind'),
+  );
+
+  return _firstNonEmpty([
+    [value.toString(), valueKind].where((item) => item.isNotEmpty).join(' '),
+  ]);
+}
+
+String _gamificationValueKindLabel(String valueKind) {
+  switch (valueKind) {
+    case 'XP':
+      return 'خبرة';
+    case 'POINTS':
+      return 'نقطة';
+    case 'BADGE_VALUE':
+      return 'قيمة شارة';
+    case 'STREAK':
+      return 'سلسلة';
+    case 'LEVEL':
+      return 'مستوى';
+    default:
+      return valueKind;
   }
 }
 

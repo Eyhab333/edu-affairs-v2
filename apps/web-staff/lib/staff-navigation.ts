@@ -219,7 +219,7 @@ export function getStaffNavigationAccess(
     canAccessTeacherPortfolio: canReviewTeacherPortfolios(actor),
     canAccessPerformanceImprovement: canAccessPerformanceImprovement(actor),
     canAccessLessonPrepApprovals:
-      getLessonPrepReviewSchoolIds(actor.personId).length > 0,
+      getLessonPrepReviewSchoolIds({ personId: actor.personId }).length > 0,
     canAccessTeacherWork: canAccessTeacherWork(actor),
   };
 }

@@ -39,6 +39,7 @@ import {
   buildAttendanceBatchDraft,
   calculateAttendanceBatchSummary,
   canSubmitAttendanceBatch,
+  canRunOperation,
   submitAttendanceBatch,
   updateAttendanceRowStatus,
   withAttendanceBatchSummary,
@@ -456,6 +457,28 @@ export default function ClassAttendancePage() {
 
   const canViewClass = !!classInfo;
 
+  const canSubmitAttendance = useMemo(() => {
+    if (!classInfo) return false;
+
+    return canRunOperation({
+      context: {
+        actorPersonId: actor.personId || actor.uid,
+        orgId: actor.orgId,
+        operationalAssignments: actor.operationalAssignments,
+      },
+      operationKind: "STUDENT_ATTENDANCE",
+      permission: "SUBMIT",
+      scopeType: "SCHOOL",
+      scopeId: classInfo.schoolId,
+    });
+  }, [
+    actor.operationalAssignments,
+    actor.orgId,
+    actor.personId,
+    actor.uid,
+    classInfo,
+  ]);
+
   const summary = useMemo(() => {
     if (!draft) {
       return calculateAttendanceBatchSummary([]);
@@ -687,6 +710,16 @@ export default function ClassAttendancePage() {
 
   async function handleSubmitBatch() {
     if (!draft) return;
+
+    if (!canSubmitAttendance) {
+      setSubmitState({
+        submitting: false,
+        error: "لا تملك صلاحية إرسال حضور هذا الفصل.",
+        submittedAt: null,
+      });
+
+      return;
+    }
 
     const validation = canSubmitAttendanceBatch(draft, {
       requireAllRowsRecorded: true,

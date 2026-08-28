@@ -32,6 +32,8 @@ import {
   canReviewLessonPrepAtSchool,
   getLessonPrepReviewSchoolIds,
 } from "@/lib/lesson-prep-review-policy";
+import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
+import type { PersonSupervisionScope } from "@takween/contracts";
 
 type StaffActorLike = LessonPrepWorkspaceActor & {
   orgId?: string;
@@ -88,6 +90,7 @@ type SubjectLessonPrep = {
 
   approvedAt?: number | null;
   approvedByPersonId?: string;
+  approvalNote?: string;
 
   returnedAt?: number | null;
   returnedByPersonId?: string;
@@ -153,8 +156,21 @@ export default function SubjectLessonPrepDetailsPage() {
   const termShortTitle = searchParams.get("termShortTitle");
   const subjectTitle = searchParams.get("subjectTitle");
   const actorPersonId = staffActor?.personId || "";
+  const [supervisionScopes, setSupervisionScopes] = useState<
+    PersonSupervisionScope[]
+  >([]);
+  const [scopesLoading, setScopesLoading] = useState(true);
+  const reviewSchoolIds = useMemo(
+    () =>
+      getLessonPrepReviewSchoolIds({
+        orgId,
+        personId: actorPersonId,
+        scopes: supervisionScopes,
+      }),
+    [actorPersonId, orgId, supervisionScopes],
+  );
   const canAttemptReviewerAccess =
-    getLessonPrepReviewSchoolIds(actorPersonId).length > 0;
+    scopesLoading || reviewSchoolIds.length > 0;
   const hasActiveWorkspaceAccess = useMemo(() => {
     return hasActiveLessonPrepWorkspaceAccess({
       actor: staffActor,
@@ -173,8 +189,41 @@ export default function SubjectLessonPrepDetailsPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [actionError, setActionError] = useState("");
   const [actionMessage, setActionMessage] = useState("");
+  const [approvalNote, setApprovalNote] = useState("");
   const [returnReason, setReturnReason] = useState("");
   const [showReturnReason, setShowReturnReason] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadScopes() {
+      if (!orgId || !actorPersonId) {
+        if (!cancelled) {
+          setSupervisionScopes([]);
+          setScopesLoading(false);
+        }
+        return;
+      }
+
+      setScopesLoading(true);
+      try {
+        const nextScopes = await loadPersonSupervisionScopes({
+          orgId,
+          personId: actorPersonId,
+        });
+        if (!cancelled) setSupervisionScopes(nextScopes);
+      } catch {
+        if (!cancelled) setSupervisionScopes([]);
+      } finally {
+        if (!cancelled) setScopesLoading(false);
+      }
+    }
+
+    void loadScopes();
+    return () => {
+      cancelled = true;
+    };
+  }, [actorPersonId, orgId]);
 
   const preservedQuery = useMemo(() => {
     return new URLSearchParams(searchParams.toString());
@@ -189,6 +238,11 @@ export default function SubjectLessonPrepDetailsPage() {
     : "/staff/lesson-prep/approvals";
 
   const loadPrep = useCallback(async () => {
+    if (scopesLoading) {
+      setLoading(true);
+      return;
+    }
+
     if (!orgId || (!hasActiveWorkspaceAccess && !canAttemptReviewerAccess)) {
       setPrep(null);
       setLoadError("هذا الفصل أو المادة خارج نطاق إسنادك الحالي.");
@@ -226,8 +280,11 @@ export default function SubjectLessonPrepDetailsPage() {
       const canReviewThisPrep =
         data.status === "SUBMITTED" &&
         canReviewLessonPrepAtSchool({
+          orgId,
           personId: actorPersonId,
           schoolId: data.schoolId,
+          subjectKey: data.subjectKey,
+          scopes: supervisionScopes,
         });
 
       if (!hasActiveWorkspaceAccess && !canReviewThisPrep) {
@@ -253,6 +310,8 @@ export default function SubjectLessonPrepDetailsPage() {
     classId,
     offeringId,
     actorPersonId,
+    scopesLoading,
+    supervisionScopes,
   ]);
 
   useEffect(() => {
@@ -276,8 +335,11 @@ export default function SubjectLessonPrepDetailsPage() {
     prep &&
       prep.status === "SUBMITTED" &&
       canReviewLessonPrepAtSchool({
+        orgId,
         personId: actorPersonId,
         schoolId: prep.schoolId,
+        subjectKey: prep.subjectKey,
+        scopes: supervisionScopes,
       }),
   );
 
@@ -301,8 +363,11 @@ export default function SubjectLessonPrepDetailsPage() {
 
     if (
       !canReviewLessonPrepAtSchool({
+        orgId,
         personId: actorPersonId,
         schoolId: current.schoolId,
+        subjectKey: current.subjectKey,
+        scopes: supervisionScopes,
       })
     ) {
       throw new Error("لا تملك صلاحية مراجعة هذا التحضير.");
@@ -391,6 +456,7 @@ export default function SubjectLessonPrepDetailsPage() {
       const { ref } = await getCurrentSubmittedPrep();
       const approvePatch = buildSubjectLessonPrepApprovePatch({
         actorPersonId,
+        approvalNote,
         now: Date.now(),
       });
 
@@ -405,6 +471,7 @@ export default function SubjectLessonPrepDetailsPage() {
         };
       });
 
+      setApprovalNote("");
       setActionMessage("تم اعتماد التحضير بنجاح.");
     } catch (error) {
       setActionError(
@@ -670,6 +737,16 @@ export default function SubjectLessonPrepDetailsPage() {
                   ) : prep.status === "SUBMITTED" && canReviewCurrentPrep ? (
                     <div className="space-y-3 text-sm leading-7">
                       <p className="font-bold">مراجعة التحضير</p>
+                      <label className="block">
+                        <span className="mb-1 block font-medium">ملاحظة الاعتماد (اختيارية)</span>
+                        <textarea
+                          value={approvalNote}
+                          onChange={(event) => setApprovalNote(event.target.value)}
+                          rows={3}
+                          placeholder="اكتب ملاحظة اختيارية للمعلم"
+                          className="w-full rounded-lg border border-emerald-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-emerald-500 dark:border-emerald-900/60 dark:bg-slate-900 dark:text-slate-50"
+                        />
+                      </label>
                       <button
                         type="button"
                         onClick={() => void handleApprovePrep()}
@@ -725,6 +802,12 @@ export default function SubjectLessonPrepDetailsPage() {
                     <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-7 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100">
                       <p className="font-bold">تم اعتماد التحضير</p>
                       <p className="mt-1">تمت مراجعة هذا التحضير واعتماده بنجاح.</p>
+                      {prep.approvalNote?.trim() ? (
+                        <div className="mt-3 border-t border-emerald-200 pt-3 dark:border-emerald-900/60">
+                          <p className="font-bold">ملاحظة المشرف</p>
+                          <p className="mt-1 whitespace-pre-wrap">{prep.approvalNote}</p>
+                        </div>
+                      ) : null}
                     </div>
                   ) : (
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
