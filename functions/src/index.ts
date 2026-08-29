@@ -29,6 +29,7 @@ export { dismissPerformanceImprovementSignal } from "./evaluations/dismiss-perfo
 export { updatePerformanceImprovementSettings } from "./evaluations/update-performance-improvement-settings";
 export * from "./student-directory";
 export { getStudentCaseReferralOptions } from "./student-cases/get-student-case-referral-options";
+export { getClassRoster } from "./class-roster/get-class-roster";
 export {
   getTeacherWorkDetail,
   getTeacherWorkOverview,

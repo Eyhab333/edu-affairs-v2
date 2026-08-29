@@ -157,7 +157,14 @@ function offeringTemplateFingerprint(item) {
     "resourceFolderId",
     "note",
   ];
-  return stable(Object.fromEntries(fields.map((field) => [field, item[field]])));
+  return stable(Object.fromEntries(fields.map((field) => [
+    field,
+    field === "isArchived" && item[field] === undefined
+      ? false
+      : field === "isActive" && item[field] === undefined
+        ? true
+        : item[field],
+  ])));
 }
 
 function initAdmin() {

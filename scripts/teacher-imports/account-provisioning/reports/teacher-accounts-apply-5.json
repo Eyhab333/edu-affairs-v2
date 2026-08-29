@@ -1,52 +1,38 @@
 {
-  "generatedAt": "2026-08-23T15:51:00.443Z",
+  "generatedAt": "2026-08-28T20:35:49.245Z",
   "orgId": "takween",
   "summary": {
-    "requested": 3,
-    "created": 3,
+    "requested": 2,
+    "created": 2,
     "failed": 0
   },
   "results": [
     {
-      "uid": "sBvdfwqYeUSCURcS1Cpo0aQnuIf1",
-      "personId": "p-w-a-atwala",
-      "email": "w-a-atwala@qz.org.sa",
-      "displayName": "وعد علي الطوالة",
-      "schoolId": "mrb-girls",
-      "roleKey": "GIRLS_TEACHER",
+      "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+      "personId": "p-a-s-alfrhood",
+      "email": "a-s-alfrhood@qz.org.sa",
+      "displayName": "الهنوف سليمان عبدالله الفرهود",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
       "paths": [
-        "users/sBvdfwqYeUSCURcS1Cpo0aQnuIf1",
-        "users/sBvdfwqYeUSCURcS1Cpo0aQnuIf1/orgMemberships/takween",
-        "orgs/takween/people/p-w-a-atwala",
-        "orgs/takween/memberships/sBvdfwqYeUSCURcS1Cpo0aQnuIf1"
+        "users/rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+        "users/rvnb1rhuAIbB1kuBtNmm1CpHfVQ2/orgMemberships/takween",
+        "orgs/takween/people/p-a-s-alfrhood",
+        "orgs/takween/memberships/rvnb1rhuAIbB1kuBtNmm1CpHfVQ2"
       ]
     },
     {
-      "uid": "tJaHYk1FFbPc4plbfuQUJ0Mah4z1",
-      "personId": "p-n-r-arbya",
-      "email": "n-r-arbya@qz.org.sa",
-      "displayName": "نوره ربيعة الربيعة",
-      "schoolId": "mrb-girls",
-      "roleKey": "GIRLS_TEACHER",
+      "uid": "FxemvSJNxhSrIazMvkEn1E4HkUs1",
+      "personId": "p-r-a-atyar",
+      "email": "r-a-atyar@qz.org.sa",
+      "displayName": "رهام عبدالله محمد الطيار",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
       "paths": [
-        "users/tJaHYk1FFbPc4plbfuQUJ0Mah4z1",
-        "users/tJaHYk1FFbPc4plbfuQUJ0Mah4z1/orgMemberships/takween",
-        "orgs/takween/people/p-n-r-arbya",
-        "orgs/takween/memberships/tJaHYk1FFbPc4plbfuQUJ0Mah4z1"
-      ]
-    },
-    {
-      "uid": "zkEeEG7GaUatYutzhzAE44uIutb2",
-      "personId": "p-r-g-alfraj",
-      "email": "r-g-alfraj@qz.org.sa",
-      "displayName": "ريم جوير الفراج",
-      "schoolId": "mrb-girls",
-      "roleKey": "GIRLS_TEACHER",
-      "paths": [
-        "users/zkEeEG7GaUatYutzhzAE44uIutb2",
-        "users/zkEeEG7GaUatYutzhzAE44uIutb2/orgMemberships/takween",
-        "orgs/takween/people/p-r-g-alfraj",
-        "orgs/takween/memberships/zkEeEG7GaUatYutzhzAE44uIutb2"
+        "users/FxemvSJNxhSrIazMvkEn1E4HkUs1",
+        "users/FxemvSJNxhSrIazMvkEn1E4HkUs1/orgMemberships/takween",
+        "orgs/takween/people/p-r-a-atyar",
+        "orgs/takween/memberships/FxemvSJNxhSrIazMvkEn1E4HkUs1"
       ]
     }
   ],

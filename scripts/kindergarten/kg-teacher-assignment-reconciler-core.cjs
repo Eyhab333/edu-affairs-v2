@@ -36,12 +36,21 @@ const DISTRIBUTION_HEADERS = [
   "teacherDisplayName",
 ];
 
-const ALLOWED_ROLES = new Set([
+const CLASS_TEACHER_ROLES = new Set([
   "معلمة الصف - المستوى الأول",
   "معلمة الصف - المستوى الثاني",
   "معلمة الصف - المستوى الثالث",
-  "معلمة القيم",
-  "معلمة الأركان",
+]);
+
+const VALUES_ROLE = "معلمة القيم";
+const CORNERS_ROLE = "معلمة الأركان";
+const VALUES_SUBJECT_KEY = "VALUES";
+const CORNERS_SUBJECT_KEY = "CORNERS";
+
+const ALLOWED_ROLES = new Set([
+  ...CLASS_TEACHER_ROLES,
+  VALUES_ROLE,
+  CORNERS_ROLE,
 ]);
 
 const MODULE_OPERATION_MAP = new Map([
@@ -135,7 +144,11 @@ function operationKey(personId, classId, offeringId, operationKind) {
   return [personId, classId, offeringId, operationKind].join("|");
 }
 
-function assignmentKey(personId, classId, offeringId) {
+function assignmentKey(personId, classId, offeringId, assignmentRole) {
+  return [personId, classId, offeringId, assignmentRole].join("|");
+}
+
+function assignmentOfferingKey(personId, classId, offeringId) {
   return [personId, classId, offeringId].join("|");
 }
 
@@ -296,6 +309,48 @@ function expectedOperationKinds(offering) {
   if (offering.assessmentPolicy?.allowLearningLoss !== true) candidates.delete("LEARNING_LOSS_FOLLOWUP");
   if (offering.curriculumPolicy?.homeworkEnabled !== true) candidates.delete("STUDENT_HOMEWORK");
   return Array.from(candidates).filter((kind) => ALLOWED_OPERATION_KINDS.has(kind));
+}
+
+function selectOfferingsForRole({ row, target, matches, blockers }) {
+  const subjectKey = (offering) => text(offering.subjectKey).toUpperCase();
+  let selected;
+  if (CLASS_TEACHER_ROLES.has(row.assignmentRole)) {
+    selected = matches.filter((offering) => {
+      const key = subjectKey(offering);
+      return key !== VALUES_SUBJECT_KEY && key !== CORNERS_SUBJECT_KEY;
+    });
+  } else if (row.assignmentRole === VALUES_ROLE) {
+    selected = matches.filter((offering) => subjectKey(offering) === VALUES_SUBJECT_KEY);
+  } else if (row.assignmentRole === CORNERS_ROLE) {
+    selected = matches.filter((offering) => subjectKey(offering) === CORNERS_SUBJECT_KEY);
+  } else {
+    blockers.push(`row ${row.rowNumber}: unknown assignmentRole`);
+    return [];
+  }
+
+  if (selected.length === 0) {
+    const expected = row.assignmentRole === VALUES_ROLE
+      ? VALUES_SUBJECT_KEY
+      : row.assignmentRole === CORNERS_ROLE
+        ? CORNERS_SUBJECT_KEY
+        : "non-VALUES/non-CORNERS";
+    blockers.push(`row ${row.rowNumber}: required active offering is missing for ${target.schoolId}/${target.classId}/${expected}`);
+    return [];
+  }
+
+  const bySubject = new Map();
+  for (const offering of selected) {
+    const key = subjectKey(offering);
+    const offerings = bySubject.get(key) || [];
+    offerings.push(offering);
+    bySubject.set(key, offerings);
+  }
+  for (const [key, offerings] of bySubject) {
+    if (offerings.length > 1) {
+      blockers.push(`row ${row.rowNumber}: multiple active offerings for ${target.schoolId}/${target.classId}/${key}`);
+    }
+  }
+  return Array.from(bySubject.values()).map((offerings) => offerings[0]);
 }
 
 function assignmentPayload({ id, teacher, schoolId, termId, classTarget, offering, now, role }) {
@@ -624,14 +679,11 @@ async function buildPlan({ inputPath = getInputPath(), now = Date.now() } = {}) 
         gradeId: row.gradeIds.length === 1 ? row.gradeIds[0] : row.gradeIds[index],
         classId: row.classIds[index],
       };
-      const roleKey = `${teacher.personId}|${target.schoolId}|${target.classId}`;
-      const priorRole = teacherClassRoles.get(roleKey);
-      if (priorRole && priorRole !== row.assignmentRole) {
-        blockers.push(`row ${row.rowNumber}: teacher has multiple assignment roles for ${target.schoolId}/${target.classId}`);
-      } else if (priorRole) {
+      const roleKey = `${teacher.personId}|${target.schoolId}|${target.classId}|${row.assignmentRole}`;
+      if (teacherClassRoles.has(roleKey)) {
         blockers.push(`row ${row.rowNumber}: duplicate teacher/class assignment`);
       } else {
-        teacherClassRoles.set(roleKey, row.assignmentRole);
+        teacherClassRoles.set(roleKey, true);
       }
       if (!state.requestedClasses.has(classKey(target.schoolId, target.classId))) continue;
       resolvedRows.push({ row, teacher, target });
@@ -639,6 +691,7 @@ async function buildPlan({ inputPath = getInputPath(), now = Date.now() } = {}) 
   }
 
   const desiredAssignmentKeys = new Set();
+  const desiredAssignmentOfferingKeys = new Set();
   const desiredOperationKeys = new Set();
   const targetTeacherSchools = new Set();
 
@@ -661,25 +714,21 @@ async function buildPlan({ inputPath = getInputPath(), now = Date.now() } = {}) 
       text(offering.gradeId) === target.gradeId &&
       Boolean(text(offering.subjectKey)),
     );
-    const bySubject = new Map();
-    for (const offering of matches) {
-      const subjectKey = text(offering.subjectKey);
-      if (bySubject.has(subjectKey)) blockers.push(`row ${row.rowNumber}: multiple active offerings for ${target.schoolId}/${target.classId}/${subjectKey}`);
-      bySubject.set(subjectKey, offering);
-    }
     if (matches.length === 0) {
       blockers.push(`row ${row.rowNumber}: no active offerings for ${target.schoolId}/${target.classId}`);
       continue;
     }
-    const offerings = Array.from(bySubject.values());
+    const offerings = selectOfferingsForRole({ row, target, matches, blockers });
+    if (offerings.length === 0) continue;
     offeringsByClass.push({ rowNumber: row.rowNumber, schoolId: target.schoolId, gradeId: target.gradeId, classId: target.classId, offeringIds: offerings.map((offering) => offering.id) });
     for (const offering of offerings) {
-      const aKey = assignmentKey(teacher.personId, target.classId, offering.id);
+      const aKey = assignmentKey(teacher.personId, target.classId, offering.id, row.assignmentRole);
       if (desiredAssignmentKeys.has(aKey)) {
         blockers.push(`row ${row.rowNumber}: duplicate teacher/class/offering assignment`);
         continue;
       }
       desiredAssignmentKeys.add(aKey);
+      desiredAssignmentOfferingKeys.add(assignmentOfferingKey(teacher.personId, target.classId, offering.id));
       const deterministicAssignmentId = stableId(["teacher-provisioning", teacher.personId, target.schoolId, ACADEMIC_YEAR_ID, termId, offering.id]);
       const existingOfferingAssignments = state.assignments.filter((assignment) =>
         active(assignment) && scopeMatches(assignment, target.schoolId, termId) &&
@@ -765,8 +814,8 @@ async function buildPlan({ inputPath = getInputPath(), now = Date.now() } = {}) 
     if (!active(assignment) || !isManaged(assignment) || !scopeMatches(assignment, schoolId, termId) ||
         !targetTeacherSchools.has(`${personId}|${schoolId}`) || text(assignment.targetScopeType) !== "CLASS" ||
         !text(assignment.classSubjectOfferingId) || (!isKgId(assignment.gradeId) && !kgOfferingById.has(text(assignment.classSubjectOfferingId)))) continue;
-    const key = assignmentKey(personId, text(assignment.targetScopeId), text(assignment.classSubjectOfferingId));
-    if (!desiredAssignmentKeys.has(key)) {
+    const key = assignmentOfferingKey(personId, text(assignment.targetScopeId), text(assignment.classSubjectOfferingId));
+    if (!desiredAssignmentOfferingKeys.has(key)) {
       endedAssignmentIds.add(assignment.id);
       addEndAction(actions, "teacherAssignments", assignment, now, "managed assignment is absent from the Excel map");
     }
@@ -778,8 +827,8 @@ async function buildPlan({ inputPath = getInputPath(), now = Date.now() } = {}) 
     if (!parent || !scopeMatches(parent, text(link.schoolId), termId) || !isManaged(parent) ||
         !targetTeacherSchools.has(`${text(parent.teacherPersonId)}|${text(link.schoolId)}`)) continue;
     if (!text(link.classId) || (!isKgId(link.gradeId) && !kgOfferingById.has(text(link.classSubjectOfferingId)))) continue;
-    const key = assignmentKey(text(parent.teacherPersonId), text(link.classId), text(link.classSubjectOfferingId));
-    if (endedAssignmentIds.has(parent.id) || !desiredAssignmentKeys.has(key)) {
+    const key = assignmentOfferingKey(text(parent.teacherPersonId), text(link.classId), text(link.classSubjectOfferingId));
+    if (endedAssignmentIds.has(parent.id) || !desiredAssignmentOfferingKeys.has(key)) {
       addEndAction(actions, "teacherAssignmentClassLinks", link, now, "managed class link is absent from the Excel map");
     }
   }

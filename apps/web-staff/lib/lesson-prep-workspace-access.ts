@@ -40,6 +40,7 @@ export function hasActiveLessonPrepWorkspaceAccess(params: {
   const workspace = buildClassSubjectWorkspaces({
     actorPersonId,
     actorRoleKeys: params.actor.roles ?? [],
+    allowAdminOverride: true,
     classId: params.classId,
     classSubjectOfferings: params.actor.classSubjectOfferings ?? [],
     teacherAssignments: params.actor.teacherAssignments ?? [],

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-08-28T16:13:38.181Z",
+    "generatedAt": "2026-08-28T20:00:45.182Z",
     "mode": "DRY_RUN",
     "orgId": "takween",
     "academicYearId": "ay-1448",
@@ -265,7 +265,7 @@
       "schoolId": "kg-01",
       "schoolName": "روضة واحة الرياحين الأولى",
       "KEEP": 82,
-      "BLOCKED": 1
+      "BLOCKED": 0
     },
     {
       "schoolId": "kg-02",
@@ -283,7 +283,7 @@
       "schoolId": "kg-04",
       "schoolName": "روضة واحة الرياحين الرابعة",
       "KEEP": 53,
-      "BLOCKED": 2
+      "BLOCKED": 0
     }
   ],
   "actions": [
@@ -2822,32 +2822,7 @@
       "action": "KEEP"
     }
   ],
-  "blockers": [
-    {
-      "schoolId": "kg-01",
-      "gradeId": "kg3",
-      "classId": "",
-      "subjectKey": "KEY:NUMBERS",
-      "type": "OFFERING_TEMPLATE_AMBIGUOUS",
-      "message": "Active KG offerings for the same school, grade, and subject disagree on their model or modules."
-    },
-    {
-      "schoolId": "kg-04",
-      "gradeId": "kg2",
-      "classId": "",
-      "subjectKey": "KEY:CLASS",
-      "type": "OFFERING_TEMPLATE_AMBIGUOUS",
-      "message": "Active KG offerings for the same school, grade, and subject disagree on their model or modules."
-    },
-    {
-      "schoolId": "kg-04",
-      "gradeId": "kg2",
-      "classId": "",
-      "subjectKey": "KEY:NUMBERS",
-      "type": "OFFERING_TEMPLATE_AMBIGUOUS",
-      "message": "Active KG offerings for the same school, grade, and subject disagree on their model or modules."
-    }
-  ],
+  "blockers": [],
   "summary": {
     "classes": {
       "KEEP": 34
@@ -2856,7 +2831,7 @@
       "KEEP": 216
     },
     "writes": 0,
-    "blocked": 3
+    "blocked": 0
   },
   "_writes": []
 }

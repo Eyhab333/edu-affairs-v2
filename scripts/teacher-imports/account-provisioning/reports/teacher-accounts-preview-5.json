@@ -1,63 +1,70 @@
 {
-  "generatedAt": "2026-08-23T15:50:07.586Z",
+  "generatedAt": "2026-08-28T20:37:35.184Z",
   "orgId": "takween",
   "summary": {
-    "totalRows": 3,
-    "newAccounts": 3,
-    "existingComplete": 0,
+    "totalRows": 2,
+    "newAccounts": 0,
+    "existingComplete": 2,
     "existingIncomplete": 0,
     "conflicts": 0
   },
   "results": [
     {
       "rowNumber": 2,
-      "displayName": "وعد علي الطوالة",
-      "email": "w-a-atwala@qz.org.sa",
+      "displayName": "الهنوف سليمان عبدالله الفرهود",
+      "email": "a-s-alfrhood@qz.org.sa",
       "employeeNumber": "",
-      "schoolId": "mrb-girls",
-      "roleKey": "GIRLS_TEACHER",
-      "previewStatus": "NEW",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
       "schoolExists": true,
-      "authExists": false,
-      "uid": "",
-      "peopleMatches": [],
-      "userMatches": [],
-      "userMembershipExists": false,
-      "orgMembershipExists": false,
+      "authExists": true,
+      "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+      "peopleMatches": [
+        {
+          "id": "p-a-s-alfrhood",
+          "personId": "p-a-s-alfrhood",
+          "displayName": "الهنوف سليمان عبدالله الفرهود"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+          "personId": "p-a-s-alfrhood",
+          "displayName": "الهنوف سليمان عبدالله الفرهود"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
       "conflicts": []
     },
     {
       "rowNumber": 3,
-      "displayName": "نوره ربيعة الربيعة",
-      "email": "n-r-arbya@qz.org.sa",
+      "displayName": "رهام عبدالله محمد الطيار",
+      "email": "r-a-atyar@qz.org.sa",
       "employeeNumber": "",
-      "schoolId": "mrb-girls",
-      "roleKey": "GIRLS_TEACHER",
-      "previewStatus": "NEW",
+      "schoolId": "kg-04",
+      "roleKey": "KG_TEACHER",
+      "previewStatus": "EXISTING_COMPLETE",
       "schoolExists": true,
-      "authExists": false,
-      "uid": "",
-      "peopleMatches": [],
-      "userMatches": [],
-      "userMembershipExists": false,
-      "orgMembershipExists": false,
-      "conflicts": []
-    },
-    {
-      "rowNumber": 4,
-      "displayName": "ريم جوير الفراج",
-      "email": "r-g-alfraj@qz.org.sa",
-      "employeeNumber": "",
-      "schoolId": "mrb-girls",
-      "roleKey": "GIRLS_TEACHER",
-      "previewStatus": "NEW",
-      "schoolExists": true,
-      "authExists": false,
-      "uid": "",
-      "peopleMatches": [],
-      "userMatches": [],
-      "userMembershipExists": false,
-      "orgMembershipExists": false,
+      "authExists": true,
+      "uid": "FxemvSJNxhSrIazMvkEn1E4HkUs1",
+      "peopleMatches": [
+        {
+          "id": "p-r-a-atyar",
+          "personId": "p-r-a-atyar",
+          "displayName": "رهام عبدالله محمد الطيار"
+        }
+      ],
+      "userMatches": [
+        {
+          "uid": "FxemvSJNxhSrIazMvkEn1E4HkUs1",
+          "personId": "p-r-a-atyar",
+          "displayName": "رهام عبدالله محمد الطيار"
+        }
+      ],
+      "userMembershipExists": true,
+      "orgMembershipExists": true,
       "conflicts": []
     }
   ]

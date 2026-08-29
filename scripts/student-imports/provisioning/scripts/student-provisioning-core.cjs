@@ -158,7 +158,16 @@ function record(snapshot) {
 }
 
 function enrollmentIdFor(row, studentId) {
-  return `${row.academicYearId}_${row.classId}_${studentId}`;
+  return `${row.academicYearId}*${row.schoolId}*${row.classId}_${studentId}`;
+}
+
+function enrollmentMatchesRow(enrollment, row, studentId) {
+  return (
+    readString(enrollment.data, "studentId") === studentId
+    && readString(enrollment.data, "academicYearId") === row.academicYearId
+    && readString(enrollment.data, "schoolId") === row.schoolId
+    && readString(enrollment.data, "classId") === row.classId
+  );
 }
 
 function baseResult(row) {
@@ -291,7 +300,12 @@ async function resolveStudentRow({ db, orgId, row }) {
     return result;
   }
   const targetId = enrollmentIdFor(row, student.id);
-  const targetEnrollment = sameYear.find((item) => item.id === targetId) || null;
+  const targetEnrollments = sameYear.filter((item) => enrollmentMatchesRow(item, row, student.id));
+  if (targetEnrollments.length > 1) {
+    result.conflicts.push(`Student ${student.id} has multiple enrollments for the requested school, academic year, and class.`);
+    return result;
+  }
+  const targetEnrollment = targetEnrollments[0] || null;
   const activeEnrollment = activeEnrollments[0] || null;
   const classData = classSnapshot.data() || {};
   const personUpdate = personNeedsUpdate(person, row);
@@ -399,7 +413,7 @@ async function applyStudentResult({ db, orgId, result }) {
   const generated = result.internal.createStudent ? await nextGeneratedIds(db, orgId) : null;
   const personId = result.internal.createPerson ? generated.personId : result.personId;
   const studentId = result.internal.createStudent ? generated.studentId : result.studentId;
-  const enrollmentId = enrollmentIdFor(row, studentId);
+  const enrollmentId = result.internal.targetEnrollment?.id || enrollmentIdFor(row, studentId);
   const schoolRef = db.doc(`orgs/${orgId}/schools/${row.schoolId}`);
   const yearRef = db.doc(`${schoolRef.path}/academicYears/${row.academicYearId}`);
   const classRef = db.doc(`orgs/${orgId}/schools/${row.schoolId}/academicYears/${row.academicYearId}/classes/${row.classId}`);

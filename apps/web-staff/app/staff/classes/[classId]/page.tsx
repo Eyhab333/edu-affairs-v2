@@ -75,6 +75,7 @@ export default function StaffClassDetailsPage() {
     return buildClassSubjectWorkspaces({
       actorPersonId: staffActor.personId || staffActor.uid || "",
       actorRoleKeys: staffActor.roles ?? [],
+      allowAdminOverride: false,
       classId: classInfo.id,
       classSubjectOfferings: contextualClassSubjectOfferings,
       teacherAssignments: staffActor.teacherAssignments ?? [],

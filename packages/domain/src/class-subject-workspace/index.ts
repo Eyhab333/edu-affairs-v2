@@ -61,6 +61,13 @@ export type BuildClassSubjectWorkspacesParams = {
   actorPersonId: string;
   actorRoleKeys?: MembershipRole[];
 
+  /**
+   * Allows roles with subject-management authority to receive an offering
+   * without a personal teacher assignment. Teacher-facing workspaces disable
+   * this so their offerings always come from assignment coverage.
+   */
+  allowAdminOverride?: boolean;
+
   classId: string;
 
   classSubjectOfferings: ClassSubjectOffering[];
@@ -85,13 +92,12 @@ const DEFAULT_ADMIN_ROLE_KEYS: MembershipRole[] = [
   "school_manager",
 
   "BOYS_PRINCIPAL",
+  "BOYS_PRINCIPAL",
   "BOYS_EDU_VP",
   "BOYS_STUDENTS_VP",
   "BOYS_TEACHERS_VP",
-
   "GIRLS_PRINCIPAL",
   "GIRLS_VP",
-
   "KG_PRINCIPAL",
   "KG_VP",
 ];
@@ -495,13 +501,15 @@ export function buildClassSubjectWorkspaces(
 ): ClassSubjectWorkspace[] {
   const nowMs = params.nowMs ?? Date.now();
   const canManageOffering = hasAdminAccess(params.actorRoleKeys);
+  const canUseAdminOverride =
+    canManageOffering && params.allowAdminOverride !== false;
 
   const classLinks = params.teacherAssignmentClassLinks ?? [];
 
   return params.classSubjectOfferings
     .filter((offering) => offering.classId === params.classId)
     .filter((offering) => {
-      if (canManageOffering && params.includeInactiveOfferingsForAdmins) {
+      if (canUseAdminOverride && params.includeInactiveOfferingsForAdmins) {
         return offering.isArchived !== true;
       }
 
@@ -517,7 +525,7 @@ export function buildClassSubjectWorkspaces(
           nowMs,
         });
 
-      if (!canManageOffering && matchingTeacherAssignments.length === 0) {
+      if (!canUseAdminOverride && matchingTeacherAssignments.length === 0) {
         return null;
       }
 
