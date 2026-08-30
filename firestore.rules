@@ -208,11 +208,35 @@ function hasAssignedClassSubjectAccess(
       in membershipData(orgId).scopes.subjectKeys;
 }
 
-function isTemporaryLessonPrepReviewerForSchool(orgId, schoolId) {
+function hasTemporaryLessonPrepReviewAccess(orgId, schoolId, subjectKey) {
   return hasOrgMembership(orgId)
-    && currentUserPersonId()
-      in ["p-t-altwala", "p-malrameh", "p-f-alhamaad", "p-a-almansur"]
-    && schoolId in ["kg-01", "kg-02", "kg-03", "kg-04"];
+    && (
+      (
+        currentUserPersonId()
+          in ["p-t-altwala", "p-malrameh", "p-f-alhamaad", "p-a-almansur"]
+        && schoolId in ["kg-01", "kg-02", "kg-03", "kg-04"]
+      )
+      || (
+        currentUserPersonId() == "p-s-sayed"
+        && (
+          schoolId == "mrb-girls"
+          || (
+            schoolId in ["mrb-boys-sayh", "mrb-boys-faleh"]
+            && subjectKey in ["ARABIC", "QURAN"]
+          )
+        )
+      )
+      || (
+        currentUserPersonId() == "p-n-alshaya"
+        && schoolId in ["mrb-boys-sayh", "mrb-boys-faleh"]
+        && subjectKey == "ENGLISH"
+      )
+      || (
+        currentUserPersonId() == "staff-NOFByrx0XLVovqxuFjfwRWSokgs1"
+        && schoolId in ["mrb-boys-sayh", "mrb-boys-faleh"]
+        && subjectKey in ["MATH", "SCIENCE"]
+      )
+    );
 }
 
 function personSupervisionScopeId(capability, schoolId) {
@@ -259,7 +283,7 @@ function hasPersonSupervisionSubjectAccess(orgId, capability, schoolId, subjectK
 }
 
 function canReviewLessonPrepSubject(orgId, schoolId, subjectKey) {
-  return isTemporaryLessonPrepReviewerForSchool(orgId, schoolId)
+  return hasTemporaryLessonPrepReviewAccess(orgId, schoolId, subjectKey)
     || hasPersonSupervisionSubjectAccess(
       orgId,
       "LESSON_PREP_REVIEW",
