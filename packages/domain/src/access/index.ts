@@ -140,19 +140,7 @@ function membershipAllowsClass(
   }
 
   const schoolIds = membership.scopes?.schoolIds ?? [];
-  const gradeIds = membership.scopes?.gradeIds ?? [];
-  const classIds = membership.scopes?.classIds ?? [];
-
-  if (classIds.includes(classItem.id)) return true;
   if (schoolIds.includes(classItem.schoolId)) return true;
-
-  if (classItem.gradeId && gradeIds.includes(classItem.gradeId)) {
-    return true;
-  }
-
-  if (membership.scopeType === "CLASS" && membership.scopeId === classItem.id) {
-    return true;
-  }
 
   if (
     membership.scopeType === "SCHOOL" &&
@@ -161,14 +149,10 @@ function membershipAllowsClass(
     return true;
   }
 
-  if (
-    membership.scopeType === "GRADE" &&
-    classItem.gradeId &&
-    membership.scopeId === classItem.gradeId
-  ) {
-    return true;
-  }
-
+  // Class and grade identifiers are not globally unique. Membership scopes do
+  // not carry an academic-year-qualified class key, so they must not grant
+  // class visibility by themselves. Teacher and operational assignments below
+  // contain the necessary school/year context for class-scoped access.
   return false;
 }
 
@@ -178,7 +162,15 @@ function operationalAssignmentAllowsClass(
 ): boolean {
   if (assignment.orgId !== classItem.orgId) return false;
 
-  if (assignment.scopeType === "CLASS" && assignment.scopeId === classItem.id) {
+  const matchesAssignmentContext =
+    assignment.schoolId === classItem.schoolId &&
+    assignment.academicYearId === classItem.academicYearId;
+
+  if (
+    matchesAssignmentContext &&
+    assignment.scopeType === "CLASS" &&
+    assignment.scopeId === classItem.id
+  ) {
     return true;
   }
 
@@ -191,6 +183,7 @@ function operationalAssignmentAllowsClass(
   }
 
   if (
+    matchesAssignmentContext &&
     assignment.scopeType === "GRADE" &&
     classItem.gradeId &&
     assignment.scopeId === classItem.gradeId &&
@@ -199,15 +192,18 @@ function operationalAssignmentAllowsClass(
     return true;
   }
 
-  if (assignment.targetClassIds.includes(classItem.id)) return true;
+  if (matchesAssignmentContext && assignment.targetClassIds.includes(classItem.id)) {
+    return true;
+  }
 
   if (
-  assignment.coverageMode === "ALL_CLASSES_IN_SCOPE" &&
-  classItem.gradeId &&
-  assignment.targetGradeIds.includes(classItem.gradeId)
-) {
-  return true;
-}
+    matchesAssignmentContext &&
+    assignment.coverageMode === "ALL_CLASSES_IN_SCOPE" &&
+    classItem.gradeId &&
+    assignment.targetGradeIds.includes(classItem.gradeId)
+  ) {
+    return true;
+  }
 
   return false;
 }

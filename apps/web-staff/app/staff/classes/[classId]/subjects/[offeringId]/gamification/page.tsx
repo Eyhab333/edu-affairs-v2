@@ -31,8 +31,6 @@ import type {
   GamificationBadge,
   GamificationReason,
   MembershipRole,
-  SchoolStudentDirectoryEntry,
-  StudentEnrollment,
   StudentGamificationEvent,
   StudentGamificationEventType,
   StudentGamificationEventVisibility,
@@ -64,13 +62,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { db } from "@/lib/firebase";
+import { getClassRoster } from "@/lib/class-roster";
 
 type StudentGamificationRow = {
   studentId: string;
   enrollmentId: string;
-  personId: string;
   displayName: string;
-  nationalId?: string;
   schoolId: string;
   academicYearId: string;
   gradeId?: string;
@@ -216,82 +213,16 @@ async function loadClassStudents(params: {
   academicYearId: string;
   classId: string;
 }) {
-  const enrollmentsRef = collection(
-    db,
-    `orgs/${params.orgId}/studentEnrollments`,
-  );
+  const roster = await getClassRoster(params);
 
-  const enrollmentsSnap = await getDocs(
-    query(
-      enrollmentsRef,
-      where("schoolId", "==", params.schoolId),
-      where("academicYearId", "==", params.academicYearId),
-      where("classId", "==", params.classId),
-      where("status", "==", "ACTIVE"),
-    ),
-  );
-
-  const enrollments = enrollmentsSnap.docs
-    .map((item) => ({
-      id: item.id,
-      ...(item.data() as Omit<StudentEnrollment, "id">),
-    }))
-    .filter((enrollment) => {
-      if (enrollment.status !== "ACTIVE") return false;
-
-      if (
-        params.schoolId &&
-        enrollment.schoolId &&
-        enrollment.schoolId !== params.schoolId
-      ) {
-        return false;
-      }
-
-      if (
-        params.academicYearId &&
-        enrollment.academicYearId &&
-        enrollment.academicYearId !== params.academicYearId
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-
-  const rows = await Promise.all(
-    enrollments.map(async (enrollment): Promise<StudentGamificationRow> => {
-      const directoryRef = doc(
-        db,
-        "orgs",
-        params.orgId,
-        "schools",
-        params.schoolId,
-        "studentDirectory",
-        enrollment.studentId,
-      );
-
-      const directorySnap = await getDoc(directoryRef);
-
-      const directory = directorySnap.exists()
-        ? (directorySnap.data() as SchoolStudentDirectoryEntry)
-        : null;
-
-      return {
-        studentId: enrollment.studentId,
-        enrollmentId: enrollment.id,
-        personId: directory?.personId ?? "",
-        displayName: directory?.displayName || enrollment.studentId,
-        nationalId: directory?.nationalId ?? "",
-        schoolId: enrollment.schoolId,
-        academicYearId: enrollment.academicYearId,
-        gradeId: enrollment.gradeId ?? "",
-        streamId: enrollment.streamId ?? "",
-        classId: enrollment.classId ?? "",
-      };
-    }),
-  );
-
-  return rows.sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
+  return roster.rows.map((row): StudentGamificationRow => ({
+    studentId: row.studentId,
+    enrollmentId: row.enrollmentId,
+    displayName: row.displayName || row.studentId,
+    schoolId: params.schoolId,
+    academicYearId: params.academicYearId,
+    classId: params.classId,
+  })).sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
 }
 
 async function loadSubjectGamificationEvents(params: {
@@ -809,10 +740,7 @@ export default function SubjectGamificationPage() {
     return students.filter((student) => {
       return (
         student.displayName.toLowerCase().includes(keyword) ||
-        student.studentId.toLowerCase().includes(keyword) ||
-        String(student.nationalId ?? "")
-          .toLowerCase()
-          .includes(keyword)
+        student.studentId.toLowerCase().includes(keyword)
       );
     });
   }, [students, searchText]);

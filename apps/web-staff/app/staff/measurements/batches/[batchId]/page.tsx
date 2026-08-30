@@ -19,6 +19,7 @@ import type {
 } from "@takween/contracts";
 
 import { db } from "@/lib/firebase";
+import { getClassRoster } from "@/lib/class-roster";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 type VisibleClass = {
@@ -412,42 +413,33 @@ async function buildRowViews(params: {
 }): Promise<BatchStudentRowView[]> {
   const rows = buildRowsFromBatch(params.batch);
   const schoolId = params.batch.schoolId || "";
+  const academicYearId = params.batch.academicYearId || "";
+  const classId = params.batch.classId || "";
 
-  return Promise.all(
-    rows.map(async (row) => {
-      if (row.studentDisplayName?.trim()) {
-        return row;
-      }
+  if (!schoolId || !academicYearId || !classId) {
+    return rows.map((row) => ({
+      ...row,
+      studentDisplayName: row.studentDisplayName?.trim() || row.studentId,
+    }));
+  }
 
-      if (!schoolId) {
-        return {
-          ...row,
-          studentDisplayName: row.studentId,
-        };
-      }
-
-      const directoryRef = doc(
-        db,
-        "orgs",
-        params.orgId,
-        "schools",
-        schoolId,
-        "studentDirectory",
-        row.studentId,
-      );
-
-      const directorySnap = await getDoc(directoryRef);
-
-      const displayName = directorySnap.exists()
-        ? String(directorySnap.data().displayName || "").trim()
-        : "";
-
-      return {
-        ...row,
-        studentDisplayName: displayName || row.studentId,
-      };
-    }),
+  const roster = await getClassRoster({
+    orgId: params.orgId,
+    schoolId,
+    academicYearId,
+    classId,
+  });
+  const displayNameByStudentId = new Map(
+    roster.rows.map((row) => [row.studentId, row.displayName]),
   );
+
+  return rows.map((row) => ({
+    ...row,
+    studentDisplayName:
+      row.studentDisplayName?.trim() ||
+      displayNameByStudentId.get(row.studentId) ||
+      row.studentId,
+  }));
 }
 
 async function loadSourceTemplate(params: {

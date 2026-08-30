@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
+import { getVisibleStudents } from "@/lib/visible-students";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   getFriendlyClassTitle,
@@ -343,67 +344,12 @@ async function loadStudentName(
   orgId: string,
   studentId: string,
 ): Promise<Pick<StudentOption, "id" | "personId" | "displayName">> {
-  try {
-    const studentRef = doc(db, "orgs", orgId, "students", studentId);
-    const studentSnap = await getDoc(studentRef);
+  const roster = await getVisibleStudents({ orgId });
+  const displayName = roster.rows.find(
+    (row) => row.studentId === studentId,
+  )?.displayName;
 
-    if (!studentSnap.exists()) {
-      return {
-        id: studentId,
-        displayName: studentId,
-      };
-    }
-
-    const studentData = studentSnap.data() as {
-      personId?: string;
-      displayName?: string;
-      name?: string;
-    };
-
-    const directName = studentData.displayName || studentData.name;
-
-    if (directName) {
-      return {
-        id: studentId,
-        personId: studentData.personId,
-        displayName: directName,
-      };
-    }
-
-    if (!studentData.personId) {
-      return {
-        id: studentId,
-        displayName: studentId,
-      };
-    }
-
-    const personRef = doc(db, "orgs", orgId, "people", studentData.personId);
-    const personSnap = await getDoc(personRef);
-
-    if (!personSnap.exists()) {
-      return {
-        id: studentId,
-        personId: studentData.personId,
-        displayName: studentId,
-      };
-    }
-
-    const personData = personSnap.data() as {
-      displayName?: string;
-      name?: string;
-    };
-
-    return {
-      id: studentId,
-      personId: studentData.personId,
-      displayName: personData.displayName || personData.name || studentId,
-    };
-  } catch {
-    return {
-      id: studentId,
-      displayName: studentId,
-    };
-  }
+  return { id: studentId, displayName: displayName || studentId };
 }
 
 async function loadStudentsByClass(params: {

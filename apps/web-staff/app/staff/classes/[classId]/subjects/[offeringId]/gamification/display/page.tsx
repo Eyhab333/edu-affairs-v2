@@ -13,11 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 
-import type {
-  SchoolStudentDirectoryEntry,
-  StudentEnrollment,
-  StudentGamificationEvent,
-} from "@takween/contracts";
+import type { StudentGamificationEvent } from "@takween/contracts";
 import {
   buildClassroomDisplayGamificationFeed,
   filterEventsForClassroomDisplayView,
@@ -34,6 +30,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { db } from "@/lib/firebase";
+import { getClassRoster } from "@/lib/class-roster";
 import { getStaffActorPrimaryRole } from "@/lib/staff-actor";
 import { ClassroomDisplayLaunchCard } from "./_components/classroom-display-launch-card";
 import { GamificationDisplayFeed } from "./_components/gamification-display-feed";
@@ -61,82 +58,12 @@ async function loadClassStudents(params: {
   academicYearId: string;
   classId: string;
 }) {
-  const enrollmentsRef = collection(
-    db,
-    `orgs/${params.orgId}/studentEnrollments`,
-  );
+  const roster = await getClassRoster(params);
 
-  const enrollmentsSnap = await getDocs(
-  query(
-    enrollmentsRef,
-    where("schoolId", "==", params.schoolId),
-    where(
-      "academicYearId",
-      "==",
-      params.academicYearId,
-    ),
-    where("classId", "==", params.classId),
-    where("status", "==", "ACTIVE"),
-  ),
-);
-
-  const enrollments = enrollmentsSnap.docs
-    .map((item) => ({
-      id: item.id,
-      ...(item.data() as Omit<StudentEnrollment, "id">),
-    }))
-    .filter((enrollment) => {
-      if (enrollment.status !== "ACTIVE") return false;
-
-      if (
-        params.schoolId &&
-        enrollment.schoolId &&
-        enrollment.schoolId !== params.schoolId
-      ) {
-        return false;
-      }
-
-      if (
-        params.academicYearId &&
-        enrollment.academicYearId &&
-        enrollment.academicYearId !== params.academicYearId
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-
-  const rows = await Promise.all(
-    enrollments.map(
-  async (enrollment): Promise<StudentDisplayRow> => {
-    const directoryRef = doc(
-      db,
-      "orgs",
-      params.orgId,
-      "schools",
-      params.schoolId,
-      "studentDirectory",
-      enrollment.studentId,
-    );
-
-    const directorySnap = await getDoc(directoryRef);
-
-    const directory = directorySnap.exists()
-      ? (directorySnap.data() as SchoolStudentDirectoryEntry)
-      : null;
-
-    return {
-      studentId: enrollment.studentId,
-      displayName:
-        directory?.displayName ||
-        enrollment.studentId,
-    };
-  },
-),
-  );
-
-  return rows.sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
+  return roster.rows.map((row): StudentDisplayRow => ({
+    studentId: row.studentId,
+    displayName: row.displayName || row.studentId,
+  })).sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
 }
 
 async function loadSubjectGamificationEvents(params: {

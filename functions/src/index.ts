@@ -30,6 +30,11 @@ export { updatePerformanceImprovementSettings } from "./evaluations/update-perfo
 export * from "./student-directory";
 export { getStudentCaseReferralOptions } from "./student-cases/get-student-case-referral-options";
 export { getClassRoster } from "./class-roster/get-class-roster";
+export { getVisibleStudents } from "./visible-students/get-visible-students";
+export {
+  getStudentWorkDetail,
+  getStudentWorkOverview,
+} from "./student-work/student-work";
 export {
   getTeacherWorkDetail,
   getTeacherWorkOverview,

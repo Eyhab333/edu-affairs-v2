@@ -1,5 +1,6 @@
 export * from "./access/index";
 export * from "./assignments/index";
+export * from "./staff-evaluations/index";
 export * from "./operations/index";
 export * from "./staff-workspace/index";
 export * from "./class-subject-workspace/index";

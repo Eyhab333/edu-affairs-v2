@@ -1,14 +1,15 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import type {
+  Class,
+  Membership,
+  OperationalAssignment,
+  TeacherAssignment,
+  TeacherAssignmentClassLink,
+} from "@takween/contracts";
+import { getVisibleClassesForActor } from "@takween/domain";
 
 const REGION = "me-central2";
-
-const ORG_MANAGER_ROLES = new Set([
-  "platform_owner",
-  "platform_admin",
-  "org_owner",
-  "org_admin",
-]);
 
 type FirestoreRecord = Record<string, unknown>;
 
@@ -82,26 +83,168 @@ function isActiveMembership(membership: FirestoreRecord): boolean {
   return membership.isActive === true || membership.active === true;
 }
 
-function getOrgRole(membership: FirestoreRecord): string {
-  if (membership.role !== null && membership.role !== undefined) {
-    return typeof membership.role === "string" ? membership.role.trim() : "";
-  }
-
-  return readString(membership, ["roleKey"]);
+function readBoolean(value: unknown): boolean {
+  return value === true;
 }
 
-function hasSchoolAccess(membership: FirestoreRecord, schoolId: string): boolean {
-  const roleKey = getOrgRole(membership);
+function chunkArray<T>(items: T[], chunkSize: number): T[][] {
+  const chunks: T[][] = [];
 
-  if (ORG_MANAGER_ROLES.has(roleKey)) return true;
-
-  if (readString(membership, ["scopeType"]) === "SCHOOL") {
-    return readString(membership, ["scopeId"]) === schoolId;
+  for (let index = 0; index < items.length; index += chunkSize) {
+    chunks.push(items.slice(index, index + chunkSize));
   }
 
-  return readStringArray(readRecord(membership.scopes).schoolIds).includes(
-    schoolId,
+  return chunks;
+}
+
+function normalizeMembershipForAccess(params: {
+  uid: string;
+  orgId: string;
+  id: string;
+  data: FirestoreRecord;
+}): Membership {
+  const scopes = readRecord(params.data.scopes);
+  const permissions = readRecord(params.data.permissions);
+  const role = readString(params.data, ["roleKey", "role"]);
+
+  return {
+    id: params.id,
+    uid: params.uid,
+    personId: readString(params.data, ["personId"]),
+    orgId: readString(params.data, ["orgId"]) || params.orgId,
+    role: role as Membership["role"],
+    roleKey: role as Membership["roleKey"],
+    scopes: {
+      schoolIds: readStringArray(scopes.schoolIds),
+      gradeIds: readStringArray(scopes.gradeIds),
+      classIds: readStringArray(scopes.classIds),
+      scopeGroupIds: readStringArray(scopes.scopeGroupIds),
+      subjectKeys: readStringArray(scopes.subjectKeys),
+      routeIds: readStringArray(scopes.routeIds),
+      canAccessAllSchools: readBoolean(scopes.canAccessAllSchools),
+    },
+    permissions: {
+      manageOrg: readBoolean(permissions.manageOrg),
+      manageSchools: readBoolean(permissions.manageSchools),
+      manageDirectory: readBoolean(permissions.manageDirectory),
+    },
+    scopeType: readString(params.data, ["scopeType"]) as Membership["scopeType"],
+    scopeId: readString(params.data, ["scopeId"]),
+    isActive: isActiveMembership(params.data),
+  } as Membership;
+}
+
+function asClass(params: { id: string; data: FirestoreRecord }): Class {
+  return {
+    id: params.id,
+    ...params.data,
+  } as Class;
+}
+
+function asOperationalAssignment(params: {
+  id: string;
+  data: FirestoreRecord;
+}): OperationalAssignment {
+  return {
+    id: params.id,
+    ...params.data,
+    targetClassIds: readStringArray(params.data.targetClassIds),
+    targetGradeIds: readStringArray(params.data.targetGradeIds),
+  } as OperationalAssignment;
+}
+
+function asTeacherAssignment(params: {
+  id: string;
+  data: FirestoreRecord;
+}): TeacherAssignment {
+  return {
+    id: params.id,
+    ...params.data,
+  } as TeacherAssignment;
+}
+
+function asTeacherAssignmentClassLink(params: {
+  id: string;
+  data: FirestoreRecord;
+}): TeacherAssignmentClassLink {
+  return {
+    id: params.id,
+    ...params.data,
+  } as TeacherAssignmentClassLink;
+}
+
+async function hasClassRosterAccess(params: {
+  uid: string;
+  orgId: string;
+  membership: Membership;
+  classItem: Class;
+}): Promise<boolean> {
+  const db = getFirestore();
+  const userSnapshot = await db.doc(`users/${params.uid}`).get();
+  const user = userSnapshot.exists
+    ? (userSnapshot.data() as FirestoreRecord)
+    : undefined;
+  const actorPersonId =
+    params.membership.personId || readString(user, ["personId"]) || params.uid;
+
+  const [operationalAssignmentsSnapshot, teacherAssignmentsSnapshot] =
+    await Promise.all([
+      db
+        .collection(`orgs/${params.orgId}/operationalAssignments`)
+        .where("actorPersonId", "==", actorPersonId)
+        .get(),
+      db
+        .collection(`orgs/${params.orgId}/teacherAssignments`)
+        .where("teacherPersonId", "==", actorPersonId)
+        .get(),
+    ]);
+
+  const operationalAssignments = operationalAssignmentsSnapshot.docs.map(
+    (document) =>
+      asOperationalAssignment({
+        id: document.id,
+        data: document.data() as FirestoreRecord,
+      }),
   );
+  const teacherAssignments = teacherAssignmentsSnapshot.docs.map((document) =>
+    asTeacherAssignment({
+      id: document.id,
+      data: document.data() as FirestoreRecord,
+    }),
+  );
+
+  const linksSnapshots = await Promise.all(
+    chunkArray(
+      teacherAssignments.map((assignment) => assignment.id),
+      10,
+    ).map((assignmentIds) =>
+      db
+        .collection(`orgs/${params.orgId}/teacherAssignmentClassLinks`)
+        .where("assignmentId", "in", assignmentIds)
+        .get(),
+    ),
+  );
+  const teacherAssignmentClassLinks = linksSnapshots.flatMap((snapshot) =>
+    snapshot.docs.map((document) =>
+      asTeacherAssignmentClassLink({
+        id: document.id,
+        data: document.data() as FirestoreRecord,
+      }),
+    ),
+  );
+
+  return getVisibleClassesForActor({
+    context: {
+      actorPersonId,
+      orgId: params.orgId,
+      memberships: [params.membership],
+      operationalAssignments,
+      teacherAssignments,
+      teacherAssignmentClassLinks,
+    },
+    classes: [params.classItem],
+    teacherAssignmentClassLinks,
+  }).some((visibleClass) => visibleClass.id === params.classItem.id);
 }
 
 function matchesContext(params: {
@@ -181,13 +324,6 @@ export const getClassRoster = onCall(
       );
     }
 
-    if (!hasSchoolAccess(membership, schoolId)) {
-      throw new HttpsError(
-        "permission-denied",
-        "You do not have access to this school.",
-      );
-    }
-
     const schoolRef = db.doc(`orgs/${orgId}/schools/${schoolId}`);
     const academicYearRef = db.doc(
       `${schoolRef.path}/academicYears/${academicYearId}`,
@@ -218,6 +354,31 @@ export const getClassRoster = onCall(
       })
     ) {
       throw new HttpsError("not-found", "Class context was not found.");
+    }
+
+    const classItem = asClass({
+      id: classSnapshot.id,
+      data: classSnapshot.data() as FirestoreRecord,
+    });
+    const accessMembership = normalizeMembershipForAccess({
+      uid,
+      orgId,
+      id: membershipSnapshot.id,
+      data: membership,
+    });
+
+    if (
+      !(await hasClassRosterAccess({
+        uid,
+        orgId,
+        membership: accessMembership,
+        classItem,
+      }))
+    ) {
+      throw new HttpsError(
+        "permission-denied",
+        "You do not have access to this class roster.",
+      );
     }
 
     const enrollmentsSnapshot = await db

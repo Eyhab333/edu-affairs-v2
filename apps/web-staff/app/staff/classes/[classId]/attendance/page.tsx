@@ -14,26 +14,14 @@ import {
   Save,
   SendHorizontal,
 } from "lucide-react";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-  writeBatch,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
 
 import type {
   Class as SchoolClass,
   MembershipRole,
-  Person,
-  Student,
   StudentAttendanceBatch,
   StudentAttendanceBatchStudentRow,
   StudentAttendanceStatus,
-  StudentEnrollment,
 } from "@takween/contracts";
 import {
   buildAttendanceBatchDraft,
@@ -56,6 +44,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { db } from "@/lib/firebase";
+import { getClassRoster } from "@/lib/class-roster";
 import { getStaffActorPrimaryRole } from "@/lib/staff-actor";
 
 type AttendanceStudentInput = {
@@ -192,199 +181,19 @@ function needsExcuseReason(status: StudentAttendanceStatus) {
   );
 }
 
-function normalizeEnrollment(
-  id: string,
-  data: Record<string, unknown>,
-): StudentEnrollment {
-  return {
-    id,
-    ...(data as Omit<StudentEnrollment, "id">),
-  };
-}
-
-async function loadEnrollmentsFromCollection(params: {
-  orgId: string;
-  schoolId: string;
-  classId: string;
-  collectionName: string;
-}): Promise<StudentEnrollment[]> {
-  try {
-    const ref = collection(db, "orgs", params.orgId, params.collectionName);
-
-    const snap = await getDocs(
-      query(
-        ref,
-        where("schoolId", "==", params.schoolId),
-        where("classId", "==", params.classId),
-      ),
-    );
-
-    return snap.docs
-      .map((item) => normalizeEnrollment(item.id, item.data()))
-      .filter((item) => item.orgId === params.orgId)
-      .filter((item) => item.schoolId === params.schoolId)
-      .filter((item) => item.classId === params.classId)
-      .filter((item) => item.status === "ACTIVE");
-  } catch (error) {
-    console.warn(`Failed to load ${params.collectionName}`, error);
-    return [];
-  }
-}
-
-async function loadClassEnrollments(params: {
-  orgId: string;
-  schoolId: string;
-  classId: string;
-}): Promise<StudentEnrollment[]> {
-
-  const sources = [
-  await loadEnrollmentsFromCollection({
-    ...params,
-    collectionName: "studentEnrollments",
-  }),
-];
-
-  const unique = new Map<string, StudentEnrollment>();
-
-  for (const list of sources) {
-    for (const enrollment of list) {
-      unique.set(enrollment.id || enrollment.studentId, enrollment);
-    }
-  }
-
-  return Array.from(unique.values()).sort((a, b) =>
-    a.studentId.localeCompare(b.studentId, "ar"),
-  );
-}
-
-async function loadPersonName(params: {
-  orgId: string;
-  personId: string;
-}): Promise<string> {
-  if (!params.personId) return "";
-
-  try {
-    const personRef = doc(db, "orgs", params.orgId, "people", params.personId);
-
-    const personSnap = await getDoc(personRef);
-
-    if (!personSnap.exists()) return "";
-
-    const person = {
-      id: personSnap.id,
-      ...(personSnap.data() as Omit<Person, "id">),
-    };
-
-    return person.displayName || "";
-  } catch (error) {
-    console.warn("Failed to load person name", error);
-    return "";
-  }
-}
-
-async function loadStudentDisplayName(params: {
-  orgId: string;
-  schoolId: string;
-  studentId: string;
-  fallbackName?: string;
-}): Promise<string> {
-  try {
-    const studentRef = doc(
-      db,
-      "orgs",
-      params.orgId,
-      "schools",
-      params.schoolId,
-      "studentDirectory",
-      params.studentId,
-    );
-
-    const studentSnap = await getDoc(studentRef);
-
-    if (!studentSnap.exists()) {
-      return params.fallbackName || params.studentId;
-    }
-
-    const data = studentSnap.data() as Record<string, unknown>;
-
-    const displayName =
-      (typeof data.displayName === "string" && data.displayName) ||
-      (typeof data.studentDisplayName === "string" &&
-        data.studentDisplayName) ||
-      (typeof data.name === "string" && data.name) ||
-      (typeof data.fullName === "string" && data.fullName) ||
-      "";
-
-    return displayName || params.fallbackName || params.studentId;
-  } catch (error) {
-    console.warn("Failed to load student directory name", error);
-    return params.fallbackName || params.studentId;
-  }
-}
-
-async function loadStudentsDirectly(params: {
-  orgId: string;
-  schoolId: string;
-  classId: string;
-}): Promise<AttendanceStudentInput[]> {
-  try {
-    const studentsRef = collection(db, "orgs", params.orgId, "students");
-
-    const snap = await getDocs(
-      query(studentsRef, where("classId", "==", params.classId)),
-    );
-
-    return snap.docs.map((item) => {
-      const data = item.data() as Omit<Student, "id"> & {
-        displayName?: string;
-        name?: string;
-        enrollmentId?: string;
-      };
-
-      return {
-        studentId: item.id,
-        studentDisplayName: data.displayName || data.name || item.id,
-        enrollmentId: data.enrollmentId || "",
-      };
-    });
-  } catch (error) {
-    console.warn("Failed to load students directly", error);
-    return [];
-  }
-}
-
 async function loadClassStudents(params: {
   orgId: string;
   schoolId: string;
+  academicYearId: string;
   classId: string;
 }): Promise<AttendanceStudentInput[]> {
-  const enrollments = await loadClassEnrollments(params);
+  const roster = await getClassRoster(params);
 
-  if (enrollments.length) {
-    const students = await Promise.all(
-      enrollments.map(async (enrollment) => {
-        const displayName = await loadStudentDisplayName({
-          orgId: params.orgId,
-          schoolId: params.schoolId,
-          studentId: enrollment.studentId,
-        });
-
-        return {
-          studentId: enrollment.studentId,
-          studentDisplayName: displayName,
-          enrollmentId: enrollment.id,
-        };
-      }),
-    );
-
-    return students.sort((a, b) =>
-      a.studentDisplayName.localeCompare(b.studentDisplayName, "ar"),
-    );
-  }
-
-  const directStudents = await loadStudentsDirectly(params);
-
-  return directStudents.sort((a, b) =>
+  return roster.rows.map((row) => ({
+    studentId: row.studentId,
+    enrollmentId: row.enrollmentId,
+    studentDisplayName: row.displayName || row.studentId,
+  })).sort((a, b) =>
     a.studentDisplayName.localeCompare(b.studentDisplayName, "ar"),
   );
 }
@@ -564,6 +373,7 @@ export default function ClassAttendancePage() {
       const loadedStudents = await loadClassStudents({
         orgId: actor.orgId,
         schoolId: classInfo.schoolId,
+        academicYearId: classInfo.academicYearId,
         classId,
       });
 

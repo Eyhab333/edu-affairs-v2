@@ -1422,6 +1422,15 @@ match /evaluatorPolicies/{policyId} {
 }
 
 
+match /evaluationApplicabilityPolicies/{policyId} {
+  allow get, list: if resource.data.schoolId is string
+  && hasSchoolAccess(
+    orgId,
+    resource.data.schoolId
+  );
+}
+
+
 match /evaluationCycleTargetSummaries/{summaryId} {
   allow get, list: if canManageOrg(orgId)
     || (

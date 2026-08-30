@@ -44,6 +44,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { db } from "@/lib/firebase";
+import { getVisibleStudents } from "@/lib/visible-students";
 
 type LoadState = {
   loading: boolean;
@@ -238,43 +239,12 @@ async function loadStudentDisplayName(params: {
   orgId: string;
   studentId: string;
 }): Promise<string> {
-  try {
-    const studentRef = doc(
-      db,
-      "orgs",
-      params.orgId,
-      "students",
-      params.studentId,
-    );
+  const roster = await getVisibleStudents({ orgId: params.orgId });
 
-    const studentSnap = await getDoc(studentRef);
-
-    if (!studentSnap.exists()) {
-      return params.studentId;
-    }
-
-    const student = {
-      id: studentSnap.id,
-      ...(studentSnap.data() as Omit<Student, "id"> & {
-        displayName?: string;
-        name?: string;
-      }),
-    };
-
-    const directName = student.displayName || student.name || "";
-
-    if (directName) return directName;
-
-    const personName = await loadPersonName({
-      orgId: params.orgId,
-      personId: student.personId,
-    });
-
-    return personName || params.studentId;
-  } catch (error) {
-    console.warn("Failed to load student display name", error);
-    return params.studentId;
-  }
+  return (
+    roster.rows.find((row) => row.studentId === params.studentId)?.displayName ||
+    params.studentId
+  );
 }
 
 async function attachStudentNames(params: {

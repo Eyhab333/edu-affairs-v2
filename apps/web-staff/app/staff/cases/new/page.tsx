@@ -488,7 +488,6 @@ export default function NewStudentCasePage() {
         termShortTitle: selectedTerm.shortTitle,
         student: {
           studentId: selectedStudent.studentId,
-          studentPersonId: selectedStudent.personId || undefined,
           studentDisplayName: selectedStudent.displayName,
           gradeId: selectedStudent.gradeId || undefined,
           gradeTitle: selectedStudent.gradeTitle || undefined,

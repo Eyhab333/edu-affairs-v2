@@ -9,6 +9,13 @@ import {
   where,
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
+import {
+  EvaluationApplicabilityPolicySchema,
+  type EvaluationApplicabilityAssignmentContext,
+  type EvaluationApplicabilityPolicy,
+  type EvaluationApplicabilityResolution,
+} from "@takween/contracts";
+import { resolveEvaluationApplicability } from "@takween/domain";
 
 import { db, functions } from "@/lib/firebase";
 
@@ -186,6 +193,96 @@ async function getSubmissionsForEvaluatorInSchools(params: {
   return Array.from(submissionMap.values());
 }
 
+async function getActiveEvaluationApplicabilityPolicies(params: {
+  orgId: string;
+  schoolIds: string[];
+}): Promise<EvaluationApplicabilityPolicy[]> {
+  const schoolIds = normalizeSchoolIds(params.schoolIds);
+
+  if (schoolIds.length === 0) return [];
+
+  const policiesRef = collection(
+    db,
+    `orgs/${params.orgId}/evaluationApplicabilityPolicies`,
+  );
+  const snapshots = await Promise.all(
+    schoolIds.map((schoolId) =>
+      getDocs(
+        query(
+          policiesRef,
+          where("schoolId", "==", schoolId),
+          where("status", "==", "ACTIVE"),
+        ),
+      ),
+    ),
+  );
+
+  const policies = new Map<string, EvaluationApplicabilityPolicy>();
+
+  for (const snapshot of snapshots) {
+    for (const item of snapshot.docs) {
+      const parsed = EvaluationApplicabilityPolicySchema.safeParse({
+        id: item.id,
+        ...(item.data() as FirestoreDoc),
+      });
+
+      if (parsed.success) policies.set(item.id, parsed.data);
+    }
+  }
+
+  return Array.from(policies.values());
+}
+
+function resolveAssignmentApplicability(params: {
+  orgId: string;
+  assignment: FirestoreDoc;
+  plan: FirestoreDoc;
+  cycle: FirestoreDoc;
+  targetAssignment: FirestoreDoc;
+  framework: FirestoreDoc | null;
+  policies: EvaluationApplicabilityPolicy[];
+  effectiveAt: number;
+}): EvaluationApplicabilityResolution {
+  return resolveEvaluationApplicability({
+    context: {
+      orgId: asString(params.assignment.orgId, params.orgId),
+      schoolId: asString(
+        params.assignment.schoolId,
+        asString(params.cycle.schoolId, asString(params.plan.schoolId)),
+      ),
+      academicYearId: asString(
+        params.assignment.academicYearId,
+        asString(
+          params.cycle.academicYearId,
+          asString(params.plan.academicYearId),
+        ),
+      ),
+      termId: asString(
+        params.assignment.termId,
+        asString(params.cycle.termId, asString(params.plan.termId)),
+      ),
+      planId: asString(params.assignment.planId),
+      cycleId: asString(params.assignment.cycleId),
+      evaluatorRoleKey: asString(params.assignment.evaluatorRoleKey),
+      evaluatorPersonId: asString(params.assignment.evaluatorPersonId),
+      targetRoleKey: asString(params.targetAssignment.targetRoleKey),
+      targetKind: asString(
+        params.targetAssignment.targetKind,
+        asString(params.plan.targetKind),
+      ) as EvaluationApplicabilityAssignmentContext["targetKind"],
+      frameworkId: asString(params.plan.frameworkId),
+      frameworkKind: asString(
+        params.framework?.frameworkKind,
+      ) as EvaluationApplicabilityAssignmentContext["frameworkKind"],
+      planKind: asString(
+        params.plan.planKind,
+      ) as EvaluationApplicabilityAssignmentContext["planKind"],
+    },
+    policies: params.policies,
+    effectiveAt: params.effectiveAt,
+  });
+}
+
 function findMatchingSubmission(
   submissions: FirestoreDoc[],
   params: {
@@ -261,23 +358,26 @@ export async function buildStaffEvaluationWorkspace(params: {
 
   const assignments = Array.from(assignmentMap.values());
 
-  const [submissions, signalSnapshots] = await Promise.all([
-    getSubmissionsForEvaluatorInSchools({
-      orgId,
-      evaluatorPersonId,
-      schoolIds,
-    }),
-    Promise.all(
-      schoolIds.map((schoolId) =>
-        getDocs(
-          query(
-            collection(db, `orgs/${orgId}/performanceImprovementSignals`),
-            where("schoolId", "==", schoolId),
+  const applicabilityAt = Date.now();
+  const [submissions, signalSnapshots, applicabilityPolicies] =
+    await Promise.all([
+      getSubmissionsForEvaluatorInSchools({
+        orgId,
+        evaluatorPersonId,
+        schoolIds,
+      }),
+      Promise.all(
+        schoolIds.map((schoolId) =>
+          getDocs(
+            query(
+              collection(db, `orgs/${orgId}/performanceImprovementSignals`),
+              where("schoolId", "==", schoolId),
+            ),
           ),
         ),
       ),
-    ),
-  ]);
+      getActiveEvaluationApplicabilityPolicies({ orgId, schoolIds }),
+    ]);
 
   const signalByPlanAndTarget = new Map<string, FirestoreDoc>();
 
@@ -301,7 +401,7 @@ export async function buildStaffEvaluationWorkspace(params: {
     }
   }
 
-  const tasks = await Promise.all(
+  const resolvedTasks = await Promise.all(
     assignments.map(async (assignment) => {
       const planId = asString(assignment.planId);
       const cycleId = asString(assignment.cycleId);
@@ -322,6 +422,21 @@ export async function buildStaffEvaluationWorkspace(params: {
       const framework = frameworkId
         ? await getDocData(`orgs/${orgId}/evaluationFrameworks/${frameworkId}`)
         : null;
+
+      const applicability = resolveAssignmentApplicability({
+        orgId,
+        assignment,
+        plan: plan ?? {},
+        cycle: cycle ?? {},
+        targetAssignment: targetAssignment ?? {},
+        framework,
+        policies: applicabilityPolicies,
+        effectiveAt: applicabilityAt,
+      });
+
+      if (applicability.applicabilityStatus === "NOT_APPLICABLE") {
+        return null;
+      }
 
       const submission = findMatchingSubmission(submissions, {
         planId,
@@ -378,6 +493,10 @@ export async function buildStaffEvaluationWorkspace(params: {
         actionHref: `/staff/evaluations/cycles/${cycleId}/targets/${targetPersonId}`,
       } satisfies StaffEvaluationTask;
     }),
+  );
+
+  const tasks = resolvedTasks.filter(
+    (task): task is StaffEvaluationTask => task !== null,
   );
 
   const summary = {
@@ -664,6 +783,25 @@ export async function loadEvaluationSubmissionForm(params: {
   ]);
 
   if (!framework) return null;
+
+  const applicabilityPolicies = await getActiveEvaluationApplicabilityPolicies({
+    orgId,
+    schoolIds: [schoolId],
+  });
+  const applicability = resolveAssignmentApplicability({
+    orgId,
+    assignment,
+    plan,
+    cycle,
+    targetAssignment,
+    framework,
+    policies: applicabilityPolicies,
+    effectiveAt: Date.now(),
+  });
+
+  if (applicability.applicabilityStatus === "NOT_APPLICABLE") {
+    return null;
+  }
 
   const existingSubmission = findMatchingSubmission(submissions, {
     planId,

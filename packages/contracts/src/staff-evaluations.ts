@@ -36,6 +36,106 @@ export const EvaluationPlanKindSchema = z.enum([
 
 export type EvaluationPlanKind = z.infer<typeof EvaluationPlanKindSchema>;
 
+export const EvaluationApplicabilityPolicyStatusSchema = z.enum([
+  "ACTIVE",
+  "INACTIVE",
+]);
+
+export type EvaluationApplicabilityPolicyStatus = z.infer<
+  typeof EvaluationApplicabilityPolicyStatusSchema
+>;
+
+export const EvaluationApplicabilityStatusSchema = z.enum([
+  "APPLICABLE",
+  "NOT_APPLICABLE",
+]);
+
+export type EvaluationApplicabilityStatus = z.infer<
+  typeof EvaluationApplicabilityStatusSchema
+>;
+
+export const EvaluationApplicabilityPolicyScopeSchema = z.object({
+  planId: z.string().min(1).optional(),
+  frameworkId: z.string().min(1).optional(),
+  frameworkKind: EvaluationFrameworkKindSchema.optional(),
+  planKind: EvaluationPlanKindSchema.optional(),
+  cycleId: z.string().min(1).optional(),
+  evaluatorRoleKey: z.string().min(1).optional(),
+  evaluatorPersonId: z.string().min(1).optional(),
+  targetRoleKey: z.string().min(1).optional(),
+  targetKind: EvaluationTargetKindSchema.optional(),
+});
+
+export type EvaluationApplicabilityPolicyScope = z.infer<
+  typeof EvaluationApplicabilityPolicyScopeSchema
+>;
+
+export const EvaluationApplicabilityPolicySchema = z
+  .object({
+    id: z.string().min(1),
+    orgId: z.string().min(1),
+    schoolId: z.string().min(1),
+    academicYearId: z.string().min(1),
+    termId: z.string().min(1),
+
+    status: EvaluationApplicabilityPolicyStatusSchema.default("ACTIVE"),
+    decision: EvaluationApplicabilityStatusSchema,
+    scope: EvaluationApplicabilityPolicyScopeSchema.default({}),
+
+    reason: z.string().min(1).optional(),
+    policyVersion: z.number().int().positive(),
+    effectiveFrom: z.number().int().nonnegative().optional(),
+    effectiveUntil: z.number().int().nonnegative().optional(),
+
+    createdBy: z.string().min(1).optional(),
+    createdAt: z.number().int().nonnegative(),
+    updatedAt: z.number().int().nonnegative(),
+  })
+  .superRefine((policy, context) => {
+    if (
+      typeof policy.effectiveFrom === "number" &&
+      typeof policy.effectiveUntil === "number" &&
+      policy.effectiveUntil < policy.effectiveFrom
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "effectiveUntil cannot be before effectiveFrom.",
+        path: ["effectiveUntil"],
+      });
+    }
+  });
+
+export type EvaluationApplicabilityPolicy = z.infer<
+  typeof EvaluationApplicabilityPolicySchema
+>;
+
+export type EvaluationApplicabilityAssignmentContext = {
+  orgId: string;
+  schoolId: string;
+  academicYearId: string;
+  termId: string;
+
+  planId: string;
+  cycleId: string;
+
+  evaluatorRoleKey?: string;
+  evaluatorPersonId?: string;
+  targetRoleKey?: string;
+  targetKind?: EvaluationTargetKind;
+
+  frameworkId?: string;
+  frameworkKind?: EvaluationFrameworkKind;
+  planKind?: EvaluationPlanKind;
+};
+
+export type EvaluationApplicabilityResolution = {
+  applicabilityStatus: EvaluationApplicabilityStatus;
+  excludedFromAggregation: boolean;
+  matchedPolicyId?: string;
+  matchedPolicyVersion?: number;
+  exclusionReason?: string;
+};
+
 export const EvaluationPlanStatusSchema = z.enum([
   "DRAFT",
   "ACTIVE",

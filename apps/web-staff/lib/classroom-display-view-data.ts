@@ -13,8 +13,6 @@ import type {
   Class,
   ClassroomDisplaySession,
   School,
-  SchoolStudentDirectoryEntry,
-  StudentEnrollment,
   StudentGamificationEvent,
 } from "@takween/contracts";
 
@@ -26,6 +24,7 @@ import {
 } from "@takween/domain";
 
 import { db } from "@/lib/firebase";
+import { getClassRoster } from "@/lib/class-roster";
 
 type StudentDisplayRow = {
   studentId: string;
@@ -134,59 +133,17 @@ export async function loadClassTitle(session: ClassroomDisplaySession) {
 }
 
 export async function loadClassStudents(session: ClassroomDisplaySession) {
-  const enrollmentsRef = collection(
-    db,
-    `orgs/${session.orgId}/studentEnrollments`,
-  );
+  const roster = await getClassRoster({
+    orgId: session.orgId,
+    schoolId: session.schoolId,
+    academicYearId: session.academicYearId,
+    classId: session.classId,
+  });
 
-  const enrollmentsSnap = await getDocs(
-    query(
-      enrollmentsRef,
-      where("schoolId", "==", session.schoolId),
-      where("academicYearId", "==", session.academicYearId),
-      where("classId", "==", session.classId),
-      where("status", "==", "ACTIVE"),
-    ),
-  );
-
-  const enrollments = enrollmentsSnap.docs
-    .map((item) => ({
-      id: item.id,
-      ...(item.data() as Omit<StudentEnrollment, "id">),
-    }))
-    .filter((enrollment) => {
-      if (enrollment.status !== "ACTIVE") return false;
-      if (enrollment.schoolId !== session.schoolId) return false;
-      if (enrollment.academicYearId !== session.academicYearId) return false;
-      return true;
-    });
-
-  const rows = await Promise.all(
-    enrollments.map(async (enrollment) => {
-      const directoryRef = doc(
-        db,
-        "orgs",
-        session.orgId,
-        "schools",
-        session.schoolId,
-        "studentDirectory",
-        enrollment.studentId,
-      );
-
-      const directorySnap = await getDoc(directoryRef);
-
-      const directory = directorySnap.exists()
-        ? (directorySnap.data() as SchoolStudentDirectoryEntry)
-        : null;
-
-      return {
-        studentId: enrollment.studentId,
-        displayName: directory?.displayName || enrollment.studentId,
-      };
-    }),
-  );
-
-  return rows.sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
+  return roster.rows.map((row) => ({
+    studentId: row.studentId,
+    displayName: row.displayName || row.studentId,
+  })).sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
 }
 
 async function loadSessionGamificationEvents(session: ClassroomDisplaySession) {

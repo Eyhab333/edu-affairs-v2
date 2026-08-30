@@ -18,6 +18,7 @@ import type {
 } from "@takween/contracts";
 
 import { db } from "@/lib/firebase";
+import { getVisibleStudents } from "@/lib/visible-students";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   getFriendlyClassTitle,
@@ -450,93 +451,16 @@ function isOpenPlan(plan: LearningLossPlanDoc) {
   return !["CLOSED", "CANCELLED"].includes(String(plan.status || ""));
 }
 
-async function loadStudentName(
-  orgId: string,
-  studentId: string,
-): Promise<StudentSummary> {
-  try {
-    const studentRef = doc(db, "orgs", orgId, "students", studentId);
-    const studentSnap = await getDoc(studentRef);
-
-    if (!studentSnap.exists()) {
-      return {
-        id: studentId,
-        displayName: studentId,
-      };
-    }
-
-    const studentData = studentSnap.data() as {
-      personId?: string;
-      displayName?: string;
-      name?: string;
-    };
-
-    const directName = studentData.displayName || studentData.name;
-
-    if (directName) {
-      return {
-        id: studentId,
-        personId: studentData.personId,
-        displayName: directName,
-      };
-    }
-
-    if (!studentData.personId) {
-      return {
-        id: studentId,
-        displayName: studentId,
-      };
-    }
-
-    const personRef = doc(db, "orgs", orgId, "people", studentData.personId);
-    const personSnap = await getDoc(personRef);
-
-    if (!personSnap.exists()) {
-      return {
-        id: studentId,
-        personId: studentData.personId,
-        displayName: studentId,
-      };
-    }
-
-    const personData = personSnap.data() as {
-      displayName?: string;
-      name?: string;
-    };
-
-    return {
-      id: studentId,
-      personId: studentData.personId,
-      displayName: personData.displayName || personData.name || studentId,
-    };
-  } catch {
-    return {
-      id: studentId,
-      displayName: studentId,
-    };
-  }
-}
-
 async function loadSchoolStudentName(params: {
   orgId: string;
   schoolId: string;
   studentId: string;
 }) {
-  const directoryRef = doc(
-    db,
-    "orgs",
-    params.orgId,
-    "schools",
-    params.schoolId,
-    "studentDirectory",
-    params.studentId,
-  );
-
-  const directorySnap = await getDoc(directoryRef);
-
-  const displayName = directorySnap.exists()
-    ? String(directorySnap.data().displayName || "").trim()
-    : "";
+  const roster = await getVisibleStudents({ orgId: params.orgId });
+  const displayName = roster.rows.find(
+    (row) =>
+      row.studentId === params.studentId && row.schoolId === params.schoolId,
+  )?.displayName;
 
   return {
     id: params.studentId,
