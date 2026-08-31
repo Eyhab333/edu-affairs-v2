@@ -292,6 +292,7 @@ export const getClassRoster = onCall(
   {
     region: REGION,
     cors: true,
+    memory: "512MiB",
   },
   async (request): Promise<GetClassRosterResult> => {
     const uid = request.auth?.uid;
