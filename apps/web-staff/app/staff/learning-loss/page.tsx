@@ -18,7 +18,7 @@ import type {
 } from "@takween/contracts";
 
 import { db } from "@/lib/firebase";
-import { getVisibleStudents } from "@/lib/visible-students";
+import { getClassRoster } from "@/lib/class-roster";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   getFriendlyClassTitle,
@@ -179,7 +179,7 @@ function getVisibleClassKey(item: VisibleClass) {
     item.schoolId || "NO_SCHOOL",
     item.academicYearId || "NO_YEAR",
     item.id,
-  ].join(":");
+  ].join("::");
 }
 
 function getRecordClassKey(item: {
@@ -191,7 +191,7 @@ function getRecordClassKey(item: {
     item.schoolId || "NO_SCHOOL",
     item.academicYearId || "NO_YEAR",
     item.classId || "NO_CLASS",
-  ].join(":");
+  ].join("::");
 }
 
 function getClassLabel(
@@ -454,17 +454,27 @@ function isOpenPlan(plan: LearningLossPlanDoc) {
 async function loadSchoolStudentName(params: {
   orgId: string;
   schoolId: string;
+  academicYearId: string;
+  classId: string;
   studentId: string;
 }) {
-  const roster = await getVisibleStudents({ orgId: params.orgId });
+  if (!params.schoolId || !params.academicYearId || !params.classId) {
+    return { id: params.studentId, displayName: "طالب غير محدد" };
+  }
+
+  const roster = await getClassRoster({
+    orgId: params.orgId,
+    schoolId: params.schoolId,
+    academicYearId: params.academicYearId,
+    classId: params.classId,
+  });
   const displayName = roster.rows.find(
-    (row) =>
-      row.studentId === params.studentId && row.schoolId === params.schoolId,
+    (row) => row.studentId === params.studentId,
   )?.displayName;
 
   return {
     id: params.studentId,
-    displayName: displayName || params.studentId,
+    displayName: displayName || "طالب غير محدد",
   };
 }
 
@@ -521,38 +531,22 @@ export default function StaffLearningLossPage() {
     return new Set(visibleClasses.map((item) => getVisibleClassKey(item)));
   }, [visibleClasses]);
 
-  const visibleClassIds = useMemo(() => {
-    return new Set(visibleClasses.map((item) => item.id));
-  }, [visibleClasses]);
-
   const isRowInVisibleClasses = useCallback(
     (row: { schoolId?: string; academicYearId?: string; classId?: string }) => {
-      if (!row.classId) return false;
+      if (!row.schoolId || !row.academicYearId || !row.classId) return false;
 
-      const rowHasContext = Boolean(row.schoolId || row.academicYearId);
-
-      if (rowHasContext) {
-        return visibleClassKeys.has(getRecordClassKey(row));
-      }
-
-      return visibleClassIds.has(row.classId);
+      return visibleClassKeys.has(getRecordClassKey(row));
     },
-    [visibleClassIds, visibleClassKeys],
+    [visibleClassKeys],
   );
 
   const getClassInfoForRow = useCallback(
     (row: { schoolId?: string; academicYearId?: string; classId?: string }) => {
-      if (!row.classId) return null;
+      if (!row.schoolId || !row.academicYearId || !row.classId) return null;
 
-      const exact = visibleClassMap.get(getRecordClassKey(row));
-      if (exact) return exact;
-
-      const matches = visibleClasses.filter((item) => item.id === row.classId);
-      if (matches.length === 1) return matches[0];
-
-      return null;
+      return visibleClassMap.get(getRecordClassKey(row)) ?? null;
     },
-    [visibleClassMap, visibleClasses],
+    [visibleClassMap],
   );
 
   const contextClassInfo = useMemo(
@@ -729,6 +723,9 @@ export default function StaffLearningLossPage() {
           const student = await loadSchoolStudentName({
             orgId: currentActor.orgId,
             schoolId,
+            academicYearId:
+              record.academicYearId || classInfo?.academicYearId || "",
+            classId: record.classId || classInfo?.id || "",
             studentId: record.studentId,
           });
 
@@ -818,6 +815,9 @@ export default function StaffLearningLossPage() {
           const student = await loadSchoolStudentName({
             orgId: currentActor.orgId,
             schoolId,
+            academicYearId:
+              plan.academicYearId || classInfo?.academicYearId || "",
+            classId: plan.classId || classInfo?.id || "",
             studentId: plan.studentId,
           });
 

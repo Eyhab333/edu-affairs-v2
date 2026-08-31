@@ -20,6 +20,13 @@ export type ActorAccessContext = {
   operationalAssignments?: OperationalAssignment[];
   teacherAssignments?: TeacherAssignment[];
   teacherAssignmentClassLinks?: TeacherAssignmentClassLink[];
+  /**
+   * Active school scopes resolved from personSupervisionScopes for a
+   * subject-scoped supervisor. These scopes are authoritative for the
+   * supervisor's school boundary and are applied after every other class
+   * access source.
+   */
+  supervisionSchoolIds?: string[];
 };
 
 function uniqueById<T extends { id: string }>(items: T[]): T[] {
@@ -215,6 +222,12 @@ export function getVisibleClassesForActor(params: {
   nowMs?: number;
 }): Class[] {
   const memberships = params.context.memberships ?? [];
+  const supervisionSchoolIds = new Set(
+    params.context.supervisionSchoolIds ?? [],
+  );
+  const mustUseSupervisionSchoolScope =
+    !memberships.some(isOrgWideMembership) &&
+    supervisionSchoolIds.size > 0;
 
   const operationalAssignments = getActiveOperationalAssignmentsForActor({
     actorPersonId: params.context.actorPersonId,
@@ -236,6 +249,16 @@ export function getVisibleClassesForActor(params: {
   const visible = params.classes.filter((classItem) => {
     if (classItem.orgId !== params.context.orgId) return false;
     if (classItem.isArchived) return false;
+
+    // Subject-scoped supervisors are deliberately fail-closed: a membership
+    // school list or operational assignment cannot extend them beyond their
+    // active personSupervisionScopes school boundary.
+    if (
+      mustUseSupervisionSchoolScope &&
+      !supervisionSchoolIds.has(classItem.schoolId)
+    ) {
+      return false;
+    }
 
     const allowedByMembership = memberships.some((membership) =>
       membershipAllowsClass(membership, classItem),

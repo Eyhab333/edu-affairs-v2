@@ -6,14 +6,11 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
-  query,
   setDoc,
-  where,
 } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
-import { getVisibleStudents } from "@/lib/visible-students";
+import { getClassRoster } from "@/lib/class-roster";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   getFriendlyClassTitle,
@@ -131,7 +128,7 @@ function getVisibleClassKey(item: VisibleClass) {
     item.schoolId || "NO_SCHOOL",
     item.academicYearId || "NO_YEAR",
     item.id,
-  ].join(":");
+  ].join("::");
 }
 
 function getClassLabel(classInfo: VisibleClass, classes: VisibleClass[]) {
@@ -213,35 +210,6 @@ function dedupeVisibleClasses(classes: VisibleClass[]) {
 
     return aTitle.localeCompare(bTitle, "ar");
   });
-}
-
-function enrollmentMatchesClass(
-  enrollment: {
-    schoolId?: string;
-    academicYearId?: string;
-    classId?: string;
-  },
-  classInfo: VisibleClass,
-) {
-  if (enrollment.classId !== classInfo.id) return false;
-
-  if (
-    classInfo.schoolId &&
-    enrollment.schoolId &&
-    enrollment.schoolId !== classInfo.schoolId
-  ) {
-    return false;
-  }
-
-  if (
-    classInfo.academicYearId &&
-    enrollment.academicYearId &&
-    enrollment.academicYearId !== classInfo.academicYearId
-  ) {
-    return false;
-  }
-
-  return true;
 }
 
 function getContextFilter(
@@ -340,85 +308,33 @@ function buildPlanText(params: {
   return lines.join("\n");
 }
 
-async function loadStudentName(
-  orgId: string,
-  studentId: string,
-): Promise<Pick<StudentOption, "id" | "personId" | "displayName">> {
-  const roster = await getVisibleStudents({ orgId });
-  const displayName = roster.rows.find(
-    (row) => row.studentId === studentId,
-  )?.displayName;
-
-  return { id: studentId, displayName: displayName || studentId };
-}
-
 async function loadStudentsByClass(params: {
   orgId: string;
   classInfo: VisibleClass;
 }): Promise<StudentOption[]> {
-  const possibleEnrollmentCollections = ["studentEnrollments", "enrollments"];
-  const byStudentId = new Map<string, StudentOption>();
+  const schoolId = params.classInfo.schoolId || "";
+  const academicYearId = params.classInfo.academicYearId || "";
 
-  for (const collectionName of possibleEnrollmentCollections) {
-    try {
-      const enrollmentsRef = collection(
-        db,
-        "orgs",
-        params.orgId,
-        collectionName,
-      );
+  if (!schoolId || !academicYearId || !params.classInfo.id) return [];
 
-      const enrollmentsQuery = query(
-        enrollmentsRef,
-        where("classId", "==", params.classInfo.id),
-      );
+  const roster = await getClassRoster({
+    orgId: params.orgId,
+    schoolId,
+    academicYearId,
+    classId: params.classInfo.id,
+  });
 
-      const enrollmentsSnap = await getDocs(enrollmentsQuery);
-
-      for (const item of enrollmentsSnap.docs) {
-        const data = item.data() as {
-          studentId?: string;
-          schoolId?: string;
-          academicYearId?: string;
-          gradeId?: string;
-          classId?: string;
-          status?: string;
-        };
-
-        if (!data.studentId) continue;
-        if (!enrollmentMatchesClass(data, params.classInfo)) continue;
-
-        if (
-          data.status &&
-          !["ACTIVE", "PENDING"].includes(String(data.status))
-        ) {
-          continue;
-        }
-
-        if (byStudentId.has(data.studentId)) continue;
-
-        const student = await loadStudentName(params.orgId, data.studentId);
-
-        byStudentId.set(data.studentId, {
-          ...student,
-          enrollmentId: item.id,
-          schoolId: data.schoolId || params.classInfo.schoolId || "",
-          academicYearId:
-            data.academicYearId || params.classInfo.academicYearId || "",
-          gradeId: data.gradeId || params.classInfo.gradeId || "",
-          classId: data.classId || params.classInfo.id,
-        });
-      }
-    } catch {
-      // تجاهل هذا المسار وجرب المسار التالي
-    }
-  }
-
-  const students = Array.from(byStudentId.values());
-
-  students.sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
-
-  return students;
+  return roster.rows
+    .map((student) => ({
+      id: student.studentId,
+      displayName: student.displayName || "طالب غير محدد",
+      enrollmentId: student.enrollmentId,
+      schoolId,
+      academicYearId,
+      gradeId: params.classInfo.gradeId || "",
+      classId: params.classInfo.id,
+    }))
+    .sort((left, right) => left.displayName.localeCompare(right.displayName, "ar"));
 }
 
 function buildTermContext(

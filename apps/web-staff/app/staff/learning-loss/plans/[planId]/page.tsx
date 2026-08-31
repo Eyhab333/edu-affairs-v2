@@ -19,7 +19,7 @@ import {
 } from "@takween/domain";
 
 import { db } from "@/lib/firebase";
-import { getVisibleStudents } from "@/lib/visible-students";
+import { getClassRoster } from "@/lib/class-roster";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   getFriendlyClassTitle,
@@ -237,7 +237,7 @@ function getVisibleClassKey(item: VisibleClass) {
     item.schoolId || "NO_SCHOOL",
     item.academicYearId || "NO_YEAR",
     item.id,
-  ].join(":");
+  ].join("::");
 }
 
 function getPlanClassKey(item: {
@@ -249,7 +249,7 @@ function getPlanClassKey(item: {
     item.schoolId || "NO_SCHOOL",
     item.academicYearId || "NO_YEAR",
     item.classId || "NO_CLASS",
-  ].join(":");
+  ].join("::");
 }
 
 function getClassLabel(
@@ -345,16 +345,31 @@ function buildLearningLossListHref(plan: LearningLossPlanDoc) {
   return `/staff/learning-loss${queryString ? `?${queryString}` : ""}`;
 }
 
-async function loadStudentName(
-  orgId: string,
-  studentId: string,
-): Promise<StudentSummary> {
-  const roster = await getVisibleStudents({ orgId });
+async function loadStudentName(params: {
+  orgId: string;
+  schoolId: string;
+  academicYearId: string;
+  classId: string;
+  studentId: string;
+}): Promise<StudentSummary> {
+  if (!params.schoolId || !params.academicYearId || !params.classId) {
+    return { id: params.studentId, displayName: "طالب غير محدد" };
+  }
+
+  const roster = await getClassRoster({
+    orgId: params.orgId,
+    schoolId: params.schoolId,
+    academicYearId: params.academicYearId,
+    classId: params.classId,
+  });
   const displayName = roster.rows.find(
-    (row) => row.studentId === studentId,
+    (row) => row.studentId === params.studentId,
   )?.displayName;
 
-  return { id: studentId, displayName: displayName || studentId };
+  return {
+    id: params.studentId,
+    displayName: displayName || "طالب غير محدد",
+  };
 }
 
 async function loadSourceAssessmentRecord(
@@ -455,20 +470,10 @@ export default function LearningLossPlanPage() {
     );
   }, [visibleClasses]);
 
-  const visibleClassIds = useMemo(() => {
-    return new Set(visibleClasses.map((item) => item.id));
-  }, [visibleClasses]);
-
   const classInfo = useMemo(() => {
-    if (!plan?.classId) return null;
+    if (!plan?.schoolId || !plan.academicYearId || !plan.classId) return null;
 
-    const exactClass = visibleClassMap.get(getPlanClassKey(plan));
-    if (exactClass) return exactClass;
-
-    const matches = visibleClasses.filter((item) => item.id === plan.classId);
-    if (matches.length === 1) return matches[0];
-
-    return null;
+    return visibleClassMap.get(getPlanClassKey(plan)) ?? null;
   }, [plan, visibleClassMap, visibleClasses]);
 
   const classLabel = useMemo(
@@ -483,17 +488,10 @@ export default function LearningLossPlanPage() {
 
   const hasAccessToPlan = useMemo(() => {
     if (!plan) return true;
-    if (!plan.classId) return true;
-    if (visibleClasses.length === 0) return false;
+    if (!plan.schoolId || !plan.academicYearId || !plan.classId) return false;
 
-    const planHasContext = Boolean(plan.schoolId || plan.academicYearId);
-
-    if (planHasContext) {
-      return visibleClassMap.has(getPlanClassKey(plan));
-    }
-
-    return visibleClassIds.has(plan.classId);
-  }, [plan, visibleClassIds, visibleClassMap, visibleClasses.length]);
+    return visibleClassMap.has(getPlanClassKey(plan));
+  }, [plan, visibleClassMap]);
 
   const learningLossListHref = useMemo(() => {
     if (!plan) return "/staff/learning-loss";
@@ -558,7 +556,13 @@ export default function LearningLossPlanPage() {
 
       const [loadedStudent, loadedSourceRecord, loadedSourceTrackerEntry] =
         await Promise.all([
-          loadStudentName(currentActor.orgId, loadedPlan.studentId),
+          loadStudentName({
+            orgId: currentActor.orgId,
+            schoolId: loadedPlan.schoolId,
+            academicYearId: loadedPlan.academicYearId,
+            classId: loadedPlan.classId,
+            studentId: loadedPlan.studentId,
+          }),
           loadSourceAssessmentRecord(
             currentActor.orgId,
             loadedPlan.sourceAssessmentRecordId || "",

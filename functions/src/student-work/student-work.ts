@@ -8,6 +8,7 @@ import type {
   TeacherAssignmentClassLink,
 } from "@takween/contracts";
 import { getVisibleClassesForActor } from "@takween/domain";
+import { getActorSupervisionSchoolIds } from "../access/get-actor-supervision-school-ids";
 
 const REGION = "me-central2";
 const STUDENT_WORK_COLLECTIONS = [
@@ -55,7 +56,8 @@ type StudentWorkDrillDownItem = {
   title: string;
   status: string;
   activityAt: number | null;
-  details: string[];
+  summary: string[];
+  details: Array<{ label: string; value: string }>;
 };
 
 type StudentWorkDrillDowns = Record<
@@ -64,13 +66,7 @@ type StudentWorkDrillDowns = Record<
 >;
 
 type StudentWorkActor = {
-  personId: string;
-  membership: Membership;
-  operationalAssignments: OperationalAssignment[];
-  teacherAssignments: TeacherAssignment[];
-  teacherAssignmentClassLinks: TeacherAssignmentClassLink[];
   visibleClasses: Class[];
-  hasBroadSchoolAccess: boolean;
 };
 
 type EnrollmentContext = {
@@ -169,15 +165,6 @@ function inPeriod(value: number | null, startAt: number | null) {
   return startAt === null || (value !== null && value >= startAt);
 }
 
-function isBroadMembership(membership: Membership) {
-  const role = membership.roleKey ?? membership.role;
-  return ["platform_owner", "platform_admin", "org_owner", "org_admin"].includes(role ?? "")
-    || membership.permissions?.manageOrg === true
-    || membership.permissions?.manageSchools === true
-    || membership.permissions?.manageDirectory === true
-    || membership.scopes?.canAccessAllSchools === true;
-}
-
 function normalizeMembership(params: { uid: string; orgId: string; id: string; data: Row }): Membership {
   const scopes = row(params.data.scopes);
   const permissions = row(params.data.permissions);
@@ -245,10 +232,11 @@ async function resolveActor(params: { uid: string; orgId: string }): Promise<Stu
   });
   const userSnapshot = await db.doc(`users/${params.uid}`).get();
   const personId = membership.personId || readString(row(userSnapshot.data()), ["personId"]) || params.uid;
-  const [operationalSnapshot, teacherSnapshot, schoolsSnapshot] = await Promise.all([
+  const [operationalSnapshot, teacherSnapshot, schoolsSnapshot, supervisionSchoolIds] = await Promise.all([
     db.collection(`orgs/${params.orgId}/operationalAssignments`).where("actorPersonId", "==", personId).get(),
     db.collection(`orgs/${params.orgId}/teacherAssignments`).where("teacherPersonId", "==", personId).get(),
     db.collection(`orgs/${params.orgId}/schools`).get(),
+    getActorSupervisionSchoolIds({ orgId: params.orgId, personId }),
   ]);
   const operationalAssignments = operationalSnapshot.docs.map((document) => asOperationalAssignment(document.id, row(document.data())));
   const teacherAssignments = teacherSnapshot.docs.map((document) => asTeacherAssignment(document.id, row(document.data())));
@@ -277,21 +265,13 @@ async function resolveActor(params: { uid: string; orgId: string }): Promise<Stu
       operationalAssignments,
       teacherAssignments,
       teacherAssignmentClassLinks,
+      supervisionSchoolIds,
     },
     classes,
     teacherAssignmentClassLinks,
   });
   return {
-    personId,
-    membership,
-    operationalAssignments,
-    teacherAssignments,
-    teacherAssignmentClassLinks,
     visibleClasses,
-    hasBroadSchoolAccess: isBroadMembership(membership) || (
-      !["teacher", "BOYS_TEACHER", "GIRLS_TEACHER", "KG_TEACHER"].includes(membership.roleKey ?? membership.role ?? "") &&
-      ((membership.scopes?.schoolIds?.length ?? 0) > 0 || membership.scopeType === "SCHOOL")
-    ),
   };
 }
 
@@ -347,6 +327,17 @@ async function loadDisplayNames(params: { orgId: string; studentIds: string[] })
   }));
 }
 
+async function loadPersonDisplayNames(params: { orgId: string; personIds: string[] }) {
+  const db = getFirestore();
+  const snapshots = await Promise.all(
+    params.personIds.map((personId) => db.doc(`orgs/${params.orgId}/people/${personId}`).get()),
+  );
+  return new Map(snapshots.map((snapshot) => [
+    snapshot.id,
+    snapshot.exists ? readString(row(snapshot.data()), ["displayName", "fullName", "nameAr", "name"]) : "",
+  ]));
+}
+
 async function loadRowsForSchools(params: { orgId: string; schoolIds: string[] }) {
   const db = getFirestore();
   const entries = await Promise.all(
@@ -365,32 +356,7 @@ async function loadRowsForSchools(params: { orgId: string; schoolIds: string[] }
   return byCollection;
 }
 
-function isActiveAssignment(assignment: TeacherAssignment, now: number) {
-  const data = assignment as unknown as Row;
-  const startAt = numberValue(data.startAt);
-  const endAt = numberValue(data.endAt);
-  return text(data.status) === "ACTIVE" && (!startAt || startAt <= now) && (!endAt || endAt >= now);
-}
-
-function teacherAssignmentMatchesContext(params: { assignment: TeacherAssignment; context: EnrollmentContext; links: TeacherAssignmentClassLink[] }) {
-  const assignment = params.assignment as unknown as Row;
-  const classItem = params.context.classItem;
-  if (text(assignment.orgId) !== classItem.orgId || text(assignment.schoolId) !== classItem.schoolId || text(assignment.academicYearId) !== classItem.academicYearId) return false;
-  if (text(assignment.targetScopeType) === "CLASS" && text(assignment.targetScopeId) === classItem.id) return true;
-  if (text(assignment.coverageMode) === "ALL_CLASSES_IN_SCOPE" && text(assignment.targetScopeType) === "SCHOOL" && text(assignment.targetScopeId) === classItem.schoolId) return true;
-  if (text(assignment.coverageMode) === "ALL_CLASSES_IN_SCOPE" && text(assignment.targetScopeType) === "GRADE" && text(assignment.targetScopeId) === classItem.gradeId) return true;
-  if (text(assignment.coverageMode) === "ALL_CLASSES_IN_SCOPE" && text(assignment.targetScopeType) === "STREAM" && text(assignment.targetScopeId) === classItem.streamId) return true;
-  return params.links.some((link) => {
-    const linkData = link as unknown as Row;
-    return text(linkData.assignmentId) === assignment.id
-      && text(linkData.orgId) === classItem.orgId
-      && text(linkData.schoolId) === classItem.schoolId
-      && text(linkData.academicYearId) === classItem.academicYearId
-      && text(linkData.classId) === classItem.id;
-  });
-}
-
-function canReadRow(params: { actor: StudentWorkActor; context: EnrollmentContext; data: Row }) {
+function canReadRow(params: { context: EnrollmentContext; data: Row }) {
   if (
     readString(params.data, ["studentId"]) !== params.context.studentId ||
     readString(params.data, ["schoolId"]) !== params.context.schoolId ||
@@ -398,33 +364,7 @@ function canReadRow(params: { actor: StudentWorkActor; context: EnrollmentContex
     readString(params.data, ["classId"]) !== params.context.classId
   ) return false;
 
-  const offeringId = readString(params.data, ["classSubjectOfferingId"]);
-  const subjectKey = readString(params.data, ["subjectKey"]);
-  if (!offeringId && !subjectKey) return true;
-  if (params.actor.hasBroadSchoolAccess) return true;
-  if (offeringId && params.actor.operationalAssignments.some((assignment) => {
-    const assignmentData = assignment as unknown as Row;
-    return text(assignmentData.status) === "ACTIVE"
-      && text(assignmentData.schoolId) === params.context.schoolId
-      && text(assignmentData.academicYearId) === params.context.academicYearId
-      && text(assignmentData.classSubjectOfferingId) === offeringId;
-  })) return true;
-  const now = Date.now();
-  return params.actor.teacherAssignments.some((assignment) => {
-    const assignmentData = assignment as unknown as Row;
-    if (!isActiveAssignment(assignment, now) || !teacherAssignmentMatchesContext({ assignment, context: params.context, links: params.actor.teacherAssignmentClassLinks })) return false;
-    if (offeringId && readString(assignmentData, ["classSubjectOfferingId"]) === offeringId) return true;
-    if (subjectKey && readString(assignmentData, ["subjectKey"]) === subjectKey) return true;
-    return params.actor.teacherAssignmentClassLinks.some((link) => {
-      const linkData = link as unknown as Row;
-      return text(linkData.assignmentId) === assignment.id
-        && text(linkData.schoolId) === params.context.schoolId
-        && text(linkData.academicYearId) === params.context.academicYearId
-        && text(linkData.classId) === params.context.classId
-        && offeringId
-        && text(linkData.classSubjectOfferingId) === offeringId;
-    });
-  });
+  return true;
 }
 
 function emptyMetric(): StudentWorkMetric {
@@ -451,55 +391,206 @@ function measurementActivity(data: Row, collectionName: string) {
     : activityAt(data, ["recordedAt", "updatedAt", "createdAt"]);
 }
 
-function details(...values: Array<string | null | undefined>) {
-  return values.map((value) => value?.trim() ?? "").filter(Boolean);
-}
-
 function recordTitle(data: Row, fallback: string) {
   return readString(data, ["title", "templateTitle", "topicTitle", "lessonTitle", "homeworkTitle", "planTitle", "reasonTitle"]) || fallback;
+}
+
+function formatDate(value: unknown) {
+  const timestamp = numberValue(value);
+  return timestamp === null ? "" : new Date(timestamp).toISOString().slice(0, 10);
+}
+
+function formatArabicDate(value: unknown) {
+  const timestamp = numberValue(value);
+  return timestamp === null
+    ? "غير محدد"
+    : new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium" }).format(
+        new Date(timestamp),
+      );
+}
+
+const SUBJECT_LABELS: Record<string, string> = {
+  ARABIC: "اللغة العربية",
+  ENGLISH: "اللغة الإنجليزية",
+  MATH: "رياضيات",
+  SCIENCE: "علوم",
+  QURAN: "القرآن الكريم",
+  ISLAMIC_STUDIES: "الدراسات الإسلامية",
+  QURAN_AND_ISLAMIC_STUDIES: "القرآن والدراسات الإسلامية",
+  SOCIAL_STUDIES: "الدراسات الاجتماعية",
+  LIFE_SKILLS: "المهارات الحياتية",
+  ART: "التربية الفنية",
+  PE: "التربية البدنية",
+  COMPUTER: "الحاسب الآلي",
+};
+
+const MEASUREMENT_KIND_LABELS: Record<string, string> = {
+  KG_TEACHER_MEASUREMENT: "قياس المعلم لرياض الأطفال",
+  KG_VP_MEASUREMENT: "قياس وكيل رياض الأطفال",
+  KG_MEASUREMENT_1: "القياس الأول لرياض الأطفال",
+  KG_MEASUREMENT_2: "القياس الثاني لرياض الأطفال",
+  KG_MEASUREMENT_3: "القياس الثالث لرياض الأطفال",
+  KG_VALUES_ASSESSMENT: "قياس القيم لرياض الأطفال",
+  KG_CORNERS_ASSESSMENT: "قياس الأركان لرياض الأطفال",
+  PRIMARY_DIAGNOSTIC_TEST: "اختبار تشخيصي أولي",
+  PRIMARY_DIAGNOSTIC: "اختبار تشخيصي أولي",
+  PRIMARY_PERIODIC_TEST_1: "اختبار دوري أول",
+  PRIMARY_PERIODIC_1: "اختبار دوري أول",
+  PRIMARY_PERIODIC_TEST_2: "اختبار دوري ثانٍ",
+  PRIMARY_PERIODIC_2: "اختبار دوري ثانٍ",
+  PRIMARY_CENTRAL_MEASUREMENT_1: "قياس مركزي أول",
+  PRIMARY_CENTRAL_1: "قياس مركزي أول",
+  PRIMARY_CENTRAL_MEASUREMENT_2: "قياس مركزي ثانٍ",
+  PRIMARY_CENTRAL_2: "قياس مركزي ثانٍ",
+  CUSTOM_ASSESSMENT: "قياس مخصص",
+  KG_QURAN_TRACKER: "متابعة القرآن لرياض الأطفال",
+  KG_LEARNING_GARDENS_TRACKER: "متابعة حدائق التعلم",
+  KG_NUMBERS_TRACKER: "متابعة الأرقام",
+  KG_VALUES_TRACKER: "متابعة القيم",
+  KG_CORNERS_TRACKER: "متابعة الأركان",
+  KG_LOSS_TRACKER: "متابعة الفاقد التعليمي لرياض الأطفال",
+  PRIMARY_QURAN_TRACKER: "متابعة القرآن الكريم",
+  PRIMARY_LOSS_TRACKER: "متابعة الفاقد التعليمي",
+  CUSTOM_TRACKER: "متابعة مخصصة",
+};
+
+function subjectLabel(data: Row) {
+  const subjectKey = readString(data, ["subjectKey"]);
+
+  return (
+    SUBJECT_LABELS[subjectKey] ||
+    readString(data, ["subjectTitle", "subjectTitleSnapshot"]) ||
+    "غير محددة"
+  );
+}
+
+function measurementKindLabel(data: Row, tracker: boolean) {
+  const kind = readString(data, ["kind", "assessmentSlot"]);
+  return MEASUREMENT_KIND_LABELS[kind] || (tracker ? "متابعة طالب" : "قياس طالب");
+}
+
+function measurementTesterPersonId(data: Row) {
+  return readString(data, ["assessedByPersonId", "recordedByPersonId"]);
 }
 
 function formatScore(data: Row) {
   const score = numberValue(data.score);
   const maxScore = numberValue(data.maxScore);
-  return score === null ? "" : maxScore === null ? `النتيجة: ${score}` : `النتيجة: ${score}/${maxScore}`;
+  return score === null ? "" : maxScore === null ? String(score) : `${score}/${maxScore}`;
 }
 
-function drillDownItem(params: { collectionName: string; data: Row }): { key: StudentWorkModuleKey; item: StudentWorkDrillDownItem } | null {
+function formatPercentage(data: Row) {
+  const score = numberValue(data.score);
+  const maxScore = numberValue(data.maxScore);
+  return score === null || maxScore === null || maxScore <= 0 ? "" : `${Math.round((score / maxScore) * 100)}%`;
+}
+
+function field(label: string, value: unknown) {
+  const normalized = typeof value === "string" ? value.trim() : value === null || value === undefined ? "" : String(value);
+  return normalized ? { label, value: normalized } : null;
+}
+
+function fields(...items: Array<{ label: string; value: string } | null>) {
+  return items.filter((item): item is { label: string; value: string } => item !== null);
+}
+
+function yesNo(value: unknown) {
+  return value === true ? "نعم" : value === false ? "لا" : "";
+}
+
+function itemScoreText(value: unknown) {
+  if (!Array.isArray(value)) return "";
+  return value.map((item) => {
+    const score = row(item);
+    const result = formatScore(score) || readString(score, ["level", "valueText"]) || yesNo(score.passed);
+    const note = readString(score, ["note"]);
+    return [readString(score, ["itemTitle"]), result, note].filter(Boolean).join(" — ");
+  }).filter(Boolean).join("\n");
+}
+
+function learningLossSkills(value: unknown) {
+  if (!Array.isArray(value)) return "";
+  return value.map((item) => {
+    const skill = row(item);
+    return [readString(skill, ["title"]), readString(skill, ["domain", "severity", "description"])].filter(Boolean).join(" — ");
+  }).filter(Boolean).join("\n");
+}
+
+function remediationActions(value: unknown) {
+  if (!Array.isArray(value)) return "";
+  return value.map((item) => {
+    const action = row(item);
+    return [
+      readString(action, ["title"]),
+      readString(action, ["status"]),
+      formatDate(action.dueAt) ? `الاستحقاق: ${formatDate(action.dueAt)}` : "",
+      readString(action, ["description", "note"]),
+    ].filter(Boolean).join(" — ");
+  }).filter(Boolean).join("\n");
+}
+
+function drillDownItem(params: { collectionName: string; data: Row; personNames: Map<string, string> }): { key: StudentWorkModuleKey; item: StudentWorkDrillDownItem } | null {
   const { collectionName, data } = params;
-  if (collectionName === "studentAttendanceRecords") return {
-    key: "attendance",
-    item: { id: text(data.id), title: "سجل حضور", status: text(data.status), activityAt: activityAt(data, ["recordedAt", "updatedAt", "createdAt"]), details: details(numberValue(data.lateMinutes) ? `تأخر: ${numberValue(data.lateMinutes)} دقيقة` : "", numberValue(data.leftEarlyMinutes) ? `انصراف مبكر: ${numberValue(data.leftEarlyMinutes)} دقيقة` : "", readString(data, ["excuseReason", "note"])) },
-  };
-  if (collectionName === "studentAssessmentRecords" || collectionName === "studentTrackerEntries") return {
-    key: "measurements",
-    item: { id: text(data.id), title: recordTitle(data, collectionName === "studentAssessmentRecords" ? "قياس" : "متابعة"), status: text(data.status), activityAt: measurementActivity(data, collectionName), details: details(readString(data, ["subjectKey"]), formatScore(data), readString(data, ["level", "valueText", "notes"])) },
-  };
-  if (collectionName === "studentLearningLossPlans") return {
-    key: "learningLoss",
-    item: { id: text(data.id), title: recordTitle(data, "خطة فاقد تعليمي"), status: text(data.status), activityAt: activityAt(data, ["updatedAt", "createdAt", "planStartAt"]), details: details(readString(data, ["subjectKey"]), numberValue(data.improvementPercentage) === null ? "" : `التحسن: ${numberValue(data.improvementPercentage)}%`, Array.isArray(data.lostSkills) ? `مهارات: ${data.lostSkills.map((skill) => readString(row(skill), ["title", "name", "skillTitle"]) || text(skill)).filter(Boolean).join("، ")}` : "") },
-  };
-  if (collectionName === "studentHomeworkSubmissions") return {
-    key: "homework",
-    item: { id: text(data.id), title: recordTitle(data, "واجب"), status: text(data.status), activityAt: activityAt(data, ["gradedAt", "submittedAt", "updatedAt", "createdAt"]), details: details(readString(data, ["subjectKey"]), formatScore(data), data.isLate === true ? "تسليم متأخر" : "", readString(data, ["feedback"])) },
-  };
-  if (collectionName === "studentGamificationEvents") return {
-    key: "gamification",
-    item: { id: text(data.id), title: recordTitle(data, "حدث تحفيزي"), status: text(data.status), activityAt: activityAt(data, ["occurredAt", "updatedAt", "createdAt"]), details: details(readString(data, ["subjectKey", "badgeTitle"]), `النقاط: ${numberValue(data.value) ?? 0}`, readString(data, ["description", "note"])) },
-  };
-  if (collectionName === "studentNotes") return {
-    key: "notes",
-    item: { id: text(data.id), title: recordTitle(data, "ملاحظة"), status: readString(data, ["followUpStatus", "status"]) || "RECORDED", activityAt: activityAt(data, ["recordedAt", "updatedAt", "createdAt"]), details: details(readString(data, ["category", "priority"]), readString(data, ["body", "followUpNote"])) },
-  };
+  if (collectionName === "studentAttendanceRecords") {
+    const at = activityAt(data, ["recordedAt", "updatedAt", "createdAt"]);
+    return { key: "attendance", item: {
+      id: text(data.id), title: "سجل حضور", status: text(data.status), activityAt: at,
+      summary: [readString(data, ["source"]), formatDate(at)].filter(Boolean),
+      details: fields(field("التاريخ", formatDate(at)), field("الحالة", text(data.status)), field("المصدر", readString(data, ["source"])), field("دقائق التأخر", numberValue(data.lateMinutes)), field("دقائق الانصراف المبكر", numberValue(data.leftEarlyMinutes)), field("العذر", readString(data, ["excuseReason"])), field("ملاحظة", readString(data, ["note"]))),
+    }};
+  }
+  if (collectionName === "studentAssessmentRecords" || collectionName === "studentTrackerEntries") {
+    const at = measurementActivity(data, collectionName);
+    const tracker = collectionName === "studentTrackerEntries";
+    const testerName =
+      params.personNames.get(measurementTesterPersonId(data)) || "غير محدد";
+    return { key: "measurements", item: {
+      id: text(data.id), title: recordTitle(data, tracker ? "متابعة" : "قياس"), status: text(data.status), activityAt: at,
+      summary: [subjectLabel(data), formatScore(data) || "غير متاح", measurementKindLabel(data, tracker), formatArabicDate(at)],
+      details: fields(field("المعلم المختبر", testerName), field("المادة", subjectLabel(data)), field("التاريخ", formatArabicDate(at)), field("النتيجة", formatScore(data) || "غير متاح"), field("نوع القياس", measurementKindLabel(data, tracker)), field("النسبة", formatPercentage(data)), field("المستوى", readString(data, ["level"])), field("القيمة", readString(data, ["valueText"])), field("مكتمل", yesNo(data.completed)), field("مجتاز", yesNo(data.passed)), field("يتطلب متابعة فاقد", yesNo(data.needsLearningLossFollowUp)), field("سبب المتابعة", readString(data, ["learningLossTriggerReason"])), field("تفاصيل البنود", itemScoreText(data.itemScores)), field("ملاحظات", readString(data, ["notes"]))),
+    }};
+  }
+  if (collectionName === "studentLearningLossPlans") {
+    const at = activityAt(data, ["updatedAt", "createdAt", "planStartAt"]);
+    return { key: "learningLoss", item: {
+      id: text(data.id), title: recordTitle(data, "خطة فاقد تعليمي"), status: text(data.status), activityAt: at,
+      summary: [readString(data, ["subjectKey"]), numberValue(data.improvementPercentage) === null ? "" : `${numberValue(data.improvementPercentage)}%`, formatDate(at)].filter(Boolean),
+      details: fields(field("المادة", readString(data, ["subjectKey"])), field("بداية الخطة", formatDate(data.planStartAt)), field("نهاية الخطة", formatDate(data.planEndAt)), field("نص الخطة", readString(data, ["planText"])), field("المهارات المفقودة", learningLossSkills(data.lostSkills)), field("إجراءات المعالجة", remediationActions(data.remediationActions)), field("القياس الأساسي", [numberValue(data.baselineScore), numberValue(data.baselineMaxScore)].every((value) => value === null) ? "" : `${numberValue(data.baselineScore) ?? ""}/${numberValue(data.baselineMaxScore) ?? ""}`), field("تاريخ القياس الأساسي", formatDate(data.baselineMeasuredAt)), field("القياس الأول", [numberValue(data.firstCheckScore), numberValue(data.firstCheckMaxScore)].every((value) => value === null) ? "" : `${numberValue(data.firstCheckScore) ?? ""}/${numberValue(data.firstCheckMaxScore) ?? ""}`), field("ملاحظة القياس الأول", readString(data, ["firstCheckNote"])), field("القياس الثاني", [numberValue(data.secondCheckScore), numberValue(data.secondCheckMaxScore)].every((value) => value === null) ? "" : `${numberValue(data.secondCheckScore) ?? ""}/${numberValue(data.secondCheckMaxScore) ?? ""}`), field("ملاحظة القياس الثاني", readString(data, ["secondCheckNote"])), field("مؤشر التحسن", readString(data, ["improvementIndicator"])), field("نسبة التحسن", numberValue(data.improvementPercentage) === null ? "" : `${numberValue(data.improvementPercentage)}%`), field("فرق التحسن", numberValue(data.improvementDelta)), field("ملاحظة", readString(data, ["note"])), field("ملاحظة الإغلاق", readString(data, ["closeNote"]))),
+    }};
+  }
+  if (collectionName === "studentHomeworkSubmissions") {
+    const at = activityAt(data, ["gradedAt", "submittedAt", "updatedAt", "createdAt"]);
+    return { key: "homework", item: {
+      id: text(data.id), title: recordTitle(data, "واجب"), status: text(data.status), activityAt: at,
+      summary: [readString(data, ["subjectKey"]), formatScore(data), data.isLate === true ? "متأخر" : "", formatDate(at)].filter(Boolean),
+      details: fields(field("المادة", readString(data, ["subjectKey"])), field("تاريخ الاستحقاق", formatDate(data.homeworkDueAt)), field("تاريخ البدء", formatDate(data.startedAt)), field("تاريخ التسليم", formatDate(data.submittedAt)), field("تاريخ التصحيح", formatDate(data.gradedAt)), field("الحالة", text(data.status)), field("النتيجة", formatScore(data)), field("النسبة", formatPercentage(data)), field("تسليم متأخر", yesNo(data.isLate)), field("ملاحظات المصحح", readString(data, ["feedback"])), field("ملاحظة", readString(data, ["note"]))),
+    }};
+  }
+  if (collectionName === "studentGamificationEvents") {
+    const at = activityAt(data, ["occurredAt", "updatedAt", "createdAt"]);
+    return { key: "gamification", item: {
+      id: text(data.id), title: recordTitle(data, "حدث تحفيزي"), status: text(data.status), activityAt: at,
+      summary: [readString(data, ["subjectKey"]), `النقاط: ${numberValue(data.value) ?? 0}`, readString(data, ["badgeTitle"]), formatDate(at)].filter(Boolean),
+      details: fields(field("المادة", readString(data, ["subjectKey"])), field("السبب", readString(data, ["reasonTitle"])), field("الفئة", readString(data, ["categoryTitle", "category"])), field("القيمة", numberValue(data.value)), field("نوع القيمة", readString(data, ["valueKind"])), field("الشارة", readString(data, ["badgeTitle"])), field("الظهور", readString(data, ["visibility"])), field("التاريخ", formatDate(at)), field("الوصف", readString(data, ["description"])), field("ملاحظة", readString(data, ["note"]))),
+    }};
+  }
+  if (collectionName === "studentNotes") {
+    const at = activityAt(data, ["recordedAt", "updatedAt", "createdAt"]);
+    return { key: "notes", item: {
+      id: text(data.id), title: recordTitle(data, "ملاحظة"), status: readString(data, ["followUpStatus", "status"]) || "RECORDED", activityAt: at,
+      summary: [readString(data, ["category", "priority"]), formatDate(at)].filter(Boolean),
+      details: fields(field("النص", readString(data, ["body"])), field("الفئة", readString(data, ["category"])), field("الأولوية", readString(data, ["priority"])), field("سجلها", params.personNames.get(readString(data, ["recordedByPersonId"])) || ""), field("الحالة", readString(data, ["status"])), field("الظهور", readString(data, ["visibility"])), field("حالة المتابعة", readString(data, ["followUpStatus"])), field("تاريخ المتابعة", formatDate(data.followUpAt)), field("ملاحظة المتابعة", readString(data, ["followUpNote"])), field("تاريخ التسجيل", formatDate(data.recordedAt)), field("تاريخ الإنشاء", formatDate(data.createdAt))),
+    }};
+  }
   return null;
 }
 
-function buildSummary(params: { context: EnrollmentContext; displayName: string; actor: StudentWorkActor; rowsByCollection: Map<(typeof STUDENT_WORK_COLLECTIONS)[number], Row[]>; period: StudentWorkPeriod }): StudentWorkSummary {
+function buildSummary(params: { context: EnrollmentContext; displayName: string; rowsByCollection: Map<(typeof STUDENT_WORK_COLLECTIONS)[number], Row[]>; period: StudentWorkPeriod }): StudentWorkSummary {
   const metrics = emptyMetrics();
   const startAt = periodStart(params.period);
   for (const collectionName of STUDENT_WORK_COLLECTIONS) {
     for (const data of params.rowsByCollection.get(collectionName) ?? []) {
-      if (!canReadRow({ actor: params.actor, context: params.context, data })) continue;
+      if (!canReadRow({ context: params.context, data })) continue;
       if (collectionName === "studentAttendanceRecords") {
         const at = activityAt(data, ["recordedAt", "updatedAt", "createdAt"]);
         if (isAbsence(data) && inPeriod(at, startAt)) addMetric(metrics.attendance, at);
@@ -535,13 +626,13 @@ function emptyDrillDowns(): StudentWorkDrillDowns {
   return { attendance: [], measurements: [], learningLoss: [], homework: [], gamification: [], notes: [] };
 }
 
-function buildDrillDowns(params: { context: EnrollmentContext; actor: StudentWorkActor; rowsByCollection: Map<(typeof STUDENT_WORK_COLLECTIONS)[number], Row[]>; period: StudentWorkPeriod }) {
+function buildDrillDowns(params: { context: EnrollmentContext; rowsByCollection: Map<(typeof STUDENT_WORK_COLLECTIONS)[number], Row[]>; personNames: Map<string, string>; period: StudentWorkPeriod }) {
   const startAt = periodStart(params.period);
   const drillDowns = emptyDrillDowns();
   for (const collectionName of STUDENT_WORK_COLLECTIONS) {
     for (const data of params.rowsByCollection.get(collectionName) ?? []) {
-      if (!canReadRow({ actor: params.actor, context: params.context, data })) continue;
-      const item = drillDownItem({ collectionName, data });
+      if (!canReadRow({ context: params.context, data })) continue;
+      const item = drillDownItem({ collectionName, data, personNames: params.personNames });
       if (!item || !inPeriod(item.item.activityAt, startAt)) continue;
       drillDowns[item.key].push(item.item);
     }
@@ -571,7 +662,7 @@ export const getStudentWorkOverview = onCall(
     const period = getPeriod(input.period);
     const work = await loadStudentWork({ uid, orgId, period });
     const students = work.contexts
-      .map((context) => buildSummary({ context, displayName: work.displayNames.get(context.studentId) || context.studentId, actor: work.actor, rowsByCollection: work.rowsByCollection, period }))
+      .map((context) => buildSummary({ context, displayName: work.displayNames.get(context.studentId) || context.studentId, rowsByCollection: work.rowsByCollection, period }))
       .sort((left, right) => left.displayName.localeCompare(right.displayName, "ar"));
     return { orgId, period, students };
   },
@@ -593,11 +684,23 @@ export const getStudentWorkDetail = onCall(
       item.studentId === studentId && item.schoolId === schoolId && item.academicYearId === academicYearId && item.classId === classId,
     );
     if (!context) throw new HttpsError("not-found", "Student is not enrolled in an authorized active class.");
+    const personIds = Array.from(new Set([
+      ...(work.rowsByCollection.get("studentNotes") ?? [])
+        .filter((data) => canReadRow({ context, data }))
+        .map((data) => readString(data, ["recordedByPersonId"])),
+      ...(work.rowsByCollection.get("studentAssessmentRecords") ?? [])
+        .filter((data) => canReadRow({ context, data }))
+        .map(measurementTesterPersonId),
+      ...(work.rowsByCollection.get("studentTrackerEntries") ?? [])
+        .filter((data) => canReadRow({ context, data }))
+        .map(measurementTesterPersonId),
+    ].filter(Boolean)));
+    const personNames = await loadPersonDisplayNames({ orgId, personIds });
     return {
       orgId,
       period,
-      student: buildSummary({ context, displayName: work.displayNames.get(studentId) || studentId, actor: work.actor, rowsByCollection: work.rowsByCollection, period }),
-      drillDowns: buildDrillDowns({ context, actor: work.actor, rowsByCollection: work.rowsByCollection, period }),
+      student: buildSummary({ context, displayName: work.displayNames.get(studentId) || studentId, rowsByCollection: work.rowsByCollection, period }),
+      drillDowns: buildDrillDowns({ context, rowsByCollection: work.rowsByCollection, personNames, period }),
     };
   },
 );

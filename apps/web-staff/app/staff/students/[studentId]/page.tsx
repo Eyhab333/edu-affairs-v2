@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, BookOpen, CalendarDays, Loader2 } from "lucide-react";
+import { ArrowRight, BookOpen, CalendarDays, ChevronDown, Loader2 } from "lucide-react";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { Button } from "@/components/ui/button";
@@ -60,7 +60,36 @@ function moduleCount(params: { key: StudentWorkModuleKey; student: StudentWorkSu
 
 function ModuleDrillDown({ items }: { items: StudentWorkDrillDownItem[] }) {
   if (!items.length) return <div className="rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">لا توجد سجلات ضمن الفترة المحددة.</div>;
-  return <div className="space-y-3">{items.map((item) => <article key={item.id} className="rounded-2xl border bg-card p-4 shadow-sm"><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="font-bold text-foreground">{item.title}</h3><span className="rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">{statusLabel(item.status)}</span></div>{item.details.length ? <div className="mt-3 space-y-1 text-sm leading-6 text-muted-foreground">{item.details.map((detail, index) => <p key={`${item.id}:${index}`} className="whitespace-pre-wrap">{detail}</p>)}</div> : null}</div><p className="shrink-0 text-xs text-muted-foreground">{formatDate(item.activityAt)}</p></div></article>)}</div>;
+  return <AccordionRecords items={items} />;
+}
+
+function AccordionRecords({ items }: { items: StudentWorkDrillDownItem[] }) {
+  const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
+
+  useEffect(() => {
+    setOpenIds(new Set());
+  }, [items]);
+
+  const toggle = (id: string) => {
+    setOpenIds((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  return <div className="space-y-3">{items.map((item) => {
+    const isOpen = openIds.has(item.id);
+    return <article key={item.id} className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+      <button type="button" onClick={() => toggle(item.id)} aria-expanded={isOpen} className="flex w-full items-start gap-3 p-4 text-right transition hover:bg-muted/40">
+        <ChevronDown className={`mt-0.5 size-4 shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><h3 className="font-bold text-foreground">{item.title}</h3><span className="rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">{statusLabel(item.status)}</span></div>{item.summary.length ? <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{item.summary.join(" • ")}</p> : null}</div>
+        <p className="shrink-0 text-xs text-muted-foreground">{formatDate(item.activityAt)}</p>
+      </button>
+      {isOpen ? <div className="border-t bg-muted/20 p-4"><div className="grid gap-3 text-sm sm:grid-cols-2">{item.details.map((detail) => <div key={`${item.id}:${detail.label}`} className="rounded-xl border bg-card p-3"><p className="text-xs font-semibold text-muted-foreground">{detail.label}</p><p className="mt-2 whitespace-pre-wrap leading-6 text-foreground">{detail.value}</p></div>)}</div></div> : null}
+    </article>;
+  })}</div>;
 }
 
 export default function StaffStudentProfilePage() {
@@ -110,7 +139,7 @@ export default function StaffStudentProfilePage() {
       {error ? <section className="rounded-2xl border border-destructive/30 bg-card p-4 text-sm text-destructive"><p>{error}</p><Button variant="outline" size="sm" className="mt-3" onClick={() => void load()}>إعادة المحاولة</Button></section> : null}
       {loading ? <div className="rounded-2xl border bg-card p-8 text-center text-sm text-muted-foreground"><Loader2 className="ml-2 inline size-4 animate-spin" />جارٍ تحميل ملف الطالب…</div> : null}
       {!loading && !error && (!hasContext || !student) ? <div className="rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">الطالب غير ظاهر ضمن فصل نشط ومصرح لك.</div> : null}
-      {!loading && student ? <section className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]"><aside className="rounded-2xl border bg-card p-3 shadow-sm lg:sticky lg:top-6 lg:h-fit"><p className="px-3 pb-2 pt-1 text-xs font-semibold text-muted-foreground">سجل الطالب</p><nav className="hidden space-y-1 lg:block">{studentWorkModuleOrder.map((key) => <button key={key} type="button" onClick={() => setSelectedModule(key)} className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-right text-sm transition ${selectedModule === key ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"}`}><span>{studentWorkModuleLabels[key]}</span><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${selectedModule === key ? "bg-primary-foreground/15 text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{moduleCount({ key, student, drillDowns }).toLocaleString("ar-SA")}</span></button>)}</nav><div className="flex gap-2 overflow-x-auto pb-1 lg:hidden">{studentWorkModuleOrder.map((key) => <button key={key} type="button" onClick={() => setSelectedModule(key)} className={`shrink-0 rounded-xl px-3 py-2 text-sm transition ${selectedModule === key ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>{studentWorkModuleLabels[key]} <span className="mr-1 text-xs opacity-80">{moduleCount({ key, student, drillDowns }).toLocaleString("ar-SA")}</span></button>)}</div></aside><div className="min-w-0"><div className="mb-4 flex items-center gap-2"><BookOpen className="size-5 text-primary" /><h2 className="text-lg font-bold text-foreground">{studentWorkModuleLabels[selectedModule]}</h2></div><ModuleDrillDown items={drillDowns[selectedModule]} /></div></section> : null}
+      {!loading && student ? <section className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]"><aside className="rounded-2xl border bg-card p-3 shadow-sm lg:sticky lg:top-6 lg:h-fit"><p className="px-3 pb-2 pt-1 text-xs font-semibold text-muted-foreground">سجل الطالب</p><nav className="hidden space-y-1 lg:block">{studentWorkModuleOrder.map((key) => <button key={key} type="button" onClick={() => setSelectedModule(key)} className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-right text-sm transition ${selectedModule === key ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"}`}><span>{studentWorkModuleLabels[key]}</span><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${selectedModule === key ? "bg-primary-foreground/15 text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{moduleCount({ key, student, drillDowns }).toLocaleString("ar-SA")}</span></button>)}</nav><div className="flex gap-2 overflow-x-auto pb-1 lg:hidden">{studentWorkModuleOrder.map((key) => <button key={key} type="button" onClick={() => setSelectedModule(key)} className={`shrink-0 rounded-xl px-3 py-2 text-sm transition ${selectedModule === key ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>{studentWorkModuleLabels[key]} <span className="mr-1 text-xs opacity-80">{moduleCount({ key, student, drillDowns }).toLocaleString("ar-SA")}</span></button>)}</div></aside><div className="min-w-0"><div className="mb-4 flex items-center gap-2"><BookOpen className="size-5 text-primary" /><h2 className="text-lg font-bold text-foreground">{studentWorkModuleLabels[selectedModule]}</h2></div><ModuleDrillDown key={selectedModule} items={drillDowns[selectedModule]} /></div></section> : null}
       <p className="flex items-center gap-2 text-xs text-muted-foreground"><CalendarDays className="size-3.5" />العرض للقراءة فقط ولا يتضمن أي إجراءات تعديل.</p>
     </main>
   );

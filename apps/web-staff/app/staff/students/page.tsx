@@ -57,6 +57,7 @@ export default function StaffStudentsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [selectedSchoolId, setSelectedSchoolId] = useState("ALL");
   const [selectedClassKey, setSelectedClassKey] = useState("ALL");
 
   const load = useCallback(async () => {
@@ -68,21 +69,41 @@ export default function StaffStudentsPage() {
   useEffect(() => { void load(); }, [load]);
 
   const classByKey = useMemo(() => new Map(staffActor.visibleClasses.map((item) => [classKey({ schoolId: item.schoolId ?? "", academicYearId: item.academicYearId ?? "", classId: item.id }), item])), [staffActor.visibleClasses]);
-  const classes = useMemo(() => [...classByKey.entries()].sort(([, left], [, right]) => (left.schoolName || left.schoolId || "").localeCompare(right.schoolName || right.schoolId || "", "ar") || (left.title || left.code || left.id).localeCompare(right.title || right.code || right.id, "ar")), [classByKey]);
+  const classes = useMemo(() => {
+    const studentClassKeys = new Set(students.map((student) => classKey(student)));
+    return [...classByKey.entries()]
+      .filter(([key]) => studentClassKeys.has(key))
+      .sort(([, left], [, right]) => (left.schoolName || left.schoolId || "").localeCompare(right.schoolName || right.schoolId || "", "ar") || (left.title || left.code || left.id).localeCompare(right.title || right.code || right.id, "ar"));
+  }, [classByKey, students]);
+  const schools = useMemo(() => {
+    const names = new Map<string, string>();
+    for (const student of students) {
+      const classInfo = classByKey.get(classKey(student));
+      names.set(student.schoolId, classInfo?.schoolName || student.schoolId);
+    }
+    return [...names.entries()].sort(([, left], [, right]) => left.localeCompare(right, "ar"));
+  }, [classByKey, students]);
+  useEffect(() => {
+    if (selectedSchoolId === "ALL" || selectedClassKey === "ALL") return;
+    if (classByKey.get(selectedClassKey)?.schoolId !== selectedSchoolId) {
+      setSelectedClassKey("ALL");
+    }
+  }, [classByKey, selectedClassKey, selectedSchoolId]);
   const filteredStudents = useMemo(() => {
     const query = search.trim().toLocaleLowerCase("ar");
     return students.filter((student) => {
       const key = classKey(student); const info = classByKey.get(key);
       const haystack = [student.displayName, student.studentId, info?.title, info?.schoolName, info?.gradeTitle].filter(Boolean).join(" ").toLocaleLowerCase("ar");
-      return (selectedClassKey === "ALL" || selectedClassKey === key) && (!query || haystack.includes(query));
+      return (selectedSchoolId === "ALL" || student.schoolId === selectedSchoolId) && (selectedClassKey === "ALL" || selectedClassKey === key) && (!query || haystack.includes(query));
     });
-  }, [classByKey, search, selectedClassKey, students]);
+  }, [classByKey, search, selectedClassKey, selectedSchoolId, students]);
 
   return (
     <main className="mx-auto max-w-7xl space-y-6 p-4 sm:p-6" dir="rtl">
       <section className="flex items-start gap-3"><div className="rounded-xl bg-primary/10 p-2.5 text-primary"><UsersRound className="size-5" /></div><div><h1 className="text-2xl font-bold tracking-tight">طلابي</h1><p className="mt-1 text-sm text-muted-foreground"> </p></div></section>
       <section className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <select value={selectedClassKey} onChange={(event) => setSelectedClassKey(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm sm:w-64"><option value="ALL">كل الفصول</option>{classes.map(([key, item]) => <option key={key} value={key}>{item.title || item.code || item.id}{item.schoolName ? ` — ${item.schoolName}` : ""}</option>)}</select>
+        {schools.length > 1 ? <select value={selectedSchoolId} onChange={(event) => setSelectedSchoolId(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm sm:w-56"><option value="ALL">كل المدارس</option>{schools.map(([schoolId, schoolName]) => <option key={schoolId} value={schoolId}>{schoolName}</option>)}</select> : null}
+        <select value={selectedClassKey} onChange={(event) => setSelectedClassKey(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm sm:w-64"><option value="ALL">كل الفصول</option>{classes.filter(([, item]) => selectedSchoolId === "ALL" || item.schoolId === selectedSchoolId).map(([key, item]) => <option key={key} value={key}>{item.title || item.code || item.id}{item.schoolName ? ` — ${item.schoolName}` : ""}</option>)}</select>
         <label className="relative block min-w-0 flex-1 sm:max-w-md"><Search className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="ابحث باسم الطالب" className="h-10 w-full rounded-xl border bg-background pr-9 pl-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-ring" /></label>
       </section>
       {error ? <section className="rounded-2xl border border-destructive/30 bg-card p-4 text-sm text-destructive"><p>{error}</p><Button variant="outline" size="sm" className="mt-3" onClick={() => void load()}>إعادة المحاولة</Button></section> : null}

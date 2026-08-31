@@ -38,7 +38,11 @@ export type StudentWorkDrillDownItem = {
   title: string;
   status: string;
   activityAt: number | null;
-  details: string[];
+  summary: string[];
+  details: Array<{
+    label: string;
+    value: string;
+  }>;
 };
 
 export type StudentWorkDrillDowns = Record<

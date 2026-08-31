@@ -8,6 +8,7 @@ import type {
   TeacherAssignmentClassLink,
 } from "@takween/contracts";
 import { getVisibleClassesForActor } from "@takween/domain";
+import { getActorSupervisionSchoolIds } from "../access/get-actor-supervision-school-ids";
 
 const REGION = "me-central2";
 
@@ -154,7 +155,7 @@ async function getActorVisibleClasses(params: {
   const actorPersonId =
     membership.personId || readString(user, ["personId"]) || params.uid;
 
-  const [operationalAssignmentsSnapshot, teacherAssignmentsSnapshot, schoolsSnapshot] =
+  const [operationalAssignmentsSnapshot, teacherAssignmentsSnapshot, schoolsSnapshot, supervisionSchoolIds] =
     await Promise.all([
       db
         .collection(`orgs/${params.orgId}/operationalAssignments`)
@@ -165,6 +166,10 @@ async function getActorVisibleClasses(params: {
         .where("teacherPersonId", "==", actorPersonId)
         .get(),
       db.collection(`orgs/${params.orgId}/schools`).get(),
+      getActorSupervisionSchoolIds({
+        orgId: params.orgId,
+        personId: actorPersonId,
+      }),
     ]);
 
   const operationalAssignments = operationalAssignmentsSnapshot.docs.map(
@@ -218,6 +223,7 @@ async function getActorVisibleClasses(params: {
       operationalAssignments,
       teacherAssignments,
       teacherAssignmentClassLinks,
+      supervisionSchoolIds,
     },
     classes,
     teacherAssignmentClassLinks,

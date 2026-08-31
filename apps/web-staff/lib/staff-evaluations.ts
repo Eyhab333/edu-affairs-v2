@@ -402,7 +402,7 @@ export async function buildStaffEvaluationWorkspace(params: {
   }
 
   const resolvedTasks = await Promise.all(
-    assignments.map(async (assignment) => {
+    assignments.map(async (assignment): Promise<StaffEvaluationTask | null> => {
       const planId = asString(assignment.planId);
       const cycleId = asString(assignment.cycleId);
       const targetPersonId = asString(assignment.targetPersonId);
