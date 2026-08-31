@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Target } from "lucide-react";
 import {
   collection,
   doc,
@@ -19,6 +20,10 @@ import type {
 
 import { db } from "@/lib/firebase";
 import { getClassRoster } from "@/lib/class-roster";
+import {
+  getFriendlyMeasurementLabel,
+  getFriendlySubjectLabel,
+} from "@/lib/measurement-presentation";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   getFriendlyClassTitle,
@@ -233,7 +238,7 @@ function getSubjectLabel(
               (identifier) =>
                 value.toLowerCase() === identifier!.toLowerCase(),
             ),
-      ) || null
+      ) || getFriendlySubjectLabel(subjectKey)
   );
 }
 function resolveActorPersonId(actor: StaffLearningLossActor) {
@@ -338,6 +343,25 @@ function getCandidateTitle(record: CandidateRecord) {
   );
 }
 
+function getCandidateDisplayTitle(record: CandidateRecord) {
+  if (record.sourceType === "ASSESSMENT_RECORD") {
+    return (
+      getFriendlyMeasurementLabel(record.assessmentSlot) ||
+      getFriendlyMeasurementLabel(record.kind) ||
+      "قياس طالب"
+    );
+  }
+
+  return (
+    getFriendlyMeasurementLabel(record.topicTitle) ||
+    record.topicTitle ||
+    getFriendlyMeasurementLabel(record.lessonTitle) ||
+    record.lessonTitle ||
+    getFriendlyMeasurementLabel(record.kind) ||
+    "متابعة طالب"
+  );
+}
+
 function getCandidateSourceId(record: CandidateRecord) {
   if (record.sourceType === "ASSESSMENT_RECORD") {
     return record.batchId || "";
@@ -415,7 +439,7 @@ function getStatusLabel(value?: string) {
     case "CANCELLED":
       return "ملغاة";
     default:
-      return value || "غير محدد";
+      return "غير محدد";
   }
 }
 
@@ -443,7 +467,7 @@ function getSourceLabel(value?: string) {
     case "MANUAL":
       return "فتح يدوي";
     default:
-      return value || "غير محدد";
+      return "غير محدد";
   }
 }
 
@@ -1023,37 +1047,11 @@ export default function StaffLearningLossPage() {
     [currentActor, router],
   );
 
-  const candidatesSummary = useMemo(() => {
-    const total = candidates.length;
-
-    return { total };
-  }, [candidates]);
-
-  const plansSummary = useMemo(() => {
-    const total = openPlans.length;
-
-    const needsFirstCheck = openPlans.filter(
-      (item) => typeof item.plan.firstCheckScore !== "number",
-    ).length;
-
-    const needsSecondCheck = openPlans.filter(
-      (item) =>
-        typeof item.plan.firstCheckScore === "number" &&
-        typeof item.plan.secondCheckScore !== "number",
-    ).length;
-
-    return {
-      total,
-      needsFirstCheck,
-      needsSecondCheck,
-    };
-  }, [openPlans]);
-
   const isLoading = candidatesStatus === "loading" || plansStatus === "loading";
 
   if (!currentActor) {
     return (
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 md:p-6">
+      <main dir="rtl" className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 md:p-6">
         <section className="rounded-2xl border bg-card p-6 text-card-foreground shadow-sm">
           <p className="text-sm text-muted-foreground">
             جاري تحميل بيانات المستخدم...
@@ -1064,10 +1062,13 @@ export default function StaffLearningLossPage() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 md:p-6">
+    <main dir="rtl" className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 md:p-6">
       <section className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="space-y-2">
+          <div className="flex items-start gap-3">
+            <div className="rounded-xl bg-primary/10 p-2.5 text-primary">
+              <Target className="size-5" />
+            </div>
             <h1 className="text-2xl font-bold tracking-tight">
               إدارة الفاقد التعليمي
             </h1>
@@ -1098,35 +1099,25 @@ export default function StaffLearningLossPage() {
       </section>
 
       {hasContextFilter(contextFilter) ? (
-        <section className="rounded-2xl border bg-card px-4 py-3 text-sm text-muted-foreground shadow-sm">
+        <section className="rounded-2xl border border-dashed bg-muted/20 px-4 py-3 text-sm text-muted-foreground shadow-sm">
           {contextSummary || "السياق المحدد"}
         </section>
       ) : null}
 
-      <section className="rounded-2xl border bg-card px-4 py-3 text-sm shadow-sm">
-        <p className="text-muted-foreground">
-          {candidatesSummary.total.toLocaleString("ar-SA")} مرشحًا ·{" "}
-          {plansSummary.total.toLocaleString("ar-SA")} خطط مفتوحة ·{" "}
-          {plansSummary.needsFirstCheck.toLocaleString("ar-SA")} تحتاج القياس
-          الأول · {plansSummary.needsSecondCheck.toLocaleString("ar-SA")} تحتاج
-          القياس الثاني
-        </p>
-      </section>
-
       {successMessage ? (
-        <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5 text-sm text-emerald-700 dark:text-emerald-300">
+        <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">
           {successMessage}
         </section>
       ) : null}
 
       {error ? (
-        <section className="rounded-2xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive">
+        <section className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
           {error}
         </section>
       ) : null}
 
       <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
-        <div className="border-b p-5">
+        <div className="border-b bg-muted/20 p-5">
           <h2 className="text-lg font-semibold">خطط الفاقد المفتوحة</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             الخطط التي تحتاج متابعة أو قياسًا لاحقًا.
@@ -1134,17 +1125,17 @@ export default function StaffLearningLossPage() {
         </div>
 
         {plansStatus === "loading" ? (
-          <div className="p-6 text-sm text-muted-foreground">
+          <div className="p-8 text-center text-sm text-muted-foreground">
             جاري تحميل الخطط المفتوحة...
           </div>
         ) : openPlans.length === 0 ? (
-          <div className="p-6 text-sm text-muted-foreground">
+          <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
             لا توجد خطط فاقد مفتوحة ضمن السياق الحالي.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[960px] text-right text-sm">
-              <thead className="bg-muted/50 text-muted-foreground">
+              <thead className="bg-muted/40 text-muted-foreground">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
                     الطالب
@@ -1183,7 +1174,7 @@ export default function StaffLearningLossPage() {
                     typeof plan.secondCheckScore !== "number";
 
                   return (
-                    <tr key={plan.id} className="border-t">
+                    <tr key={plan.id} className="border-t transition-colors hover:bg-muted/30">
                       <td className="whitespace-nowrap px-4 py-3 font-medium">
                         {item.student.displayName}
                       </td>
@@ -1226,7 +1217,7 @@ export default function StaffLearningLossPage() {
                           onClick={() =>
                             router.push(`/staff/learning-loss/plans/${plan.id}`)
                           }
-                          className="inline-flex h-9 items-center justify-center rounded-xl border px-3 text-xs font-medium transition hover:bg-muted"
+                          className="inline-flex h-9 items-center justify-center rounded-xl border bg-background px-3 text-xs font-medium transition hover:bg-muted"
                         >
                           فتح الخطة
                         </button>
@@ -1241,7 +1232,7 @@ export default function StaffLearningLossPage() {
       </section>
 
       <section className="overflow-x-auto rounded-2xl border bg-card shadow-sm">
-        <div className="border-b p-5">
+        <div className="border-b bg-muted/20 p-5">
           <h2 className="text-lg font-semibold">الطلاب المرشحون لخطة فاقد</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             طلاب ظهرت لديهم حاجة إلى خطة علاجية بناءً على نتائج القياس أو
@@ -1250,17 +1241,17 @@ export default function StaffLearningLossPage() {
         </div>
 
         {candidatesStatus === "loading" ? (
-          <div className="p-6 text-sm text-muted-foreground">
+          <div className="p-8 text-center text-sm text-muted-foreground">
             جاري تحميل المرشحين...
           </div>
         ) : candidates.length === 0 ? (
-          <div className="p-6 text-sm text-muted-foreground">
+          <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
             لا توجد سجلات تحتاج فتح خطة فاقد ضمن السياق الحالي.
           </div>
         ) : (
           <div className="w-full overflow-x-auto">
             <table className="w-full min-w-[1280px] text-right text-sm">
-              <thead className="bg-muted/50 text-muted-foreground">
+              <thead className="bg-muted/40 text-muted-foreground">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
                     الطالب
@@ -1303,7 +1294,7 @@ export default function StaffLearningLossPage() {
                   return (
                     <tr
                       key={`${record.sourceType}:${record.id}`}
-                      className="border-t"
+                      className="border-t transition-colors hover:bg-muted/30"
                     >
                       <td className="whitespace-nowrap px-4 py-3 font-medium">
                         {item.student.displayName}
@@ -1326,7 +1317,7 @@ export default function StaffLearningLossPage() {
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {getCandidateTitle(record)}
+                        {getCandidateDisplayTitle(record)}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1351,7 +1342,7 @@ export default function StaffLearningLossPage() {
                           type="button"
                           onClick={() => void createLearningLossPlan(item)}
                           disabled={creatingPlanRecordId !== null}
-                          className="inline-flex h-9 items-center justify-center rounded-xl bg-primary px-3 text-xs font-medium text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+                          className="inline-flex h-9 items-center justify-center rounded-xl bg-primary px-3 text-xs font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
                         >
                           {isCreating ? "جاري الفتح..." : "فتح خطة فاقد"}
                         </button>

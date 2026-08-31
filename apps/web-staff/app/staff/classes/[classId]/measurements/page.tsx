@@ -6,22 +6,13 @@ import { useParams, useSearchParams } from "next/navigation";
 import {
   AlertTriangle,
   ArrowRight,
-  BarChart3,
   BookOpen,
-  CalendarDays,
-  CheckCircle2,
-  ChevronLeft,
-  ClipboardList,
   FileText,
-  GraduationCap,
-  Layers3,
   Plus,
   RefreshCw,
-  School,
   Target,
   UsersRound,
 } from "lucide-react";
-import type { ComponentType } from "react";
 import {
   collection,
   getDocs,
@@ -31,6 +22,7 @@ import {
 import type { StudentMeasurementBatch } from "@takween/contracts";
 
 import { db } from "@/lib/firebase";
+import { getFriendlyMeasurementLabel } from "@/lib/measurement-presentation";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 type StaffVisibleClass = {
@@ -67,15 +59,6 @@ type MeasurementBatchDoc = StudentMeasurementBatch & {
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-type MeasurementActionCard = {
-  title: string;
-  description: string;
-  status: "ACTIVE" | "READY_SOON" | "FUTURE";
-  icon: ComponentType<{ className?: string }>;
-  href?: string;
-  actionLabel?: string;
-};
-
 function getParamValue(value: string | string[] | undefined) {
   if (Array.isArray(value)) return value[0] ?? "";
   return value ?? "";
@@ -88,16 +71,7 @@ function getErrorMessage(error: unknown) {
 }
 
 function getClassTitle(item: StaffVisibleClass) {
-  return item.title || item.code || item.id;
-}
-
-function getStudentCount(item: StaffVisibleClass) {
-  return (
-    item.studentCount ??
-    item.studentsCount ??
-    item.enrolledStudentCount ??
-    null
-  );
+  return item.title || item.code || "فصل دراسي";
 }
 
 function matchesRequestedClass(
@@ -189,7 +163,7 @@ function getBatchKindLabel(value?: string) {
     case "CUSTOM":
       return "مخصص";
     default:
-      return value || "غير محدد";
+      return "قياس أو متابعة";
   }
 }
 
@@ -208,7 +182,7 @@ function getBatchStatusLabel(value?: string) {
     case "CANCELLED":
       return "ملغاة";
     default:
-      return value || "غير محدد";
+      return "غير محدد";
   }
 }
 
@@ -251,54 +225,6 @@ function isSameClassContext(batch: MeasurementBatchDoc, classInfo: StaffVisibleC
   return true;
 }
 
-function buildMeasurementActionCards(
-  classInfo: StaffVisibleClass,
-): MeasurementActionCard[] {
-  return [
-    {
-      title: "إدخال قياس / متابعة",
-      description:
-        "بدء دفعة جديدة لطلاب الفصل، ثم حفظها كمسودة أو إرسالها لإنشاء السجلات الفردية.",
-      status: "ACTIVE",
-      icon: Plus,
-      href: buildBatchNewHref(classInfo),
-      actionLabel: "بدء دفعة",
-    },
-    {
-      title: "دفعات القياس",
-      description:
-        "عرض المسودات والدفعات المرسلة، وفتح أي دفعة للعرض أو التعديل إذا كانت ما زالت مسودة.",
-      status: "ACTIVE",
-      icon: FileText,
-      actionLabel: "مفعّل",
-    },
-    {
-      title: "الدفعات التعويضية",
-      description:
-        "الدفعات التعويضية للغائبين والمعذورين تظهر هنا ضمن دفعات الفصل، وتُفتح من صفحة الدفعة الأصلية.",
-      status: "ACTIVE",
-      icon: ClipboardList,
-      actionLabel: "مفعّل",
-    },
-    {
-      title: "الفاقد التعليمي",
-      description:
-        "فتح صفحة الفاقد لعرض الخطط المفتوحة والطلاب المرشحين ضمن هذا الفصل.",
-      status: "ACTIVE",
-      icon: Target,
-      href: buildLearningLossHref(classInfo),
-      actionLabel: "إدارة الفاقد",
-    },
-    {
-      title: "ملخص الأداء",
-      description:
-        "لاحقًا سنعرض ملخصًا تحليليًا للدرجات ونسب الإكمال ومؤشرات الفاقد على مستوى الفصل.",
-      status: "FUTURE",
-      icon: BarChart3,
-    },
-  ];
-}
-
 export default function StaffClassMeasurementsPage() {
   const params = useParams();
   const searchParams = useSearchParams();
@@ -329,10 +255,6 @@ export default function StaffClassMeasurementsPage() {
   }, [classes, classId, schoolId, academicYearId]);
 
   const resolvedOrgId = classInfo?.orgId || staffActor?.orgId || "";
-
-  const measurementActions = useMemo(() => {
-    return classInfo ? buildMeasurementActionCards(classInfo) : [];
-  }, [classInfo]);
 
   const loadBatches = useCallback(async () => {
     if (!resolvedOrgId || !classInfo) return;
@@ -383,47 +305,15 @@ export default function StaffClassMeasurementsPage() {
     void loadBatches();
   }, [loadBatches]);
 
-  const batchesSummary = useMemo(() => {
-    const total = batches.length;
-    const drafts = batches.filter(
-      (item) => item.status === "DRAFT" || item.status === "IN_PROGRESS",
-    ).length;
-    const submitted = batches.filter(
-      (item) => item.status === "SUBMITTED" || item.status === "REVIEWED",
-    ).length;
-    const compensation = batches.filter(
-      (item) => item.isCompensationBatch === true,
-    ).length;
-
-    const totalTargets = batches.reduce((sum, item) => {
-      return sum + (typeof item.targetCount === "number" ? item.targetCount : 0);
-    }, 0);
-
-    const completedTargets = batches.reduce((sum, item) => {
-      return (
-        sum + (typeof item.completedCount === "number" ? item.completedCount : 0)
-      );
-    }, 0);
-
-    return {
-      total,
-      drafts,
-      submitted,
-      compensation,
-      totalTargets,
-      completedTargets,
-    };
-  }, [batches]);
-
   if (!staffActor) {
     return (
       <main
         dir="rtl"
-        className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6"
+        className="min-h-screen bg-background p-4 text-foreground sm:p-6"
       >
         <section className="mx-auto max-w-7xl">
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+          <div className="rounded-2xl border bg-card p-6 text-card-foreground shadow-sm">
+            <p className="text-sm text-muted-foreground">
               جاري تحميل بيانات المستخدم...
             </p>
           </div>
@@ -436,52 +326,43 @@ export default function StaffClassMeasurementsPage() {
     return (
       <main
         dir="rtl"
-        className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6"
+        className="min-h-screen bg-background p-4 text-foreground sm:p-6"
       >
         <section className="mx-auto flex max-w-7xl flex-col gap-6">
           <Link
             href="/staff/classes"
-            className="inline-flex w-fit items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex w-fit items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted"
           >
             <ArrowRight className="h-4 w-4" />
             الرجوع إلى فصولي
           </Link>
 
-          <div className="rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center shadow-sm dark:border-amber-900/60 dark:bg-amber-950/30">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-8 text-center shadow-sm">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-700 dark:text-amber-300">
               <AlertTriangle className="h-6 w-6" />
             </div>
 
             <h1 className="mt-4 text-xl font-bold">الفصل غير موجود</h1>
 
             <p className="mx-auto mt-2 max-w-2xl text-sm leading-7 text-amber-900 dark:text-amber-100">
-              لم يتم العثور على هذا الفصل داخل{" "}
-              <span className="font-mono">actor.visibleClasses</span>. تأكد من
-              أن الرابط يحتوي على المدرسة والسنة الصحيحة.
+              تعذر العثور على الفصل ضمن الفصول المتاحة لك. تحقق من المدرسة والسنة الدراسية ثم حاول مجددًا.
             </p>
-
-            <div className="mt-5 rounded-2xl bg-white/70 p-4 text-sm text-amber-900 dark:bg-slate-950/40 dark:text-amber-100">
-              <span className="font-semibold">classId:</span>{" "}
-              <span className="font-mono">{classId}</span>
-            </div>
           </div>
         </section>
       </main>
     );
   }
 
-  const studentCount = getStudentCount(classInfo);
-
   return (
     <main
       dir="rtl"
-      className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6"
+      className="min-h-screen bg-background p-4 text-foreground sm:p-6"
     >
       <section className="mx-auto flex max-w-7xl flex-col gap-6">
         <div className="flex flex-wrap gap-2">
           <Link
             href={buildClassHref(classInfo)}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted"
           >
             <ArrowRight className="h-4 w-4" />
             الرجوع إلى الفصل
@@ -489,7 +370,7 @@ export default function StaffClassMeasurementsPage() {
 
           <Link
             href="/staff/classes"
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted"
           >
             <BookOpen className="h-4 w-4" />
             فصولي
@@ -497,39 +378,29 @@ export default function StaffClassMeasurementsPage() {
 
           <Link
             href={buildStudentsHref()}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted"
           >
             <UsersRound className="h-4 w-4" />
             طلابي
           </Link>
         </div>
 
-        <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="border-b border-slate-100 bg-gradient-to-l from-emerald-50 via-white to-white p-6 dark:border-slate-800 dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-8">
+        <div className="overflow-hidden rounded-2xl border bg-card text-card-foreground shadow-sm">
+          <div className="border-b bg-muted/20 p-5 sm:p-6">
             <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-              <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                  <Layers3 className="h-3.5 w-3.5" />
-                  قياسات ومتابعات الفصل
-                </div>
-
-                <div className="space-y-2">
-                  <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
-                    قياسات ومتابعات {getClassTitle(classInfo)}
-                  </h1>
-
-                  <p className="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400">
-                    هذه الصفحة أصبحت مركز قياسات الفصل: تبدأ منها دفعة جديدة،
-                    وتراجع المسودات والدفعات المرسلة، وتفتح الدفعات التعويضية
-                    والفاقد التعليمي المرتبط بهذا الفصل.
-                  </p>
-                </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  قياسات ومتابعات {getClassTitle(classInfo)}
+                </h1>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  إدخال النتائج ومراجعة دفعات الفصل.
+                </p>
               </div>
 
               <div className="flex flex-wrap gap-2">
                 <Link
                   href={buildBatchNewHref(classInfo)}
-                  className="inline-flex w-fit items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
+                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <Plus className="h-4 w-4" />
                   إدخال نتائج قياس
@@ -537,7 +408,7 @@ export default function StaffClassMeasurementsPage() {
 
                 <Link
                   href={buildLearningLossHref(classInfo)}
-                  className="inline-flex w-fit items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-emerald-700 shadow-sm transition hover:bg-emerald-50 dark:border-emerald-900 dark:bg-slate-900 dark:text-emerald-300 dark:hover:bg-emerald-950/30"
+                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border bg-background px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition hover:bg-muted"
                 >
                   <Target className="h-4 w-4" />
                   الفاقد التعليمي
@@ -546,118 +417,18 @@ export default function StaffClassMeasurementsPage() {
             </div>
           </div>
 
-          <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
-            <SummaryCard
-              icon={School}
-              label="المدرسة"
-              value={classInfo.schoolName || classInfo.schoolId || "غير محدد"}
-            />
-
-            <SummaryCard
-              icon={CalendarDays}
-              label="السنة الدراسية"
-              value={
-                classInfo.academicYearTitle ||
-                classInfo.academicYearId ||
-                "غير محدد"
-              }
-            />
-
-            <SummaryCard
-              icon={GraduationCap}
-              label="الصف / المستوى"
-              value={classInfo.gradeTitle || classInfo.gradeId || "غير محدد"}
-            />
-
-            <SummaryCard
-              icon={UsersRound}
-              label="الطلاب"
-              value={
-                studentCount !== null
-                  ? `${studentCount} طالب`
-                  : classInfo.capacity
-                    ? `السعة ${classInfo.capacity}`
-                    : "يربط من التسجيلات"
-              }
-            />
-          </div>
         </div>
 
-        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-          <MetricCard label="إجمالي الدفعات" value={batchesSummary.total} />
-          <MetricCard label="مسودات" value={batchesSummary.drafts} />
-          <MetricCard label="مرسلة / مراجعة" value={batchesSummary.submitted} />
-          <MetricCard label="تعويضية" value={batchesSummary.compensation} />
-          <MetricCard label="طلاب مستهدفون" value={batchesSummary.totalTargets} />
-          <MetricCard label="مكتملون" value={batchesSummary.completedTargets} />
-        </section>
-
-        <div className="grid gap-4 lg:grid-cols-3">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-1">
+        <section className="overflow-hidden rounded-2xl border bg-card text-card-foreground shadow-sm">
+          <div className="flex flex-col justify-between gap-4 border-b p-5 sm:flex-row sm:items-center">
             <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                <CheckCircle2 className="h-5 w-5" />
-              </div>
-
-              <div>
-                <h2 className="font-bold">قرار التشغيل</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  web-staff يدخل النتائج فقط
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 rounded-3xl bg-slate-50 p-4 text-sm leading-7 text-slate-600 dark:bg-slate-950 dark:text-slate-300">
-              <p>
-                إنشاء وإدارة قوالب القياس والمتابعة يكون في{" "}
-                <span className="font-semibold">web-admin</span>.
-              </p>
-
-              <p className="mt-3">
-                أما هذه الصفحة فتستخدم القوالب الموجودة لبدء{" "}
-                <span className="font-semibold">دفعة إدخال نتائج</span> أو
-                متابعة دفعات تم إنشاؤها بالفعل.
-              </p>
-
-              <p className="mt-3">
-                الدفعة المرسلة تنشئ سجلات فردية، أما المسودة فتبقى داخل
-                StudentMeasurementBatch فقط.
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-2">
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-sky-50 p-3 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-                <ClipboardList className="h-5 w-5" />
-              </div>
-
-              <div>
-                <h2 className="font-bold">مساحات القياس</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  ما تم تفعيله الآن داخل Milestone 7 و 8.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {measurementActions.map((item) => (
-                <MeasurementActionCard key={item.title} item={item} />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex flex-col justify-between gap-4 border-b border-slate-100 p-5 dark:border-slate-800 sm:flex-row sm:items-center">
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-violet-50 p-3 text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+              <div className="rounded-xl bg-primary/10 p-3 text-primary">
                 <FileText className="h-5 w-5" />
               </div>
 
               <div>
                 <h2 className="font-bold">دفعات القياس السابقة</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   المسودات والدفعات المرسلة والدفعات التعويضية الخاصة بهذا
                   الفصل.
                 </p>
@@ -668,7 +439,7 @@ export default function StaffClassMeasurementsPage() {
               type="button"
               onClick={() => void loadBatches()}
               disabled={batchesStatus === "loading"}
-              className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-xl border bg-background px-4 text-sm font-medium text-foreground transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
             >
               <RefreshCw className="h-4 w-4" />
               {batchesStatus === "loading" ? "جاري التحديث..." : "تحديث"}
@@ -686,27 +457,27 @@ export default function StaffClassMeasurementsPage() {
               {Array.from({ length: 6 }).map((_, index) => (
                 <div
                   key={index}
-                  className="h-40 animate-pulse rounded-3xl bg-slate-100 dark:bg-slate-800"
+                  className="h-40 animate-pulse rounded-2xl bg-muted"
                 />
               ))}
             </div>
           ) : batches.length === 0 ? (
             <div className="p-5">
-              <div className="rounded-3xl border border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300">
+              <div className="rounded-2xl border border-dashed p-8 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
                   <FileText className="h-6 w-6" />
                 </div>
 
                 <h3 className="mt-4 font-bold">لا توجد دفعات قياس بعد</h3>
 
-                <p className="mx-auto mt-2 max-w-xl text-sm leading-7 text-slate-500 dark:text-slate-400">
+                <p className="mx-auto mt-2 max-w-xl text-sm leading-7 text-muted-foreground">
                   ابدأ أول دفعة قياس أو متابعة لهذا الفصل، ثم ستظهر هنا
                   المسودات والدفعات المرسلة والدفعات التعويضية.
                 </p>
 
                 <Link
                   href={buildBatchNewHref(classInfo)}
-                  className="mt-5 inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                  className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
                 >
                   <Plus className="h-4 w-4" />
                   إنشاء أول دفعة
@@ -725,95 +496,12 @@ export default function StaffClassMeasurementsPage() {
     </main>
   );
 }
-
-function SummaryCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex items-start gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        <div className="min-w-0">
-          <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-          <p className="mt-1 truncate font-bold text-slate-950 dark:text-slate-50">
-            {value}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MetricCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <p className="text-sm text-slate-500 dark:text-slate-400">{label}</p>
-      <p className="mt-2 text-3xl font-bold text-slate-950 dark:text-slate-50">
-        {value.toLocaleString("ar-SA")}
-      </p>
-    </div>
-  );
-}
-
-function MeasurementActionCard({ item }: { item: MeasurementActionCard }) {
-  const Icon = item.icon;
-
-  const content = (
-    <div className="group h-full rounded-3xl border border-slate-100 bg-slate-50 p-4 transition hover:border-emerald-200 hover:bg-white dark:border-slate-800 dark:bg-slate-950 dark:hover:border-emerald-900 dark:hover:bg-slate-900">
-      <div className="flex items-start justify-between gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        {item.href ? (
-          <ChevronLeft className="mt-1 h-4 w-4 text-slate-300 transition group-hover:text-emerald-500" />
-        ) : null}
-      </div>
-
-      <h3 className="mt-4 font-bold">{item.title}</h3>
-
-      <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-        {item.description}
-      </p>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        <span className="inline-flex rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-600 ring-1 ring-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:ring-slate-800">
-          {item.status === "ACTIVE"
-            ? "مفعل الآن"
-            : item.status === "READY_SOON"
-              ? "قادم قريبًا"
-              : "مرحلة لاحقة"}
-        </span>
-
-        {item.actionLabel ? (
-          <span className="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900">
-            {item.actionLabel}
-          </span>
-        ) : null}
-      </div>
-    </div>
-  );
-
-  if (!item.href) return content;
-
-  return <Link href={item.href}>{content}</Link>;
-}
-
 function BatchCard({ batch }: { batch: MeasurementBatchDoc }) {
   const latestDate = batch.updatedAt ?? batch.createdAt ?? batch.measuredAt;
   const editable = isEditableBatch(batch);
 
   return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950">
+    <div className="rounded-2xl border bg-muted/40 p-5">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -833,44 +521,44 @@ function BatchCard({ batch }: { batch: MeasurementBatchDoc }) {
           </div>
 
           <h3 className="mt-3 truncate text-lg font-bold">
-            {batch.templateTitle || batch.templateId || "دفعة قياس"}
+            {getFriendlyMeasurementLabel(batch.templateTitle) ||
+              batch.templateTitle ||
+              getFriendlyMeasurementLabel(batch.assessmentSlot) ||
+              getFriendlyMeasurementLabel(batch.assessmentKind) ||
+              getFriendlyMeasurementLabel(batch.trackerKind) ||
+              getBatchKindLabel(batch.batchKind)}
           </h3>
 
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {getBatchKindLabel(batch.batchKind)} —{" "}
-            {batch.assessmentSlot || batch.assessmentKind || batch.trackerKind || "غير محدد"}
+          <p className="mt-1 text-sm text-muted-foreground">
+            {getFriendlyMeasurementLabel(batch.assessmentSlot) ||
+              getFriendlyMeasurementLabel(batch.assessmentKind) ||
+              getFriendlyMeasurementLabel(batch.trackerKind) ||
+              getBatchKindLabel(batch.batchKind)}
           </p>
         </div>
 
-        <div className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="text-sm text-muted-foreground">
           {formatDate(latestDate)}
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <MiniInfo label="المستهدفون" value={batch.targetCount ?? 0} />
-        <MiniInfo label="المكتمل" value={batch.completedCount ?? 0} />
-        <MiniInfo label="الناقص" value={batch.missingCount ?? 0} />
-      </div>
-
-      {batch.isCompensationBatch === true && batch.originalBatchId ? (
-        <div className="mt-4 rounded-2xl border border-violet-200 bg-violet-50 p-3 text-xs leading-6 text-violet-800 dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-violet-200">
-          منشأة من الدفعة الأصلية:
-          <span className="mx-1 font-mono">{batch.originalBatchId}</span>
-        </div>
-      ) : null}
+      <p className="mt-4 text-sm text-muted-foreground">
+        المستهدفون: {(batch.targetCount ?? 0).toLocaleString("ar-SA")} · المكتمل: {" "}
+        {(batch.completedCount ?? 0).toLocaleString("ar-SA")} · الناقص: {" "}
+        {(batch.missingCount ?? 0).toLocaleString("ar-SA")}
+      </p>
 
       <div className="mt-5 flex flex-wrap gap-2">
         <Link
           href={buildBatchViewHref(batch.id)}
-          className="inline-flex h-10 items-center justify-center rounded-2xl bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-slate-50 dark:text-slate-950 dark:hover:bg-slate-200"
+          className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
         >
           عرض الدفعة
         </Link>
 
         <Link
           href={buildBatchEditHref(batch.id)}
-          className="inline-flex h-10 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex h-10 items-center justify-center rounded-xl border bg-background px-4 text-sm font-semibold text-foreground transition hover:bg-muted"
         >
           {editable ? "إدخال / تعديل" : "فتح صفحة الإدخال"}
         </Link>
@@ -879,13 +567,3 @@ function BatchCard({ batch }: { batch: MeasurementBatchDoc }) {
   );
 }
 
-function MiniInfo({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-2xl bg-white p-3 text-center dark:bg-slate-900">
-      <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-      <p className="mt-1 text-xl font-bold text-slate-950 dark:text-slate-50">
-        {value.toLocaleString("ar-SA")}
-      </p>
-    </div>
-  );
-}

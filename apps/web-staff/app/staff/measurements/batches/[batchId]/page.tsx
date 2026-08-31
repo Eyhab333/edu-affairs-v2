@@ -20,6 +20,10 @@ import type {
 
 import { db } from "@/lib/firebase";
 import { getClassRoster } from "@/lib/class-roster";
+import {
+  getFriendlyMeasurementLabel,
+  getFriendlySubjectLabel,
+} from "@/lib/measurement-presentation";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 type VisibleClass = {
@@ -45,6 +49,9 @@ type StaffMeasurementsActor = {
 type MeasurementBatchDoc = StudentMeasurementBatch & {
   id: string;
   classSubjectOfferingId?: string;
+  createdByDisplayName?: string;
+  createdByPersonName?: string;
+  teacherDisplayName?: string;
   isCompensationBatch?: boolean;
   originalBatchId?: string;
   originalBatchPath?: string;
@@ -148,16 +155,55 @@ function getBatchClassKey(item: {
   ].join(":");
 }
 
-function getClassLabel(classInfo: VisibleClass | null, classId?: string) {
-  if (!classInfo) return classId || "غير محدد";
+function getClassLabel(classInfo: VisibleClass | null) {
+  if (!classInfo) return "فصل غير محدد";
 
-  return classInfo.title || classInfo.code || classInfo.id;
+  return classInfo.title || classInfo.code || "فصل دراسي";
 }
 
-function getSchoolLabel(classInfo: VisibleClass | null, schoolId?: string) {
-  if (!classInfo) return schoolId || "غير محدد";
+function getSchoolLabel(classInfo: VisibleClass | null) {
+  if (!classInfo) return "مدرسة غير محددة";
 
-  return classInfo.schoolName || classInfo.schoolId || schoolId || "غير محدد";
+  return classInfo.schoolName || "مدرسة غير محددة";
+}
+
+function getDisplayText(value?: string, fallback = "غير محدد") {
+  if (!value?.trim()) return fallback;
+  return /^[A-Z0-9_:-]+$/.test(value) ? fallback : value;
+}
+
+function getMeasurementTitle(batch: MeasurementBatchDoc) {
+  return (
+    getFriendlyMeasurementLabel(batch.templateTitle) ||
+    getDisplayText(batch.templateTitle, "") ||
+    getFriendlyMeasurementLabel(batch.assessmentSlot) ||
+    getFriendlyMeasurementLabel(batch.assessmentKind) ||
+    getFriendlyMeasurementLabel(batch.trackerKind) ||
+    getBatchKindLabel(batch.batchKind)
+  );
+}
+
+function getMeasurementTypeLabel(batch: MeasurementBatchDoc) {
+  return (
+    getFriendlyMeasurementLabel(batch.assessmentSlot) ||
+    getFriendlyMeasurementLabel(batch.assessmentKind) ||
+    getFriendlyMeasurementLabel(batch.trackerKind) ||
+    getBatchKindLabel(batch.batchKind)
+  );
+}
+
+function getTeacherLabel(
+  batch: MeasurementBatchDoc,
+  actor: StaffMeasurementsActor,
+) {
+  const displayName =
+    batch.teacherDisplayName ||
+    batch.createdByDisplayName ||
+    batch.createdByPersonName;
+
+  if (displayName) return getDisplayText(displayName, "المعلم المسؤول");
+  if (batch.createdByPersonId === resolveActorPersonId(actor)) return "أنت";
+  return "المعلم المسؤول";
 }
 
 function getBatchKindLabel(value?: string) {
@@ -177,7 +223,7 @@ function getBatchKindLabel(value?: string) {
     case "CUSTOM":
       return "مخصص";
     default:
-      return value || "غير محدد";
+      return "قياس أو متابعة";
   }
 }
 
@@ -196,7 +242,7 @@ function getBatchStatusLabel(value?: string) {
     case "CANCELLED":
       return "ملغاة";
     default:
-      return value || "غير محدد";
+      return "غير محدد";
   }
 }
 
@@ -213,18 +259,7 @@ function getRowStatusLabel(value?: string) {
     case "SKIPPED":
       return "متجاوز";
     default:
-      return value || "غير محدد";
-  }
-}
-
-function getRecordTypeLabel(value: "ASSESSMENT_RECORD" | "TRACKER_ENTRY") {
-  switch (value) {
-    case "ASSESSMENT_RECORD":
-      return "سجل قياس رسمي";
-    case "TRACKER_ENTRY":
-      return "سجل متابعة";
-    default:
-      return value;
+      return "غير محدد";
   }
 }
 
@@ -275,12 +310,6 @@ function isTrackerMeasurementBatch(batch: MeasurementBatchDoc) {
       "LEARNING_LOSS_TRACKER",
     ].includes(String(batch.batchKind || ""))
   );
-}
-
-function resolveRecordType(batch: MeasurementBatchDoc) {
-  return isTrackerMeasurementBatch(batch)
-    ? "TRACKER_ENTRY"
-    : "ASSESSMENT_RECORD";
 }
 
 function getTemplateCollectionName(batch: MeasurementBatchDoc) {
@@ -358,11 +387,6 @@ function calculateLearningLossDecisionForRow(params: {
     reason: "درجة الطالب لا تستدعي فتح خطة فاقد",
     scorePercentage,
   };
-}
-
-function formatPercentageValue(value: number | null) {
-  if (typeof value !== "number") return "—";
-  return `${value.toFixed(1)}%`;
 }
 
 function buildRowsFromBatch(
@@ -576,11 +600,6 @@ export default function StaffMeasurementBatchPage() {
 
     return false;
   }, [batch, visibleClassIds, visibleClassMap]);
-
-  const recordType = useMemo(() => {
-    if (!batch) return "ASSESSMENT_RECORD" as const;
-    return resolveRecordType(batch);
-  }, [batch]);
 
   const loadBatch = useCallback(async () => {
     if (!currentActor?.orgId || !batchId) return;
@@ -907,21 +926,21 @@ export default function StaffMeasurementBatchPage() {
     Boolean(existingCompensationBatchId) && !isCompensationBatch;
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 md:p-6">
-      <section className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm md:p-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">
-              10.5M-6 — تفاصيل الدفعة مع تشخيص الفاقد
-            </p>
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-5 p-4 md:p-6">
+      <section className="rounded-2xl border bg-card p-5 text-card-foreground shadow-sm">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-bold tracking-tight">
+                {getMeasurementTitle(batch)}
+              </h1>
+              <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                {getBatchStatusLabel(batch.status)}
+              </span>
+            </div>
 
-            <h1 className="text-2xl font-bold tracking-tight">
-              عرض دفعة القياس / المتابعة
-            </h1>
-
-            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              تعرض هذه الصفحة تفاصيل الدفعة، وسياق المادة، ونوع السجل الناتج،
-              وهل القالب المرتبط بها يمكن أن يفتح فاقدًا تعليميًا تلقائيًا.
+            <p className="mt-2 text-sm text-muted-foreground">
+              {getMeasurementTypeLabel(batch)} · {getFriendlySubjectLabel(batch.subjectKey) || "المادة المحددة"}
             </p>
           </div>
 
@@ -955,10 +974,7 @@ export default function StaffMeasurementBatchPage() {
         <section className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm leading-7 text-amber-700 dark:text-amber-300">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              هذه دفعة تعويضية منشأة من الدفعة الأصلية:
-              <span className="mx-1 font-mono">
-                {batch.originalBatchId || "غير محدد"}
-              </span>
+              هذه دفعة تعويضية مرتبطة بالدفعة الأصلية.
             </div>
 
             {batch.originalBatchId ? (
@@ -1001,83 +1017,17 @@ export default function StaffMeasurementBatchPage() {
         </section>
       ) : null}
 
-      <section className="grid gap-4 md:grid-cols-6">
-        <SummaryCard label="إجمالي الطلاب" value={summary.total} />
-        <SummaryCard label="مكتمل" value={summary.completed} />
-        <SummaryCard label="لم يكتمل" value={summary.pending} />
-        <SummaryCard label="غائب" value={summary.absent} />
-        <SummaryCard label="معذور" value={summary.excused} />
-        <SummaryCard label="مرشح للفاقد" value={summary.learningLossEligible} />
-      </section>
-
-      <section className="grid gap-6 lg:grid-cols-3">
+      <section className="grid gap-5 lg:grid-cols-3">
         <section className="rounded-2xl border bg-card p-5 shadow-sm lg:col-span-2">
-          <h2 className="text-lg font-semibold">بيانات الدفعة</h2>
+          <h2 className="text-lg font-semibold">معلومات القياس</h2>
 
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <InfoItem
-              label="نوع الدفعة"
-              value={getBatchKindLabel(batch.batchKind)}
-            />
-            <InfoItem
-              label="حالة الدفعة"
-              value={getBatchStatusLabel(batch.status)}
-            />
-            <InfoItem
-              label="نوع السجل الناتج"
-              value={getRecordTypeLabel(recordType)}
-            />
-            <InfoItem
-              label="مصدر القالب"
-              value={getTemplateCollectionName(batch)}
-            />
-            <InfoItem
-              label="الفصل"
-              value={getClassLabel(classInfo, batch.classId)}
-            />
-            <InfoItem
-              label="المدرسة"
-              value={getSchoolLabel(classInfo, batch.schoolId)}
-            />
-            <InfoItem
-              label="السنة الدراسية"
-              value={batch.academicYearId || "غير محدد"}
-            />
-            <InfoItem label="الصف" value={batch.gradeId || "غير محدد"} />
-            <InfoItem
-              label="القالب"
-              value={batch.templateTitle || batch.templateId || "غير محدد"}
-            />
-            <InfoItem
-              label="نوع القياس / المتابعة"
-              value={
-                batch.assessmentSlot ||
-                batch.assessmentKind ||
-                batch.trackerKind ||
-                "غير محدد"
-              }
-            />
-            <InfoItem
-              label="المادة / subjectKey"
-              value={batch.subjectKey || "غير محدد"}
-            />
-            <InfoItem
-              label="ClassSubjectOffering"
-              value={batch.classSubjectOfferingId || "غير محدد"}
-            />
-            <InfoItem
-              label="TeacherAssignment"
-              value={batch.teacherAssignmentId || "غير محدد"}
-            />
-            <InfoItem
-              label="OperationalAssignment"
-              value={batch.operationalAssignmentId || "غير محدد"}
-            />
-            <InfoItem
-              label="تاريخ الإدخال"
-              value={formatDate(batch.measuredAt)}
-            />
-            <InfoItem label="آخر تحديث" value={formatDate(batch.updatedAt)} />
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <InfoItem label="المادة" value={getFriendlySubjectLabel(batch.subjectKey) || "المادة المحددة"} />
+            <InfoItem label="الفصل" value={getClassLabel(classInfo)} />
+            <InfoItem label="المدرسة" value={getSchoolLabel(classInfo)} />
+            <InfoItem label="تاريخ القياس" value={formatDate(batch.measuredAt)} />
+            <InfoItem label="المعلم" value={getTeacherLabel(batch, currentActor)} />
+            <InfoItem label="الحالة" value={getBatchStatusLabel(batch.status)} />
           </div>
         </section>
 
@@ -1153,98 +1103,11 @@ export default function StaffMeasurementBatchPage() {
         </section>
       </section>
 
-      <section className="rounded-2xl border border-violet-500/30 bg-violet-500/10 p-5 text-sm leading-7 text-violet-800 dark:text-violet-200">
-        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-          <div>
-            <h2 className="text-lg font-semibold">تشخيص الفاقد لهذه الدفعة</h2>
-            <p className="mt-1 text-sm text-violet-700 dark:text-violet-300">
-              هذا القسم يساعدك على معرفة هل القالب مضبوط لفتح الفاقد، وهل توجد
-              صفوف مكتملة أقل من حد الفاقد.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-4 grid gap-3 md:grid-cols-4">
-          <ContextItem
-            label="القالب موجود؟"
-            value={sourceTemplate ? "نعم" : "لا"}
-          />
-          <ContextItem
-            label="يفتح فاقد؟"
-            value={sourceTemplate?.requiresLearningLossFollowUp ? "نعم" : "لا"}
-          />
-          <ContextItem
-            label="حد الدرجة"
-            value={
-              typeof sourceTemplate?.learningLossThresholdScore === "number"
-                ? sourceTemplate.learningLossThresholdScore.toLocaleString(
-                    "ar-SA",
-                  )
-                : "—"
-            }
-          />
-          <ContextItem
-            label="حد النسبة"
-            value={
-              typeof sourceTemplate?.learningLossThresholdPercentage ===
-              "number"
-                ? `${sourceTemplate.learningLossThresholdPercentage}%`
-                : "—"
-            }
-          />
-          <ContextItem
-            label="نوع السجل الناتج"
-            value={getRecordTypeLabel(recordType)}
-          />
-          <ContextItem
-            label="صفوف مكتملة بدرجة"
-            value={summary.completedWithScore.toLocaleString("ar-SA")}
-          />
-          <ContextItem
-            label="مرشحون للفاقد"
-            value={summary.learningLossEligible.toLocaleString("ar-SA")}
-          />
-          <ContextItem
-            label="مجموعة القوالب"
-            value={getTemplateCollectionName(batch)}
-          />
-        </div>
-
-        {!sourceTemplate ? (
-          <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-800 dark:text-amber-200">
-            لم يتم العثور على القالب المرتبط بهذه الدفعة. تأكد أن
-            <span className="mx-1 font-mono">
-              {batch.templateId || "templateId"}
-            </span>
-            موجود داخل
-            <span className="mx-1 font-mono">
-              {getTemplateCollectionName(batch)}
-            </span>
-            .
-          </div>
-        ) : !sourceTemplate.requiresLearningLossFollowUp ? (
-          <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-800 dark:text-amber-200">
-            القالب موجود، لكنه لا يفتح فاقدًا لأن
-            <span className="mx-1 font-mono">requiresLearningLossFollowUp</span>
-            ليست مفعلة. سيتم ضبط ذلك في خطوة تحديث قوالب الروضة.
-          </div>
-        ) : summary.learningLossEligible === 0 ? (
-          <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:text-emerald-200">
-            القالب يفتح فاقدًا، لكن لا توجد صفوف مكتملة أقل من الحد الحالي.
-          </div>
-        ) : (
-          <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:text-emerald-200">
-            توجد صفوف مرشحة للفاقد. بعد إرسال الدفعة يجب أن تظهر في مركز الفاقد.
-          </div>
-        )}
-      </section>
-
       <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
         <div className="border-b p-5">
           <h2 className="text-lg font-semibold">طلاب الدفعة</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            عرض حالة كل طالب داخل الدفعة، مع توضيح الطلاب المؤهلين للتعويض أو
-            المرشحين للفاقد حسب القالب.
+            النتيجة والحالة لكل طالب.
           </p>
         </div>
 
@@ -1254,7 +1117,7 @@ export default function StaffMeasurementBatchPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[1180px] text-right text-sm">
+            <table className="w-full min-w-[720px] text-right text-sm">
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
@@ -1270,22 +1133,7 @@ export default function StaffMeasurementBatchPage() {
                     النسبة
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    المستوى / النص
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    البنود
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    السجل الناتج
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
                     تعويض؟
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    فاقد؟
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    سبب الفاقد
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
                     ملاحظة
@@ -1296,25 +1144,16 @@ export default function StaffMeasurementBatchPage() {
               <tbody>
                 {rows.map((row) => {
                   const compensationEligible = isCompensationEligibleRow(row);
-                  const learningLossDecision =
-                    calculateLearningLossDecisionForRow({
-                      template: sourceTemplate,
-                      row,
-                    });
-
                   return (
                     <tr key={row.studentId} className="border-t">
                       <td className="whitespace-nowrap px-4 py-3 font-medium">
-                        <div className="space-y-1">
-                          <p>{row.studentDisplayName}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {row.studentId}
-                          </p>
-                        </div>
+                        {row.studentDisplayName}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {getRowStatusLabel(row.status)}
+                        <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-foreground">
+                          {getRowStatusLabel(row.status)}
+                        </span>
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1322,21 +1161,7 @@ export default function StaffMeasurementBatchPage() {
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {formatPercentageValue(
-                          learningLossDecision.scorePercentage,
-                        )}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {row.level || row.valueText || "—"}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {(row.itemScores ?? []).length.toLocaleString("ar-SA")}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {row.recordId || "—"}
+                        {formatRowPercentage(row)}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1349,22 +1174,6 @@ export default function StaffMeasurementBatchPage() {
                             لا
                           </span>
                         )}
-                      </td>
-
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {learningLossDecision.needsLearningLossFollowUp ? (
-                          <span className="rounded-full bg-red-500/10 px-3 py-1 text-xs font-medium text-red-700 dark:text-red-300">
-                            نعم
-                          </span>
-                        ) : (
-                          <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                            لا
-                          </span>
-                        )}
-                      </td>
-
-                      <td className="min-w-[240px] px-4 py-3 text-muted-foreground">
-                        {learningLossDecision.reason}
                       </td>
 
                       <td className="min-w-[220px] px-4 py-3 text-muted-foreground">
@@ -1382,31 +1191,11 @@ export default function StaffMeasurementBatchPage() {
   );
 }
 
-function SummaryCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-2xl border bg-card p-5 shadow-sm">
-      <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="mt-2 text-3xl font-bold">{value.toLocaleString("ar-SA")}</p>
-    </div>
-  );
-}
-
 function InfoItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border bg-background p-4">
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="mt-1 break-words font-medium">{value}</p>
-    </div>
-  );
-}
-
-function ContextItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl bg-white/70 p-3 dark:bg-slate-950/40">
-      <p className="text-xs text-violet-700 dark:text-violet-300">{label}</p>
-      <p className="mt-1 break-words font-mono text-sm font-semibold">
-        {value}
-      </p>
     </div>
   );
 }

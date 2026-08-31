@@ -6,14 +6,8 @@ import type { ComponentType } from "react";
 import {
   AlertTriangle,
   ArrowRight,
-  BookOpen,
-  CalendarDays,
-  CheckCircle2,
-  ChevronLeft,
-  ClipboardList,
   FileText,
   GraduationCap,
-  Layers3,
   Plus,
   RefreshCw,
   School,
@@ -24,6 +18,10 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import type { StudentMeasurementBatch } from "@takween/contracts";
 
 import { db } from "@/lib/firebase";
+import {
+  getFriendlyMeasurementLabel,
+  getFriendlySubjectLabel,
+} from "@/lib/measurement-presentation";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 type StaffVisibleClass = {
@@ -46,10 +44,90 @@ type StaffVisibleClass = {
   academicYearTitle?: string;
 };
 
+type TeacherAssignmentScope = {
+  personId?: string;
+  schoolId?: string;
+  academicYearId?: string;
+  classId?: string;
+  subjectKey?: string;
+};
+
 type StaffActorLike = {
   orgId?: string;
+  personId?: string;
+  roleKeys?: string[];
+  roles?: string[];
+  teacherAssignments?: TeacherAssignmentScope[];
   visibleClasses?: StaffVisibleClass[];
 };
+
+function isTeacherOnlyActor(actor: StaffActorLike | null) {
+  const roleKeys = [...(actor?.roleKeys ?? []), ...(actor?.roles ?? [])].map(
+    (role) => role.trim().toUpperCase(),
+  );
+  const hasTeacherRole = roleKeys.includes("TEACHER");
+  const hasSupervisorOrAdminRole = roleKeys.some(
+    (role) =>
+      role.includes("SUPERVIS") ||
+      role.includes("ADMIN") ||
+      role === "OWNER" ||
+      role === "ORG_OWNER",
+  );
+
+  return hasTeacherRole && !hasSupervisorOrAdminRole;
+}
+
+function getTeacherSubjectKeysForClass(
+  teacherAssignments: TeacherAssignmentScope[],
+  teacherPersonId: string,
+  classInfo: StaffVisibleClass,
+) {
+  return Array.from(
+    new Set(
+      teacherAssignments
+        .filter((assignment) => {
+          if (
+            assignment.personId &&
+            assignment.personId !== teacherPersonId
+          ) {
+            return false;
+          }
+
+          if (assignment.classId && assignment.classId !== classInfo.id) {
+            return false;
+          }
+
+          if (
+            assignment.schoolId &&
+            assignment.schoolId !== classInfo.schoolId
+          ) {
+            return false;
+          }
+
+          if (
+            assignment.academicYearId &&
+            assignment.academicYearId !== classInfo.academicYearId
+          ) {
+            return false;
+          }
+
+          return Boolean(assignment.subjectKey);
+        })
+        .map((assignment) => assignment.subjectKey!.trim())
+        .filter(Boolean),
+    ),
+  );
+}
+
+function chunkValues<T>(values: T[], chunkSize: number) {
+  const chunks: T[][] = [];
+
+  for (let index = 0; index < values.length; index += chunkSize) {
+    chunks.push(values.slice(index, index + chunkSize));
+  }
+
+  return chunks;
+}
 
 type MeasurementBatchDoc = StudentMeasurementBatch & {
   id: string;
@@ -69,14 +147,6 @@ type LoadingState = "idle" | "loading" | "success" | "error";
 
 type BatchFilter = "ALL" | "DRAFTS" | "SUBMITTED" | "COMPENSATION";
 
-type QuickActionCard = {
-  title: string;
-  description: string;
-  icon: ComponentType<{ className?: string }>;
-  href?: string;
-  actionLabel: string;
-};
-
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
   if (typeof error === "string") return error;
@@ -84,7 +154,7 @@ function getErrorMessage(error: unknown) {
 }
 
 function getClassTitle(item: StaffVisibleClass) {
-  return item.title || item.code || item.id;
+  return item.title || item.code || "فصل دراسي";
 }
 
 function getStudentCount(item: StaffVisibleClass) {
@@ -245,7 +315,7 @@ function getBatchKindLabel(value?: string) {
     case "CUSTOM":
       return "مخصص";
     default:
-      return value || "غير محدد";
+      return "قياس أو متابعة";
   }
 }
 
@@ -264,7 +334,7 @@ function getBatchStatusLabel(value?: string) {
     case "CANCELLED":
       return "ملغاة";
     default:
-      return value || "غير محدد";
+      return "غير محدد";
   }
 }
 
@@ -356,6 +426,9 @@ export default function StaffMeasurementsPage() {
   const [searchText, setSearchText] = useState("");
 
   const orgId = staffActor?.orgId || "";
+  const teacherPersonId = staffActor?.personId?.trim() || "";
+  const shouldScopeToTeacher = isTeacherOnlyActor(staffActor);
+  const teacherAssignments = staffActor?.teacherAssignments ?? [];
 
   const visibleClasses = useMemo(() => {
     return dedupeVisibleClasses(staffActor?.visibleClasses ?? []);
@@ -365,37 +438,14 @@ export default function StaffMeasurementsPage() {
     return new Map(visibleClasses.map((item) => [getClassKey(item), item]));
   }, [visibleClasses]);
 
-  const quickActions = useMemo<QuickActionCard[]>(() => {
-    return [
-      {
-        title: "ابدأ من فصولي",
-        description:
-          "اختيار الفصل ثم المادة هو الطريق الصحيح لبدء دفعة قياس جديدة بسياق أكاديمي كامل.",
-        icon: School,
-        href: "/staff/classes",
-        actionLabel: "فتح فصولي",
-      },
-      {
-        title: "الفاقد التعليمي",
-        description:
-          "متابعة خطط الفاقد المفتوحة والطلاب الذين يحتاجون خطة أو قياس أول/ثانٍ.",
-        icon: Target,
-        href: "/staff/learning-loss",
-        actionLabel: "فتح الفاقد",
-      },
-      {
-        title: "مهامي",
-        description:
-          "لاحقًا ستظهر مسودات القياس والدفعات غير المكتملة كمهام تشغيلية ضمن صفحة مهامي.",
-        icon: ClipboardList,
-        href: "/staff/tasks",
-        actionLabel: "فتح مهامي",
-      },
-    ];
-  }, []);
-
   const loadBatches = useCallback(async () => {
     if (!orgId) return;
+
+    if (shouldScopeToTeacher && !teacherPersonId) {
+      setBatches([]);
+      setStatus("success");
+      return;
+    }
 
     if (visibleClasses.length === 0) {
       setBatches([]);
@@ -416,21 +466,44 @@ export default function StaffMeasurementsPage() {
 
       const snapGroups = await Promise.all(
         visibleClasses.map(async (classInfo) => {
-          const batchesQuery = query(
-            batchesRef,
-            where("schoolId", "==", classInfo.schoolId),
-            where("academicYearId", "==", classInfo.academicYearId),
-            where("classId", "==", classInfo.id),
+          const subjectKeyChunks = shouldScopeToTeacher
+            ? chunkValues(
+                getTeacherSubjectKeysForClass(
+                  teacherAssignments,
+                  teacherPersonId,
+                  classInfo,
+                ),
+                30,
+              )
+            : [[]];
+
+          if (subjectKeyChunks.length === 0) return [];
+
+          const snaps = await Promise.all(
+            subjectKeyChunks.map((subjectKeys) => {
+              const batchesQuery = query(
+                batchesRef,
+                where("schoolId", "==", classInfo.schoolId),
+                where("academicYearId", "==", classInfo.academicYearId),
+                where("classId", "==", classInfo.id),
+                ...(shouldScopeToTeacher
+                  ? [
+                      where("createdByPersonId", "==", teacherPersonId),
+                      where("subjectKey", "in", subjectKeys),
+                    ]
+                  : []),
+              );
+
+              return getDocs(batchesQuery);
+            }),
           );
 
-          const snap = await getDocs(batchesQuery);
-
-          return snap.docs.map((item) => {
-            return {
+          return snaps.flatMap((snap) =>
+            snap.docs.map((item) => ({
               id: item.id,
               ...(item.data() as Omit<MeasurementBatchDoc, "id">),
-            };
-          });
+            })),
+          );
         }),
       );
 
@@ -468,59 +541,18 @@ export default function StaffMeasurementsPage() {
       setError(getErrorMessage(error));
       setStatus("error");
     }
-  }, [orgId, visibleClasses, classMap]);
+  }, [
+    orgId,
+    visibleClasses,
+    classMap,
+    shouldScopeToTeacher,
+    teacherAssignments,
+    teacherPersonId,
+  ]);
 
   useEffect(() => {
     void loadBatches();
   }, [loadBatches]);
-
-  const summary = useMemo(() => {
-    const total = batches.length;
-
-    const drafts = batches.filter(({ batch }) => {
-      return batch.status === "DRAFT" || batch.status === "IN_PROGRESS";
-    }).length;
-
-    const submitted = batches.filter(({ batch }) => {
-      return batch.status === "SUBMITTED" || batch.status === "REVIEWED";
-    }).length;
-
-    const locked = batches.filter(({ batch }) => {
-      return batch.status === "LOCKED";
-    }).length;
-
-    const compensation = batches.filter(({ batch }) => {
-      return batch.isCompensationBatch === true;
-    }).length;
-
-    const withSubjectContext = batches.filter(({ batch }) => {
-      return Boolean(batch.classSubjectOfferingId || batch.subjectKey);
-    }).length;
-
-    const totalTargets = batches.reduce((sum, { batch }) => {
-      return (
-        sum + (typeof batch.targetCount === "number" ? batch.targetCount : 0)
-      );
-    }, 0);
-
-    const completedTargets = batches.reduce((sum, { batch }) => {
-      return (
-        sum +
-        (typeof batch.completedCount === "number" ? batch.completedCount : 0)
-      );
-    }, 0);
-
-    return {
-      total,
-      drafts,
-      submitted,
-      locked,
-      compensation,
-      withSubjectContext,
-      totalTargets,
-      completedTargets,
-    };
-  }, [batches]);
 
   const filteredBatches = useMemo(() => {
     const normalizedSearch = searchText.trim().toLowerCase();
@@ -538,11 +570,11 @@ export default function StaffMeasurementsPage() {
     return (
       <main
         dir="rtl"
-        className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6"
+        className="min-h-screen bg-background p-4 text-foreground sm:p-6"
       >
         <section className="mx-auto max-w-7xl">
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+          <div className="rounded-2xl border bg-card p-6 text-card-foreground shadow-sm">
+            <p className="text-sm text-muted-foreground">
               جاري تحميل بيانات المستخدم...
             </p>
           </div>
@@ -554,13 +586,13 @@ export default function StaffMeasurementsPage() {
   return (
     <main
       dir="rtl"
-      className="min-h-screen bg-slate-50 p-4 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:p-6"
+      className="min-h-screen bg-background p-4 text-foreground sm:p-6"
     >
       <section className="mx-auto flex max-w-7xl flex-col gap-6">
         <div className="flex flex-wrap gap-2">
           <Link
             href="/staff"
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted"
           >
             <ArrowRight className="h-4 w-4" />
             الرئيسية
@@ -568,7 +600,7 @@ export default function StaffMeasurementsPage() {
 
           <Link
             href="/staff/classes"
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted"
           >
             <School className="h-4 w-4" />
             فصولي
@@ -576,39 +608,29 @@ export default function StaffMeasurementsPage() {
 
           <Link
             href="/staff/learning-loss"
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition hover:bg-muted"
           >
             <Target className="h-4 w-4" />
             الفاقد التعليمي
           </Link>
         </div>
 
-        <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="border-b border-slate-100 bg-gradient-to-l from-emerald-50 via-white to-white p-6 dark:border-slate-800 dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 sm:p-8">
+        <div className="overflow-hidden rounded-2xl border bg-card text-card-foreground shadow-sm">
+          <div className="border-b bg-muted/20 p-5 sm:p-6">
             <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-              <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                  <Layers3 className="h-3.5 w-3.5" />
-                  مركز القياسات العام
-                </div>
-
-                <div className="space-y-2">
-                  <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
-                    القياسات والمتابعات
-                  </h1>
-
-                  <p className="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400">
-                    هذه الصفحة تجمع دفعات القياس لكل الفصول المرئية لك. بدء
-                    القياس الجديد يتم من صفحة الفصل ثم من كارت المادة، حتى تحفظ
-                    الدفعة سياق المادة والإسناد.
-                  </p>
-                </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  القياسات والمتابعات
+                </h1>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  دفعات القياس والمتابعة ضمن فصولك.
+                </p>
               </div>
 
               <div className="flex flex-wrap gap-2">
                 <Link
                   href="/staff/classes"
-                  className="inline-flex w-fit items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
+                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <Plus className="h-4 w-4" />
                   اختيار فصل ومادة
@@ -618,7 +640,7 @@ export default function StaffMeasurementsPage() {
                   type="button"
                   onClick={() => void loadBatches()}
                   disabled={status === "loading"}
-                  className="inline-flex w-fit items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-emerald-700 shadow-sm transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-emerald-900 dark:bg-slate-900 dark:text-emerald-300 dark:hover:bg-emerald-950/30"
+                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border bg-background px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <RefreshCw className="h-4 w-4" />
                   {status === "loading" ? "جاري التحديث..." : "تحديث"}
@@ -627,130 +649,38 @@ export default function StaffMeasurementsPage() {
             </div>
           </div>
 
-          <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-4">
-            <SummaryCard
-              icon={School}
-              label="الفصول المرئية"
-              value={`${visibleClasses.length.toLocaleString("ar-SA")} فصل`}
-            />
-
-            <SummaryCard
-              icon={FileText}
-              label="دفعات القياس"
-              value={`${summary.total.toLocaleString("ar-SA")} دفعة`}
-            />
-
-            <SummaryCard
-              icon={ClipboardList}
-              label="المسودات"
-              value={`${summary.drafts.toLocaleString("ar-SA")} مسودة`}
-            />
-
-            <SummaryCard
-              icon={BookOpen}
-              label="بسياق مادة"
-              value={`${summary.withSubjectContext.toLocaleString("ar-SA")} دفعة`}
-            />
-          </div>
         </div>
 
         {error ? (
-          <section className="rounded-3xl border border-red-200 bg-red-50 p-5 text-sm leading-7 text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-100">
+          <section className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm leading-7 text-destructive">
             حدث خطأ أثناء قراءة دفعات القياس: {error}
           </section>
         ) : null}
 
-        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
-          <MetricCard label="إجمالي الدفعات" value={summary.total} />
-          <MetricCard label="مسودات" value={summary.drafts} />
-          <MetricCard label="مرسلة / مراجعة" value={summary.submitted} />
-          <MetricCard label="مقفلة" value={summary.locked} />
-          <MetricCard label="تعويضية" value={summary.compensation} />
-          <MetricCard label="بسياق مادة" value={summary.withSubjectContext} />
-          <MetricCard label="طلاب مستهدفون" value={summary.totalTargets} />
-          <MetricCard label="مكتملون" value={summary.completedTargets} />
-        </section>
-
-        <div className="grid gap-4 lg:grid-cols-3">
-          <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-1">
+        <section className="overflow-hidden rounded-2xl border bg-card text-card-foreground shadow-sm">
+          <div className="flex flex-col gap-4 border-b p-5 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                <CheckCircle2 className="h-5 w-5" />
-              </div>
-
-              <div>
-                <h2 className="font-bold">معنى هذه الصفحة</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  متابعة عامة وليست مكان إنشاء القياس
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 rounded-3xl bg-slate-50 p-4 text-sm leading-7 text-slate-600 dark:bg-slate-950 dark:text-slate-300">
-              <p>
-                القياس الجديد يبدأ من <span className="font-semibold">فصل</span>{" "}
-                ثم <span className="font-semibold">مادة مفعّلة</span>، حتى لا
-                تضيع علاقة الدفعة بالمادة والإسناد.
-              </p>
-
-              <p className="mt-3">
-                أما هنا فتتابع كل الدفعات الموجودة بالفعل، سواء كانت مسودة أو
-                مرسلة أو تعويضية.
-              </p>
-
-              <p className="mt-3">
-                أي دفعة يمكن فتحها للعرض، وإذا كانت مسودة أو قيد الإدخال يمكن
-                تعديلها وإرسالها.
-              </p>
-            </div>
-          </section>
-
-          <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-2">
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-sky-50 p-3 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-                <BookOpen className="h-5 w-5" />
-              </div>
-
-              <div>
-                <h2 className="font-bold">اختصارات القياس</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  روابط سريعة للبدء أو المتابعة.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              {quickActions.map((item) => (
-                <QuickActionCard key={item.title} item={item} />
-              ))}
-            </div>
-          </section>
-        </div>
-
-        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex flex-col gap-4 border-b border-slate-100 p-5 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-violet-50 p-3 text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+              <div className="rounded-xl bg-primary/10 p-3 text-primary">
                 <FileText className="h-5 w-5" />
               </div>
 
               <div>
                 <h2 className="font-bold">دفعات القياس</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   كل الدفعات المرتبطة بالفصول المرئية لك.
                 </p>
               </div>
             </div>
 
             <div className="flex flex-col gap-2 sm:flex-row">
-              <div className="relative">
-                <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <div className="relative min-w-0 flex-1">
+                <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
                 <input
                   value={searchText}
                   onChange={(event) => setSearchText(event.target.value)}
                   placeholder="بحث باسم الدفعة أو الفصل أو المادة..."
-                  className="h-10 w-full rounded-2xl border border-slate-200 bg-white pr-10 pl-3 text-sm outline-none transition focus:border-emerald-300 focus:ring-4 focus:ring-emerald-500/10 dark:border-slate-800 dark:bg-slate-950"
+                  className="h-10 w-full rounded-xl border bg-background pr-10 pl-3 text-sm outline-none transition focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -759,7 +689,7 @@ export default function StaffMeasurementsPage() {
                 onChange={(event) =>
                   setActiveFilter(event.target.value as BatchFilter)
                 }
-                className="h-10 rounded-2xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-emerald-300 focus:ring-4 focus:ring-emerald-500/10 dark:border-slate-800 dark:bg-slate-950"
+                className="h-10 rounded-xl border bg-background px-3 text-sm outline-none transition focus:ring-2 focus:ring-ring sm:w-48"
               >
                 <option value="ALL">كل الدفعات</option>
                 <option value="DRAFTS">المسودات</option>
@@ -774,7 +704,7 @@ export default function StaffMeasurementsPage() {
               {Array.from({ length: 6 }).map((_, index) => (
                 <div
                   key={index}
-                  className="h-44 animate-pulse rounded-3xl bg-slate-100 dark:bg-slate-800"
+                  className="h-44 animate-pulse rounded-2xl bg-muted"
                 />
               ))}
             </div>
@@ -810,16 +740,16 @@ export default function StaffMeasurementsPage() {
           )}
         </section>
 
-        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="border-b border-slate-100 p-5 dark:border-slate-800">
+        <section className="overflow-hidden rounded-2xl border bg-card text-card-foreground shadow-sm">
+          <div className="border-b p-5">
             <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-emerald-50 p-3 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+              <div className="rounded-xl bg-primary/10 p-3 text-primary">
                 <School className="h-5 w-5" />
               </div>
 
               <div>
                 <h2 className="font-bold">ابدأ قياسًا من فصل ومادة</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   افتح الفصل أولًا، ثم اختر المادة من قسم “موادّي في هذا الفصل”.
                 </p>
               </div>
@@ -827,7 +757,7 @@ export default function StaffMeasurementsPage() {
           </div>
 
           {visibleClasses.length === 0 ? (
-            <div className="p-5 text-sm text-slate-500 dark:text-slate-400">
+            <div className="p-5 text-sm text-muted-foreground">
               لا توجد فصول متاحة.
             </div>
           ) : (
@@ -843,83 +773,13 @@ export default function StaffMeasurementsPage() {
   );
 }
 
-function SummaryCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950">
-      <div className="flex items-start gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        <div className="min-w-0">
-          <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-          <p className="mt-1 truncate font-bold text-slate-950 dark:text-slate-50">
-            {value}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MetricCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <p className="text-sm text-slate-500 dark:text-slate-400">{label}</p>
-      <p className="mt-2 text-3xl font-bold text-slate-950 dark:text-slate-50">
-        {value.toLocaleString("ar-SA")}
-      </p>
-    </div>
-  );
-}
-
-function QuickActionCard({ item }: { item: QuickActionCard }) {
-  const Icon = item.icon;
-
-  const content = (
-    <div className="group h-full rounded-3xl border border-slate-100 bg-slate-50 p-4 transition hover:border-emerald-200 hover:bg-white dark:border-slate-800 dark:bg-slate-950 dark:hover:border-emerald-900 dark:hover:bg-slate-900">
-      <div className="flex items-start justify-between gap-3">
-        <div className="rounded-2xl bg-white p-3 text-slate-700 shadow-sm dark:bg-slate-900 dark:text-slate-200">
-          <Icon className="h-5 w-5" />
-        </div>
-
-        {item.href ? (
-          <ChevronLeft className="mt-1 h-4 w-4 text-slate-300 transition group-hover:text-emerald-500" />
-        ) : null}
-      </div>
-
-      <h3 className="mt-4 font-bold">{item.title}</h3>
-
-      <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-        {item.description}
-      </p>
-
-      <span className="mt-4 inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900">
-        {item.actionLabel}
-      </span>
-    </div>
-  );
-
-  if (!item.href) return content;
-
-  return <Link href={item.href}>{content}</Link>;
-}
-
 function BatchCard({ item }: { item: BatchWithClass }) {
   const { batch, classInfo } = item;
   const editable = isEditableBatch(batch);
   const latestDate = getBatchDate(batch);
 
   return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950">
+    <div className="rounded-2xl border bg-muted/40 p-5">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -937,93 +797,48 @@ function BatchCard({ item }: { item: BatchWithClass }) {
               </span>
             ) : null}
 
-            {batch.classSubjectOfferingId || batch.subjectKey ? (
-              <span className="inline-flex rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200 dark:bg-sky-950/40 dark:text-sky-300 dark:ring-sky-900">
-                مرتبطة بمادة
-              </span>
-            ) : (
-              <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700">
-                بدون سياق مادة
-              </span>
-            )}
           </div>
 
           <h3 className="mt-3 truncate text-lg font-bold">
-            {batch.templateTitle || batch.templateId || "دفعة قياس"}
+            {getFriendlyMeasurementLabel(batch.templateTitle) ||
+              batch.templateTitle ||
+              getFriendlyMeasurementLabel(batch.assessmentSlot) ||
+              getFriendlyMeasurementLabel(batch.assessmentKind) ||
+              getFriendlyMeasurementLabel(batch.trackerKind) ||
+              getBatchKindLabel(batch.batchKind)}
           </h3>
 
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {getBatchKindLabel(batch.batchKind)} —{" "}
-            {batch.assessmentSlot ||
-              batch.assessmentKind ||
-              batch.trackerKind ||
-              "غير محدد"}
+          <p className="mt-1 text-sm text-muted-foreground">
+            {getFriendlyMeasurementLabel(batch.assessmentSlot) ||
+              getFriendlyMeasurementLabel(batch.assessmentKind) ||
+              getFriendlyMeasurementLabel(batch.trackerKind) ||
+              getBatchKindLabel(batch.batchKind)}
           </p>
         </div>
 
-        <div className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="text-sm text-muted-foreground">
           {formatDate(latestDate)}
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <MiniInfo label="المستهدفون" value={batch.targetCount ?? 0} />
-        <MiniInfo label="المكتمل" value={batch.completedCount ?? 0} />
-        <MiniInfo label="الناقص" value={batch.missingCount ?? 0} />
+      <p className="mt-4 text-sm text-muted-foreground">
+        المستهدفون: {(batch.targetCount ?? 0).toLocaleString("ar-SA")} · المكتمل: {" "}
+        {(batch.completedCount ?? 0).toLocaleString("ar-SA")} · الناقص: {" "}
+        {(batch.missingCount ?? 0).toLocaleString("ar-SA")}
+      </p>
+
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+        <span>الفصل: {classInfo ? getClassTitle(classInfo) : "غير محدد"}</span>
+        {classInfo?.schoolName ? <span>المدرسة: {classInfo.schoolName}</span> : null}
+        {getFriendlySubjectLabel(batch.subjectKey) ? (
+          <span>المادة: {getFriendlySubjectLabel(batch.subjectKey)}</span>
+        ) : null}
       </div>
-
-      <div className="mt-4 rounded-2xl bg-white p-3 text-sm leading-6 text-slate-600 dark:bg-slate-900 dark:text-slate-300">
-        <div className="flex flex-col gap-1">
-          <span>
-            الفصل:{" "}
-            <span className="font-semibold">
-              {classInfo
-                ? getClassTitle(classInfo)
-                : batch.classId || "غير محدد"}
-            </span>
-          </span>
-
-          <span>
-            المدرسة:{" "}
-            <span className="font-semibold">
-              {classInfo?.schoolName || batch.schoolId || "غير محدد"}
-            </span>
-          </span>
-
-          <span>
-            المادة:{" "}
-            <span className="font-semibold">
-              {batch.subjectKey || "غير محدد"}
-            </span>
-          </span>
-
-          <span>
-            ClassSubjectOffering:{" "}
-            <span className="font-mono text-xs">
-              {batch.classSubjectOfferingId || "—"}
-            </span>
-          </span>
-
-          <span>
-            TeacherAssignment:{" "}
-            <span className="font-mono text-xs">
-              {batch.teacherAssignmentId || "—"}
-            </span>
-          </span>
-        </div>
-      </div>
-
-      {batch.isCompensationBatch === true && batch.originalBatchId ? (
-        <div className="mt-4 rounded-2xl border border-violet-200 bg-violet-50 p-3 text-sm text-violet-800 dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-violet-100">
-          دفعة تعويضية عن:{" "}
-          <span className="font-mono">{batch.originalBatchId}</span>
-        </div>
-      ) : null}
 
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           href={buildBatchViewHref(batch.id)}
-          className="inline-flex h-10 items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
         >
           عرض التفاصيل
         </Link>
@@ -1031,7 +846,7 @@ function BatchCard({ item }: { item: BatchWithClass }) {
         {editable ? (
           <Link
             href={buildBatchEditHref(batch)}
-            className="inline-flex h-10 items-center justify-center rounded-2xl border border-emerald-200 bg-white px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-900 dark:bg-slate-900 dark:text-emerald-300 dark:hover:bg-emerald-950/30"
+            className="inline-flex h-10 items-center justify-center rounded-xl border bg-background px-4 text-sm font-semibold text-foreground transition hover:bg-muted"
           >
             تعديل / إرسال
           </Link>
@@ -1039,7 +854,7 @@ function BatchCard({ item }: { item: BatchWithClass }) {
 
         <Link
           href={buildLearningLossHref(classInfo)}
-          className="inline-flex h-10 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="inline-flex h-10 items-center justify-center rounded-xl border bg-background px-4 text-sm font-semibold text-foreground transition hover:bg-muted"
         >
           الفاقد
         </Link>
@@ -1052,26 +867,26 @@ function ClassStartCard({ item }: { item: StaffVisibleClass }) {
   const studentCount = getStudentCount(item);
 
   return (
-    <div className="rounded-3xl border border-slate-100 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950">
+    <div className="rounded-2xl border bg-muted/40 p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="truncate font-bold">{getClassTitle(item)}</h3>
 
-          <p className="mt-1 truncate text-sm text-slate-500 dark:text-slate-400">
-            {item.schoolName || item.schoolId || "مدرسة غير محددة"}
+          <p className="mt-1 truncate text-sm text-muted-foreground">
+            {item.schoolName || "مدرسة غير محددة"}
           </p>
 
-          <p className="mt-1 truncate text-sm text-slate-500 dark:text-slate-400">
-            {item.gradeTitle || item.gradeId || "صف غير محدد"}
+          <p className="mt-1 truncate text-sm text-muted-foreground">
+            {item.gradeTitle || "صف غير محدد"}
           </p>
         </div>
 
-        <div className="rounded-2xl bg-white p-3 text-emerald-700 shadow-sm dark:bg-slate-900 dark:text-emerald-300">
+        <div className="rounded-xl bg-background p-3 text-primary shadow-sm">
           <GraduationCap className="h-5 w-5" />
         </div>
       </div>
 
-      <div className="mt-4 rounded-2xl bg-white p-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-300">
+      <div className="mt-4 rounded-xl bg-background p-3 text-sm text-muted-foreground">
         الطلاب:{" "}
         <span className="font-semibold">
           {studentCount !== null
@@ -1083,29 +898,18 @@ function ClassStartCard({ item }: { item: StaffVisibleClass }) {
       <div className="mt-4 grid grid-cols-2 gap-2">
         <Link
           href={buildClassHref(item)}
-          className="inline-flex h-10 items-center justify-center rounded-2xl bg-emerald-600 px-3 text-xs font-semibold text-white transition hover:bg-emerald-700"
+          className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-3 text-xs font-semibold text-primary-foreground transition hover:bg-primary/90"
         >
           اختيار مادة
         </Link>
 
         <Link
           href={buildClassMeasurementsHref(item)}
-          className="inline-flex h-10 items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="inline-flex h-10 items-center justify-center rounded-xl border bg-background px-3 text-xs font-semibold text-foreground transition hover:bg-muted"
         >
           عرض دفعات الفصل
         </Link>
       </div>
-    </div>
-  );
-}
-
-function MiniInfo({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-2xl bg-white p-3 text-center dark:bg-slate-900">
-      <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
-      <p className="mt-1 text-xl font-bold text-slate-950 dark:text-slate-50">
-        {value.toLocaleString("ar-SA")}
-      </p>
     </div>
   );
 }
@@ -1125,21 +929,21 @@ function EmptyState({
 }) {
   return (
     <div className="p-5">
-      <div className="rounded-3xl border border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300">
+      <div className="rounded-2xl border border-dashed p-8 text-center">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
           <Icon className="h-6 w-6" />
         </div>
 
         <h3 className="mt-4 font-bold">{title}</h3>
 
-        <p className="mx-auto mt-2 max-w-xl text-sm leading-7 text-slate-500 dark:text-slate-400">
+        <p className="mx-auto mt-2 max-w-xl text-sm leading-7 text-muted-foreground">
           {description}
         </p>
 
         {href && actionLabel ? (
           <Link
             href={href}
-            className="mt-5 inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+            className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
           >
             {actionLabel}
           </Link>

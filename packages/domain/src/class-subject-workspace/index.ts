@@ -152,6 +152,14 @@ function assignmentMatchesSubjectOffering(params: {
 }): boolean {
   const { assignment, offering } = params;
 
+  if (
+    assignment.orgId !== offering.orgId ||
+    assignment.schoolId !== offering.schoolId ||
+    assignment.academicYearId !== offering.academicYearId
+  ) {
+    return false;
+  }
+
   /**
    * الربط الأقوى إن وجد.
    */
@@ -194,6 +202,14 @@ function assignmentCoversClass(params: {
 }): boolean {
   const { assignment, offering, classLinks } = params;
 
+  if (
+    assignment.orgId !== offering.orgId ||
+    assignment.schoolId !== offering.schoolId ||
+    assignment.academicYearId !== offering.academicYearId
+  ) {
+    return false;
+  }
+
   /**
    * إسناد مباشر على الفصل.
    */
@@ -209,6 +225,9 @@ function assignmentCoversClass(params: {
    */
   const linkedToClass = classLinks.some((link) => {
     if (link.assignmentId !== assignment.id) return false;
+    if (link.orgId !== offering.orgId) return false;
+    if (link.schoolId !== offering.schoolId) return false;
+    if (link.academicYearId !== offering.academicYearId) return false;
     if (link.classId !== offering.classId) return false;
 
     if (
