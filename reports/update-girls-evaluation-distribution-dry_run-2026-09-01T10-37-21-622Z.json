@@ -1,0 +1,10 @@
+{
+  "ok": false,
+  "mode": "DRY_RUN",
+  "readOnly": true,
+  "error": {
+    "name": "ReferenceError",
+    "message": "vpPeriodicTeacherPlanCandidates is not defined"
+  },
+  "reportFile": "reports/update-girls-evaluation-distribution-dry_run-2026-09-01T10-37-21-622Z.json"
+}
