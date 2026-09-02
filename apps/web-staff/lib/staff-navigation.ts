@@ -32,6 +32,8 @@ import {
 import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
+import { canAccessStaffWork } from "@/lib/staff-work-access";
+import type { PersonSupervisionScope } from "@takween/contracts";
 
 export type StaffNavItem = {
   href: string;
@@ -45,6 +47,7 @@ export type StaffNavItem = {
   performanceImprovement?: boolean;
   lessonPrepApprovals?: boolean;
   teacherWork?: boolean;
+  staffWork?: boolean;
 };
 
 export const staffNavItems: StaffNavItem[] = [
@@ -101,6 +104,12 @@ export const staffNavItems: StaffNavItem[] = [
     label: "متابعة أعمال المعلمين",
     icon: UsersRound,
     teacherWork: true,
+  },
+  {
+    href: "/staff/staff-work",
+    label: "متابعة أعمال القيادات",
+    icon: UsersRound,
+    staffWork: true,
   },
   {
     href: "/staff/documents/manage",
@@ -205,10 +214,12 @@ export type StaffNavigationAccess = {
   canAccessPerformanceImprovement: boolean;
   canAccessLessonPrepApprovals: boolean;
   canAccessTeacherWork: boolean;
+  canAccessStaffWork: boolean;
 };
 
 export function getStaffNavigationAccess(
   actor: StaffActorData,
+  supervisionScopes: readonly PersonSupervisionScope[] = [],
 ): StaffNavigationAccess {
   return {
     visibleModuleSet: new Set(actor.visibleModules),
@@ -221,6 +232,11 @@ export function getStaffNavigationAccess(
     canAccessLessonPrepApprovals:
       getLessonPrepReviewSchoolIds({ personId: actor.personId }).length > 0,
     canAccessTeacherWork: canAccessTeacherWork(actor),
+    canAccessStaffWork: canAccessStaffWork({
+      orgId: actor.orgId,
+      personId: actor.personId,
+      scopes: supervisionScopes,
+    }),
   };
 }
 
@@ -246,6 +262,7 @@ export function getVisibleStaffNavItems(
 
   return staffNavItems.filter((item) => {
     if (item.teacherWork) return access.canAccessTeacherWork;
+    if (item.staffWork) return access.canAccessStaffWork;
 
     if (item.lessonPrepApprovals) return access.canAccessLessonPrepApprovals;
 

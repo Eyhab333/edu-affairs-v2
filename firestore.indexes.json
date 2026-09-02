@@ -1,4 +1,30 @@
 {
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "orgMemberships",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "orgId", "order": "ASCENDING" },
+        { "fieldPath": "scopeType", "order": "ASCENDING" },
+        { "fieldPath": "scopeId", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "orgMemberships",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "orgId", "order": "ASCENDING" },
+        { "fieldPath": "scopes.schoolIds", "arrayConfig": "CONTAINS" }
+      ]
+    },
+    {
+      "collectionGroup": "events",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "orgId", "order": "ASCENDING" },
+        { "fieldPath": "schoolId", "order": "ASCENDING" }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }

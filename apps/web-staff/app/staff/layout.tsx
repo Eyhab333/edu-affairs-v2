@@ -89,7 +89,7 @@ function StaffShell({ children }: { children: ReactNode }) {
     };
   }, [actor.orgId, actor.personId]);
 
-  const navigationAccess = getStaffNavigationAccess(actor);
+  const navigationAccess = getStaffNavigationAccess(actor, supervisionScopes);
   const {
     visibleModuleSet,
     canAccessDocumentation,
@@ -100,6 +100,7 @@ function StaffShell({ children }: { children: ReactNode }) {
     canAccessPerformanceImprovement: canAccessPerformanceImprovementRoute,
     canAccessLessonPrepApprovals: canAccessLegacyLessonPrepApprovals,
     canAccessTeacherWork: canAccessTeacherWorkRoute,
+    canAccessStaffWork: canAccessStaffWorkRoute,
   } = navigationAccess;
   const canAccessLessonPrepApprovals = useMemo(
     () =>
@@ -134,12 +135,16 @@ function StaffShell({ children }: { children: ReactNode }) {
     pathname.startsWith("/staff/performance-improvement/");
   const isTeacherWorkRoute =
     pathname === "/staff/teacher-work" || pathname.startsWith("/staff/teacher-work/");
+  const isStaffWorkRoute =
+    pathname === "/staff/staff-work" || pathname.startsWith("/staff/staff-work/");
   const isLessonPrepApprovalsRoute =
     pathname === "/staff/lesson-prep/approvals" ||
     pathname.startsWith("/staff/lesson-prep/approvals/");
   const canAccessCurrentRoute =
     isTeacherWorkRoute
       ? canAccessTeacherWorkRoute
+      : isStaffWorkRoute
+      ? scopesLoading || canAccessStaffWorkRoute
       : isLessonPrepApprovalsRoute
       ? scopesLoading || canAccessLessonPrepApprovals
       : isPerformanceImprovementRoute
@@ -165,6 +170,7 @@ function StaffShell({ children }: { children: ReactNode }) {
   const visibleNavItems = getVisibleStaffNavItems({
     ...navigationAccess,
     canAccessLessonPrepApprovals,
+    canAccessStaffWork: canAccessStaffWorkRoute,
   });
 
   async function handleLogout() {

@@ -352,6 +352,7 @@ export type SchoolContact = z.infer<typeof SchoolContactSchema>;
 
 export const PersonSupervisionCapability = z.enum([
   "TEACHER_WORK_VIEW",
+  "STAFF_WORK_VIEW",
   "LESSON_PREP_REVIEW",
 ]);
 export type PersonSupervisionCapability = z.infer<
