@@ -13,7 +13,7 @@ function formatDate(value: number | null) { return value ? new Intl.DateTimeForm
 
 export default function StaffWorkDetailPage() {
   const { actor } = useStaffActor(); const params = useParams<{ personId: string }>(); const personId = decodeURIComponent(params.personId || "");
-  const [period, setPeriod] = useState<StaffWorkPeriod>("MONTH"); const [metric, setMetric] = useState<StaffWorkMetricKey | "ALL">("ALL"); const [staff, setStaff] = useState<StaffWorkSummary | null>(null); const [activities, setActivities] = useState<StaffWorkActivity[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState("");
+  const [period, setPeriod] = useState<StaffWorkPeriod>("ALL"); const [metric, setMetric] = useState<StaffWorkMetricKey | "ALL">("ALL"); const [staff, setStaff] = useState<StaffWorkSummary | null>(null); const [activities, setActivities] = useState<StaffWorkActivity[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState("");
   const load = useCallback(async () => { if (!personId) return; setLoading(true); setError(""); try { const data = await loadStaffWorkDetail({ orgId: actor.orgId, academicYearId: actor.currentTerm?.academicYearId, personId, period }); setStaff(data?.staff ?? null); setActivities(data?.activities ?? []); } catch (nextError) { setError(nextError instanceof Error ? nextError.message : "تعذر تحميل الأعمال."); } finally { setLoading(false); } }, [actor.currentTerm?.academicYearId, actor.orgId, period, personId]);
   useEffect(() => { void load(); }, [load]);
   const visibleActivities = useMemo(() => metric === "ALL" ? activities : activities.filter((item) => item.metricKey === metric), [activities, metric]);

@@ -8,7 +8,8 @@ export type StaffWorkMetricKey =
   | "performanceImprovement"
   | "studentCases"
   | "attendance"
-  | "lessonPrepReview";
+  | "lessonPrepReview"
+  | "workDocumentation";
 
 export type StaffWorkMetric = { count: number; latestActivityAt: number | null };
 export type StaffWorkSummary = {
@@ -59,5 +60,6 @@ export const staffWorkMetricLabels: Record<StaffWorkMetricKey, string> = {
   studentCases: "الحالات الطلابية",
   attendance: "الحضور",
   lessonPrepReview: "مراجعة التحاضير",
+  workDocumentation: "توثيق العمل",
 };
-export const staffWorkMetricOrder: StaffWorkMetricKey[] = ["evaluations", "performanceImprovement", "studentCases", "attendance", "lessonPrepReview"];
+export const staffWorkMetricOrder: StaffWorkMetricKey[] = ["evaluations", "performanceImprovement", "studentCases", "attendance", "lessonPrepReview", "workDocumentation"];

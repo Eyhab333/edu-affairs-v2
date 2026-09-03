@@ -42,7 +42,8 @@ type StaffWorkMetricKey =
   | "performanceImprovement"
   | "studentCases"
   | "attendance"
-  | "lessonPrepReview";
+  | "lessonPrepReview"
+  | "workDocumentation";
 
 type StaffWorkActivity = {
   id: string;
@@ -82,6 +83,7 @@ const metricKeys: StaffWorkMetricKey[] = [
   "studentCases",
   "attendance",
   "lessonPrepReview",
+  "workDocumentation",
 ];
 
 function row(value: unknown): Row {
@@ -209,12 +211,13 @@ function addActivity(result: StaffWorkActivity[], item: Omit<StaffWorkActivity, 
 async function collectActivities(params: { orgId: string; actor: Actor; staffIds: Set<string>; academicYearId: string; period: StaffWorkPeriod }) {
   const startAt = periodStart(params.period);
   const activities: StaffWorkActivity[] = [];
-  const [evaluations, plans, cases, attendance, lessonPreps] = await Promise.all([
+  const [evaluations, plans, cases, attendance, lessonPreps, workDocumentation] = await Promise.all([
     rowsForSchools({ orgId: params.orgId, collectionName: "evaluationSubmissions", schoolIds: params.actor.schoolIds }),
     rowsForSchools({ orgId: params.orgId, collectionName: "performanceImprovementPlans", schoolIds: params.actor.schoolIds }),
     rowsForSchools({ orgId: params.orgId, collectionName: "studentCases", schoolIds: params.actor.schoolIds }),
     rowsForSchools({ orgId: params.orgId, collectionName: "studentAttendanceBatches", schoolIds: params.actor.schoolIds }),
     rowsForSchools({ orgId: params.orgId, collectionName: "subjectLessonPreps", schoolIds: params.actor.schoolIds }),
+    rowsForSchools({ orgId: params.orgId, collectionName: "workDocumentation", schoolIds: params.actor.schoolIds }),
   ]);
   for (const item of evaluations) {
     if (!currentYear(item, params.academicYearId)) continue;
@@ -264,6 +267,11 @@ async function collectActivities(params: { orgId: string; actor: Actor; staffIds
     const approvedAt = timestamp(item.approvedAt); const returnedAt = timestamp(item.returnedAt);
     if (params.staffIds.has(text(item.approvedByPersonId)) && inPeriod(approvedAt, startAt)) addActivity(activities, { type: "LESSON_PREP_APPROVED", metricKey: "lessonPrepReview", personId: text(item.approvedByPersonId), schoolId: text(item.schoolId), activityAt: approvedAt!, title: "اعتماد تحضير درس", description: text(item.lessonTitle), status: text(item.status), targetName: text(item.teacherDisplayName), classLabel: text(item.classTitle) || text(item.classId), sourceEntityId: text(item.id) });
     if (params.staffIds.has(text(item.returnedByPersonId)) && inPeriod(returnedAt, startAt)) addActivity(activities, { type: "LESSON_PREP_RETURNED", metricKey: "lessonPrepReview", personId: text(item.returnedByPersonId), schoolId: text(item.schoolId), activityAt: returnedAt!, title: "إعادة تحضير للتعديل", description: text(item.lessonTitle), status: text(item.status), targetName: text(item.teacherDisplayName), classLabel: text(item.classTitle) || text(item.classId), sourceEntityId: text(item.id) });
+  }
+  for (const item of workDocumentation) {
+    const activityAt = timestamp(item.updatedAt) ?? timestamp(item.createdAt);
+    const personId = text(item.personId);
+    if (currentYear(item, params.academicYearId) && params.staffIds.has(personId) && inPeriod(activityAt, startAt)) addActivity(activities, { type: "WORK_DOCUMENTATION", metricKey: "workDocumentation", personId, schoolId: text(item.schoolId), activityAt: activityAt!, title: "توثيق عمل", description: text(item.templateTitle) || text(item.templateKey), status: "", targetName: "", classLabel: "", sourceEntityId: text(item.id) });
   }
   return activities.sort((a, b) => b.activityAt - a.activityAt);
 }

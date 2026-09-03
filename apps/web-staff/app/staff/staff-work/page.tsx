@@ -19,7 +19,7 @@ export default function StaffWorkPage() {
   const { actor } = useStaffActor();
   const [scopes, setScopes] = useState<PersonSupervisionScope[]>([]);
   const [scopesLoading, setScopesLoading] = useState(true);
-  const [period, setPeriod] = useState<StaffWorkPeriod>("MONTH");
+  const [period, setPeriod] = useState<StaffWorkPeriod>("ALL");
   const [staff, setStaff] = useState<StaffWorkSummary[]>([]);
   const [schoolId, setSchoolId] = useState("");
   const [roleKey, setRoleKey] = useState("");
