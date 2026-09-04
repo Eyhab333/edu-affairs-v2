@@ -47,7 +47,8 @@ export type WorkDocumentationRoleGroup =
   | "ACTIVITY"
   | "COUNSELOR"
   | "PRINCIPAL"
-  | "VICE_PRINCIPAL";
+  | "VICE_PRINCIPAL"
+  | "EDU_SUPERVISOR";
 
 export type WorkDocumentationInstanceMode = "SINGLE" | "MULTIPLE";
 
@@ -828,11 +829,47 @@ const vicePrincipalTemplates: WorkDocumentationTemplate[] = [
   ]),
 ];
 
+const educationalSupervisorTemplates: WorkDocumentationTemplate[] = [
+  template(
+    "educational-supervision-plan",
+    "الخطة الإشرافية للمشرفة التعليمية",
+    "EDU_SUPERVISOR",
+    [
+      section("الخطة الإشرافية", [
+        date("periodFrom", "الفترة من"),
+        date("periodTo", "الفترة إلى"),
+        table("rows", "الزيارات", [
+          { key: "day", label: "اليوم" },
+          { key: "date", label: "التاريخ", type: "date" },
+          { key: "level", label: "المرحلة" },
+          { key: "class", label: "الفصل" },
+          { key: "teacherName", label: "اسم المعلمة" },
+          { key: "yearsOfService", label: "سنوات الخدمة", type: "number" },
+          {
+            key: "visitCompleted",
+            label: "تمت الزيارة",
+            type: "select",
+            options: ["نعم", "لا"],
+          },
+          {
+            key: "reportSubmitted",
+            label: "تم رفع التقرير",
+            type: "select",
+            options: ["نعم", "لا"],
+          },
+          { key: "notes", label: "ملاحظات" },
+        ]),
+      ]),
+    ],
+  ),
+];
+
 export const WORK_DOCUMENTATION_TEMPLATES = [
   ...activityTemplates,
   ...counselorTemplates,
   ...principalTemplates,
   ...vicePrincipalTemplates,
+  ...educationalSupervisorTemplates,
 ];
 
 const ROLE_GROUPS: Record<WorkDocumentationRoleGroup, string[]> = {
@@ -846,7 +883,28 @@ const ROLE_GROUPS: Record<WorkDocumentationRoleGroup, string[]> = {
     "GIRLS_VP",
     "KG_VP",
   ],
+  EDU_SUPERVISOR: ["EDU_SUPERVISOR"],
 };
+
+const EDUCATIONAL_SUPERVISOR_SCHOOL_IDS = new Set([
+  "kg-01",
+  "kg-02",
+  "kg-03",
+  "kg-04",
+]);
+
+export function getWorkDocumentationSchoolIds(
+  roleKey: string | null,
+  schools: Array<{ id: string }>,
+) {
+  const schoolIds = schools.map((school) => school.id);
+
+  return roleKey === "EDU_SUPERVISOR"
+    ? schoolIds.filter((schoolId) =>
+        EDUCATIONAL_SUPERVISOR_SCHOOL_IDS.has(schoolId),
+      )
+    : schoolIds;
+}
 
 export function canAccessWorkDocumentation(roles: string[]) {
   return roles.some((role) =>

@@ -14,6 +14,7 @@ import {
   getInitialWorkDocumentationData,
   getWorkDocumentationInstanceMode,
   getWorkDocumentationRole,
+  getWorkDocumentationSchoolIds,
   getWorkDocumentationTemplate,
   listWorkDocumentationRecords,
   loadWorkDocumentationContext,
@@ -61,7 +62,10 @@ export default function WorkDocumentationFormPage() {
   const instanceMode = template
     ? getWorkDocumentationInstanceMode(template)
     : "SINGLE";
-  const schoolIds = useMemo(() => actor.schools.map((school) => school.id), [actor.schools]);
+  const schoolIds = useMemo(
+    () => getWorkDocumentationSchoolIds(roleKey, actor.schools),
+    [actor.schools, roleKey],
+  );
   const scopedSchoolId = actor.memberships.find(
     (membership) => membership.scopeType === "SCHOOL",
   )?.scopeId;
@@ -375,6 +379,12 @@ export default function WorkDocumentationFormPage() {
           </Card>
 
           <WorkDocumentationForm template={template} value={data} onChange={setData} />
+
+          {template.key === "educational-supervision-plan" ? (
+            <p className="text-sm text-muted-foreground">
+              لا تقل الزيارات لكل معلمة عن زيارتين في كل فصل، وتزاد حسب الحاجة عند وجود حاجة أو فاقد تعليمي.
+            </p>
+          ) : null}
 
           <div className="flex justify-end">
             <Button type="submit" disabled={saving}>

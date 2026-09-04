@@ -1,66 +1,37 @@
 {
-  "generatedAt": "2026-08-28T20:37:35.184Z",
+  "generatedAt": "2026-09-04T09:16:26.362Z",
   "orgId": "takween",
   "summary": {
-    "totalRows": 2,
+    "totalRows": 1,
     "newAccounts": 0,
-    "existingComplete": 2,
+    "existingComplete": 1,
     "existingIncomplete": 0,
     "conflicts": 0
   },
   "results": [
     {
       "rowNumber": 2,
-      "displayName": "الهنوف سليمان عبدالله الفرهود",
-      "email": "a-s-alfrhood@qz.org.sa",
-      "employeeNumber": "",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
+      "displayName": "حامد السيد السيد نافع",
+      "email": "hameed-s@qz.org.sa",
+      "employeeNumber": "KF100000030",
+      "schoolId": "mrb-boys-sayh",
+      "roleKey": "BOYS_TEACHER",
       "previewStatus": "EXISTING_COMPLETE",
       "schoolExists": true,
       "authExists": true,
-      "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+      "uid": "YDwGInju4xVzKeSs6cC1BTkfu3W2",
       "peopleMatches": [
         {
-          "id": "p-a-s-alfrhood",
-          "personId": "p-a-s-alfrhood",
-          "displayName": "الهنوف سليمان عبدالله الفرهود"
+          "id": "p-hameed-s",
+          "personId": "p-hameed-s",
+          "displayName": "حامد السيد السيد نافع"
         }
       ],
       "userMatches": [
         {
-          "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
-          "personId": "p-a-s-alfrhood",
-          "displayName": "الهنوف سليمان عبدالله الفرهود"
-        }
-      ],
-      "userMembershipExists": true,
-      "orgMembershipExists": true,
-      "conflicts": []
-    },
-    {
-      "rowNumber": 3,
-      "displayName": "رهام عبدالله محمد الطيار",
-      "email": "r-a-atyar@qz.org.sa",
-      "employeeNumber": "",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
-      "previewStatus": "EXISTING_COMPLETE",
-      "schoolExists": true,
-      "authExists": true,
-      "uid": "FxemvSJNxhSrIazMvkEn1E4HkUs1",
-      "peopleMatches": [
-        {
-          "id": "p-r-a-atyar",
-          "personId": "p-r-a-atyar",
-          "displayName": "رهام عبدالله محمد الطيار"
-        }
-      ],
-      "userMatches": [
-        {
-          "uid": "FxemvSJNxhSrIazMvkEn1E4HkUs1",
-          "personId": "p-r-a-atyar",
-          "displayName": "رهام عبدالله محمد الطيار"
+          "uid": "YDwGInju4xVzKeSs6cC1BTkfu3W2",
+          "personId": "p-hameed-s",
+          "displayName": "حامد السيد السيد نافع"
         }
       ],
       "userMembershipExists": true,

@@ -18,6 +18,7 @@ import {
 import {
   getWorkDocumentationInstanceMode,
   getWorkDocumentationRole,
+  getWorkDocumentationSchoolIds,
   getWorkDocumentationTemplates,
   listWorkDocumentationRecords,
   loadWorkDocumentationContext,
@@ -35,7 +36,11 @@ function getErrorMessage(error: unknown) {
 export default function WorkDocumentationPage() {
   const { actor } = useStaffActor();
   const searchParams = useSearchParams();
-  const schoolIds = useMemo(() => actor.schools.map((school) => school.id), [actor.schools]);
+  const roleKey = getWorkDocumentationRole(actor.roles);
+  const schoolIds = useMemo(
+    () => getWorkDocumentationSchoolIds(roleKey, actor.schools),
+    [actor.schools, roleKey],
+  );
   const scopedSchoolId = actor.memberships.find(
     (membership) => membership.scopeType === "SCHOOL",
   )?.scopeId;
@@ -46,10 +51,13 @@ export default function WorkDocumentationPage() {
       requestedSchoolId: searchParams.get("schoolId"),
     }),
   );
-  const roleKey = getWorkDocumentationRole(actor.roles);
   const templates = useMemo(
     () => (roleKey ? getWorkDocumentationTemplates(roleKey) : []),
     [roleKey],
+  );
+  const availableSchools = useMemo(
+    () => actor.schools.filter((school) => schoolIds.includes(school.id)),
+    [actor.schools, schoolIds],
   );
   const [context, setContext] = useState<WorkDocumentationContext | null>(null);
   const [records, setRecords] = useState<Record<string, WorkDocumentationRecord[]>>({});
@@ -162,7 +170,7 @@ export default function WorkDocumentationPage() {
         </CardContent>
       </Card>
 
-      {actor.schools.length > 1 ? (
+      {availableSchools.length > 1 ? (
         <Card>
           <CardContent className="grid gap-2 p-5 md:max-w-md">
             <label htmlFor="work-documentation-school" className="text-sm font-medium">
@@ -174,7 +182,7 @@ export default function WorkDocumentationPage() {
               onChange={(event) => setSchoolId(event.target.value)}
               className="rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
             >
-              {actor.schools.map((school) => (
+              {availableSchools.map((school) => (
                 <option key={school.id} value={school.id}>
                   {school.name || school.id}
                 </option>

@@ -329,7 +329,8 @@ function canUseWorkDocumentation(orgId, schoolId, roleKey) {
       "BOYS_STUDENTS_VP",
       "BOYS_TEACHERS_VP",
       "GIRLS_VP",
-      "KG_VP"
+      "KG_VP",
+      "EDU_SUPERVISOR"
     ];
 }
 

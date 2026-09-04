@@ -1,5 +1,17 @@
 export const URGENT_SLA_TASK_QUEUE = "urgent-sla-task-queue";
 
+export type UrgentEscalationLevel =
+  | "COUNSELOR"
+  | "PRINCIPAL"
+  | "SUPERVISION_HEAD";
+
+export type UrgentEscalationAssignee = {
+  uid: string;
+  personId: string;
+  roleKey: string;
+  displayName: string;
+};
+
 export type UrgentTimelineSpikeInput = {
   orgId: string;
   requestId: string;

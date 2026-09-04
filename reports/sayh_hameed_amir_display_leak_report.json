@@ -1,0 +1,1256 @@
+{
+  "scope": {
+    "orgId": "takween",
+    "schoolId": "mrb-boys-sayh"
+  },
+  "people": {
+    "HAMEED": {
+      "uid": "YDwGInju4xVzKeSs6cC1BTkfu3W2",
+      "email": "hameed-s@qz.org.sa",
+      "personId": "p-hameed-s",
+      "displayName": "حامد السيد السيد نافع"
+    },
+    "AMIR": {
+      "uid": "WIrOdAsNgFa7tpngDJVO3COI3WI3",
+      "email": "a.aljidawii@qz.org.sa",
+      "personId": "p-a-aljidawii",
+      "displayName": "أمير إنسان رزق الجداوي"
+    }
+  },
+  "results": {
+    "HAMEED": {
+      "person": {
+        "uid": "YDwGInju4xVzKeSs6cC1BTkfu3W2",
+        "email": "hameed-s@qz.org.sa",
+        "personId": "p-hameed-s",
+        "displayName": "حامد السيد السيد نافع"
+      },
+      "targetAssignments": {
+        "total": 8,
+        "active": 8,
+        "removed": 0,
+        "rows": [
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-target-p-hameed-s",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          }
+        ]
+      },
+      "evaluatorAssignments": {
+        "total": 75,
+        "active": 75,
+        "removed": 0,
+        "rows": [
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09-p-hameed-s-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-hameed-s-p-s-sayed",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+            "evaluatorPersonId": "p-s-sayed",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-hameed-s-p-s-sayed",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+            "evaluatorPersonId": "p-s-sayed",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-hameed-s-p-s-sayed",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+            "evaluatorPersonId": "p-s-sayed",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-hameed-s-p-s-sayed",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+            "evaluatorPersonId": "p-s-sayed",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-hameed-s-p-s-sayed",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+            "evaluatorPersonId": "p-s-sayed",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-hameed-s-p-s-sayed",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+            "evaluatorPersonId": "p-s-sayed",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12-p-hameed-s-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-hameed-s",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          }
+        ]
+      }
+    },
+    "AMIR": {
+      "person": {
+        "uid": "WIrOdAsNgFa7tpngDJVO3COI3WI3",
+        "email": "a.aljidawii@qz.org.sa",
+        "personId": "p-a-aljidawii",
+        "displayName": "أمير إنسان رزق الجداوي"
+      },
+      "targetAssignments": {
+        "total": 8,
+        "active": 8,
+        "removed": 0,
+        "rows": [
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-target-p-a-aljidawii",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetEmail": "a.aljidawii@qz.org.sa",
+              "targetDisplayName": "أمير إنسان رزق الجداوي",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "targetKind": "TEACHER"
+            }
+          }
+        ]
+      },
+      "evaluatorAssignments": {
+        "total": 75,
+        "active": 75,
+        "removed": 0,
+        "rows": [
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09-p-a-aljidawii-p-a-s-alkmays",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09",
+            "evaluatorPersonId": "p-a-s-alkmays",
+            "evaluatorRoleKey": "BOYS_PRINCIPAL",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "evaluatorPersonId": "p-a-s-alkmays",
+              "evaluatorEmail": "a-s-alkmays@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-a-aljidawii-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+            "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+              "evaluatorEmail": "math-science-sup@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-a-aljidawii-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+            "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+              "evaluatorEmail": "math-science-sup@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-a-aljidawii-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+            "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+              "evaluatorEmail": "math-science-sup@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-a-aljidawii-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+            "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+              "evaluatorEmail": "math-science-sup@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-a-aljidawii-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+            "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+              "evaluatorEmail": "math-science-sup@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-a-aljidawii-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+            "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+            "evaluatorRoleKey": "EDU_SUPERVISOR",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+              "evaluatorEmail": "math-science-sup@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          },
+          {
+            "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12-p-a-aljidawii-p-m-alateeq",
+            "status": "ACTIVE",
+            "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+            "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+            "evaluatorPersonId": "p-m-alateeq",
+            "evaluatorRoleKey": "BOYS_EDU_VP",
+            "displayFields": {
+              "targetPersonId": "p-a-aljidawii",
+              "targetRoleKey": "BOYS_TEACHER",
+              "targetRoleLabel": "معلم",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "suspicion": [
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetKind": "TEACHER"
+        }
+      }
+    },
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetKind": "TEACHER"
+        }
+      }
+    },
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetRoleLabel": "معلم",
+          "targetKind": "TEACHER"
+        }
+      }
+    },
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetRoleLabel": "معلم",
+          "targetKind": "TEACHER"
+        }
+      }
+    },
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetRoleLabel": "معلم",
+          "targetKind": "TEACHER"
+        }
+      }
+    },
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetRoleLabel": "معلم",
+          "targetKind": "TEACHER"
+        }
+      }
+    },
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetRoleLabel": "معلم",
+          "targetKind": "TEACHER"
+        }
+      }
+    },
+    {
+      "reason": "HAMEED_ASSIGNMENT_CONTAINS_AMIR_DISPLAY_DATA",
+      "row": {
+        "id": "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-target-p-hameed-s",
+        "status": "ACTIVE",
+        "planId": "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+        "displayFields": {
+          "targetPersonId": "p-hameed-s",
+          "targetEmail": "a.aljidawii@qz.org.sa",
+          "targetDisplayName": "أمير إنسان رزق الجداوي",
+          "targetRoleKey": "BOYS_TEACHER",
+          "targetRoleLabel": "معلم",
+          "targetKind": "TEACHER"
+        }
+      }
+    }
+  ],
+  "writesPerformed": false,
+  "generatedAt": "2026-09-04T15:58:59.642Z"
+}

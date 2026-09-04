@@ -7,6 +7,7 @@ import {
 
 import type {
   ResponsibleRepliedSignalInput,
+  UrgentEscalationAssignee,
   UrgentSlaWorkflowInput,
 } from "../shared";
 
@@ -32,10 +33,15 @@ const activities = proxyActivities<{
   updateUrgentRequestStatus(input: {
     orgId: string;
     requestId: string;
+    threadId?: string;
     status: string;
     currentLevel: string;
     currentDeadlineAt?: number;
-  }): Promise<{ ok: true; updatedAt: number }>;
+  }): Promise<{
+    ok: true;
+    updatedAt: number;
+    assignee?: UrgentEscalationAssignee;
+  }>;
 
   markUrgentRequestResponded(input: {
     orgId: string;
@@ -64,13 +70,18 @@ async function activateLevel(input: {
   fromLevel?: string;
   durationMs?: number;
 }) {
-  await activities.updateUrgentRequestStatus({
+  const statusUpdate = await activities.updateUrgentRequestStatus({
     orgId: input.orgId,
     requestId: input.requestId,
+    threadId: input.threadId,
     status: input.status,
     currentLevel: input.level,
     currentDeadlineAt: input.deadlineAt,
   });
+
+  if (!input.fromLevel) {
+    return;
+  }
 
   await activities.writeTimelineEvent({
     orgId: input.orgId,
@@ -86,6 +97,14 @@ async function activateLevel(input: {
       toLevel: input.level,
       deadlineAt: input.deadlineAt ?? 0,
       durationMs: input.durationMs ?? 0,
+      ...(statusUpdate.assignee
+        ? {
+            assigneeUid: statusUpdate.assignee.uid,
+            assigneePersonId: statusUpdate.assignee.personId,
+            assigneeRoleKey: statusUpdate.assignee.roleKey,
+            assigneeDisplayName: statusUpdate.assignee.displayName,
+          }
+        : {}),
     },
   });
 }

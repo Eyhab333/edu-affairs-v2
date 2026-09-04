@@ -1,0 +1,398 @@
+{
+  "scope": {
+    "orgId": "takween",
+    "schoolId": "mrb-boys-sayh",
+    "email": "hameed-s@qz.org.sa"
+  },
+  "teacher": {
+    "uid": "YDwGInju4xVzKeSs6cC1BTkfu3W2",
+    "email": "hameed-s@qz.org.sa",
+    "personId": "p-hameed-s",
+    "displayName": "حامد السيد السيد نافع"
+  },
+  "teacherAssignmentsInSchool": {
+    "activeCount": 10,
+    "subjects": [
+      "PE"
+    ],
+    "classIds": [
+      "g1-general-1",
+      "g1-general-2",
+      "g1-quran-1",
+      "g2-general-1",
+      "g3-general-1",
+      "g3-quran-1",
+      "g4-general-1",
+      "g4-quran-1",
+      "g5-general-1",
+      "g6-general-1"
+    ]
+  },
+  "totals": {
+    "teacherPlansCount": 8,
+    "existingTargetAssignmentsInSayh": 0,
+    "activeTargetAssignmentsInSayh": 0,
+    "existingEvaluatorAssignmentsInSayh": 0,
+    "activeEvaluatorAssignmentsInSayh": 0,
+    "submissionsInSayh": 0
+  },
+  "plans": [
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+      "title": "التقييم التشخيصي لمعلمي منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "director-diagnostic-teacher-evaluation-v1",
+      "planKind": "PERIODIC",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 2,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01",
+        "mrb-boys-sayh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "p-a-s-alkmays",
+          "evaluatorRoleKey": "BOYS_PRINCIPAL",
+          "cyclesCovered": 26,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-alsamhan",
+            "p-a-attab"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "title": "تقييم المدير لمعلمي منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "director-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 9,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08",
+        "mrb-boys-sayh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "p-a-s-alkmays",
+          "evaluatorRoleKey": "BOYS_PRINCIPAL",
+          "cyclesCovered": 117,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-alsamhan",
+            "p-a-attab"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "title": "الزيارة الإشرافية التشخيصية للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1",
+      "planKind": "VISIT_BASED",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 3,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+        "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+        "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorRoleKey": "EDU_SUPERVISOR",
+          "cyclesCovered": 15,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-h-almasoud",
+            "p-aa-alamer"
+          ]
+        },
+        {
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorRoleKey": "EDU_SUPERVISOR",
+          "cyclesCovered": 21,
+          "targetSamples": [
+            "p-a-alsamhan",
+            "p-a-attab",
+            "p-a-h-aljaser"
+          ]
+        },
+        {
+          "evaluatorPersonId": "p-n-alshaya",
+          "evaluatorRoleKey": "BOYS_EDU_SUPERVISOR",
+          "cyclesCovered": 9,
+          "targetSamples": [
+            "p-am-alnutifi",
+            "p-k-m-ahmd",
+            "p-m-bayoumi"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "title": "تقييم المشرف التعليمي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1",
+      "planKind": "PERIODIC",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 3,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+        "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+        "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorRoleKey": "EDU_SUPERVISOR",
+          "cyclesCovered": 15,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-h-almasoud",
+            "p-aa-alamer"
+          ]
+        },
+        {
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorRoleKey": "EDU_SUPERVISOR",
+          "cyclesCovered": 21,
+          "targetSamples": [
+            "p-a-alsamhan",
+            "p-a-attab",
+            "p-a-h-aljaser"
+          ]
+        },
+        {
+          "evaluatorPersonId": "p-n-alshaya",
+          "evaluatorRoleKey": "BOYS_EDU_SUPERVISOR",
+          "cyclesCovered": 9,
+          "targetSamples": [
+            "p-am-alnutifi",
+            "p-k-m-ahmd",
+            "p-m-bayoumi"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+      "title": "التقييم التشخيصي للمعلمين بواسطة الوكيل التعليمي - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-vice-principal-diagnostic-teacher-evaluation-v1",
+      "planKind": "PERIODIC",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 1,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorRoleKey": "BOYS_EDU_VP",
+          "cyclesCovered": 13,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-alsamhan",
+            "p-a-attab"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "title": "تقييم الوكيل التعليمي الأسبوعي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-vice-principal-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 19,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18",
+        "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorRoleKey": "BOYS_EDU_VP",
+          "cyclesCovered": 247,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-alsamhan",
+            "p-a-attab"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "title": "تقييم وكيل المدرسة الأسبوعي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "school-vice-principal-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 19,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18",
+        "mrb-boys-sayh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "p-r-almutawa",
+          "evaluatorRoleKey": "BOYS_VP",
+          "cyclesCovered": 247,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-alsamhan",
+            "p-a-attab"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "title": "تقييم الموجه الأسبوعي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "student-guide-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "status": "ACTIVE",
+      "targetKind": "TEACHER",
+      "cyclesCount": 19,
+      "cycleIds": [
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-01",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-02",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-03",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-04",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-05",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-06",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-07",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-08",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-09",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-10",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-11",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-12",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-13",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-14",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-15",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-16",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-17",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-18",
+        "mrb-boys-sayh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-19"
+      ],
+      "teacherAlreadyHasTargetAssignments": 0,
+      "teacherActiveTargetAssignments": 0,
+      "teacherAlreadyHasEvaluatorAssignments": 0,
+      "teacherActiveEvaluatorAssignments": 0,
+      "evaluatorPatterns": [
+        {
+          "evaluatorPersonId": "p-students-mentor-syeh",
+          "evaluatorRoleKey": "BOYS_STUDENT_GUIDE",
+          "cyclesCovered": 247,
+          "targetSamples": [
+            "p-a-aljidawii",
+            "p-a-alsamhan",
+            "p-a-attab"
+          ]
+        }
+      ],
+      "missingPatternCycleIds": [],
+      "submissionsByStatus": {},
+      "canSeedFromExistingPatterns": true
+    }
+  ],
+  "writesPerformed": false,
+  "generatedAt": "2026-09-04T15:45:21.217Z"
+}

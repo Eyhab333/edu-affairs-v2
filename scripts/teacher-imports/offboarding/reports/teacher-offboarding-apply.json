@@ -1,0 +1,309 @@
+{
+  "appliedAt": "2026-09-03T17:21:31.427Z",
+  "orgId": "takween",
+  "input": {
+    "email": "m-f-elhmien@qz.org.sa",
+    "reason": "RESIGNED",
+    "effectiveDate": "2026-09-03"
+  },
+  "uid": "vSSxIPq5dSXrkLSNn6qv9aDvtB43",
+  "personId": "p-m-f-elhmien",
+  "appliedActions": [
+    {
+      "action": "AUTH_DISABLE",
+      "collection": "FirebaseAuth",
+      "path": "auth/users/vSSxIPq5dSXrkLSNn6qv9aDvtB43"
+    },
+    {
+      "action": "MEMBERSHIP_DEACTIVATE",
+      "collection": "orgMemberships",
+      "path": "users/vSSxIPq5dSXrkLSNn6qv9aDvtB43/orgMemberships/takween"
+    },
+    {
+      "action": "MEMBERSHIP_DEACTIVATE",
+      "collection": "memberships",
+      "path": "orgs/takween/memberships/vSSxIPq5dSXrkLSNn6qv9aDvtB43"
+    },
+    {
+      "action": "TEACHER_ASSIGNMENT_END",
+      "collection": "teacherAssignments",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills"
+    },
+    {
+      "action": "TEACHER_ASSIGNMENT_END",
+      "collection": "teacherAssignments",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic"
+    },
+    {
+      "action": "TEACHER_ASSIGNMENT_END",
+      "collection": "teacherAssignments",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art"
+    },
+    {
+      "action": "TEACHER_ASSIGNMENT_END",
+      "collection": "teacherAssignments",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills"
+    },
+    {
+      "action": "TEACHER_ASSIGNMENT_END",
+      "collection": "teacherAssignments",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran"
+    },
+    {
+      "action": "TEACHER_ASSIGNMENT_END",
+      "collection": "teacherAssignments",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art"
+    },
+    {
+      "action": "TEACHER_ASSIGNMENT_END",
+      "collection": "teacherAssignments",
+      "path": "orgs/takween/teacherAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art"
+    },
+    {
+      "action": "CLASS_LINK_END",
+      "collection": "teacherAssignmentClassLinks",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills__class-link__g2-general-1"
+    },
+    {
+      "action": "CLASS_LINK_END",
+      "collection": "teacherAssignmentClassLinks",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic__class-link__g2-quran-1"
+    },
+    {
+      "action": "CLASS_LINK_END",
+      "collection": "teacherAssignmentClassLinks",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art__class-link__g2-quran-1"
+    },
+    {
+      "action": "CLASS_LINK_END",
+      "collection": "teacherAssignmentClassLinks",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills__class-link__g2-quran-1"
+    },
+    {
+      "action": "CLASS_LINK_END",
+      "collection": "teacherAssignmentClassLinks",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran__class-link__g2-quran-1"
+    },
+    {
+      "action": "CLASS_LINK_END",
+      "collection": "teacherAssignmentClassLinks",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art__class-link__g4-general-1"
+    },
+    {
+      "action": "CLASS_LINK_END",
+      "collection": "teacherAssignmentClassLinks",
+      "path": "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__class-link__g6-general-1"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills__LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills__LESSON_PREP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills__STUDENT_GAMIFICATION"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills__STUDENT_MEASUREMENT"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills__STUDENT_NOTES"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-life-skills__VIRTUAL_CLASS"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic__LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic__LESSON_PREP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic__STUDENT_GAMIFICATION"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic__STUDENT_MEASUREMENT"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic__STUDENT_NOTES"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-arabic__VIRTUAL_CLASS"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art__LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art__LESSON_PREP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art__STUDENT_GAMIFICATION"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art__STUDENT_MEASUREMENT"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art__STUDENT_NOTES"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-art__VIRTUAL_CLASS"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills__LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills__LESSON_PREP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills__STUDENT_GAMIFICATION"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills__STUDENT_MEASUREMENT"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills__STUDENT_NOTES"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-life-skills__VIRTUAL_CLASS"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran__LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran__LESSON_PREP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran__STUDENT_GAMIFICATION"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran__STUDENT_MEASUREMENT"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran__STUDENT_NOTES"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-quran__VIRTUAL_CLASS"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art__LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art__LESSON_PREP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art__STUDENT_GAMIFICATION"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art__STUDENT_MEASUREMENT"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art__STUDENT_NOTES"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-general-1-art__VIRTUAL_CLASS"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__LEARNING_LOSS_FOLLOWUP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__LESSON_PREP"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__STUDENT_GAMIFICATION"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__STUDENT_MEASUREMENT"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__STUDENT_NOTES"
+    },
+    {
+      "action": "OPERATIONAL_ASSIGNMENT_END",
+      "collection": "operationalAssignments",
+      "path": "orgs/takween/operationalAssignments/teacher-provisioning__p-m-f-elhmien__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__VIRTUAL_CLASS"
+    }
+  ],
+  "historicalEvaluationPaths": []
+}

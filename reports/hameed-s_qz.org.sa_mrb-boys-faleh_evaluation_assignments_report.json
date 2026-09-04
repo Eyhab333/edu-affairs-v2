@@ -1,0 +1,522 @@
+{
+  "scope": {
+    "orgId": "takween",
+    "schoolId": "mrb-boys-faleh",
+    "email": "hameed-s@qz.org.sa"
+  },
+  "teacher": {
+    "email": "hameed-s@qz.org.sa",
+    "uid": "YDwGInju4xVzKeSs6cC1BTkfu3W2",
+    "personId": "p-hameed-s",
+    "displayName": "حامد السيد السيد نافع"
+  },
+  "totals": {
+    "activeTargetAssignmentsCount": 8,
+    "activeEvaluatorAssignmentsCount": 75,
+    "submissionsCount": 0,
+    "plansCount": 8
+  },
+  "plans": [
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+      "planExists": true,
+      "title": "التقييم التشخيصي لمعلمي منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "director-diagnostic-teacher-evaluation-v1",
+      "planKind": "PERIODIC",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 2,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorRoleKey": "BOYS_PRINCIPAL",
+          "count": 2,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01",
+            "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01",
+        "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "planExists": true,
+      "title": "تقييم المدير لمعلمي منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "director-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 9,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorRoleKey": "BOYS_PRINCIPAL",
+          "count": 9,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08",
+            "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+        "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09-p-hameed-s-staff-EJP7cQWlOldemQo6R6TciBZXSFt2"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "planExists": true,
+      "title": "الزيارة الإشرافية التشخيصية للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1",
+      "planKind": "VISIT_BASED",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 3,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorRoleKey": "EDU_SUPERVISOR",
+          "count": 3,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+            "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+            "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-hameed-s-p-s-sayed",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-hameed-s-p-s-sayed",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-hameed-s-p-s-sayed"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "planExists": true,
+      "title": "تقييم المشرف التعليمي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1",
+      "planKind": "PERIODIC",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 3,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorRoleKey": "EDU_SUPERVISOR",
+          "count": 3,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+            "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+            "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-hameed-s-p-s-sayed",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-hameed-s-p-s-sayed",
+        "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-hameed-s-p-s-sayed"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+      "planExists": true,
+      "title": "التقييم التشخيصي للمعلمين بواسطة الوكيل التعليمي - منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "educational-vice-principal-diagnostic-teacher-evaluation-v1",
+      "planKind": "PERIODIC",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 1,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorRoleKey": "BOYS_EDU_VP",
+          "count": 1,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "planExists": true,
+      "title": "تقييم الوكيل التعليمي الأسبوعي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "educational-vice-principal-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 19,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorRoleKey": "BOYS_EDU_VP",
+          "count": 19,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18",
+            "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+        "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19-p-hameed-s-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "planExists": true,
+      "title": "تقييم وكيل المدرسة الأسبوعي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "school-vice-principal-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 19,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorRoleKey": "BOYS_VP",
+          "count": 19,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18",
+            "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18-p-hameed-s-p-ralfaiz",
+        "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19-p-hameed-s-p-ralfaiz"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "planExists": true,
+      "title": "تقييم الموجه الأسبوعي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "shortTitle": null,
+      "frameworkId": "student-guide-weekly-teacher-evaluation-v1",
+      "planKind": "WEEKLY",
+      "targetKind": "TEACHER",
+      "status": "ACTIVE",
+      "schoolId": "mrb-boys-faleh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "activeTargetAssignmentsCount": 1,
+      "activeEvaluatorAssignmentsCount": 19,
+      "evaluators": [
+        {
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorRoleKey": "BOYS_STUDENT_GUIDE",
+          "count": 19,
+          "cycleIds": [
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-01",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-02",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-03",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-04",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-05",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-06",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-07",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-08",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-09",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-10",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-11",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-12",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-13",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-14",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-15",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-16",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-17",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-18",
+            "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-19"
+          ]
+        }
+      ],
+      "cycleIds": [
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-01",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-02",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-03",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-04",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-05",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-06",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-07",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-08",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-09",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-10",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-11",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-12",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-13",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-14",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-15",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-16",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-17",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-18",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-19"
+      ],
+      "submissionsByStatus": {},
+      "activeTargetAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-target-p-hameed-s"
+      ],
+      "activeEvaluatorAssignmentIds": [
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-01-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-02-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-03-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-04-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-05-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-06-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-07-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-08-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-09-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-10-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-11-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-12-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-13-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-14-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-15-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-16-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-17-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-18-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+        "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-19-p-hameed-s-staff-gm37B5cNxxUyIasU9G70zHgVkEj2"
+      ],
+      "recommendedAction": "Candidate for REMOVED if no submitted/approved submissions"
+    }
+  ],
+  "candidatePlanIdsToRemoveFrom": [
+    "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+    "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+    "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+    "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+    "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+    "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+    "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+    "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation"
+  ],
+  "writesPerformed": false,
+  "generatedAt": "2026-09-04T14:30:57.619Z"
+}

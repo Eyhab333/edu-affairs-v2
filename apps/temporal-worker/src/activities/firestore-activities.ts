@@ -8,6 +8,11 @@ import { getFirestore } from "firebase-admin/firestore";
 import fs from "node:fs";
 import path from "node:path";
 
+import type {
+  UrgentEscalationAssignee,
+  UrgentEscalationLevel,
+} from "../shared";
+
 let firebaseAdminReady = false;
 
 function resolveServiceAccountPath() {
@@ -141,9 +146,120 @@ export async function writeTimelineEvent(input: {
   };
 }
 
+function readString(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function readRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+function readStringArray(value: unknown) {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string" && !!item)
+    : [];
+}
+
+function readParticipantArray(value: unknown) {
+  return Array.isArray(value) ? value.map(readRecord).filter(Boolean) : [];
+}
+
+function uniqueNonEmptyStrings(values: string[]) {
+  return Array.from(new Set(values.map(readString).filter(Boolean)));
+}
+
+function isEscalationLevel(value: string): value is UrgentEscalationLevel {
+  return ["COUNSELOR", "PRINCIPAL", "SUPERVISION_HEAD"].includes(value);
+}
+
+async function resolveUrgentEscalationAssignee(input: {
+  orgId: string;
+  requestId: string;
+  level: UrgentEscalationLevel;
+}): Promise<UrgentEscalationAssignee | undefined> {
+  const db = getFirestore();
+  const requestSnap = await db
+    .doc(`orgs/${input.orgId}/urgentCommunicationRequests/${input.requestId}`)
+    .get();
+  const schoolId = readString(requestSnap.data()?.schoolId);
+
+  if (!schoolId) return undefined;
+
+  const routingSnap = await db
+    .doc(`orgs/${input.orgId}/urgentCommunicationRouting/${schoolId}`)
+    .get();
+  const route = readRecord(routingSnap.data()?.[input.level]);
+
+  const assignee: UrgentEscalationAssignee = {
+    uid: readString(route.uid),
+    personId: readString(route.personId),
+    roleKey: readString(route.roleKey),
+    displayName: readString(route.displayName),
+  };
+
+  return assignee.uid && assignee.personId && assignee.roleKey && assignee.displayName
+    ? assignee
+    : undefined;
+}
+
+function buildThreadParticipantUpdate(input: {
+  thread: Record<string, unknown>;
+  assignee: UrgentEscalationAssignee;
+}) {
+  const participantUids = uniqueNonEmptyStrings([
+    ...readStringArray(input.thread.participantUids),
+    input.assignee.uid,
+  ]);
+  const participantPersonIds = uniqueNonEmptyStrings([
+    ...readStringArray(input.thread.participantPersonIds),
+    input.assignee.personId,
+  ]);
+  const allowedRoleKeys = uniqueNonEmptyStrings([
+    ...readStringArray(input.thread.allowedRoleKeys),
+    input.assignee.roleKey,
+  ]);
+
+  const participantsByUid = new Map<string, Record<string, unknown>>();
+
+  for (const participant of readParticipantArray(input.thread.participants)) {
+    const uid = readString(participant.uid);
+    if (uid && !participantsByUid.has(uid)) {
+      participantsByUid.set(uid, participant);
+    }
+  }
+
+  const existingAssignee = participantsByUid.get(input.assignee.uid) ?? {};
+  participantsByUid.set(input.assignee.uid, {
+    ...existingAssignee,
+    uid: input.assignee.uid,
+    personId: input.assignee.personId,
+    kind: "STAFF",
+    roleKey: input.assignee.roleKey,
+    displayName: input.assignee.displayName,
+    unreadCount:
+      typeof existingAssignee.unreadCount === "number"
+        ? existingAssignee.unreadCount
+        : 0,
+    muted:
+      typeof existingAssignee.muted === "boolean"
+        ? existingAssignee.muted
+        : false,
+  });
+
+  return {
+    participantUids,
+    participantPersonIds,
+    allowedRoleKeys,
+    participants: [...participantsByUid.values()],
+  };
+}
+
 export async function updateUrgentRequestStatus(input: {
   orgId: string;
   requestId: string;
+  threadId?: string;
   status: string;
   currentLevel: string;
   currentDeadlineAt?: number;
@@ -152,26 +268,101 @@ export async function updateUrgentRequestStatus(input: {
 
   const db = getFirestore();
   const now = Date.now();
+  const escalationLevel = isEscalationLevel(input.currentLevel)
+    ? input.currentLevel
+    : undefined;
+  const shouldResolveEscalationAssignee =
+    !!input.threadId &&
+    input.status === "ESCALATED" &&
+    !!escalationLevel;
+  const assignee =
+    shouldResolveEscalationAssignee
+      ? await resolveUrgentEscalationAssignee({
+          orgId: input.orgId,
+          requestId: input.requestId,
+          level: escalationLevel!,
+        })
+      : undefined;
 
   const requestRef = db
     .collection(`orgs/${input.orgId}/urgentCommunicationRequests`)
     .doc(input.requestId);
 
-  await requestRef.set(
-    {
+  const threadRef = input.threadId
+    ? db.collection(`orgs/${input.orgId}/threads`).doc(input.threadId)
+    : null;
+
+  await db.runTransaction(async (transaction) => {
+    const threadSnap = threadRef ? await transaction.get(threadRef) : null;
+    const requestUpdate: Record<string, unknown> = {
       id: input.requestId,
       orgId: input.orgId,
       status: input.status,
       currentLevel: input.currentLevel,
       currentDeadlineAt: input.currentDeadlineAt ?? 0,
       updatedAt: now,
-    },
-    { merge: true },
-  );
+    };
+
+    if (assignee) {
+      requestUpdate.currentAssignee = assignee;
+    }
+
+    transaction.set(requestRef, requestUpdate, { merge: true });
+
+    if (threadRef && threadSnap?.exists) {
+      const threadUpdate: Record<string, unknown> = {
+        urgentStatus: input.status,
+        urgentCurrentLevel: input.currentLevel,
+        urgentCurrentAssigneeUid: assignee?.uid ?? (
+          shouldResolveEscalationAssignee ? "" : undefined
+        ),
+        urgentCurrentDeadlineAt: input.currentDeadlineAt ?? 0,
+        updatedAt: now,
+      };
+
+      if (
+        !shouldResolveEscalationAssignee &&
+        threadUpdate.urgentCurrentAssigneeUid === undefined
+      ) {
+        delete threadUpdate.urgentCurrentAssigneeUid;
+      }
+
+      if (assignee) {
+        Object.assign(
+          threadUpdate,
+          buildThreadParticipantUpdate({
+            thread: readRecord(threadSnap.data()),
+            assignee,
+          }),
+        );
+      }
+
+      transaction.set(threadRef, threadUpdate, { merge: true });
+    }
+
+    if (shouldResolveEscalationAssignee && !assignee) {
+      const timelineRef = requestRef.collection("timelineEvents").doc();
+
+      transaction.set(timelineRef, {
+        id: timelineRef.id,
+        orgId: input.orgId,
+        requestId: input.requestId,
+        threadId: input.threadId ?? "",
+        type: "SYSTEM_NOTE",
+        level: input.currentLevel,
+        title: "تعذر تحديد المسؤول عن مستوى التصعيد",
+        details: {
+          level: input.currentLevel,
+        },
+        createdAt: now,
+      });
+    }
+  });
 
   return {
     ok: true as const,
     updatedAt: now,
+    assignee,
   };
 }
 
@@ -204,6 +395,12 @@ export async function markUrgentRequestResponded(input: {
   const timelineRef = requestRef.collection("timelineEvents").doc();
 
   await db.runTransaction(async (transaction) => {
+    const requestSnap = await transaction.get(requestRef);
+
+    if (readString(requestSnap.data()?.status) === "RESPONDED") {
+      return;
+    }
+
     transaction.set(
       requestRef,
       {
