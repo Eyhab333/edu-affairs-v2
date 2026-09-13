@@ -112,7 +112,6 @@ function resolveEvaluatorAssignmentFrameworkTitle(
   );
 }
 
-
 const ASMAA_ADMIN_SUPERVISOR_PERSON_ID = "p-a-almansur";
 
 const ASMAA_HIDDEN_ADMIN_SUPERVISOR_SCHOOL_IDS = new Set([
@@ -135,6 +134,10 @@ const ASMAA_HIDDEN_ADMIN_SUPERVISOR_PLAN_ID_PARTS = [
   "-admin-assistant-three-times-evaluation",
 ];
 
+const ASMAA_ALLOWED_ADMIN_SUPERVISOR_PLAN_IDS = new Set([
+  "mrb-girls-ay-1448-term-1-admin-assistant-periodic-evaluation",
+]);
+
 function includesAny(value: string, keywords: string[]) {
   return keywords.some((keyword) => value.includes(keyword));
 }
@@ -154,6 +157,9 @@ function shouldHideAsmaaAdminSupervisorAssignment(
   }
 
   const planId = asString(assignment.planId);
+  if (ASMAA_ALLOWED_ADMIN_SUPERVISOR_PLAN_IDS.has(planId)) {
+    return false;
+  }
   const targetRoleKey = asString(assignment.targetRoleKey);
   const titleText = [
     assignment.displayTitle,
@@ -182,7 +188,6 @@ function shouldHideAsmaaAdminSupervisorAssignment(
 
   return hiddenByPlanId || hiddenByTargetRole || hiddenByArabicTitle;
 }
-
 
 function isEvaluationFrameworkActive(framework: FirestoreDoc | null) {
   if (!framework) return false;
@@ -377,12 +382,14 @@ export async function buildStaffEvaluationWorkspace(params: {
     }
   }
 
-  const assignments = Array.from(assignmentMap.values()).filter((assignment) => {
-  return !shouldHideAsmaaAdminSupervisorAssignment(
-    assignment,
-    evaluatorPersonId,
+  const assignments = Array.from(assignmentMap.values()).filter(
+    (assignment) => {
+      return !shouldHideAsmaaAdminSupervisorAssignment(
+        assignment,
+        evaluatorPersonId,
+      );
+    },
   );
-});
 
   const [submissions, signalSnapshots] = await Promise.all([
     getSubmissionsForEvaluatorInSchools({
@@ -749,12 +756,7 @@ export async function loadEvaluationSubmissionForm(params: {
     ...(assignmentDoc.data() as FirestoreDoc),
   };
 
-    if (
-    shouldHideAsmaaAdminSupervisorAssignment(
-      assignment,
-      evaluatorPersonId,
-    )
-  ) {
+  if (shouldHideAsmaaAdminSupervisorAssignment(assignment, evaluatorPersonId)) {
     return null;
   }
 
