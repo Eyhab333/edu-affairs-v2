@@ -112,8 +112,86 @@ function resolveEvaluatorAssignmentFrameworkTitle(
   );
 }
 
+
+const ASMAA_ADMIN_SUPERVISOR_PERSON_ID = "p-a-almansur";
+
+const ASMAA_HIDDEN_ADMIN_SUPERVISOR_SCHOOL_IDS = new Set([
+  "mrb-girls",
+  "kg-01",
+  "kg-02",
+  "kg-03",
+  "kg-04",
+]);
+
+const ASMAA_HIDDEN_ADMIN_SUPERVISOR_TARGET_ROLE_KEYS = new Set([
+  "MEDIA_SPECIALIST",
+  "ADMIN_ASSISTANT",
+]);
+
+const ASMAA_HIDDEN_ADMIN_SUPERVISOR_PLAN_ID_PARTS = [
+  "-media-periodic-evaluation",
+  "-media-three-times-evaluation",
+  "-admin-assistant-periodic-evaluation",
+  "-admin-assistant-three-times-evaluation",
+];
+
+function includesAny(value: string, keywords: string[]) {
+  return keywords.some((keyword) => value.includes(keyword));
+}
+
+function shouldHideAsmaaAdminSupervisorAssignment(
+  assignment: FirestoreDoc,
+  evaluatorPersonId: string,
+) {
+  if (evaluatorPersonId !== ASMAA_ADMIN_SUPERVISOR_PERSON_ID) {
+    return false;
+  }
+
+  const schoolId = asString(assignment.schoolId);
+
+  if (!ASMAA_HIDDEN_ADMIN_SUPERVISOR_SCHOOL_IDS.has(schoolId)) {
+    return false;
+  }
+
+  const planId = asString(assignment.planId);
+  const targetRoleKey = asString(assignment.targetRoleKey);
+  const titleText = [
+    assignment.displayTitle,
+    assignment.evaluatorDisplayTitle,
+    assignment.planTitle,
+    assignment.title,
+    assignment.frameworkTitle,
+  ]
+    .map((value) => asString(value))
+    .filter(Boolean)
+    .join(" ");
+
+  const hiddenByPlanId = ASMAA_HIDDEN_ADMIN_SUPERVISOR_PLAN_ID_PARTS.some(
+    (part) => planId.includes(part),
+  );
+
+  const hiddenByTargetRole =
+    ASMAA_HIDDEN_ADMIN_SUPERVISOR_TARGET_ROLE_KEYS.has(targetRoleKey) &&
+    (includesAny(titleText, ["الدورية", "ثلاث مرات"]) ||
+      includesAny(planId, ["periodic", "three-times"]));
+
+  const hiddenByArabicTitle =
+    (includesAny(titleText, ["الإعلامية"]) ||
+      includesAny(titleText, ["المساعدة الإدارية", "للمساعدة الإدارية"])) &&
+    includesAny(titleText, ["الدورية", "ثلاث مرات"]);
+
+  return hiddenByPlanId || hiddenByTargetRole || hiddenByArabicTitle;
+}
+
+
 function isEvaluationFrameworkActive(framework: FirestoreDoc | null) {
-  return asString(framework?.status, "ACTIVE") === "ACTIVE";
+  if (!framework) return false;
+
+  if (framework.isActive === false) {
+    return false;
+  }
+
+  return asString(framework.status, "ACTIVE") === "ACTIVE";
 }
 
 function normalizeSchoolIds(values: string[]) {
@@ -299,7 +377,12 @@ export async function buildStaffEvaluationWorkspace(params: {
     }
   }
 
-  const assignments = Array.from(assignmentMap.values());
+  const assignments = Array.from(assignmentMap.values()).filter((assignment) => {
+  return !shouldHideAsmaaAdminSupervisorAssignment(
+    assignment,
+    evaluatorPersonId,
+  );
+});
 
   const [submissions, signalSnapshots] = await Promise.all([
     getSubmissionsForEvaluatorInSchools({
@@ -665,6 +748,15 @@ export async function loadEvaluationSubmissionForm(params: {
     id: assignmentDoc.id,
     ...(assignmentDoc.data() as FirestoreDoc),
   };
+
+    if (
+    shouldHideAsmaaAdminSupervisorAssignment(
+      assignment,
+      evaluatorPersonId,
+    )
+  ) {
+    return null;
+  }
 
   const planId = asString(assignment.planId);
   const cycleId = asString(assignment.cycleId);

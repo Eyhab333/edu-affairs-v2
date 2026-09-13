@@ -10,15 +10,11 @@ const CAPABILITY = "TEACHER_WORK_VIEW";
 
 const TARGETS = [
   {
-    label: "فاطمة حماد الحماد",
-    email: "f-alhamaad@qz.org.sa",
-    personId: "p-f-alhamaad",
+    label: "فوزية عبدالله مطلق العبيوي",
+    email: "f.alobawe@qz.org.sa",
+    personId: "p-f-alobawe",
     schoolIds: [
       "mrb-girls",
-      "kg-01",
-      "kg-02",
-      "kg-03",
-      "kg-04",
     ],
   },
 ];
