@@ -65,6 +65,12 @@ export const staffNavItems: StaffNavItem[] = [
     moduleKey: "CLASSES",
   },
   {
+    href: "/staff/students",
+    label: "الطلاب",
+    icon: Users,
+    moduleKey: "STUDENTS",
+  },
+  {
     href: "/staff/my-documents",
     label: "مهام وظيفتي",
     icon: FileText,
@@ -130,12 +136,7 @@ export const staffNavItems: StaffNavItem[] = [
     icon: NotebookPen,
     documentationOnly: true,
   },
-  {
-    href: "/staff/students",
-    label: "الطلاب",
-    icon: Users,
-    moduleKey: "STUDENTS",
-  },
+  
   {
     href: "/staff/measurements",
     label: "القياسات",
