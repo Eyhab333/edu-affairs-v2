@@ -45,6 +45,90 @@ type StaffWorkMetricKey =
   | "lessonPrepReview"
   | "workDocumentation";
 
+type EvaluationActivityDetails = {
+  kind: "EVALUATION";
+  action: "SUBMITTED" | "APPROVED";
+  evaluationTitle: string;
+  targetName: string;
+  status: string;
+  submittedAt: number | null;
+  approvedAt: number | null;
+  totalScore: number | null;
+  maxScore: number | null;
+  percentage: number | null;
+  criteria: Array<{ title: string; category: string; score: number | null; maxScore: number | null; valueText: string; level: string }>;
+};
+type PerformanceImprovementActivityDetails = {
+  kind: "PERFORMANCE_IMPROVEMENT";
+  targetName: string;
+  objective: string;
+  status: string;
+  createdAt: number | null;
+  startsAt: number | null;
+  endsAt: number | null;
+  actions: Array<{ title: string; status: string; dueAt: number | null; completedAt: number | null }>;
+  followUps: Array<{ score: number | null; recordedAt: number | null; note: string }>;
+  closedAt: number | null;
+  closureNote: string;
+  escalatedAt: number | null;
+  escalationReason: string;
+};
+type StudentCaseActivityDetails = {
+  kind: "STUDENT_CASE";
+  studentDisplayName: string;
+  classLabel: string;
+  eventType: string;
+  status: string;
+  statusBefore: string;
+  statusAfter: string;
+  occurredAt: number | null;
+};
+type AttendanceActivityDetails = {
+  kind: "ATTENDANCE";
+  classLabel: string;
+  schoolDayId: string;
+  status: string;
+  recordedAt: number | null;
+  submittedAt: number | null;
+  counts: { target: number | null; completed: number | null; missing: number | null; present: number | null; absent: number | null; late: number | null; excusedLate: number | null; excusedAbsent: number | null; leftEarly: number | null; studySuspended: number | null; notRecorded: number | null };
+};
+type LessonPrepReviewActivityDetails = {
+  kind: "LESSON_PREP_REVIEW";
+  action: "APPROVED" | "RETURNED";
+  teacherName: string;
+  lessonTitle: string;
+  subjectLabel: string;
+  classLabel: string;
+  lessonDate: string;
+  status: string;
+  approvedAt: number | null;
+  returnedAt: number | null;
+  reviewNote: string;
+};
+type WorkDocumentationActivityDetails = {
+  kind: "WORK_DOCUMENTATION";
+  templateTitle: string;
+  templateKey: string;
+  instanceMode: string;
+  createdAt: number | null;
+  updatedAt: number | null;
+};
+
+type WorkDocumentationReadOnlyValue =
+  | { kind: "SCALAR"; key: string; value: string | number }
+  | {
+      kind: "TABLE";
+      key: string;
+      rows: Array<Array<{ key: string; value: string | number }>>;
+    };
+type StaffWorkActivityDetails =
+  | EvaluationActivityDetails
+  | PerformanceImprovementActivityDetails
+  | StudentCaseActivityDetails
+  | AttendanceActivityDetails
+  | LessonPrepReviewActivityDetails
+  | WorkDocumentationActivityDetails;
+
 type StaffWorkActivity = {
   id: string;
   type: string;
@@ -58,6 +142,7 @@ type StaffWorkActivity = {
   targetName: string;
   classLabel: string;
   sourceEntityId: string;
+  details: StaffWorkActivityDetails;
   href?: string;
 };
 
@@ -109,8 +194,40 @@ function text(value: unknown) {
 function timestamp(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
+function rows(value: unknown) {
+  return Array.isArray(value) ? value.map(row) : [];
+}
 function unique(values: string[]) {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+}
+
+// These are the templates whose definitions deliberately mark their content as
+// secret. Keep this server-side deny-list explicit: the client must never be
+// the authority that decides whether record content can be returned.
+const SECRET_WORK_DOCUMENTATION_TEMPLATE_KEYS = new Set([
+  "confidential-case-study",
+  "confidential-family-circumstances",
+]);
+
+function safeDocumentationValues(value: unknown): WorkDocumentationReadOnlyValue[] {
+  const data = row(value);
+  const values: WorkDocumentationReadOnlyValue[] = [];
+  for (const [key, entry] of Object.entries(data)) {
+    if (typeof entry === "string" || (typeof entry === "number" && Number.isFinite(entry))) {
+      values.push({ kind: "SCALAR", key, value: entry });
+      continue;
+    }
+    if (!Array.isArray(entry)) continue;
+    const sanitizedRows = entry.map(row).map((item) =>
+      Object.entries(item).flatMap(([cellKey, cellValue]) =>
+        typeof cellValue === "string" || (typeof cellValue === "number" && Number.isFinite(cellValue))
+          ? [{ key: cellKey, value: cellValue }]
+          : [],
+      ),
+    );
+    values.push({ kind: "TABLE", key, rows: sanitizedRows });
+  }
+  return values;
 }
 function id(value: unknown, name: string) {
   const result = text(value);
@@ -449,6 +566,64 @@ function addActivity(
   });
 }
 
+function evaluationDetails(item: Row, action: "SUBMITTED" | "APPROVED", targetName: string): EvaluationActivityDetails {
+  return {
+    kind: "EVALUATION",
+    action,
+    evaluationTitle: text(item.cycleTitle) || text(item.planTitle) || text(item.frameworkTitle) || text(item.frameworkId),
+    targetName,
+    status: text(item.status),
+    submittedAt: timestamp(item.submittedAt),
+    approvedAt: timestamp(item.approvedAt),
+    totalScore: timestamp(item.rawScore) ?? timestamp(item.totalScore),
+    maxScore: timestamp(item.maxScore),
+    percentage: timestamp(item.normalizedScore) ?? timestamp(item.weightedScore),
+    criteria: rows(item.itemScores).map((score) => ({
+      title: text(score.title),
+      category: text(score.category),
+      score: timestamp(score.score),
+      maxScore: timestamp(score.maxScore),
+      valueText: text(score.valueText),
+      level: text(score.level),
+    })).filter((score) => Boolean(score.title || score.category)),
+  };
+}
+
+function performanceImprovementDetails(item: Row, targetName: string): PerformanceImprovementActivityDetails {
+  return {
+    kind: "PERFORMANCE_IMPROVEMENT",
+    targetName,
+    objective: text(item.objective),
+    status: text(item.status),
+    createdAt: timestamp(item.createdAt),
+    startsAt: timestamp(item.startsAt),
+    endsAt: timestamp(item.endsAt),
+    actions: rows(item.actions).map((action) => ({ title: text(action.title), status: text(action.status), dueAt: timestamp(action.dueAt), completedAt: timestamp(action.completedAt) })),
+    followUps: rows(item.followUps).map((followUp) => ({ score: timestamp(followUp.score), recordedAt: timestamp(followUp.recordedAt), note: text(followUp.note) })),
+    closedAt: timestamp(item.closedAt),
+    closureNote: text(item.closureNote),
+    escalatedAt: timestamp(item.escalatedAt),
+    escalationReason: text(item.escalationReason),
+  };
+}
+
+function attendanceDetails(item: Row): AttendanceActivityDetails {
+  return {
+    kind: "ATTENDANCE",
+    classLabel: text(item.classTitle) || text(item.classId),
+    schoolDayId: text(item.schoolDayId),
+    status: text(item.status),
+    recordedAt: timestamp(item.recordedAt),
+    submittedAt: timestamp(item.submittedAt),
+    counts: {
+      target: timestamp(item.targetCount), completed: timestamp(item.completedCount), missing: timestamp(item.missingCount),
+      present: timestamp(item.presentCount), absent: timestamp(item.absentCount), late: timestamp(item.lateCount),
+      excusedLate: timestamp(item.excusedLateCount), excusedAbsent: timestamp(item.excusedAbsentCount),
+      leftEarly: timestamp(item.leftEarlyCount), studySuspended: timestamp(item.studySuspendedCount), notRecorded: timestamp(item.notRecordedCount),
+    },
+  };
+}
+
 async function collectActivities(params: {
   orgId: string;
   actor: Actor;
@@ -520,6 +695,7 @@ async function collectActivities(params: {
         targetName,
         classLabel: "",
         sourceEntityId: text(item.id),
+        details: evaluationDetails(item, "SUBMITTED", targetName),
         href: "/staff/evaluations",
       });
     const approvedAt = timestamp(item.approvedAt);
@@ -539,6 +715,7 @@ async function collectActivities(params: {
         targetName,
         classLabel: "",
         sourceEntityId: text(item.id),
+        details: evaluationDetails(item, "APPROVED", targetName),
         href: "/staff/evaluations",
       });
   }
@@ -567,6 +744,7 @@ async function collectActivities(params: {
           targetName,
           classLabel: "",
           sourceEntityId,
+          details: performanceImprovementDetails(item, targetName),
           href: "/staff/performance-improvement",
         });
     };
@@ -672,6 +850,16 @@ async function collectActivities(params: {
         targetName: text(studentCase?.studentDisplayName),
         classLabel: text(studentCase?.classTitle),
         sourceEntityId: text(event.caseId) || text(event.id),
+        details: {
+          kind: "STUDENT_CASE",
+          studentDisplayName: text(studentCase?.studentDisplayName),
+          classLabel: text(studentCase?.classTitle),
+          eventType: text(event.eventType),
+          status: text(event.statusAfter),
+          statusBefore: text(event.statusBefore),
+          statusAfter: text(event.statusAfter),
+          occurredAt: timestamp(event.createdAt),
+        },
         href: text(event.caseId)
           ? `/staff/cases/${encodeURIComponent(text(event.caseId))}`
           : undefined,
@@ -698,6 +886,16 @@ async function collectActivities(params: {
         targetName: text(item.studentDisplayName),
         classLabel: text(item.classTitle),
         sourceEntityId: text(item.id),
+        details: {
+          kind: "STUDENT_CASE",
+          studentDisplayName: text(item.studentDisplayName),
+          classLabel: text(item.classTitle),
+          eventType: "CREATED",
+          status: text(item.status),
+          statusBefore: "",
+          statusAfter: text(item.status),
+          occurredAt: timestamp(item.createdAt),
+        },
         href: `/staff/cases/${encodeURIComponent(text(item.id))}`,
       });
   }
@@ -724,6 +922,7 @@ async function collectActivities(params: {
         targetName: "",
         classLabel: text(item.classTitle) || text(item.classId),
         sourceEntityId: text(item.id),
+        details: attendanceDetails(item),
         href: `/staff/attendance/batches/${encodeURIComponent(text(item.id))}`,
       });
   }
@@ -747,6 +946,19 @@ async function collectActivities(params: {
         targetName: text(item.teacherDisplayName),
         classLabel: text(item.classTitle) || text(item.classId),
         sourceEntityId: text(item.id),
+        details: {
+          kind: "LESSON_PREP_REVIEW",
+          action: "APPROVED",
+          teacherName: text(item.teacherDisplayName) || text(item.teacherName),
+          lessonTitle: text(item.lessonTitle),
+          subjectLabel: text(item.subjectTitle) || text(item.subjectKey),
+          classLabel: text(item.classTitle) || text(item.classId),
+          lessonDate: text(item.lessonDate),
+          status: text(item.status),
+          approvedAt: timestamp(item.approvedAt),
+          returnedAt: timestamp(item.returnedAt),
+          reviewNote: text(item.approvalNote),
+        },
       });
     if (
       params.staffIds.has(text(item.returnedByPersonId)) &&
@@ -764,6 +976,19 @@ async function collectActivities(params: {
         targetName: text(item.teacherDisplayName),
         classLabel: text(item.classTitle) || text(item.classId),
         sourceEntityId: text(item.id),
+        details: {
+          kind: "LESSON_PREP_REVIEW",
+          action: "RETURNED",
+          teacherName: text(item.teacherDisplayName) || text(item.teacherName),
+          lessonTitle: text(item.lessonTitle),
+          subjectLabel: text(item.subjectTitle) || text(item.subjectKey),
+          classLabel: text(item.classTitle) || text(item.classId),
+          lessonDate: text(item.lessonDate),
+          status: text(item.status),
+          approvedAt: timestamp(item.approvedAt),
+          returnedAt: timestamp(item.returnedAt),
+          reviewNote: text(item.returnReason),
+        },
       });
   }
   for (const item of workDocumentation) {
@@ -786,6 +1011,14 @@ async function collectActivities(params: {
         targetName: "",
         classLabel: "",
         sourceEntityId: text(item.id),
+        details: {
+          kind: "WORK_DOCUMENTATION",
+          templateTitle: text(item.templateTitle),
+          templateKey: text(item.templateKey),
+          instanceMode: text(item.instanceMode) || "SINGLE",
+          createdAt: timestamp(item.createdAt),
+          updatedAt: timestamp(item.updatedAt),
+        },
       });
   }
   return activities.sort((a, b) => b.activityAt - a.activityAt);
@@ -891,6 +1124,75 @@ export const getStaffWorkDetail = onCall(
       activities: result.activities.filter(
         (activity) => activity.personId === personId,
       ),
+    };
+  },
+);
+
+/** Lazily returns a single non-secret work-documentation record for Staff Work. */
+export const getStaffWorkDocumentationRecord = onCall(
+  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  async (request) => {
+    if (!request.auth?.uid)
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+
+    const input = row(request.data);
+    const orgId = id(input.orgId, "orgId");
+    const staffPersonId = id(input.staffPersonId, "staffPersonId");
+    const sourceEntityId = id(input.sourceEntityId, "sourceEntityId");
+    const actor = await resolveActor({ uid: request.auth.uid, orgId });
+    const viewerConfig = await loadStaffWorkViewerConfig({
+      orgId,
+      viewerPersonId: actor.personId,
+    });
+    const eligibleStaff = await listEligibleStaff({
+      orgId,
+      actor,
+      academicYearId: "",
+      includedPersonIds: new Set(viewerConfig.includedPersonIds),
+      excludedPersonIds: new Set(viewerConfig.excludedPersonIds),
+    });
+    if (!eligibleStaff.some((staff) => staff.personId === staffPersonId)) {
+      throw new HttpsError(
+        "permission-denied",
+        "Staff member is not available in your staff-work scope.",
+      );
+    }
+
+    const snapshot = await getFirestore()
+      .doc(`orgs/${orgId}/workDocumentation/${sourceEntityId}`)
+      .get();
+    if (!snapshot.exists)
+      throw new HttpsError("not-found", "Work-documentation record was not found.");
+
+    const record = row(snapshot.data());
+    if (
+      text(record.personId) !== staffPersonId ||
+      !actor.schoolIds.includes(text(record.schoolId))
+    ) {
+      throw new HttpsError("permission-denied", "Work-documentation access denied.");
+    }
+
+    const templateKey = text(record.templateKey);
+    const isSecret = SECRET_WORK_DOCUMENTATION_TEMPLATE_KEYS.has(templateKey);
+    const base = {
+      id: snapshot.id,
+      templateKey,
+      templateTitle: text(record.templateTitle) || templateKey,
+      instanceMode: text(record.instanceMode) === "MULTIPLE" ? "MULTIPLE" : "SINGLE",
+      instanceId: text(record.instanceId) || undefined,
+      schoolId: text(record.schoolId),
+      academicYearId: text(record.academicYearId),
+      termId: text(record.termId),
+      createdAt: timestamp(record.createdAt),
+      updatedAt: timestamp(record.updatedAt),
+      isSecret,
+      canViewRecord: !isSecret,
+    };
+    if (isSecret) return base;
+
+    return {
+      ...base,
+      values: safeDocumentationValues(record.data),
     };
   },
 );

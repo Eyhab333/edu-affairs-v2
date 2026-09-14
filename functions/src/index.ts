@@ -39,10 +39,13 @@ export {
   getTeacherWorkDetail,
   getTeacherWorkOverview,
 } from "./teacher-work/teacher-work";
+
 export {
   getStaffWorkDetail,
+  getStaffWorkDocumentationRecord,
   getStaffWorkOverview,
 } from "./staff-work/staff-work";
+
 export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-resource-acknowledgement-report";
 export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
 export { listMyTeachingPdfResources } from "./pdf-resources/list-my-teaching-pdf-resources";
