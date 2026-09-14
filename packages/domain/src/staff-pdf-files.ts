@@ -58,6 +58,20 @@ function hasSchoolLeadershipRole(roles: readonly MembershipRole[]) {
   );
 }
 
+function hasViewPermission(assignment: OperationalAssignment) {
+  const permissions = Array.isArray(assignment.permissions)
+    ? assignment.permissions
+    : [];
+
+  return permissions.includes("VIEW");
+}
+
+function getTargetPersonIds(assignment: OperationalAssignment) {
+  return Array.isArray(assignment.targetPersonIds)
+    ? assignment.targetPersonIds
+    : [];
+}
+
 export type StaffPdfFileViewer = {
   orgId: string;
   uid: string;
@@ -72,14 +86,20 @@ export function canBrowseStaffPdfFilesInScope(
   viewer: StaffPdfFileViewer,
   nowMs = Date.now(),
 ) {
-  if (viewer.roles.some((role) => ORG_WIDE_ROLE_KEYS.has(role))) return true;
+  if (viewer.roles.some((role) => ORG_WIDE_ROLE_KEYS.has(role))) {
+    return true;
+  }
 
-  if (activeSupervisionSchoolIds({
-    orgId: viewer.orgId,
-    personId: viewer.personId,
-    scopes: viewer.supervisionScopes ?? [],
-    nowMs,
-  }).length > 0) return true;
+  if (
+    activeSupervisionSchoolIds({
+      orgId: viewer.orgId,
+      personId: viewer.personId,
+      scopes: viewer.supervisionScopes ?? [],
+      nowMs,
+    }).length > 0
+  ) {
+    return true;
+  }
 
   if (hasSchoolLeadershipRole(viewer.roles) && viewer.schoolIds.length > 0) {
     return true;
@@ -89,11 +109,11 @@ export function canBrowseStaffPdfFilesInScope(
     actorPersonId: viewer.personId,
     assignments: viewer.operationalAssignments,
     nowMs,
-  }).some(
-    (assignment) =>
-      assignment.permissions.includes("VIEW") &&
-      assignment.targetPersonIds.length > 0,
-  );
+  }).some((assignment) => {
+    const targetPersonIds = getTargetPersonIds(assignment);
+
+    return hasViewPermission(assignment) && targetPersonIds.length > 0;
+  });
 }
 
 export function canViewStaffPdfFile(params: {
@@ -104,11 +124,17 @@ export function canViewStaffPdfFile(params: {
   const { viewer, file } = params;
   const nowMs = params.nowMs ?? Date.now();
 
-  if (file.orgId !== viewer.orgId || file.status !== "ACTIVE") return false;
+  if (file.orgId !== viewer.orgId || file.status !== "ACTIVE") {
+    return false;
+  }
+
   if (file.ownerUid === viewer.uid || file.ownerPersonId === viewer.personId) {
     return true;
   }
-  if (viewer.roles.some((role) => ORG_WIDE_ROLE_KEYS.has(role))) return true;
+
+  if (viewer.roles.some((role) => ORG_WIDE_ROLE_KEYS.has(role))) {
+    return true;
+  }
 
   const supervisionSchoolIds = activeSupervisionSchoolIds({
     orgId: viewer.orgId,
@@ -116,7 +142,10 @@ export function canViewStaffPdfFile(params: {
     scopes: viewer.supervisionScopes ?? [],
     nowMs,
   });
-  if (hasIntersection(supervisionSchoolIds, file.ownerSchoolIds)) return true;
+
+  if (hasIntersection(supervisionSchoolIds, file.ownerSchoolIds)) {
+    return true;
+  }
 
   if (
     hasSchoolLeadershipRole(viewer.roles) &&
@@ -129,9 +158,12 @@ export function canViewStaffPdfFile(params: {
     actorPersonId: viewer.personId,
     assignments: viewer.operationalAssignments,
     nowMs,
-  }).some(
-    (assignment) =>
-      assignment.permissions.includes("VIEW") &&
-      assignment.targetPersonIds.includes(file.ownerPersonId),
-  );
+  }).some((assignment) => {
+    const targetPersonIds = getTargetPersonIds(assignment);
+
+    return (
+      hasViewPermission(assignment) &&
+      targetPersonIds.includes(file.ownerPersonId)
+    );
+  });
 }

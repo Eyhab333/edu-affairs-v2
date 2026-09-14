@@ -1232,118 +1232,57 @@ match /threads/{threadId} {
 
 
 
+/* schoolActivities */
 
-/*schoolActivities*/
 match /schoolActivities/{activityId} {
-  allow get, list: if canManageOrg(orgId)
-    || (
-      resource.data.schoolId is string
-      && canManageSchoolActivities(
-        orgId,
-        resource.data.schoolId
-      )
-    );
+  allow get, list: if hasOrgMembership(orgId);
 
-  allow create: if canManageOrg(orgId)
-    || (
-      request.resource.data.orgId == orgId
-      && request.resource.data.schoolId is string
-      && canManageSchoolActivities(
-        orgId,
-        request.resource.data.schoolId
-      )
-    );
+  allow create: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
 
-  allow update: if canManageOrg(orgId)
-    || (
-      resource.data.schoolId is string
-      && request.resource.data.schoolId
-        == resource.data.schoolId
-      && request.resource.data.orgId == orgId
-      && canManageSchoolActivities(
-        orgId,
-        resource.data.schoolId
-      )
-    );
+  allow update: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
 
-  allow delete: if canManageOrg(orgId)
-    || (
-      resource.data.schoolId is string
-      && canManageSchoolActivities(
-        orgId,
-        resource.data.schoolId
-      )
-    );
+  allow delete: if hasOrgMembership(orgId);
 }
 
 match /schoolActivityRegistrations/{registrationId} {
-  allow get, list: if resource.data.schoolId is string
-    && canManageSchoolActivities(
-      orgId,
-      resource.data.schoolId
-    );
+  allow get, list: if hasOrgMembership(orgId);
 
-  allow create: if request.resource.data.orgId == orgId
-    && request.resource.data.schoolId is string
-    && canManageSchoolActivities(
-      orgId,
-      request.resource.data.schoolId
-    );
+  allow create: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
 
-  allow update, delete: if resource.data.schoolId is string
-    && request.resource.data.schoolId == resource.data.schoolId
-    && request.resource.data.orgId == orgId
-    && canManageSchoolActivities(
-      orgId,
-      resource.data.schoolId
-    );
+  allow update: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
+
+  allow delete: if hasOrgMembership(orgId);
 }
 
 match /schoolActivityAttendanceRecords/{recordId} {
-  allow get, list: if resource.data.schoolId is string
-    && canManageSchoolActivities(
-      orgId,
-      resource.data.schoolId
-    );
+  allow get, list: if hasOrgMembership(orgId);
 
-  allow create: if request.resource.data.orgId == orgId
-    && request.resource.data.schoolId is string
-    && canManageSchoolActivities(
-      orgId,
-      request.resource.data.schoolId
-    );
+  allow create: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
 
-  allow update, delete: if resource.data.schoolId is string
-    && request.resource.data.schoolId == resource.data.schoolId
-    && request.resource.data.orgId == orgId
-    && canManageSchoolActivities(
-      orgId,
-      resource.data.schoolId
-    );
+  allow update: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
+
+  allow delete: if hasOrgMembership(orgId);
 }
 
 match /schoolActivityResults/{resultId} {
-  allow get, list: if resource.data.schoolId is string
-    && canManageSchoolActivities(
-      orgId,
-      resource.data.schoolId
-    );
+  allow get, list: if hasOrgMembership(orgId);
 
-  allow create: if request.resource.data.orgId == orgId
-    && request.resource.data.schoolId is string
-    && canManageSchoolActivities(
-      orgId,
-      request.resource.data.schoolId
-    );
+  allow create: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
 
-  allow update, delete: if resource.data.schoolId is string
-    && request.resource.data.schoolId == resource.data.schoolId
-    && request.resource.data.orgId == orgId
-    && canManageSchoolActivities(
-      orgId,
-      resource.data.schoolId
-    );
+  allow update: if hasOrgMembership(orgId)
+    && request.resource.data.orgId == orgId;
+
+  allow delete: if hasOrgMembership(orgId);
 }
+
+
 
 /* Work documentation: each staff member can read and edit only their own records. */
 match /workDocumentation/{recordId} {

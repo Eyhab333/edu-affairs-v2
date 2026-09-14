@@ -1,0 +1,378 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "evaluator": {
+      "uid": "H9nDRWMOqsfOUE27cJBbJn2RESE3",
+      "personId": "p-f-alhamaad",
+      "email": "f-alhamaad@qz.org.sa",
+      "displayName": "فاطمة حماد الحماد",
+      "roleKey": "EDU_SUPERVISOR",
+      "roleLabel": "مشرفة تعليمية"
+    },
+    "targetVisits": 3,
+    "schools": [
+      {
+        "schoolId": "kg-01",
+        "schoolTitle": "روضة واحة الرياحين الأولى",
+        "vp": {
+          "uid": "ms10LdA0k5TVkiJo4VO6pprmcOh2",
+          "personId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+          "email": "t.alamer@qz.org.sa",
+          "displayName": "تماضر صالح محمد العامر"
+        }
+      },
+      {
+        "schoolId": "kg-02",
+        "schoolTitle": "روضة واحة الرياحين الثانية",
+        "vp": {
+          "uid": "yC5MUiMlxCXt9RnrjPmT85Ko34t1",
+          "personId": "p-h-aljower",
+          "email": "h.aljower@qz.org.sa",
+          "displayName": "هاجر أحمد فهد الجوير"
+        }
+      },
+      {
+        "schoolId": "kg-03",
+        "schoolTitle": "روضة واحة الرياحين الثالثة",
+        "vp": {
+          "uid": "tfvc13fv0DOLqAjQ8s8cpojRMVG2",
+          "personId": "p-s-alslman",
+          "email": "s.alslman@qz.org.sa",
+          "displayName": "ساره سعد أحمد السلمان"
+        }
+      },
+      {
+        "schoolId": "kg-04",
+        "schoolTitle": "روضة واحة الرياحين الرابعة",
+        "vp": {
+          "uid": "2DtRW3PPQLSjuZR1Pyp1WucwzKy1",
+          "personId": "p-h-alshaya",
+          "email": "h.alshaya@qz.org.sa",
+          "displayName": "حصه عبدالرزاق احمد الشايع"
+        }
+      }
+    ]
+  },
+  "source": {
+    "sourcePlanId": "kg-01-ay-1448-term-1-vice-principal-three-times-evaluation",
+    "sourcePlanTitle": "تقييم مديرة الروضة للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الأولى - الفصل الأول",
+    "sourceFrameworkId": "kg-principal-vice-principal-three-times-evaluation-v1",
+    "sourceFrameworkTitle": "تقييم مديرة الروضة للوكيلة - المتابعة ثلاث مرات",
+    "sourceSectionsCount": 1,
+    "sourceItemsCount": 10
+  },
+  "plannedChanges": {
+    "createOrUpdateFrameworks": 1,
+    "createOrUpdateRubricSections": 1,
+    "createOrUpdateRubricItems": 10,
+    "createOrUpdatePlans": 4,
+    "createOrUpdateCycles": 12,
+    "createOrUpdateTargetAssignments": 4,
+    "createOrUpdateEvaluatorAssignments": 12,
+    "totalWrites": 44
+  },
+  "schoolReports": [
+    {
+      "schoolId": "kg-01",
+      "schoolTitle": "روضة واحة الرياحين الأولى",
+      "sourcePlan": {
+        "id": "kg-01-ay-1448-term-1-vice-principal-three-times-evaluation",
+        "title": "تقييم مديرة الروضة للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الأولى - الفصل الأول",
+        "frameworkId": "kg-principal-vice-principal-three-times-evaluation-v1"
+      },
+      "sourceCandidatesCount": 1,
+      "newPlan": {
+        "id": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation",
+        "title": "تقييم المشرفة التعليمية للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الأولى - الفصل الأول",
+        "existedBefore": false
+      },
+      "target": {
+        "targetAssignmentId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-target-staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+        "targetAssignmentExistedBefore": false,
+        "vp": {
+          "uid": "ms10LdA0k5TVkiJo4VO6pprmcOh2",
+          "personId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+          "email": "t.alamer@qz.org.sa",
+          "displayName": "تماضر صالح محمد العامر"
+        }
+      },
+      "cycles": [
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "visitNumber": 1,
+          "title": "الزيارة الأولى",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "visitNumber": 2,
+          "title": "الزيارة الثانية",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "visitNumber": 3,
+          "title": "الزيارة الثالثة",
+          "existedBefore": false
+        }
+      ],
+      "evaluatorAssignments": [
+        {
+          "assignmentId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01-staff-ms10LdA0k5TVkiJo4VO6pprmcOh2-p-f-alhamaad",
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "targetPersonId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+          "targetDisplayName": "تماضر صالح محمد العامر",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02-staff-ms10LdA0k5TVkiJo4VO6pprmcOh2-p-f-alhamaad",
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "targetPersonId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+          "targetDisplayName": "تماضر صالح محمد العامر",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03-staff-ms10LdA0k5TVkiJo4VO6pprmcOh2-p-f-alhamaad",
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "targetPersonId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+          "targetDisplayName": "تماضر صالح محمد العامر",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        }
+      ]
+    },
+    {
+      "schoolId": "kg-02",
+      "schoolTitle": "روضة واحة الرياحين الثانية",
+      "sourcePlan": {
+        "id": "kg-02-ay-1448-term-1-vice-principal-three-times-evaluation",
+        "title": "تقييم مديرة الروضة للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الثانية - الفصل الأول",
+        "frameworkId": "kg-principal-vice-principal-three-times-evaluation-v1"
+      },
+      "sourceCandidatesCount": 1,
+      "newPlan": {
+        "id": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation",
+        "title": "تقييم المشرفة التعليمية للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الثانية - الفصل الأول",
+        "existedBefore": false
+      },
+      "target": {
+        "targetAssignmentId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-target-p-h-aljower",
+        "targetAssignmentExistedBefore": false,
+        "vp": {
+          "uid": "yC5MUiMlxCXt9RnrjPmT85Ko34t1",
+          "personId": "p-h-aljower",
+          "email": "h.aljower@qz.org.sa",
+          "displayName": "هاجر أحمد فهد الجوير"
+        }
+      },
+      "cycles": [
+        {
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "visitNumber": 1,
+          "title": "الزيارة الأولى",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "visitNumber": 2,
+          "title": "الزيارة الثانية",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "visitNumber": 3,
+          "title": "الزيارة الثالثة",
+          "existedBefore": false
+        }
+      ],
+      "evaluatorAssignments": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01-p-h-aljower-p-f-alhamaad",
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "targetPersonId": "p-h-aljower",
+          "targetDisplayName": "هاجر أحمد فهد الجوير",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02-p-h-aljower-p-f-alhamaad",
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "targetPersonId": "p-h-aljower",
+          "targetDisplayName": "هاجر أحمد فهد الجوير",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03-p-h-aljower-p-f-alhamaad",
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "targetPersonId": "p-h-aljower",
+          "targetDisplayName": "هاجر أحمد فهد الجوير",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        }
+      ]
+    },
+    {
+      "schoolId": "kg-03",
+      "schoolTitle": "روضة واحة الرياحين الثالثة",
+      "sourcePlan": {
+        "id": "kg-03-ay-1448-term-1-vice-principal-three-times-evaluation",
+        "title": "تقييم مديرة الروضة للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الثالثة - الفصل الأول",
+        "frameworkId": "kg-principal-vice-principal-three-times-evaluation-v1"
+      },
+      "sourceCandidatesCount": 1,
+      "newPlan": {
+        "id": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation",
+        "title": "تقييم المشرفة التعليمية للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الثالثة - الفصل الأول",
+        "existedBefore": false
+      },
+      "target": {
+        "targetAssignmentId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-target-p-s-alslman",
+        "targetAssignmentExistedBefore": false,
+        "vp": {
+          "uid": "tfvc13fv0DOLqAjQ8s8cpojRMVG2",
+          "personId": "p-s-alslman",
+          "email": "s.alslman@qz.org.sa",
+          "displayName": "ساره سعد أحمد السلمان"
+        }
+      },
+      "cycles": [
+        {
+          "cycleId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "visitNumber": 1,
+          "title": "الزيارة الأولى",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "visitNumber": 2,
+          "title": "الزيارة الثانية",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "visitNumber": 3,
+          "title": "الزيارة الثالثة",
+          "existedBefore": false
+        }
+      ],
+      "evaluatorAssignments": [
+        {
+          "assignmentId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01-p-s-alslman-p-f-alhamaad",
+          "cycleId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "targetPersonId": "p-s-alslman",
+          "targetDisplayName": "ساره سعد أحمد السلمان",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02-p-s-alslman-p-f-alhamaad",
+          "cycleId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "targetPersonId": "p-s-alslman",
+          "targetDisplayName": "ساره سعد أحمد السلمان",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03-p-s-alslman-p-f-alhamaad",
+          "cycleId": "kg-03-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "targetPersonId": "p-s-alslman",
+          "targetDisplayName": "ساره سعد أحمد السلمان",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        }
+      ]
+    },
+    {
+      "schoolId": "kg-04",
+      "schoolTitle": "روضة واحة الرياحين الرابعة",
+      "sourcePlan": {
+        "id": "kg-04-ay-1448-term-1-vice-principal-three-times-evaluation",
+        "title": "تقييم مديرة الروضة للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-principal-vice-principal-three-times-evaluation-v1"
+      },
+      "sourceCandidatesCount": 1,
+      "newPlan": {
+        "id": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation",
+        "title": "تقييم المشرفة التعليمية للوكيلة - المتابعة ثلاث مرات - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "existedBefore": false
+      },
+      "target": {
+        "targetAssignmentId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-target-p-h-alshaya",
+        "targetAssignmentExistedBefore": false,
+        "vp": {
+          "uid": "2DtRW3PPQLSjuZR1Pyp1WucwzKy1",
+          "personId": "p-h-alshaya",
+          "email": "h.alshaya@qz.org.sa",
+          "displayName": "حصه عبدالرزاق احمد الشايع"
+        }
+      },
+      "cycles": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "visitNumber": 1,
+          "title": "الزيارة الأولى",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "visitNumber": 2,
+          "title": "الزيارة الثانية",
+          "existedBefore": false
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "visitNumber": 3,
+          "title": "الزيارة الثالثة",
+          "existedBefore": false
+        }
+      ],
+      "evaluatorAssignments": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01-p-h-alshaya-p-f-alhamaad",
+          "cycleId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-01",
+          "targetPersonId": "p-h-alshaya",
+          "targetDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02-p-h-alshaya-p-f-alhamaad",
+          "cycleId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-02",
+          "targetPersonId": "p-h-alshaya",
+          "targetDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        },
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03-p-h-alshaya-p-f-alhamaad",
+          "cycleId": "kg-04-ay-1448-term-1-educational-supervisor-kg-vp-three-times-evaluation-evaluation-03",
+          "targetPersonId": "p-h-alshaya",
+          "targetDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "existedBefore": false
+        }
+      ]
+    }
+  ],
+  "submissions": {
+    "touched": 0,
+    "existingMatchingSubmissionsCount": 0
+  },
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "oldPlansTouched": 0,
+    "oldAssignmentsTouched": 0,
+    "createsNewFramework": true,
+    "requiresApplyFlag": true
+  }
+}

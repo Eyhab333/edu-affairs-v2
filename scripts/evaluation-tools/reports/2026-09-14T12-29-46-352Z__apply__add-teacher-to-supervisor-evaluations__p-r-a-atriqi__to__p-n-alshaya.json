@@ -1,0 +1,221 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-r-a-atriqi",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-n-alshaya",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-boys-faleh"
+  },
+  "teacher": {
+    "uid": "jKFxO5lgmRbYLA0tAdttjzNn2qh2",
+    "personId": "p-r-a-atriqi",
+    "email": "r-a-atriqi@qz.org.sa",
+    "displayName": "ريان عبدالرحمن سليمان الطريقي",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "UTo1Mx2EwSVQJ0gwdTAph8Oa8qz1",
+    "personId": "p-n-alshaya",
+    "email": "n-alshaya@qz.org.sa",
+    "displayName": "ناصر عبدالله عبدالعزيز الشايع",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-boys-faleh",
+    "schoolTitle": "مدرسة منار الريادة بنين الفالح"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 8,
+    "teacherSchools": [
+      "mrb-boys-faleh"
+    ],
+    "supervisorPatternAssignments": 6,
+    "supervisorPatternSchools": [
+      "mrb-boys-faleh"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 2,
+    "plans": [
+      {
+        "id": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+        "title": "الزيارة الإشرافية التشخيصية للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+        "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1"
+      },
+      {
+        "id": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+        "title": "تقييم المشرف التعليمي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+        "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 2,
+    "createOrUpdateEvaluatorAssignments": 6,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 8
+  },
+  "planReports": [
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "title": "الزيارة الإشرافية التشخيصية للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-r-a-atriqi",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+          "cycleTitle": "الزيارة الإشرافية الأولى",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-r-a-atriqi-p-n-alshaya",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+              "evaluatorPersonId": "p-n-alshaya",
+              "evaluatorEmail": "n-alshaya@qz.org.sa",
+              "evaluatorDisplayName": "ناصر عبدالله عبدالعزيز الشايع",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-b-e-arweshid-p-n-alshaya",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+          "cycleTitle": "الزيارة الإشرافية الثانية",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-r-a-atriqi-p-n-alshaya",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+              "evaluatorPersonId": "p-n-alshaya",
+              "evaluatorEmail": "n-alshaya@qz.org.sa",
+              "evaluatorDisplayName": "ناصر عبدالله عبدالعزيز الشايع",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-b-e-arweshid-p-n-alshaya",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+          "cycleTitle": "الزيارة الإشرافية الثالثة",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-r-a-atriqi-p-n-alshaya",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+              "evaluatorPersonId": "p-n-alshaya",
+              "evaluatorEmail": "n-alshaya@qz.org.sa",
+              "evaluatorDisplayName": "ناصر عبدالله عبدالعزيز الشايع",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-b-e-arweshid-p-n-alshaya",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "title": "تقييم المشرف التعليمي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-r-a-atriqi",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+          "cycleTitle": "التقييم الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-r-a-atriqi-p-n-alshaya",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-n-alshaya",
+              "evaluatorEmail": "n-alshaya@qz.org.sa",
+              "evaluatorDisplayName": "ناصر عبدالله عبدالعزيز الشايع",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-b-e-arweshid-p-n-alshaya",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+          "cycleTitle": "التقييم الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-r-a-atriqi-p-n-alshaya",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-n-alshaya",
+              "evaluatorEmail": "n-alshaya@qz.org.sa",
+              "evaluatorDisplayName": "ناصر عبدالله عبدالعزيز الشايع",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-b-e-arweshid-p-n-alshaya",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+          "cycleTitle": "التقييم الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-r-a-atriqi-p-n-alshaya",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+              "evaluatorPersonId": "p-n-alshaya",
+              "evaluatorEmail": "n-alshaya@qz.org.sa",
+              "evaluatorDisplayName": "ناصر عبدالله عبدالعزيز الشايع",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-b-e-arweshid-p-n-alshaya",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingTeacherScienceOrMathSupervisorAssignmentsTouched": 0,
+    "requiresApplyFlag": true
+  },
+  "applyResult": {
+    "decision": "APPLIED",
+    "committedWrites": 8,
+    "createdOrUpdatedTargetAssignments": 2,
+    "createdOrUpdatedEvaluatorAssignments": 6,
+    "skippedExistingEvaluatorAssignments": 0,
+    "submissionsTouched": 0
+  }
+}

@@ -83,6 +83,12 @@ export const staffNavItems: StaffNavItem[] = [
     moduleKey: "PDF_FILES",
   },
   {
+    href: "/staff/work-documentation",
+    label: "توثيق العمل",
+    icon: NotebookPen,
+    documentationOnly: true,
+  },
+  {
     href: "/staff/tasks",
     label: "مهامي",
     icon: ClipboardList,
@@ -130,12 +136,7 @@ export const staffNavItems: StaffNavItem[] = [
     icon: FileText,
     pdfDocuments: "MANAGE",
   },
-  {
-    href: "/staff/work-documentation",
-    label: "توثيق العمل",
-    icon: NotebookPen,
-    documentationOnly: true,
-  },
+  
   
   {
     href: "/staff/measurements",

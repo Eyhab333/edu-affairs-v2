@@ -1,0 +1,309 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "evaluatorPersonId": "p-a-almansur",
+    "schoolIds": [
+      "mrb-girls",
+      "kg-01",
+      "kg-02",
+      "kg-03",
+      "kg-04"
+    ],
+    "targetVisits": 3
+  },
+  "foundPlans": {
+    "count": 5,
+    "plans": [
+      {
+        "id": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation",
+        "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الأولى - الفصل الأول",
+        "schoolId": "kg-01",
+        "schoolTitle": "",
+        "frameworkId": "admin-supervisor-principal-evaluation-v1"
+      },
+      {
+        "id": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation",
+        "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الثانية - الفصل الأول",
+        "schoolId": "kg-02",
+        "schoolTitle": "",
+        "frameworkId": "admin-supervisor-principal-evaluation-v1"
+      },
+      {
+        "id": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation",
+        "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الثالثة - الفصل الأول",
+        "schoolId": "kg-03",
+        "schoolTitle": "",
+        "frameworkId": "admin-supervisor-principal-evaluation-v1"
+      },
+      {
+        "id": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation",
+        "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "schoolId": "kg-04",
+        "schoolTitle": "",
+        "frameworkId": "admin-supervisor-principal-evaluation-v1"
+      },
+      {
+        "id": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation",
+        "title": "تقييم المشرفة الإدارية لمديرة المدرسة - مدرسة منار الريادة بنات - الفصل الأول",
+        "schoolId": "mrb-girls",
+        "schoolTitle": "",
+        "frameworkId": "admin-supervisor-principal-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createNewCycles": 10,
+    "createNewEvaluatorAssignments": 10,
+    "updatePlans": 5,
+    "totalWrites": 25
+  },
+  "submissions": {
+    "touched": 0,
+    "existingMatchingSubmissionsCount": 0
+  },
+  "planReports": [
+    {
+      "planId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation",
+      "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الأولى - الفصل الأول",
+      "schoolId": "kg-01",
+      "schoolTitle": "",
+      "existingCyclesCount": 1,
+      "targetVisits": 3,
+      "activeTargetsCount": 1,
+      "activeEvaluatorAssignmentsBefore": 1,
+      "createdCycles": [
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "title": "الزيارة الثانية",
+          "visitNumber": 2
+        },
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "title": "الزيارة الثالثة",
+          "visitNumber": 3
+        }
+      ],
+      "assignmentActions": [
+        {
+          "action": "SKIP_EXISTING_ASSIGNMENT",
+          "cycleId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-01",
+          "targetPersonId": "p-a-alhomidi",
+          "targetDisplayName": "أشواق الحميدي الحميدي"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02-p-a-alhomidi-p-a-almansur",
+          "cycleId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "targetPersonId": "p-a-alhomidi",
+          "targetDisplayName": "أشواق الحميدي الحميدي"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03-p-a-alhomidi-p-a-almansur",
+          "cycleId": "kg-01-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "targetPersonId": "p-a-alhomidi",
+          "targetDisplayName": "أشواق الحميدي الحميدي"
+        }
+      ]
+    },
+    {
+      "planId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation",
+      "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الثانية - الفصل الأول",
+      "schoolId": "kg-02",
+      "schoolTitle": "",
+      "existingCyclesCount": 1,
+      "targetVisits": 3,
+      "activeTargetsCount": 1,
+      "activeEvaluatorAssignmentsBefore": 1,
+      "createdCycles": [
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "title": "الزيارة الثانية",
+          "visitNumber": 2
+        },
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "title": "الزيارة الثالثة",
+          "visitNumber": 3
+        }
+      ],
+      "assignmentActions": [
+        {
+          "action": "SKIP_EXISTING_ASSIGNMENT",
+          "cycleId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-01",
+          "targetPersonId": "p-s-alturiqe",
+          "targetDisplayName": "سارة عبدالرحمن الطريقي"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02-p-s-alturiqe-p-a-almansur",
+          "cycleId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "targetPersonId": "p-s-alturiqe",
+          "targetDisplayName": "سارة عبدالرحمن الطريقي"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03-p-s-alturiqe-p-a-almansur",
+          "cycleId": "kg-02-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "targetPersonId": "p-s-alturiqe",
+          "targetDisplayName": "سارة عبدالرحمن الطريقي"
+        }
+      ]
+    },
+    {
+      "planId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation",
+      "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الثالثة - الفصل الأول",
+      "schoolId": "kg-03",
+      "schoolTitle": "",
+      "existingCyclesCount": 1,
+      "targetVisits": 3,
+      "activeTargetsCount": 1,
+      "activeEvaluatorAssignmentsBefore": 1,
+      "createdCycles": [
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "title": "الزيارة الثانية",
+          "visitNumber": 2
+        },
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "title": "الزيارة الثالثة",
+          "visitNumber": 3
+        }
+      ],
+      "assignmentActions": [
+        {
+          "action": "SKIP_EXISTING_ASSIGNMENT",
+          "cycleId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-01",
+          "targetPersonId": "p-s-alnafea",
+          "targetDisplayName": "سمية أحمد راشد النافع"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02-p-s-alnafea-p-a-almansur",
+          "cycleId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "targetPersonId": "p-s-alnafea",
+          "targetDisplayName": "سمية أحمد راشد النافع"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03-p-s-alnafea-p-a-almansur",
+          "cycleId": "kg-03-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "targetPersonId": "p-s-alnafea",
+          "targetDisplayName": "سمية أحمد راشد النافع"
+        }
+      ]
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation",
+      "title": "تقييم المشرفة الإدارية لمديرة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "schoolId": "kg-04",
+      "schoolTitle": "",
+      "existingCyclesCount": 1,
+      "targetVisits": 3,
+      "activeTargetsCount": 1,
+      "activeEvaluatorAssignmentsBefore": 1,
+      "createdCycles": [
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "title": "الزيارة الثانية",
+          "visitNumber": 2
+        },
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "title": "الزيارة الثالثة",
+          "visitNumber": 3
+        }
+      ],
+      "assignmentActions": [
+        {
+          "action": "SKIP_EXISTING_ASSIGNMENT",
+          "cycleId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-01",
+          "targetPersonId": "p-n-alhamiyn",
+          "targetDisplayName": "نورة علي عبدالعزيز الحمين"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02-p-n-alhamiyn-p-a-almansur",
+          "cycleId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "targetPersonId": "p-n-alhamiyn",
+          "targetDisplayName": "نورة علي عبدالعزيز الحمين"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03-p-n-alhamiyn-p-a-almansur",
+          "cycleId": "kg-04-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "targetPersonId": "p-n-alhamiyn",
+          "targetDisplayName": "نورة علي عبدالعزيز الحمين"
+        }
+      ]
+    },
+    {
+      "planId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation",
+      "title": "تقييم المشرفة الإدارية لمديرة المدرسة - مدرسة منار الريادة بنات - الفصل الأول",
+      "schoolId": "mrb-girls",
+      "schoolTitle": "",
+      "existingCyclesCount": 1,
+      "targetVisits": 3,
+      "activeTargetsCount": 1,
+      "activeEvaluatorAssignmentsBefore": 1,
+      "createdCycles": [
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "title": "الزيارة الثانية",
+          "visitNumber": 2
+        },
+        {
+          "action": "CREATE_CYCLE",
+          "cycleId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "title": "الزيارة الثالثة",
+          "visitNumber": 3
+        }
+      ],
+      "assignmentActions": [
+        {
+          "action": "SKIP_EXISTING_ASSIGNMENT",
+          "cycleId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-01",
+          "targetPersonId": "p-n-albader",
+          "targetDisplayName": "نادية عثمان ناصر البدر"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02-p-n-albader-p-a-almansur",
+          "cycleId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-02",
+          "targetPersonId": "p-n-albader",
+          "targetDisplayName": "نادية عثمان ناصر البدر"
+        },
+        {
+          "action": "CREATE_EVALUATOR_ASSIGNMENT",
+          "assignmentId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03-p-n-albader-p-a-almansur",
+          "cycleId": "mrb-girls-ay-1448-term-1-admin-supervisor-principal-evaluation-evaluation-03",
+          "targetPersonId": "p-n-albader",
+          "targetDisplayName": "نادية عثمان ناصر البدر"
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "targetAssignmentsTouched": 0,
+    "existingCyclesTouchedOnlyIfPlanUpdate": false,
+    "requiresApplyFlag": true
+  }
+}

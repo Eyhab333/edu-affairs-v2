@@ -1,0 +1,454 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-m-f-elfahd",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-ralfaiz",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-boys-faleh"
+  },
+  "teacher": {
+    "uid": "h44xqjudI9MHivXbiUbNaqQrq152",
+    "personId": "p-m-f-elfahd",
+    "email": "m-f-elfahd@qz.org.sa",
+    "displayName": "مؤيد فهد عبداللطيف الفهد",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "qU0t5pxQOthttvJz4IlfJlhw7Gg2",
+    "personId": "p-ralfaiz",
+    "email": "ralfaiz@qz.org.sa",
+    "displayName": "راشد سليمان فايز الفايز",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-boys-faleh",
+    "schoolTitle": "مدرسة منار الريادة بنين الفالح"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 6,
+    "teacherSchools": [
+      "mrb-boys-faleh"
+    ],
+    "supervisorPatternAssignments": 95,
+    "supervisorPatternSchools": [
+      "mrb-boys-faleh"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 1,
+    "plans": [
+      {
+        "id": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+        "title": "تقييم وكيل المدرسة الأسبوعي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+        "frameworkId": "school-vice-principal-weekly-teacher-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 1,
+    "createOrUpdateEvaluatorAssignments": 19,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 20
+  },
+  "planReports": [
+    {
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "title": "تقييم وكيل المدرسة الأسبوعي للمعلمين - منار الريادة بنين الفالح - الفصل الأول",
+      "frameworkId": "school-vice-principal-weekly-teacher-evaluation-v1",
+      "cyclesCount": 19,
+      "newTargetId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-target-p-m-f-elfahd",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01",
+          "cycleTitle": "الأسبوع الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02",
+          "cycleTitle": "الأسبوع الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03",
+          "cycleTitle": "الأسبوع الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04",
+          "cycleTitle": "الأسبوع الرابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05",
+          "cycleTitle": "الأسبوع الخامس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06",
+          "cycleTitle": "الأسبوع السادس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07",
+          "cycleTitle": "الأسبوع السابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08",
+          "cycleTitle": "الأسبوع الثامن",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09",
+          "cycleTitle": "الأسبوع التاسع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10",
+          "cycleTitle": "الأسبوع العاشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11",
+          "cycleTitle": "الأسبوع الحادي عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12",
+          "cycleTitle": "الأسبوع الثاني عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13",
+          "cycleTitle": "الأسبوع الثالث عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14",
+          "cycleTitle": "الأسبوع الرابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15",
+          "cycleTitle": "الأسبوع الخامس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16",
+          "cycleTitle": "الأسبوع السادس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17",
+          "cycleTitle": "الأسبوع السابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18",
+          "cycleTitle": "الأسبوع الثامن عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19",
+          "cycleTitle": "الأسبوع التاسع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19-p-m-f-elfahd-p-ralfaiz",
+              "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19",
+              "evaluatorPersonId": "p-ralfaiz",
+              "evaluatorEmail": "ralfaiz@qz.org.sa",
+              "evaluatorDisplayName": "راشد سليمان فايز الفايز",
+              "patternId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19-p-b-e-arweshid-p-ralfaiz",
+              "patternTargetPersonId": "p-b-e-arweshid",
+              "patternTargetDisplayName": "بدر إبراهيم عبدالله الرويشد",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingTeacherScienceOrMathSupervisorAssignmentsTouched": 0,
+    "requiresApplyFlag": true
+  },
+  "applyResult": {
+    "decision": "APPLIED",
+    "committedWrites": 20,
+    "createdOrUpdatedTargetAssignments": 1,
+    "createdOrUpdatedEvaluatorAssignments": 19,
+    "skippedExistingEvaluatorAssignments": 0,
+    "submissionsTouched": 0
+  }
+}
