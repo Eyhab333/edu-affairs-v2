@@ -102,6 +102,38 @@ type TeacherWorkMeasurementStudentResult = {
   valueText: string;
 };
 
+type TeacherWorkMeasurementItemScore = {
+  itemKey: string;
+  itemId: string;
+  itemTitle: string;
+  category: string;
+  valueType: string;
+  score: number | null;
+  maxScore: number | null;
+  weight: number | null;
+  level: string;
+  valueText: string;
+  passed: boolean | null;
+  note: string;
+  order: number;
+};
+
+type TeacherWorkMeasurementStudentItemDetail =
+  TeacherWorkMeasurementStudentResult & {
+    studentId: string;
+    itemScores: TeacherWorkMeasurementItemScore[];
+  };
+
+type TeacherWorkMeasurementDetail = {
+  id: string;
+  title: string;
+  templateTitle: string;
+  classLabel: string;
+  subjectLabel: string;
+  status: string;
+  studentResults: TeacherWorkMeasurementStudentItemDetail[];
+};
+
 type TeacherWorkMeasurementDrillDown = TeacherWorkDrillDownBase & {
   kind: "measurements";
   details: {
@@ -285,6 +317,27 @@ function measurementStudentResultSources(rowData: Row): MeasurementStudentResult
       valueText: text(studentRow.valueText),
     }];
   });
+}
+
+function measurementItemScores(value: unknown): TeacherWorkMeasurementItemScore[] {
+  return (Array.isArray(value) ? value : [])
+    .map(row)
+    .map((item) => ({
+      itemKey: text(item.itemKey) || text(item.itemId),
+      itemId: text(item.itemId),
+      itemTitle: text(item.itemTitle),
+      category: text(item.category),
+      valueType: text(item.valueType),
+      score: numberValue(item.score),
+      maxScore: numberValue(item.maxScore),
+      weight: numberValue(item.weight),
+      level: text(item.level),
+      valueText: text(item.valueText),
+      passed: typeof item.passed === "boolean" ? item.passed : null,
+      note: text(item.note),
+      order: numberValue(item.order) ?? Number.MAX_SAFE_INTEGER,
+    }))
+    .sort((left, right) => left.order - right.order);
 }
 
 function hasFriendlyStudentName(value: string, studentId: string) {
@@ -1351,6 +1404,89 @@ export const getTeacherWorkDetail = onCall(
       teacher,
       lessonPreps,
       drillDowns,
+    };
+  },
+);
+
+export const getTeacherWorkMeasurementDetail = onCall(
+  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  async (request): Promise<TeacherWorkMeasurementDetail> => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    const input = row(request.data);
+    const orgId = requireId(input.orgId, "orgId");
+    const teacherPersonId = requireId(input.teacherPersonId, "teacherPersonId");
+    const measurementBatchId = requireId(input.measurementBatchId, "measurementBatchId");
+    const academicYearId = optionalId(input.academicYearId, "academicYearId");
+    const actor = await resolveActor({ orgId, uid: request.auth.uid });
+    const snapshot = await getFirestore()
+      .doc(`orgs/${orgId}/studentMeasurementBatches/${measurementBatchId}`)
+      .get();
+
+    if (!snapshot.exists) {
+      throw new HttpsError("not-found", "Measurement batch was not found.");
+    }
+
+    const batch = row(snapshot.data());
+    if (text(batch.createdByPersonId) !== teacherPersonId) {
+      throw new HttpsError("permission-denied", "Measurement batch access denied.");
+    }
+    if (academicYearId && text(batch.academicYearId) !== academicYearId) {
+      throw new HttpsError("not-found", "Measurement batch was not found.");
+    }
+    if (
+      !actor.schoolIds.includes(text(batch.schoolId)) ||
+      !canViewTeacherWorkSubject({
+        actor,
+        orgId,
+        schoolId: text(batch.schoolId),
+        subjectKey: subjectKeyFor(batch),
+      })
+    ) {
+      throw new HttpsError("permission-denied", "Measurement batch access denied.");
+    }
+
+    const sourceRows = Array.isArray(batch.studentRows) ? batch.studentRows : [];
+    const studentSources = sourceRows.flatMap((source) => {
+      const student = row(source);
+      const studentId = text(student.studentId);
+      if (!studentId) return [];
+      return [{
+        studentId,
+        studentDisplayName: text(student.studentDisplayName),
+        status: text(student.status) || "PENDING",
+        score: numberValue(student.score),
+        maxScore: numberValue(student.maxScore),
+        level: text(student.level),
+        valueText: text(student.valueText),
+        itemScores: measurementItemScores(student.itemScores),
+      }];
+    });
+    const studentNames = await loadMeasurementStudentNames({
+      orgId,
+      lookups: studentSources
+        .filter((student) => !hasFriendlyStudentName(student.studentDisplayName, student.studentId))
+        .map((student) => ({ schoolId: text(batch.schoolId), studentId: student.studentId })),
+    });
+
+    return {
+      id: snapshot.id,
+      title: text(batch.templateTitle) || "دفعة قياسات",
+      templateTitle: text(batch.templateTitle),
+      classLabel: text(batch.classTitle) || text(batch.classId),
+      subjectLabel: text(batch.subjectTitle) || text(batch.subjectKey),
+      status: text(batch.status),
+      studentResults: studentSources.map((student) => ({
+        ...student,
+        studentDisplayName:
+          (hasFriendlyStudentName(student.studentDisplayName, student.studentId)
+            ? student.studentDisplayName
+            : "") ||
+          studentNames.get(`${text(batch.schoolId)}:${student.studentId}`) ||
+          "غير محدد",
+      })),
     };
   },
 );

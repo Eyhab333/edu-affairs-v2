@@ -14,6 +14,10 @@ const TARGETS = [
 
     includedPeople: [
       {
+        label: "وكيلة منار الريادة بنات",
+        personId: "p-f-alobawe",
+      },
+      {
         label: "ساره ناصر محمد الحمد",
         personId: "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
       },
@@ -43,6 +47,19 @@ const TARGETS = [
       {
         label: "مشرف الرياضيات والعلوم",
         personId: "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+      },
+    ],
+  },
+  {
+    label: "فاطمة حماد الحماد",
+    viewerPersonId: "p-f-alhamaad",
+
+    includedPeople: [],
+
+    excludedPeople: [
+      {
+        label: "منصور الرميح",
+        personId: "p-malrameh",
       },
     ],
   },

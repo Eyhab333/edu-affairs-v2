@@ -86,6 +86,38 @@ export type TeacherWorkMeasurementStudentResult = {
   valueText: string;
 };
 
+export type TeacherWorkMeasurementItemScore = {
+  itemKey: string;
+  itemId: string;
+  itemTitle: string;
+  category: string;
+  valueType: string;
+  score: number | null;
+  maxScore: number | null;
+  weight: number | null;
+  level: string;
+  valueText: string;
+  passed: boolean | null;
+  note: string;
+  order: number;
+};
+
+export type TeacherWorkMeasurementStudentItemDetail =
+  TeacherWorkMeasurementStudentResult & {
+    studentId: string;
+    itemScores: TeacherWorkMeasurementItemScore[];
+  };
+
+export type TeacherWorkMeasurementDetail = {
+  id: string;
+  title: string;
+  templateTitle: string;
+  classLabel: string;
+  subjectLabel: string;
+  status: string;
+  studentResults: TeacherWorkMeasurementStudentItemDetail[];
+};
+
 export type TeacherWorkMeasurementDrillDown = TeacherWorkDrillDownBase & {
   kind: "measurements";
   details: {
@@ -209,6 +241,16 @@ const getTeacherWorkDetail = httpsCallable<
   TeacherWorkDetailResponse
 >(functions, "getTeacherWorkDetail");
 
+const getTeacherWorkMeasurementDetail = httpsCallable<
+  {
+    orgId: string;
+    teacherPersonId: string;
+    measurementBatchId: string;
+    academicYearId?: string;
+  },
+  TeacherWorkMeasurementDetail
+>(functions, "getTeacherWorkMeasurementDetail");
+
 export async function loadTeacherWorkDirectory(params: {
   orgId: string;
   academicYearId?: string;
@@ -258,6 +300,16 @@ export async function loadTeacherWorkDetail(params: {
 
     throw error;
   }
+}
+
+export async function loadTeacherWorkMeasurementDetail(params: {
+  orgId: string;
+  teacherPersonId: string;
+  measurementBatchId: string;
+  academicYearId?: string;
+}) {
+  const result = await getTeacherWorkMeasurementDetail(params);
+  return result.data;
 }
 
 export const teacherWorkMetricLabels: Record<TeacherWorkMetricKey, string> = {

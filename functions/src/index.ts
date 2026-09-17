@@ -37,6 +37,7 @@ export {
 } from "./student-work/student-work";
 export {
   getTeacherWorkDetail,
+  getTeacherWorkMeasurementDetail,
   getTeacherWorkOverview,
 } from "./teacher-work/teacher-work";
 

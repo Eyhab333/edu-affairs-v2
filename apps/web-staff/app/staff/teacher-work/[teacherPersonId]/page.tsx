@@ -17,12 +17,15 @@ import { Button } from "@/components/ui/button";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import {
   loadTeacherWorkDetail,
+  loadTeacherWorkMeasurementDetail,
   teacherWorkMetricLabels,
   teacherWorkMetricOrder,
   type TeacherWorkLessonPrep,
   type TeacherWorkDrillDownItem,
   type TeacherWorkDrillDowns,
   type TeacherWorkMeasurementStudentResult,
+  type TeacherWorkMeasurementDetail,
+  type TeacherWorkMeasurementItemScore,
   type TeacherWorkMetric,
   type TeacherWorkMetricKey,
   type TeacherWorkPeriod,
@@ -45,6 +48,16 @@ const emptyDrillDowns: TeacherWorkDrillDowns = {
 
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : "تعذر تحميل أعمال المعلم.";
+}
+
+function measurementDetailErrorMessage(error: unknown) {
+  const code =
+    error && typeof error === "object" && "code" in error
+      ? String(error.code)
+      : "";
+  if (code === "functions/not-found") return "تعذر العثور على دفعة القياس.";
+  if (code === "functions/permission-denied") return "لا تملك صلاحية عرض تفاصيل هذه الدفعة.";
+  return "تعذر تحميل تفاصيل بنود القياس.";
 }
 
 function formatDate(value: number | null) {
@@ -141,8 +154,16 @@ function measurementResultValue(result: TeacherWorkMeasurementStudentResult) {
 
 function MeasurementStudentResults({
   results,
+  measurementDetail,
+  loadingDetail,
+  detailError,
+  onLoadDetail,
 }: {
   results: TeacherWorkMeasurementStudentResult[];
+  measurementDetail?: TeacherWorkMeasurementDetail;
+  loadingDetail: boolean;
+  detailError: string;
+  onLoadDetail: () => void;
 }) {
   if (!results.length) {
     return (
@@ -205,7 +226,63 @@ function MeasurementStudentResults({
           </tbody>
         </table>
       </div>
+      <div className="mt-4 border-t pt-4">
+        <Button type="button" variant="outline" size="sm" onClick={onLoadDetail} disabled={loadingDetail}>
+          {loadingDetail ? <Loader2 className="size-4 animate-spin" /> : null}
+          عرض تفاصيل البنود
+        </Button>
+        {detailError ? <p className="mt-2 text-sm text-destructive">{detailError}</p> : null}
+        {measurementDetail ? <MeasurementItemScores detail={measurementDetail} /> : null}
+      </div>
     </section>
+  );
+}
+
+function measurementItemValue(item: TeacherWorkMeasurementItemScore) {
+  if (item.score !== null && item.maxScore !== null) {
+    return `${item.score.toLocaleString("ar-SA")} / ${item.maxScore.toLocaleString("ar-SA")}`;
+  }
+  if (item.valueText.trim()) return item.valueText;
+  if (item.level.trim()) return item.level;
+  if (item.passed !== null) return item.passed ? "مجتاز" : "غير مجتاز";
+  return "—";
+}
+
+function MeasurementItemScores({ detail }: { detail: TeacherWorkMeasurementDetail }) {
+  const [openedStudentId, setOpenedStudentId] = useState<string | null>(null);
+
+  return (
+    <div className="mt-4 space-y-3">
+      {detail.studentResults.map((student) => {
+        const isOpen = openedStudentId === student.studentId;
+        return (
+          <article key={student.studentId} className="rounded-xl border bg-muted/20 p-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-medium text-foreground">{safeText(student.studentDisplayName)}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {measurementRowStatusLabel(student.status)} • النتيجة الإجمالية: {measurementResultValue(student)}
+                </p>
+              </div>
+              <Button type="button" size="sm" variant="ghost" onClick={() => setOpenedStudentId(isOpen ? null : student.studentId)}>
+                {isOpen ? "إخفاء البنود" : "عرض البنود"}
+                <ChevronLeft className="size-4" />
+              </Button>
+            </div>
+            {isOpen ? (
+              student.itemScores.length ? (
+                <div className="mt-3 overflow-x-auto rounded-lg border bg-card">
+                  <table className="w-full min-w-[34rem] text-right text-sm">
+                    <thead className="bg-muted/50 text-muted-foreground"><tr><th className="px-3 py-2 font-medium">البند</th><th className="px-3 py-2 font-medium">الفئة</th><th className="px-3 py-2 font-medium">النتيجة</th><th className="px-3 py-2 font-medium">الحالة</th></tr></thead>
+                    <tbody>{student.itemScores.map((item, index) => <tr key={`${item.itemKey}-${index}`} className="border-t"><td className="px-3 py-2.5 font-medium">{safeText(item.itemTitle, safeText(item.itemKey, "بند"))}</td><td className="px-3 py-2.5 text-muted-foreground">{safeText(item.category, "—")}</td><td className="px-3 py-2.5">{measurementItemValue(item)}</td><td className="px-3 py-2.5">{item.passed === null ? "—" : item.passed ? "مجتاز" : "غير مجتاز"}{item.note ? <p className="mt-1 whitespace-pre-wrap text-xs text-muted-foreground">{item.note}</p> : null}</td></tr>)}</tbody>
+                  </table>
+                </div>
+              ) : <p className="mt-3 text-sm text-muted-foreground">لا توجد درجات تفصيلية للبنود في هذا القياس.</p>
+            ) : null}
+          </article>
+        );
+      })}
+    </div>
   );
 }
 
@@ -389,9 +466,17 @@ function DetailSection({ label, children }: { label: string; children: ReactNode
 function DrillDownDetails({
   item,
   onClose,
+  measurementDetail,
+  loadingMeasurementDetail,
+  measurementDetailError,
+  onLoadMeasurementDetail,
 }: {
   item: TeacherWorkDrillDownItem;
   onClose: () => void;
+  measurementDetail?: TeacherWorkMeasurementDetail;
+  loadingMeasurementDetail: boolean;
+  measurementDetailError: string;
+  onLoadMeasurementDetail: (measurementBatchId: string) => void;
 }) {
   const details = (() => {
     switch (item.kind) {
@@ -443,7 +528,13 @@ function DrillDownDetails({
                 ["غير المكتمل", item.details.missingCount?.toLocaleString("ar-SA") ?? "غير محدد"],
               ]}
             />
-            <MeasurementStudentResults results={item.details.studentResults} />
+            <MeasurementStudentResults
+              results={item.details.studentResults}
+              measurementDetail={measurementDetail}
+              loadingDetail={loadingMeasurementDetail}
+              detailError={measurementDetailError}
+              onLoadDetail={() => onLoadMeasurementDetail(item.id)}
+            />
           </>
         );
       case "learningLoss":
@@ -615,9 +706,17 @@ function DrillDownDetails({
 function ModuleDrillDown({
   metric,
   items,
+  measurementDetails,
+  loadingMeasurementDetails,
+  measurementDetailErrors,
+  onLoadMeasurementDetail,
 }: {
   metric: TeacherWorkMetric;
   items: TeacherWorkDrillDownItem[];
+  measurementDetails: Record<string, TeacherWorkMeasurementDetail | undefined>;
+  loadingMeasurementDetails: Record<string, boolean | undefined>;
+  measurementDetailErrors: Record<string, string | undefined>;
+  onLoadMeasurementDetail: (measurementBatchId: string) => void;
 }) {
   const [openedItemId, setOpenedItemId] = useState<string | null>(null);
 
@@ -656,7 +755,7 @@ function ModuleDrillDown({
                 <ChevronLeft className="size-4" />
               </Button>
             </div>
-            {isOpen ? <DrillDownDetails item={item} onClose={() => setOpenedItemId(null)} /> : null}
+            {isOpen ? <DrillDownDetails item={item} onClose={() => setOpenedItemId(null)} measurementDetail={item.kind === "measurements" ? measurementDetails[item.id] : undefined} loadingMeasurementDetail={item.kind === "measurements" && Boolean(loadingMeasurementDetails[item.id])} measurementDetailError={item.kind === "measurements" ? measurementDetailErrors[item.id] ?? "" : ""} onLoadMeasurementDetail={onLoadMeasurementDetail} /> : null}
           </article>
         );
       })}
@@ -672,6 +771,9 @@ export default function TeacherWorkDetailPage() {
   const [teacher, setTeacher] = useState<TeacherWorkSummary | null>(null);
   const [lessonPreps, setLessonPreps] = useState<TeacherWorkLessonPrep[]>([]);
   const [drillDowns, setDrillDowns] = useState<TeacherWorkDrillDowns>(emptyDrillDowns);
+  const [measurementDetails, setMeasurementDetails] = useState<Record<string, TeacherWorkMeasurementDetail | undefined>>({});
+  const [loadingMeasurementDetails, setLoadingMeasurementDetails] = useState<Record<string, boolean | undefined>>({});
+  const [measurementDetailErrors, setMeasurementDetailErrors] = useState<Record<string, string | undefined>>({});
   const [selectedModule, setSelectedModule] = useState<TeacherWorkMetricKey>("measurements");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -707,6 +809,28 @@ export default function TeacherWorkDetailPage() {
     if (canAccess) void load();
     else setLoading(false);
   }, [canAccess, load]);
+
+  const loadMeasurementDetail = useCallback(async (measurementBatchId: string) => {
+    if (measurementDetails[measurementBatchId] || loadingMeasurementDetails[measurementBatchId]) return;
+    setLoadingMeasurementDetails((current) => ({ ...current, [measurementBatchId]: true }));
+    setMeasurementDetailErrors((current) => ({ ...current, [measurementBatchId]: undefined }));
+    try {
+      const detail = await loadTeacherWorkMeasurementDetail({
+        orgId: actor.orgId,
+        academicYearId: actor.currentTerm?.academicYearId,
+        teacherPersonId,
+        measurementBatchId,
+      });
+      setMeasurementDetails((current) => ({ ...current, [measurementBatchId]: detail }));
+    } catch (nextError) {
+      setMeasurementDetailErrors((current) => ({
+        ...current,
+        [measurementBatchId]: measurementDetailErrorMessage(nextError),
+      }));
+    } finally {
+      setLoadingMeasurementDetails((current) => ({ ...current, [measurementBatchId]: false }));
+    }
+  }, [actor.currentTerm?.academicYearId, actor.orgId, loadingMeasurementDetails, measurementDetails, teacherPersonId]);
 
   const identity = useMemo(() => [
     ...(teacher?.schoolNames ?? []),
@@ -777,6 +901,10 @@ export default function TeacherWorkDetailPage() {
               <ModuleDrillDown
                 metric={teacher.metrics[selectedModule]}
                 items={drillDowns[selectedModule]}
+                measurementDetails={measurementDetails}
+                loadingMeasurementDetails={loadingMeasurementDetails}
+                measurementDetailErrors={measurementDetailErrors}
+                onLoadMeasurementDetail={loadMeasurementDetail}
               />
             )}
           </div>
