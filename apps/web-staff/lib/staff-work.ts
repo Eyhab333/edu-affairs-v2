@@ -35,7 +35,17 @@ export type StaffWorkActivityDetails =
       totalScore: number | null;
       maxScore: number | null;
       percentage: number | null;
-      criteria: Array<{ title: string; category: string; score: number | null; maxScore: number | null; valueText: string; level: string }>;
+      criteria: Array<{
+        itemId: string;
+        sectionId: string;
+        itemTitle: string;
+        sectionTitle: string;
+        score: number | null;
+        maxScore: number | null;
+        valueText: string;
+        level: string;
+        order: number;
+      }>;
     }
   | {
       kind: "PERFORMANCE_IMPROVEMENT";

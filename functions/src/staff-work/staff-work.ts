@@ -56,7 +56,17 @@ type EvaluationActivityDetails = {
   totalScore: number | null;
   maxScore: number | null;
   percentage: number | null;
-  criteria: Array<{ title: string; category: string; score: number | null; maxScore: number | null; valueText: string; level: string }>;
+  criteria: Array<{
+    itemId: string;
+    sectionId: string;
+    itemTitle: string;
+    sectionTitle: string;
+    score: number | null;
+    maxScore: number | null;
+    valueText: string;
+    level: string;
+    order: number;
+  }>;
 };
 type PerformanceImprovementActivityDetails = {
   kind: "PERFORMANCE_IMPROVEMENT";
@@ -199,6 +209,14 @@ function rows(value: unknown) {
 }
 function unique(values: string[]) {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+}
+function humanText(value: unknown) {
+  const result = text(value);
+  // Firestore document IDs in this domain are normally ASCII slug values. Do
+  // not let one become a user-facing title or person name.
+  return /^[a-z0-9]+(?:[-_][a-z0-9]+)+$/i.test(result) || /^[a-z0-9]{16,}$/i.test(result)
+    ? ""
+    : result;
 }
 
 // These are the templates whose definitions deliberately mark their content as
@@ -566,11 +584,17 @@ function addActivity(
   });
 }
 
-function evaluationDetails(item: Row, action: "SUBMITTED" | "APPROVED", targetName: string): EvaluationActivityDetails {
+function evaluationDetails(params: {
+  item: Row;
+  action: "SUBMITTED" | "APPROVED";
+  targetName: string;
+  evaluationTitle: string;
+}): EvaluationActivityDetails {
+  const { item, action, targetName, evaluationTitle } = params;
   return {
     kind: "EVALUATION",
     action,
-    evaluationTitle: text(item.cycleTitle) || text(item.planTitle) || text(item.frameworkTitle) || text(item.frameworkId),
+    evaluationTitle,
     targetName,
     status: text(item.status),
     submittedAt: timestamp(item.submittedAt),
@@ -579,13 +603,81 @@ function evaluationDetails(item: Row, action: "SUBMITTED" | "APPROVED", targetNa
     maxScore: timestamp(item.maxScore),
     percentage: timestamp(item.normalizedScore) ?? timestamp(item.weightedScore),
     criteria: rows(item.itemScores).map((score) => ({
-      title: text(score.title),
-      category: text(score.category),
+      itemId: text(score.itemId),
+      sectionId: text(score.sectionId),
+      itemTitle: text(score.itemTitle) || text(score.title),
+      sectionTitle: text(score.sectionTitle) || text(score.category),
       score: timestamp(score.score),
       maxScore: timestamp(score.maxScore),
       valueText: text(score.valueText),
       level: text(score.level),
-    })).filter((score) => Boolean(score.title || score.category)),
+      order: timestamp(score.order) ?? Number.MAX_SAFE_INTEGER,
+    }))
+      .filter((score) => Boolean(score.itemId || score.itemTitle || score.sectionId || score.sectionTitle))
+      .sort((left, right) => left.order - right.order),
+  };
+}
+
+async function loadEvaluationPresentation(params: {
+  orgId: string;
+  evaluations: Row[];
+}) {
+  const db = getFirestore();
+  const loadRows = async (collectionName: string, ids: string[]) => {
+    const records = new Map<string, Row>();
+    for (let start = 0; start < ids.length; start += 100) {
+      const snapshots = await db.getAll(
+        ...ids.slice(start, start + 100).map((itemId) =>
+          db.doc(`orgs/${params.orgId}/${collectionName}/${itemId}`),
+        ),
+      );
+      for (const snapshot of snapshots) {
+        if (snapshot.exists) records.set(snapshot.id, row(snapshot.data()));
+      }
+    }
+    return records;
+  };
+  const targetPersonIds = unique(params.evaluations.map((item) => text(item.targetPersonId)));
+  const cycleIds = unique(params.evaluations.map((item) => text(item.cycleId)));
+  const planIds = unique(params.evaluations.map((item) => text(item.planId)));
+  const frameworkIds = unique(params.evaluations.map((item) => text(item.frameworkId)));
+  const [peopleById, cyclesById, plansById] = await Promise.all([
+    loadRows("people", targetPersonIds),
+    loadRows("evaluationCycles", cycleIds),
+    loadRows("evaluationPlans", planIds),
+  ]);
+  const cyclePlanIds = unique(
+    [...cyclesById.values()].map((cycle) => text(cycle.planId)),
+  ).filter((planId) => !plansById.has(planId));
+  const cyclePlansById = await loadRows("evaluationPlans", cyclePlanIds);
+  for (const [planId, plan] of cyclePlansById) plansById.set(planId, plan);
+  const frameworkIdsFromPlans = [...plansById.values()].map((plan) => text(plan.frameworkId));
+  const frameworksById = await loadRows(
+    "evaluationFrameworks",
+    unique([...frameworkIds, ...frameworkIdsFromPlans]),
+  );
+
+  const titleFor = (item: Row) => {
+    const cycle = cyclesById.get(text(item.cycleId));
+    const plan = plansById.get(text(item.planId)) ||
+      (cycle ? plansById.get(text(cycle.planId)) : undefined);
+    const framework = frameworksById.get(
+      text(item.frameworkId) || text(plan?.frameworkId),
+    );
+    const cycleTitle = humanText(cycle?.title) || humanText(cycle?.label) || humanText(item.cycleTitle);
+    const planTitle = humanText(plan?.title) || humanText(item.planTitle);
+    const frameworkTitle = humanText(framework?.title) || humanText(item.frameworkTitle);
+    const genericCycle = /^(?:الأسبوع|الاسبوع|week|زيارة|الدورة|cycle)(?:\s|\d|$)/i.test(cycleTitle);
+    if (cycleTitle && planTitle && genericCycle) return `${planTitle} — ${cycleTitle}`;
+    return cycleTitle || planTitle || frameworkTitle || "تقييم موظف";
+  };
+
+  return {
+    targetNameFor: (item: Row) =>
+      humanText(peopleById.get(text(item.targetPersonId))?.displayName) ||
+      humanText(item.targetDisplayName) ||
+      "موظف غير محدد",
+    titleFor,
   };
 }
 
@@ -672,10 +764,14 @@ async function collectActivities(params: {
       schoolIds: params.actor.schoolIds,
     }),
   ]);
+  const evaluationPresentation = await loadEvaluationPresentation({
+    orgId: params.orgId,
+    evaluations: evaluations.filter((item) => currentYear(item, params.academicYearId)),
+  });
   for (const item of evaluations) {
     if (!currentYear(item, params.academicYearId)) continue;
-    const targetName =
-      text(item.targetDisplayName) || text(item.targetPersonId);
+    const targetName = evaluationPresentation.targetNameFor(item);
+    const evaluationTitle = evaluationPresentation.titleFor(item);
     const submittedAt =
       timestamp(item.submittedAt) ?? timestamp(item.updatedAt);
     if (
@@ -689,13 +785,13 @@ async function collectActivities(params: {
         personId: text(item.evaluatorPersonId),
         schoolId: text(item.schoolId),
         activityAt: submittedAt!,
-        title: "إرسال تقييم",
-        description: text(item.cycleTitle) || text(item.planTitle),
+        title: evaluationTitle,
+        description: "",
         status: text(item.status),
         targetName,
         classLabel: "",
         sourceEntityId: text(item.id),
-        details: evaluationDetails(item, "SUBMITTED", targetName),
+        details: evaluationDetails({ item, action: "SUBMITTED", targetName, evaluationTitle }),
         href: "/staff/evaluations",
       });
     const approvedAt = timestamp(item.approvedAt);
@@ -709,13 +805,13 @@ async function collectActivities(params: {
         personId: text(item.approvedByPersonId),
         schoolId: text(item.schoolId),
         activityAt: approvedAt!,
-        title: "اعتماد تقييم",
-        description: text(item.cycleTitle) || text(item.planTitle),
+        title: evaluationTitle,
+        description: "",
         status: text(item.status),
         targetName,
         classLabel: "",
         sourceEntityId: text(item.id),
-        details: evaluationDetails(item, "APPROVED", targetName),
+        details: evaluationDetails({ item, action: "APPROVED", targetName, evaluationTitle }),
         href: "/staff/evaluations",
       });
   }

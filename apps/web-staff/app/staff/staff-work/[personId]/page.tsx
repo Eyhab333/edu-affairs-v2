@@ -129,9 +129,9 @@ function ActivityDetails({ activity, orgId, staffPersonId }: { activity: StaffWo
           <>
             <Fields
               fields={[
-                ["الإجراء", details.action === "APPROVED" ? "اعتماد تقييم" : "إرسال تقييم"],
+                ["الإجراء", details.action === "APPROVED" ? "تم اعتماد التقييم" : "تم إرسال التقييم"],
                 ["التقييم", safeText(details.evaluationTitle)],
-                ["الموظف المقيم", safeText(details.targetName)],
+                ["الموظف المُقيَّم", safeText(details.targetName, "موظف غير محدد")],
                 ["الحالة", statusLabel(details.status)],
                 ["تاريخ الإرسال", formatDate(details.submittedAt)],
                 ["تاريخ الاعتماد", formatDate(details.approvedAt)],
@@ -141,15 +141,28 @@ function ActivityDetails({ activity, orgId, staffPersonId }: { activity: StaffWo
             />
             {details.criteria.length ? (
               <Section label="نتائج المعايير">
-                <div className="space-y-2">
-                  {details.criteria.map((criterion, index) => (
-                    <div key={`${criterion.title}-${index}`} className="rounded-lg bg-muted/60 p-2.5">
-                      <p className="font-medium">{safeText(criterion.title, safeText(criterion.category, "معيار"))}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {criterion.score === null
-                          ? safeText(criterion.valueText || criterion.level)
-                          : `${criterion.score.toLocaleString("ar-SA")} / ${criterion.maxScore?.toLocaleString("ar-SA") ?? "—"}`}
-                      </p>
+                <div className="space-y-4">
+                  {Array.from(
+                    details.criteria.reduce((groups, criterion) => {
+                      const section = criterion.sectionTitle || "معايير التقييم";
+                      groups.set(section, [...(groups.get(section) ?? []), criterion]);
+                      return groups;
+                    }, new Map<string, typeof details.criteria>()),
+                  ).map(([sectionTitle, criteria]) => (
+                    <div key={sectionTitle}>
+                      <p className="mb-2 text-xs font-semibold text-muted-foreground">{sectionTitle}</p>
+                      <div className="space-y-2">
+                        {criteria.map((criterion, index) => (
+                          <div key={`${criterion.itemId || criterion.itemTitle}-${index}`} className="rounded-lg bg-muted/60 p-2.5">
+                            <p className="font-medium">{safeText(criterion.itemTitle, "معيار")}</p>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {criterion.score !== null && criterion.maxScore !== null
+                                ? `${criterion.score.toLocaleString("ar-SA")} / ${criterion.maxScore.toLocaleString("ar-SA")}`
+                                : safeText(criterion.valueText || criterion.level)}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
