@@ -212,9 +212,20 @@ function hasTemporaryLessonPrepReviewAccess(orgId, schoolId, subjectKey) {
   return hasOrgMembership(orgId)
     && (
       (
-        currentUserPersonId()
-          in ["p-t-altwala", "p-malrameh", "p-f-alhamaad", "p-a-almansur"]
-        && schoolId in ["kg-01", "kg-02", "kg-03", "kg-04"]
+        currentUserPersonId() == "p-a-alhomidi"
+        && schoolId == "kg-01"
+      )
+      || (
+        currentUserPersonId() == "p-s-alturiqe"
+        && schoolId == "kg-02"
+      )
+      || (
+        currentUserPersonId() == "p-s-alnafea"
+        && schoolId == "kg-03"
+      )
+      || (
+        currentUserPersonId() == "p-n-alhamiyn"
+        && schoolId == "kg-04"
       )
       || (
         currentUserPersonId() == "p-s-sayed"
@@ -222,7 +233,10 @@ function hasTemporaryLessonPrepReviewAccess(orgId, schoolId, subjectKey) {
           schoolId == "mrb-girls"
           || (
             schoolId in ["mrb-boys-sayh", "mrb-boys-faleh"]
-            && subjectKey in ["ARABIC", "QURAN"]
+            && (
+              subjectKey in ["ARABIC", "QURAN"]
+              || (schoolId == "mrb-boys-sayh" && subjectKey == "PE")
+            )
           )
         )
       )

@@ -5,12 +5,14 @@ import {
   hasPersonSupervisionSubjectAccess,
 } from "@takween/domain";
 
-const KINDERGARTEN_REVIEWER_IDS = new Set([
-  "p-t-altwala",
-  "p-malrameh",
-  "p-f-alhamaad",
-  "p-a-almansur",
-]);
+const KINDERGARTEN_REVIEW_SCHOOL_IDS_BY_PERSON: Readonly<
+  Record<string, readonly string[]>
+> = {
+  "p-a-alhomidi": ["kg-01"],
+  "p-s-alturiqe": ["kg-02"],
+  "p-s-alnafea": ["kg-03"],
+  "p-n-alhamiyn": ["kg-04"],
+};
 
 const KINDERGARTEN_SCHOOL_IDS = [
   "kg-01",
@@ -19,6 +21,10 @@ const KINDERGARTEN_SCHOOL_IDS = [
   "kg-04",
 ] as const;
 const KINDERGARTEN_SCHOOL_ID_SET = new Set<string>(KINDERGARTEN_SCHOOL_IDS);
+
+function getKindergartenReviewSchoolIds(personId: string) {
+  return KINDERGARTEN_REVIEW_SCHOOL_IDS_BY_PERSON[personId] ?? [];
+}
 
 export function getLessonPrepReviewSchoolIds(
   params: {
@@ -29,9 +35,7 @@ export function getLessonPrepReviewSchoolIds(
 ): readonly string[] {
   const personId = String(params.personId || "").trim();
   const orgId = String(params.orgId || "").trim();
-  const kindergartenSchoolIds = KINDERGARTEN_REVIEWER_IDS.has(personId)
-    ? [...KINDERGARTEN_SCHOOL_IDS]
-    : [];
+  const kindergartenSchoolIds = getKindergartenReviewSchoolIds(personId);
   const scopedSchoolIds = orgId
     ? getPersonSupervisionSchoolIds({
         scopes: params.scopes ?? [],
@@ -53,10 +57,8 @@ export function getLessonPrepReviewQueryScopes(params: {
   const orgId = String(params.orgId || "").trim();
   const queryScopes = new Map<string, { schoolId: string; subjectKey?: string }>();
 
-  if (KINDERGARTEN_REVIEWER_IDS.has(personId)) {
-    for (const schoolId of KINDERGARTEN_SCHOOL_IDS) {
-      queryScopes.set(schoolId, { schoolId });
-    }
+  for (const schoolId of getKindergartenReviewSchoolIds(personId)) {
+    queryScopes.set(schoolId, { schoolId });
   }
 
   for (const schoolId of getLessonPrepReviewSchoolIds(params)) {
@@ -97,8 +99,7 @@ export function canReviewLessonPrepAtSchool(params: {
   const orgId = String(params.orgId || "").trim();
 
   return (
-    (KINDERGARTEN_REVIEWER_IDS.has(personId) &&
-      KINDERGARTEN_SCHOOL_ID_SET.has(schoolId)) ||
+    getKindergartenReviewSchoolIds(personId).includes(schoolId) ||
     (!!orgId &&
       !!subjectKey &&
       hasPersonSupervisionSubjectAccess({

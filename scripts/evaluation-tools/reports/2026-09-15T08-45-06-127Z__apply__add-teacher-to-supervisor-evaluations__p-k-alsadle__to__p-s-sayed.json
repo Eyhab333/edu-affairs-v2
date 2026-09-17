@@ -1,0 +1,329 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-k-alsadle",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-s-sayed",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-boys-sayh"
+  },
+  "teacher": {
+    "uid": "fAx2BeXHAWbg6UkJPvLtnDW8AgT2",
+    "personId": "p-k-alsadle",
+    "email": "k.alsadle@qz.org.sa",
+    "displayName": "خالد محمد الشاذلي معتمد",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "aa3uDx6i5uf6Dp5YP3unAqD5Zyo1",
+    "personId": "p-s-sayed",
+    "email": "s.sayed@qz.org.sa",
+    "displayName": "السيد محمد القاضي",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-boys-sayh",
+    "schoolTitle": "مدرسة منار الريادة بنين السيح"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 0,
+    "teacherSchools": [],
+    "supervisorPatternAssignments": 30,
+    "supervisorPatternSchools": [
+      "mrb-boys-faleh",
+      "mrb-boys-sayh"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 2,
+    "plans": [
+      {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+        "title": "الزيارة الإشرافية التشخيصية للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+        "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1"
+      },
+      {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+        "title": "تقييم المشرف التعليمي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+        "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 2,
+    "createOrUpdateEvaluatorAssignments": 6,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 8
+  },
+  "planReports": [
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "title": "الزيارة الإشرافية التشخيصية للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-k-alsadle",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+          "cycleTitle": "الزيارة الإشرافية الأولى",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-k-alsadle-p-s-sayed",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-a-m-atyar-p-s-sayed",
+              "patternTargetPersonId": "p-a-m-atyar",
+              "patternTargetDisplayName": "عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+          "cycleTitle": "الزيارة الإشرافية الثانية",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-k-alsadle-p-s-sayed",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-a-m-atyar-p-s-sayed",
+              "patternTargetPersonId": "p-a-m-atyar",
+              "patternTargetDisplayName": "عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+          "cycleTitle": "الزيارة الإشرافية الثالثة",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-k-alsadle-p-s-sayed",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-a-m-atyar-p-s-sayed",
+              "patternTargetPersonId": "p-a-m-atyar",
+              "patternTargetDisplayName": "عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "title": "تقييم المشرف التعليمي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-k-alsadle",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+          "cycleTitle": "التقييم الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-k-alsadle-p-s-sayed",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-a-m-atyar-p-s-sayed",
+              "patternTargetPersonId": "p-a-m-atyar",
+              "patternTargetDisplayName": "عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+          "cycleTitle": "التقييم الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-k-alsadle-p-s-sayed",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-a-m-atyar-p-s-sayed",
+              "patternTargetPersonId": "p-a-m-atyar",
+              "patternTargetDisplayName": "عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+          "cycleTitle": "التقييم الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-k-alsadle-p-s-sayed",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-a-m-atyar-p-s-sayed",
+              "patternTargetPersonId": "p-a-m-atyar",
+              "patternTargetDisplayName": "عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-k-alsadle-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-k-alsadle-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-k-alsadle-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-k-alsadle-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-k-alsadle-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-k-alsadle-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

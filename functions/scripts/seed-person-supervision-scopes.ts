@@ -8,9 +8,11 @@ import type {
 type ScopePlan = Pick<
   PersonSupervisionScope,
   "personId" | "schoolId" | "subjectScope" | "subjectKeys"
->;
+> & {
+  lessonPrepSubjectKeys?: readonly string[];
+};
 
-const capabilities: readonly PersonSupervisionCapability[] = [
+const defaultCapabilities: readonly PersonSupervisionCapability[] = [
   "TEACHER_WORK_VIEW",
   "LESSON_PREP_REVIEW",
 ];
@@ -27,6 +29,7 @@ const scopePlans: readonly ScopePlan[] = [
     schoolId: "mrb-boys-sayh",
     subjectScope: "SUBJECT_KEYS",
     subjectKeys: ["ARABIC", "QURAN"],
+    lessonPrepSubjectKeys: ["ARABIC", "QURAN", "PE"],
   },
   {
     personId: "p-s-sayed",
@@ -78,18 +81,25 @@ async function main() {
 
   const now = Date.now();
   const scopes: PersonSupervisionScope[] = scopePlans.flatMap((plan) =>
-    capabilities.map((capability) => ({
-      id: `${plan.personId}__${capability}__${plan.schoolId}`,
-      orgId,
-      personId: plan.personId,
-      capability,
-      schoolId: plan.schoolId,
-      subjectScope: plan.subjectScope,
-      subjectKeys: [...plan.subjectKeys],
-      isActive: true,
-      createdAt: now,
-      updatedAt: now,
-    })),
+    defaultCapabilities.map((capability) => {
+      const subjectKeys =
+        capability === "LESSON_PREP_REVIEW"
+          ? (plan.lessonPrepSubjectKeys ?? plan.subjectKeys)
+          : plan.subjectKeys;
+
+      return {
+        id: `${plan.personId}__${capability}__${plan.schoolId}`,
+        orgId,
+        personId: plan.personId,
+        capability,
+        schoolId: plan.schoolId,
+        subjectScope: plan.subjectScope,
+        subjectKeys: [...subjectKeys],
+        isActive: true,
+        createdAt: now,
+        updatedAt: now,
+      };
+    }),
   );
 
   if (!apply) {

@@ -71,11 +71,15 @@ function asNumber(value, fallback = 0) {
 }
 
 function normalizeEmail(value) {
-  return String(value || "").trim().toLowerCase();
+  return String(value || "")
+    .trim()
+    .toLowerCase();
 }
 
 function normalizeStatus(value) {
-  return String(value || "").trim().toUpperCase();
+  return String(value || "")
+    .trim()
+    .toUpperCase();
 }
 
 function isActive(row) {
@@ -124,7 +128,9 @@ function writeJsonReport(report) {
       timestamp,
       mode,
       "add-teacher-to-supervisor-evaluations",
-      safeFileName(report.teacher?.personId || TEACHER_PERSON_ID || TEACHER_EMAIL),
+      safeFileName(
+        report.teacher?.personId || TEACHER_PERSON_ID || TEACHER_EMAIL,
+      ),
       "to",
       safeFileName(
         report.supervisor?.personId || SUPERVISOR_PERSON_ID || SUPERVISOR_EMAIL,
@@ -167,6 +173,27 @@ function sortByCycle(items) {
 
     return asString(a.id).localeCompare(asString(b.id));
   });
+}
+
+function buildBalancedWeights(count) {
+  if (count <= 0) return [];
+
+  if (count === 1) {
+    return [100];
+  }
+
+  const base = Math.floor((100 / count) * 1000) / 1000;
+
+  const weights = Array.from({ length: count }, () => base);
+
+  const used = base * count;
+  const remainder = Number((100 - used).toFixed(3));
+
+  weights[weights.length - 1] = Number(
+    (weights[weights.length - 1] + remainder).toFixed(3),
+  );
+
+  return weights;
 }
 
 async function getCollectionRows(orgRef, collectionName) {
@@ -321,7 +348,11 @@ function buildEvaluatorAssignmentIdFromPattern(params) {
   const patternCycleId = asString(pattern.cycleId);
   const patternEvaluatorPersonId = asString(pattern.evaluatorPersonId);
 
-  if (patternId && patternTargetPersonId && patternId.includes(patternTargetPersonId)) {
+  if (
+    patternId &&
+    patternTargetPersonId &&
+    patternId.includes(patternTargetPersonId)
+  ) {
     let nextId = patternId.split(patternTargetPersonId).join(teacherPersonId);
 
     if (patternPlanId && nextId.includes(patternPlanId)) {
@@ -476,7 +507,10 @@ function buildEvaluatorAssignmentWrite(params) {
 
     evaluatorUid: asString(supervisor.uid, asString(pattern.evaluatorUid)),
     evaluatorPersonId: supervisor.personId,
-    evaluatorEmail: asString(supervisor.email, asString(pattern.evaluatorEmail)),
+    evaluatorEmail: asString(
+      supervisor.email,
+      asString(pattern.evaluatorEmail),
+    ),
     evaluatorDisplayName: asString(
       supervisor.displayName,
       asString(pattern.evaluatorDisplayName),
@@ -487,7 +521,7 @@ function buildEvaluatorAssignmentWrite(params) {
       "EDU_SUPERVISOR",
     evaluatorRoleLabel: asString(pattern.evaluatorRoleLabel, "مشرف تعليمي"),
 
-    weight: asNumber(pattern.weight, 100),
+    weight: 100,
     status: "ACTIVE",
 
     createdBySupervisorAddTool: true,
@@ -584,7 +618,9 @@ async function main() {
     getCollectionRows(orgRef, "evaluationSubmissions"),
   ]);
 
-  const frameworksById = new Map(frameworks.map((framework) => [framework.id, framework]));
+  const frameworksById = new Map(
+    frameworks.map((framework) => [framework.id, framework]),
+  );
   const plansById = new Map(plans.map((plan) => [plan.id, plan]));
 
   const teacherActiveTargetAssignments = teacher
@@ -596,12 +632,16 @@ async function main() {
     : [];
 
   const teacherSchoolIds = new Set(
-    teacherActiveTargetAssignments.map((row) => asString(row.schoolId)).filter(Boolean),
+    teacherActiveTargetAssignments
+      .map((row) => asString(row.schoolId))
+      .filter(Boolean),
   );
 
   const supervisorPatternAssignments = supervisor
     ? evaluatorAssignments
-        .filter((row) => asString(row.evaluatorPersonId) === supervisor.personId)
+        .filter(
+          (row) => asString(row.evaluatorPersonId) === supervisor.personId,
+        )
         .filter((row) => asString(row.academicYearId, YEAR_ID) === YEAR_ID)
         .filter((row) => asString(row.termId, TERM_ID) === TERM_ID)
         .filter((row) => asString(row.targetKind) === "TEACHER")
@@ -609,7 +649,9 @@ async function main() {
     : [];
 
   const supervisorPatternSchoolIds = new Set(
-    supervisorPatternAssignments.map((row) => asString(row.schoolId)).filter(Boolean),
+    supervisorPatternAssignments
+      .map((row) => asString(row.schoolId))
+      .filter(Boolean),
   );
 
   let selectedSchoolIds = [];
@@ -621,13 +663,15 @@ async function main() {
       supervisorPatternSchoolIds.has(schoolId),
     );
 
-    if (selectedSchoolIds.length === 0 && supervisorPatternSchoolIds.size === 1) {
+    if (
+      selectedSchoolIds.length === 0 &&
+      supervisorPatternSchoolIds.size === 1
+    ) {
       selectedSchoolIds = Array.from(supervisorPatternSchoolIds);
       warnings.push({
         reason: "SCHOOL_INFERRED_FROM_SUPERVISOR_ONLY",
         selectedSchoolIds,
-        note:
-          "لم أجد تقاطعًا واضحًا بين مدارس المعلم وأنماط المشرف، فاخترت مدرسة المشرف الوحيدة.",
+        note: "لم أجد تقاطعًا واضحًا بين مدارس المعلم وأنماط المشرف، فاخترت مدرسة المشرف الوحيدة.",
       });
     }
   }
@@ -739,8 +783,13 @@ async function main() {
         supervisorPatternAssignments
           .filter((assignment) => asString(assignment.schoolId) === schoolId)
           .filter((assignment) => asString(assignment.planId) === planId)
-          .filter((assignment) => asString(assignment.cycleId) === asString(cycle.id))
-          .filter((assignment) => asString(assignment.targetPersonId) !== teacher.personId)
+          .filter(
+            (assignment) => asString(assignment.cycleId) === asString(cycle.id),
+          )
+          .filter(
+            (assignment) =>
+              asString(assignment.targetPersonId) !== teacher.personId,
+          )
           .filter(isActive),
         (assignment) =>
           [
@@ -760,7 +809,10 @@ async function main() {
           supervisorPatternAssignments
             .filter((assignment) => asString(assignment.schoolId) === schoolId)
             .filter((assignment) => asString(assignment.planId) === planId)
-            .filter((assignment) => asString(assignment.targetPersonId) !== teacher.personId)
+            .filter(
+              (assignment) =>
+                asString(assignment.targetPersonId) !== teacher.personId,
+            )
             .filter(isActive),
           (assignment) =>
             [
@@ -888,13 +940,182 @@ async function main() {
     });
   }
 
+  /*
+   * Rebalance evaluator weights for the teacher.
+   *
+   * Every active evaluator assignment for the same:
+   * planId + cycleId + targetPersonId
+   *
+   * must total exactly 100.
+   */
+
+  const weightRebalanceWrites = [];
+  const weightRebalanceReports = [];
+
+  if (teacher && schoolId) {
+    const existingTeacherAssignments = evaluatorAssignments
+      .filter((assignment) => asString(assignment.schoolId) === schoolId)
+      .filter(
+        (assignment) =>
+          asString(assignment.targetPersonId) === teacher.personId,
+      )
+      .filter(
+        (assignment) =>
+          asString(assignment.academicYearId, YEAR_ID) === YEAR_ID,
+      )
+      .filter((assignment) => asString(assignment.termId, TERM_ID) === TERM_ID)
+      .filter(isActive);
+
+    /*
+     * Combine:
+     * - existing active assignments
+     * - assignments that this script is about to create
+     */
+    const assignmentMap = new Map();
+
+    for (const assignment of existingTeacherAssignments) {
+      assignmentMap.set(asString(assignment.id), {
+        source: "EXISTING",
+        id: asString(assignment.id),
+        ref: assignment.ref,
+        data: assignment,
+      });
+    }
+
+    for (const write of newEvaluatorWrites) {
+      const id = asString(write.data.id);
+
+      assignmentMap.set(id, {
+        source: "NEW",
+        id,
+        ref: write.ref,
+        data: write.data,
+        write,
+      });
+    }
+
+    const groups = new Map();
+
+    for (const entry of assignmentMap.values()) {
+      const data = entry.data;
+
+      const key = [
+        asString(data.planId),
+        asString(data.cycleId),
+        asString(data.targetPersonId),
+      ].join("__");
+
+      const current = groups.get(key);
+
+      if (current) {
+        current.push(entry);
+      } else {
+        groups.set(key, [entry]);
+      }
+    }
+
+    for (const [groupKey, entries] of groups.entries()) {
+      /*
+       * Stable ordering makes Preview / Apply deterministic.
+       */
+      entries.sort((a, b) => {
+        return asString(a.data.evaluatorPersonId).localeCompare(
+          asString(b.data.evaluatorPersonId),
+        );
+      });
+
+      const weights = buildBalancedWeights(entries.length);
+
+      const targetTotal = Number(
+        weights.reduce((sum, value) => sum + value, 0).toFixed(3),
+      );
+
+      if (targetTotal !== 100) {
+        conflicts.push({
+          reason: "CALCULATED_EVALUATOR_WEIGHT_TOTAL_NOT_100",
+          groupKey,
+          evaluatorCount: entries.length,
+          targetTotal,
+        });
+
+        continue;
+      }
+
+      const evaluatorReports = [];
+
+      entries.forEach((entry, index) => {
+        const newWeight = weights[index];
+        const oldWeight = asNumber(entry.data.weight, 100);
+
+        evaluatorReports.push({
+          assignmentId: entry.id,
+          source: entry.source,
+          evaluatorPersonId: asString(entry.data.evaluatorPersonId),
+          evaluatorEmail: asString(entry.data.evaluatorEmail),
+          evaluatorDisplayName: asString(entry.data.evaluatorDisplayName),
+          oldWeight,
+          newWeight,
+        });
+
+        /*
+         * New assignment:
+         * modify its pending write directly.
+         */
+        if (entry.source === "NEW") {
+          entry.write.data.weight = newWeight;
+          entry.write.data.weightRebalancedAt = now;
+          entry.write.data.weightRebalanceTool =
+            "add-teacher-to-supervisor-evaluations.cjs";
+
+          return;
+        }
+
+        /*
+         * Existing assignment:
+         * only write if its weight actually changes.
+         */
+        if (oldWeight !== newWeight) {
+          weightRebalanceWrites.push({
+            ref: entry.ref,
+            data: {
+              weight: newWeight,
+              updatedAt: now,
+              weightRebalancedAt: now,
+              weightRebalanceTool: "add-teacher-to-supervisor-evaluations.cjs",
+            },
+          });
+        }
+      });
+
+      weightRebalanceReports.push({
+        groupKey,
+        planId: asString(entries[0]?.data.planId),
+        cycleId: asString(entries[0]?.data.cycleId),
+        targetPersonId: teacher.personId,
+        evaluatorCount: entries.length,
+        targetWeightTotal: targetTotal,
+        evaluators: evaluatorReports,
+      });
+    }
+  }
+
   const matchingSubmissions = teacher
     ? submissions
-        .filter((submission) => asString(submission.targetPersonId) === teacher.personId)
-        .filter((submission) => asString(submission.evaluatorPersonId) === supervisor?.personId)
+        .filter(
+          (submission) =>
+            asString(submission.targetPersonId) === teacher.personId,
+        )
+        .filter(
+          (submission) =>
+            asString(submission.evaluatorPersonId) === supervisor?.personId,
+        )
     : [];
 
-  const allWrites = [...newTargetWrites, ...newEvaluatorWrites];
+  const allWrites = [
+    ...newTargetWrites,
+    ...newEvaluatorWrites,
+    ...weightRebalanceWrites,
+  ];
 
   const report = {
     decision:
@@ -945,11 +1166,14 @@ async function main() {
     plannedChanges: {
       createOrUpdateTargetAssignments: newTargetWrites.length,
       createOrUpdateEvaluatorAssignments: newEvaluatorWrites.length,
-      skippedExistingEvaluatorAssignments: skippedExistingEvaluatorAssignments.length,
+      rebalanceExistingEvaluatorWeights: weightRebalanceWrites.length,
+      skippedExistingEvaluatorAssignments:
+        skippedExistingEvaluatorAssignments.length,
       totalWrites: allWrites.length,
     },
 
     planReports,
+    weightRebalanceReports,
     skippedExistingEvaluatorAssignments,
 
     warnings,
@@ -959,7 +1183,8 @@ async function main() {
       deletes: 0,
       submissionsTouched: 0,
       otherSupervisorsTouched: 0,
-      existingTeacherScienceOrMathSupervisorAssignmentsTouched: 0,
+      existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance:
+        weightRebalanceWrites.length,
       requiresApplyFlag: true,
     },
   };
@@ -993,7 +1218,9 @@ async function main() {
     console.log("");
     console.log("No writes performed.");
     console.log("Review the JSON report carefully.");
-    console.log("Run again with --apply to add the teacher to this supervisor.");
+    console.log(
+      "Run again with --apply to add the teacher to this supervisor.",
+    );
     return;
   }
 
@@ -1004,7 +1231,9 @@ async function main() {
     committedWrites: committed,
     createdOrUpdatedTargetAssignments: newTargetWrites.length,
     createdOrUpdatedEvaluatorAssignments: newEvaluatorWrites.length,
-    skippedExistingEvaluatorAssignments: skippedExistingEvaluatorAssignments.length,
+    existingEvaluatorWeightsRebalanced: weightRebalanceWrites.length,
+    skippedExistingEvaluatorAssignments:
+      skippedExistingEvaluatorAssignments.length,
     submissionsTouched: 0,
   };
 

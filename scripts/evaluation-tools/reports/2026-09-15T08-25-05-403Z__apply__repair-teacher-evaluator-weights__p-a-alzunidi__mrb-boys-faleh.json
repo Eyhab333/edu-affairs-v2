@@ -1,0 +1,1504 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-a-alzunidi",
+    "schoolId": "mrb-boys-faleh"
+  },
+  "currentState": {
+    "activeEvaluatorAssignments": 81,
+    "cycleGroups": 75,
+    "matchingSubmissions": 7
+  },
+  "plannedChanges": {
+    "evaluatorAssignmentsToUpdate": 12,
+    "submissionsTouched": 0,
+    "totalWrites": 12
+  },
+  "cycleReports": [
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-01-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-diagnostic-teacher-evaluation-diagnostic-02-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-01-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-02-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-03-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-04-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-05-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-06-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-07-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-08-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-director-weekly-teacher-evaluation-week-09-p-a-alzunidi-staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorPersonId": "staff-EJP7cQWlOldemQo6R6TciBZXSFt2",
+          "evaluatorEmail": "riadah3@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 2,
+      "currentWeightTotal": 200,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-a-alzunidi-p-s-sayed",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 50
+        },
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-a-alzunidi-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorEmail": "math-science-sup@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 50
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 2,
+      "currentWeightTotal": 200,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-a-alzunidi-p-s-sayed",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 50
+        },
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-a-alzunidi-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorEmail": "math-science-sup@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 50
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 2,
+      "currentWeightTotal": 200,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-a-alzunidi-p-s-sayed",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 50
+        },
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-a-alzunidi-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorEmail": "math-science-sup@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 50
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 2,
+      "currentWeightTotal": 200,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-a-alzunidi-p-s-sayed",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 50
+        },
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-a-alzunidi-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorEmail": "math-science-sup@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 50
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 2,
+      "currentWeightTotal": 200,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-a-alzunidi-p-s-sayed",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 50
+        },
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-a-alzunidi-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorEmail": "math-science-sup@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 50
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 2,
+      "currentWeightTotal": 200,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-a-alzunidi-p-s-sayed",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 50
+        },
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-a-alzunidi-staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorPersonId": "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+          "evaluatorEmail": "math-science-sup@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 50
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19-p-a-alzunidi-staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorPersonId": "staff-8DVZ68FaCoWqiC3jkSBNIqs4T203",
+          "evaluatorEmail": "educational-agent-faleh@qz.org.sa",
+          "evaluatorDisplayName": "الوكيل التعليمي - الفالح",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-01-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-02-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-03-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-04-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-05-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-06-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-07-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-08-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-09-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-10-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-11-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-12-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-13-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-14-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-15-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-16-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-17-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-18-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-school-vice-principal-weekly-teacher-evaluation-week-19-p-a-alzunidi-p-ralfaiz",
+          "evaluatorPersonId": "p-ralfaiz",
+          "evaluatorEmail": "ralfaiz@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-01__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-01-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-02__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-02-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-03__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-03-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-04__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-04-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-05__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-05-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-06__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-06-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-07__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-07-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-08__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-08-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-09__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-09-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-10__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-10-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-11__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-11-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-12__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-12-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-13__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-13-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-14__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-14-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-15__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-15-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-16__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-16-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-17__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-17-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-18__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-18-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation__mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-19__p-a-alzunidi",
+      "planId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-a-alzunidi",
+      "activeEvaluatorsCount": 1,
+      "currentWeightTotal": 100,
+      "targetWeightTotal": 100,
+      "assignments": [
+        {
+          "assignmentId": "mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-mrb-boys-faleh-ay-1448-term-1-student-guide-weekly-teacher-evaluation-week-19-p-a-alzunidi-staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorPersonId": "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+          "evaluatorEmail": "students-mentor-faleh@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "evaluatorAssignmentsOnly": true,
+    "requiresApplyFlag": true
+  }
+}
