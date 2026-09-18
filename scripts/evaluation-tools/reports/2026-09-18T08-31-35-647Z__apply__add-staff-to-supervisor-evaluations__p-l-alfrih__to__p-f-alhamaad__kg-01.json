@@ -1,0 +1,179 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "targetPersonId": "p-l-alfrih",
+    "supervisorPersonId": "p-f-alhamaad",
+    "schoolId": "kg-01"
+  },
+  "target": {
+    "uid": "PRPuJeyquTaw9kZlhcS70rugZom2",
+    "personId": "p-l-alfrih",
+    "email": "l.alfrih@qz.org.sa",
+    "displayName": "لمى فريح سليمان الفريح",
+    "roleKey": "GIRLS_TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "H9nDRWMOqsfOUE27cJBbJn2RESE3",
+    "personId": "p-f-alhamaad",
+    "email": "f-alhamaad@qz.org.sa",
+    "displayName": "فاطمة حماد الحماد",
+    "roleKey": "",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "kg-01",
+    "schoolTitle": "روضة واحة الرياحين الأولى"
+  },
+  "detectedRole": {
+    "targetRoleKey": "KG_TEACHER",
+    "targetRoleLabel": "معلمة",
+    "historicalRoleKeys": [
+      "GIRLS_TEACHER"
+    ]
+  },
+  "targetRoleKeyArg": "KG_TEACHER",
+  "currentState": {
+    "historicalTargetAssignments": 8,
+    "supervisorPatternAssignments": 51,
+    "matchingSupervisorPatterns": 48,
+    "targetPlansCount": 6,
+    "historicalSubmissions": 1
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 6,
+    "createOrUpdateEvaluatorAssignments": 12,
+    "submissionsTouched": 0,
+    "totalWrites": 18
+  },
+  "planReports": [
+    {
+      "planId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الأولى - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-class-teacher-diagnostic-evaluation-v1",
+      "targetAssignmentId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-target-p-l-alfrih",
+      "cyclesCount": 2,
+      "cycleReports": [
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01",
+          "title": "الزيارة التشخيصية الأولى",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01-p-a-alyahya-p-f-alhamaad"
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02",
+          "title": "الزيارة التشخيصية الثانية",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02-p-a-alyahya-p-f-alhamaad"
+        }
+      ]
+    },
+    {
+      "planId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+      "title": "تقييم المشرفة التعليمية لمعلمات الصف - روضة واحة الرياحين الأولى - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-class-teacher-periodic-evaluation-v1",
+      "targetAssignmentId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-target-p-l-alfrih",
+      "cyclesCount": 2,
+      "cycleReports": [
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-01",
+          "title": "التقييم الأول",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-01-p-a-alyahya-p-f-alhamaad"
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-02",
+          "title": "التقييم الثاني",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-02-p-a-alyahya-p-f-alhamaad"
+        }
+      ]
+    },
+    {
+      "planId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة المشرفة التعليمية - روضة واحة الرياحين الأولى - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-corners-teacher-diagnostic-evaluation-v1",
+      "targetAssignmentId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation-target-p-l-alfrih",
+      "cyclesCount": 2,
+      "cycleReports": [
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation-visit-01",
+          "title": "الزيارة التشخيصية الأولى",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation-visit-01-p-h-alarajh-p-f-alhamaad"
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation-visit-02",
+          "title": "الزيارة التشخيصية الثانية",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation-visit-02-p-h-alarajh-p-f-alhamaad"
+        }
+      ]
+    },
+    {
+      "planId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation",
+      "title": "تقييم المشرفة التعليمية لمعلمة الأركان - روضة واحة الرياحين الأولى - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-corners-teacher-periodic-evaluation-v1",
+      "targetAssignmentId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-target-p-l-alfrih",
+      "cyclesCount": 2,
+      "cycleReports": [
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01",
+          "title": "التقييم الأول",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01-p-h-alarajh-p-f-alhamaad"
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02",
+          "title": "التقييم الثاني",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02-p-h-alarajh-p-f-alhamaad"
+        }
+      ]
+    },
+    {
+      "planId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمة القيم بواسطة المشرفة التعليمية - روضة واحة الرياحين الأولى - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-values-teacher-diagnostic-evaluation-v1",
+      "targetAssignmentId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-target-p-l-alfrih",
+      "cyclesCount": 2,
+      "cycleReports": [
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-01",
+          "title": "الزيارة التشخيصية الأولى",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-01-p-ma-alfarhod-p-f-alhamaad"
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-02",
+          "title": "الزيارة التشخيصية الثانية",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-02-p-ma-alfarhod-p-f-alhamaad"
+        }
+      ]
+    },
+    {
+      "planId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+      "title": "تقييم المشرفة التعليمية لمعلمة القيم - روضة واحة الرياحين الأولى - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-values-teacher-periodic-evaluation-v1",
+      "targetAssignmentId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-target-p-l-alfrih",
+      "cyclesCount": 2,
+      "cycleReports": [
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01",
+          "title": "التقييم الأول",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01-p-ma-alfarhod-p-f-alhamaad"
+        },
+        {
+          "cycleId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02",
+          "title": "التقييم الثاني",
+          "patternId": "kg-01-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02-p-ma-alfarhod-p-f-alhamaad"
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "oldAssignmentsTouched": 0,
+    "targetSchoolOnly": "kg-01",
+    "targetSupervisorOnly": "p-f-alhamaad",
+    "requiresApplyFlag": true
+  }
+}

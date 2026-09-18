@@ -5,6 +5,7 @@ import {
 
 import type {
   MembershipRole,
+  OperationPermission,
   OperationScopeType,
   StudentAttendanceBatch,
   StudentAttendanceBatchRecordRef,
@@ -12,6 +13,11 @@ import type {
   StudentAttendanceRecord,
   StudentAttendanceStatus,
 } from "@takween/contracts";
+
+import {
+  canRunOperation,
+  type ActorAccessContext,
+} from "../access";
 
 export type AttendanceStudentInput = {
   studentId: string;
@@ -97,6 +103,80 @@ export type BuildAttendanceRecordsResult = {
 export type SubmitAttendanceBatchResult = BuildAttendanceRecordsResult & {
   batch: StudentAttendanceBatch;
 };
+
+function isActiveAdminAssistantMembershipForSchool(params: {
+  context: ActorAccessContext;
+  schoolId: string;
+  nowMs: number;
+}): boolean {
+  return (params.context.memberships ?? []).some((membership) => {
+    const roleKey = membership.roleKey ?? membership.role;
+
+    if (roleKey !== "ADMIN_ASSISTANT") return false;
+    if (membership.orgId !== params.context.orgId) return false;
+    if (
+      membership.personId &&
+      membership.personId !== params.context.actorPersonId
+    ) {
+      return false;
+    }
+    if (membership.isActive === false) return false;
+    if (
+      typeof membership.startAt === "number" &&
+      membership.startAt > params.nowMs
+    ) {
+      return false;
+    }
+    if (
+      typeof membership.endAt === "number" &&
+      membership.endAt < params.nowMs
+    ) {
+      return false;
+    }
+
+    return (
+      membership.scopes?.schoolIds?.includes(params.schoolId) === true ||
+      (membership.scopeType === "SCHOOL" &&
+        membership.scopeId === params.schoolId)
+    );
+  });
+}
+
+/**
+ * Authorizes a student-attendance action at one school. Operational
+ * assignments retain their existing semantics; an active, explicitly
+ * school-scoped administrative assistant membership is the narrow role-based
+ * fallback for school attendance management.
+ */
+export function canManageStudentAttendance(params: {
+  context: ActorAccessContext;
+  schoolId: string;
+  permission?: OperationPermission;
+  nowMs?: number;
+}): boolean {
+  if (!params.schoolId) return false;
+
+  const permission = params.permission ?? "SUBMIT";
+
+  if (
+    canRunOperation({
+      context: params.context,
+      operationKind: "STUDENT_ATTENDANCE",
+      permission,
+      scopeType: "SCHOOL",
+      scopeId: params.schoolId,
+      nowMs: params.nowMs,
+    })
+  ) {
+    return true;
+  }
+
+  return isActiveAdminAssistantMembershipForSchool({
+    context: params.context,
+    schoolId: params.schoolId,
+    nowMs: params.nowMs ?? Date.now(),
+  });
+}
 
 export function isAttendanceRecordedStatus(
   status: StudentAttendanceStatus,

@@ -1,0 +1,337 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-n-r-arbya",
+    "teacherEmail": "",
+    "supervisorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-girls"
+  },
+  "teacher": {
+    "uid": "tJaHYk1FFbPc4plbfuQUJ0Mah4z1",
+    "personId": "p-n-r-arbya",
+    "email": "n-r-arbya@qz.org.sa",
+    "displayName": "نوره ربيعة الربيعة",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "ZKSVVOeoJOhUhIu4HDFapMwApo83",
+    "personId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+    "email": "edu-supervisor-mrb@qz.org.sa",
+    "displayName": "المشرفة التعليمية - منار الريادة بنات",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-girls",
+    "schoolTitle": "مدرسة منار الريادة بنات"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 0,
+    "teacherSchools": [],
+    "supervisorPatternAssignments": 6,
+    "supervisorPatternSchools": [
+      "mrb-girls"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 2,
+    "plans": [
+      {
+        "id": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+        "title": "الزيارة الإشرافية التشخيصية للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+        "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1"
+      },
+      {
+        "id": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+        "title": "تقييم المشرف التعليمي للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+        "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 2,
+    "createOrUpdateEvaluatorAssignments": 6,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 8
+  },
+  "planReports": [
+    {
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "title": "الزيارة الإشرافية التشخيصية للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-n-r-arbya",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+          "cycleTitle": "الزيارة الإشرافية الأولى",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+              "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+              "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+              "patternId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "patternTargetPersonId": "p-s-alhumaidan",
+              "patternTargetDisplayName": "سعاد حميدان محمد الحميدان",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+          "cycleTitle": "الزيارة الإشرافية الثانية",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+              "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+              "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+              "patternId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "patternTargetPersonId": "p-s-alhumaidan",
+              "patternTargetDisplayName": "سعاد حميدان محمد الحميدان",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+          "cycleTitle": "الزيارة الإشرافية الثالثة",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+              "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+              "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+              "patternId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "patternTargetPersonId": "p-s-alhumaidan",
+              "patternTargetDisplayName": "سعاد حميدان محمد الحميدان",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "title": "تقييم المشرف التعليمي للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-n-r-arbya",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+          "cycleTitle": "التقييم الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+              "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+              "patternId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "patternTargetPersonId": "p-s-alhumaidan",
+              "patternTargetDisplayName": "سعاد حميدان محمد الحميدان",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+          "cycleTitle": "التقييم الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+              "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+              "patternId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "patternTargetPersonId": "p-s-alhumaidan",
+              "patternTargetDisplayName": "سعاد حميدان محمد الحميدان",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+          "cycleTitle": "التقييم الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+              "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+              "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+              "patternId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+              "patternTargetPersonId": "p-s-alhumaidan",
+              "patternTargetDisplayName": "سعاد حميدان محمد الحميدان",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "NEW",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "NEW",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "NEW",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "NEW",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "NEW",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "NEW",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  },
+  "applyResult": {
+    "decision": "APPLIED",
+    "committedWrites": 8,
+    "createdOrUpdatedTargetAssignments": 2,
+    "createdOrUpdatedEvaluatorAssignments": 6,
+    "existingEvaluatorWeightsRebalanced": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "submissionsTouched": 0
+  }
+}

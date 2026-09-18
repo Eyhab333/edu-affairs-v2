@@ -16,7 +16,7 @@ import type {
   StudentAttendanceStatus,
 } from "@takween/contracts";
 import {
-  canRunOperation,
+  canManageStudentAttendance,
   canSubmitAttendanceBatch,
   submitAttendanceBatch,
   updateAttendanceRowStatus,
@@ -122,19 +122,19 @@ export function useAttendanceBatchWorkflow({
   const canSubmitAttendance = useMemo(() => {
     if (!batch) return false;
 
-    return canRunOperation({
+    return canManageStudentAttendance({
       context: {
         actorPersonId: actor.personId || actor.uid,
         orgId: actor.orgId,
+        memberships: actor.memberships,
         operationalAssignments: actor.operationalAssignments,
       },
-      operationKind: "STUDENT_ATTENDANCE",
       permission: "SUBMIT",
-      scopeType: "SCHOOL",
-      scopeId: batch.schoolId,
+      schoolId: batch.schoolId,
     });
   }, [
     actor.operationalAssignments,
+    actor.memberships,
     actor.orgId,
     actor.personId,
     actor.uid,

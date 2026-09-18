@@ -1,0 +1,71 @@
+{
+  "decision": "STOPPED",
+  "mode": "PREVIEW",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "targetPersonId": "p-l-alfrih",
+    "supervisorPersonId": "p-f-alhamaad",
+    "schoolId": "kg-01"
+  },
+  "target": {
+    "uid": "PRPuJeyquTaw9kZlhcS70rugZom2",
+    "personId": "p-l-alfrih",
+    "email": "l.alfrih@qz.org.sa",
+    "displayName": "لمى فريح سليمان الفريح",
+    "roleKey": "GIRLS_TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "H9nDRWMOqsfOUE27cJBbJn2RESE3",
+    "personId": "p-f-alhamaad",
+    "email": "f-alhamaad@qz.org.sa",
+    "displayName": "فاطمة حماد الحماد",
+    "roleKey": "",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "kg-01",
+    "schoolTitle": "روضة واحة الرياحين الأولى"
+  },
+  "detectedRole": {
+    "targetRoleKey": "GIRLS_TEACHER",
+    "targetRoleLabel": "معلمة",
+    "historicalRoleKeys": [
+      "GIRLS_TEACHER"
+    ]
+  },
+  "currentState": {
+    "historicalTargetAssignments": 8,
+    "supervisorPatternAssignments": 51,
+    "matchingSupervisorPatterns": 0,
+    "targetPlansCount": 0,
+    "historicalSubmissions": 1
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 0,
+    "createOrUpdateEvaluatorAssignments": 0,
+    "submissionsTouched": 0,
+    "totalWrites": 0
+  },
+  "planReports": [],
+  "warnings": [],
+  "conflicts": [
+    {
+      "reason": "NO_SUPERVISOR_PATTERN_FOR_TARGET_ROLE",
+      "supervisorPersonId": "p-f-alhamaad",
+      "schoolId": "kg-01",
+      "targetRoleKey": "GIRLS_TEACHER",
+      "targetRoleLabel": "معلمة"
+    }
+  ],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "oldAssignmentsTouched": 0,
+    "targetSchoolOnly": "kg-01",
+    "targetSupervisorOnly": "p-f-alhamaad",
+    "requiresApplyFlag": true
+  }
+}

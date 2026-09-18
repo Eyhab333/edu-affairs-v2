@@ -1,0 +1,166 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "targetPersonId": "p-l-alfrih",
+    "schoolId": "mrb-girls"
+  },
+  "relevantPlans": [
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "title": "الزيارة الإشرافية التشخيصية للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "educational-supervisor-diagnostic-teacher-evaluation-v1"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "title": "تقييم المشرف التعليمي للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-v1"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "title": "التقييم الفتري للمشرف التعليمي - للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-girls-v2"
+    }
+  ],
+  "currentState": {
+    "relevantPlansCount": 3,
+    "activeTargetAssignments": 3,
+    "activeEvaluatorAssignments": 9,
+    "historicalSubmissions": 0
+  },
+  "plannedChanges": {
+    "removeTargetAssignments": 3,
+    "removeEvaluatorAssignments": 9,
+    "submissionsTouched": 0,
+    "totalWrites": 12
+  },
+  "targetAssignments": [
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-target-p-l-alfrih",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "targetPersonId": "p-l-alfrih",
+      "targetDisplayName": "لمى فريح سليمان الفريح",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-target-p-l-alfrih",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "targetPersonId": "p-l-alfrih",
+      "targetDisplayName": "لمى فريح سليمان الفريح",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-target-p-l-alfrih",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "targetPersonId": "p-l-alfrih",
+      "targetDisplayName": "لمى فريح سليمان الفريح",
+      "status": "ACTIVE"
+    }
+  ],
+  "evaluatorAssignments": [
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-l-alfrih-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-l-alfrih-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-l-alfrih-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-l-alfrih-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-l-alfrih-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-l-alfrih-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+      "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-l-alfrih-p-s-sayed",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "evaluatorPersonId": "p-s-sayed",
+      "evaluatorDisplayName": "",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-l-alfrih-p-s-sayed",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "evaluatorPersonId": "p-s-sayed",
+      "evaluatorDisplayName": "",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-l-alfrih-p-s-sayed",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "evaluatorPersonId": "p-s-sayed",
+      "evaluatorDisplayName": "",
+      "targetPersonId": "p-l-alfrih",
+      "weight": 100,
+      "status": "ACTIVE"
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "firestoreDeletes": 0,
+    "submissionsTouched": 0,
+    "plansTouched": 0,
+    "frameworksTouched": 0,
+    "cyclesTouched": 0,
+    "assignmentsMarkedRemovedOnly": true,
+    "requiresApplyFlag": true
+  }
+}

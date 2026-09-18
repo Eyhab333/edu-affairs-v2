@@ -180,6 +180,17 @@ function resolveModulesFromMemberships(params: {
     const roleKey = membership.roleKey ?? membership.role;
     const permissions = membership.permissions;
 
+    const hasSchoolScope = [
+      ...(membership.scopes?.schoolIds ?? []),
+      ...(membership.scopeType === "SCHOOL" && membership.scopeId
+        ? [membership.scopeId]
+        : []),
+    ].length > 0;
+
+    if (roleKey === "ADMIN_ASSISTANT" && hasSchoolScope) {
+      modules.push("ATTENDANCE");
+    }
+
     if (
       roleKey === "BOYS_TEACHER" ||
       roleKey === "GIRLS_TEACHER" ||
