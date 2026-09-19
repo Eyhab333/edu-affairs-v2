@@ -9,9 +9,13 @@ const KINDERGARTEN_REVIEW_SCHOOL_IDS_BY_PERSON: Readonly<
   Record<string, readonly string[]>
 > = {
   "p-a-alhomidi": ["kg-01"],
+  "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2": ["kg-01"],
   "p-s-alturiqe": ["kg-02"],
+  "p-h-aljower": ["kg-02"],
   "p-s-alnafea": ["kg-03"],
+  "p-s-alslman": ["kg-03"],
   "p-n-alhamiyn": ["kg-04"],
+  "p-h-alshaya": ["kg-04"],
 };
 
 const KINDERGARTEN_SCHOOL_IDS = [

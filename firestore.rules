@@ -212,19 +212,20 @@ function hasTemporaryLessonPrepReviewAccess(orgId, schoolId, subjectKey) {
   return hasOrgMembership(orgId)
     && (
       (
-        currentUserPersonId() == "p-a-alhomidi"
+        currentUserPersonId()
+          in ["p-a-alhomidi", "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2"]
         && schoolId == "kg-01"
       )
       || (
-        currentUserPersonId() == "p-s-alturiqe"
+        currentUserPersonId() in ["p-s-alturiqe", "p-h-aljower"]
         && schoolId == "kg-02"
       )
       || (
-        currentUserPersonId() == "p-s-alnafea"
+        currentUserPersonId() in ["p-s-alnafea", "p-s-alslman"]
         && schoolId == "kg-03"
       )
       || (
-        currentUserPersonId() == "p-n-alhamiyn"
+        currentUserPersonId() in ["p-n-alhamiyn", "p-h-alshaya"]
         && schoolId == "kg-04"
       )
       || (
