@@ -16,6 +16,7 @@ export * from "./gamification-catalog/index";
 export * from "./classroom-display/index";
 export * from "./subject-lesson-prep/index";
 export * from "./person-supervision-scope/index";
+export * from "./admin-work";
 export * from "./school-activities";
 export * from "./guardian-finance/index";
 export * from "./staff-provisioning";

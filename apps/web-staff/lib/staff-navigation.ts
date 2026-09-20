@@ -34,6 +34,7 @@ import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-a
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import { canAccessStaffWork } from "@/lib/staff-work-access";
+import { canAccessAdminWork } from "@/lib/admin-work-access";
 import type { PersonSupervisionScope } from "@takween/contracts";
 
 export type StaffNavItem = {
@@ -49,6 +50,7 @@ export type StaffNavItem = {
   lessonPrepApprovals?: boolean;
   teacherWork?: boolean;
   staffWork?: boolean;
+  adminWork?: boolean;
 };
 
 export const staffNavItems: StaffNavItem[] = [
@@ -129,6 +131,12 @@ export const staffNavItems: StaffNavItem[] = [
     label: "متابعة أعمال القيادات",
     icon: UsersRound,
     staffWork: true,
+  },
+  {
+    href: "/staff/admin-work",
+    label: "متابعة أعمال الإداريين",
+    icon: UsersRound,
+    adminWork: true,
   },
   {
     href: "/staff/documents/manage",
@@ -224,6 +232,7 @@ export type StaffNavigationAccess = {
   canAccessLessonPrepApprovals: boolean;
   canAccessTeacherWork: boolean;
   canAccessStaffWork: boolean;
+  canAccessAdminWork: boolean;
 };
 
 export function getStaffNavigationAccess(
@@ -244,6 +253,12 @@ export function getStaffNavigationAccess(
     canAccessStaffWork: canAccessStaffWork({
       orgId: actor.orgId,
       personId: actor.personId,
+      scopes: supervisionScopes,
+    }),
+    canAccessAdminWork: canAccessAdminWork({
+      orgId: actor.orgId,
+      personId: actor.personId,
+      roles: actor.roles,
       scopes: supervisionScopes,
     }),
   };
@@ -272,6 +287,7 @@ export function getVisibleStaffNavItems(
   return staffNavItems.filter((item) => {
     if (item.teacherWork) return access.canAccessTeacherWork;
     if (item.staffWork) return access.canAccessStaffWork;
+    if (item.adminWork) return access.canAccessAdminWork;
 
     if (item.lessonPrepApprovals) return access.canAccessLessonPrepApprovals;
 

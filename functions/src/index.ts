@@ -46,6 +46,11 @@ export {
   getStaffWorkDocumentationRecord,
   getStaffWorkOverview,
 } from "./staff-work/staff-work";
+export {
+  getAdminWorkDetail,
+  getAdminWorkDocumentationRecord,
+  getAdminWorkOverview,
+} from "./admin-work/admin-work";
 
 export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-resource-acknowledgement-report";
 export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
