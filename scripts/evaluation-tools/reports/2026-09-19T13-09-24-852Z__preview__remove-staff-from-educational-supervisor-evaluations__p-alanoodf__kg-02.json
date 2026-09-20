@@ -1,0 +1,124 @@
+{
+  "decision": "SAFE_PREVIEW",
+  "mode": "PREVIEW",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "targetPersonId": "p-alanoodf",
+    "schoolId": "kg-02"
+  },
+  "relevantPlans": [
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-class-teacher-diagnostic-evaluation-v1"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+      "title": "تقييم المشرفة التعليمية لمعلمات الصف - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-class-teacher-periodic-evaluation-v1"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة المشرفة التعليمية - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-corners-teacher-diagnostic-evaluation-v1"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation",
+      "title": "تقييم المشرفة التعليمية لمعلمة الأركان - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-corners-teacher-periodic-evaluation-v1"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمة القيم بواسطة المشرفة التعليمية - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-values-teacher-diagnostic-evaluation-v1"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+      "title": "تقييم المشرفة التعليمية لمعلمة القيم - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-values-teacher-periodic-evaluation-v1"
+    }
+  ],
+  "currentState": {
+    "relevantPlansCount": 6,
+    "activeTargetAssignments": 2,
+    "activeEvaluatorAssignments": 4,
+    "historicalSubmissions": 0
+  },
+  "plannedChanges": {
+    "removeTargetAssignments": 2,
+    "removeEvaluatorAssignments": 4,
+    "submissionsTouched": 0,
+    "totalWrites": 6
+  },
+  "targetAssignments": [
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-target-p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "targetPersonId": "p-alanoodf",
+      "targetDisplayName": "العنود دخيل عبدالله الفهيد",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-target-p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+      "targetPersonId": "p-alanoodf",
+      "targetDisplayName": "العنود دخيل عبدالله الفهيد",
+      "status": "ACTIVE"
+    }
+  ],
+  "evaluatorAssignments": [
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01-p-alanoodf-p-f-alhamaad",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01",
+      "evaluatorPersonId": "p-f-alhamaad",
+      "evaluatorDisplayName": "",
+      "targetPersonId": "p-alanoodf",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02-p-alanoodf-p-f-alhamaad",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02",
+      "evaluatorPersonId": "p-f-alhamaad",
+      "evaluatorDisplayName": "",
+      "targetPersonId": "p-alanoodf",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-01-p-alanoodf-p-f-alhamaad",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-01",
+      "evaluatorPersonId": "p-f-alhamaad",
+      "evaluatorDisplayName": "",
+      "targetPersonId": "p-alanoodf",
+      "weight": 100,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-02-p-alanoodf-p-f-alhamaad",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation-evaluation-02",
+      "evaluatorPersonId": "p-f-alhamaad",
+      "evaluatorDisplayName": "",
+      "targetPersonId": "p-alanoodf",
+      "weight": 100,
+      "status": "ACTIVE"
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "firestoreDeletes": 0,
+    "submissionsTouched": 0,
+    "plansTouched": 0,
+    "frameworksTouched": 0,
+    "cyclesTouched": 0,
+    "assignmentsMarkedRemovedOnly": true,
+    "requiresApplyFlag": true
+  }
+}

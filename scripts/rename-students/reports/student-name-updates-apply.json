@@ -1,171 +1,21 @@
 {
   "decision": "APPLIED",
-  "generatedAt": "2026-09-12T13:19:58.759Z",
+  "generatedAt": "2026-09-19T12:25:50.792Z",
   "orgId": "takween",
   "inputFile": "C:\\dev\\edu-affairs-v2\\scripts\\rename-students\\inputs\\student-name-updates.xlsx",
   "summary": {
-    "inputRows": 16,
-    "peopleUpdated": 16,
+    "inputRows": 1,
+    "peopleUpdated": 1,
     "studentDocumentsUpdated": 0,
-    "committedWrites": 16
+    "committedWrites": 1
   },
   "results": [
     {
       "excelRow": 2,
-      "nationalId": "1207010461",
-      "personId": "person-1788958466987",
-      "oldDisplayName": "لمى وليد منصور البرصي",
-      "newDisplayName": "لمى وليد منصور البصري",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 3,
-      "nationalId": "1208683589",
-      "personId": "person-1788958531347",
-      "oldDisplayName": "النا سلطان فهد المطربي",
-      "newDisplayName": "لانا سلطان فهد المطيري",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 4,
-      "nationalId": "1203999477",
-      "personId": "person-1788958463790",
-      "oldDisplayName": "ورد ناصر حاتم الحربدي",
-      "newDisplayName": "ورد ناصر حاتم الحبردي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 5,
-      "nationalId": "1201022520",
-      "personId": "person-1788958532597",
-      "oldDisplayName": "ألماس سلمان ناصر الحالفي",
-      "newDisplayName": "ألماس سلمان ناصر الحلافي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 6,
-      "nationalId": "1201706106",
-      "personId": "person-1788958501907",
-      "oldDisplayName": "تاال عبدالله رومي الرومي",
-      "newDisplayName": "تالا عبدالله رومي الرومي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 7,
-      "nationalId": "1199441161",
-      "personId": "person-1788958501233",
-      "oldDisplayName": "إيالف ضويحي صالح الفحام",
-      "newDisplayName": "إيلاف ضويحي صالح الفحام",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 8,
-      "nationalId": "1200572459",
-      "personId": "person-1788958505033",
-      "oldDisplayName": "بسمة ماجد عبدالرحمن الخمشري",
-      "newDisplayName": "بسمة ماجد عبدالرحمن الخمشي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 9,
-      "nationalId": "1201793906",
-      "personId": "person-1788958519568",
-      "oldDisplayName": "عبدالعزيز عبدالله سالم العتيري",
-      "newDisplayName": "عبدالعزيز عبدالله سالم العتيبي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 10,
-      "nationalId": "1201843560",
-      "personId": "person-1788958518982",
-      "oldDisplayName": "مازن عبدالمجيد عبدالمحسن الحالفي",
-      "newDisplayName": "مازن عبدالمجيد عبدالمحسن الحلافي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 11,
-      "nationalId": "1201130760",
-      "personId": "person-1788958476139",
-      "oldDisplayName": "ميس مصعب مدهللا المديد",
-      "newDisplayName": "ميس مصعب مدالله المديد",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 12,
-      "nationalId": "1203527690",
-      "personId": "person-1788958488672",
-      "oldDisplayName": "توق ماجد فهد المحلشي",
-      "newDisplayName": "توق ماجد فهد المحلسي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 13,
-      "nationalId": "1203406382",
-      "personId": "person-1788958491798",
-      "oldDisplayName": "صالح عادل عبدالله الخم ير ش",
-      "newDisplayName": "صالح عادل عبدالله الخمشي",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 14,
-      "nationalId": "1200298543",
-      "personId": "person-1788958490562",
-      "oldDisplayName": "فارس أحمد مدهللا الخميس",
-      "newDisplayName": "فارس احمد مدالله الخميس",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 15,
-      "nationalId": "1202411458",
-      "personId": "person-1788958523114",
-      "oldDisplayName": "روال عبداللطيف سليمان الفهد",
-      "newDisplayName": "رولا عبداللطيف سليمان الفهد",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 16,
-      "nationalId": "1202605505",
-      "personId": "person-1788958493684",
-      "oldDisplayName": "شريفة راشد حمود الجار هللا",
-      "newDisplayName": "شريفة راشد حمود الجارالله",
-      "personUpdated": true,
-      "linkedStudents": 1,
-      "studentsUpdated": 0
-    },
-    {
-      "excelRow": 17,
-      "nationalId": "1203960627",
-      "personId": "person-1788958478633",
-      "oldDisplayName": "علي علي علي العتيري",
-      "newDisplayName": "علي علي علي العتيبي",
+      "nationalId": "1207533553",
+      "personId": "person-1788959680689",
+      "oldDisplayName": "لين أحمد عبداللطيف الناصر",
+      "newDisplayName": "لين أحمد عبداللطيف النافع",
       "personUpdated": true,
       "linkedStudents": 1,
       "studentsUpdated": 0

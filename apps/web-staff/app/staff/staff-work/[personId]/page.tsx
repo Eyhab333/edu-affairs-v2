@@ -132,6 +132,7 @@ function ActivityDetails({ activity, orgId, staffPersonId }: { activity: StaffWo
                 ["الإجراء", details.action === "APPROVED" ? "تم اعتماد التقييم" : "تم إرسال التقييم"],
                 ["التقييم", safeText(details.evaluationTitle)],
                 ["الموظف المُقيَّم", safeText(details.targetName, "موظف غير محدد")],
+                ...(details.generalNote ? [["ملاحظة التقييم", <span key="evaluation-general-note" className="whitespace-pre-wrap">{details.generalNote}</span>] as [string, ReactNode]] : []),
                 ["الحالة", statusLabel(details.status)],
                 ["تاريخ الإرسال", formatDate(details.submittedAt)],
                 ["تاريخ الاعتماد", formatDate(details.approvedAt)],

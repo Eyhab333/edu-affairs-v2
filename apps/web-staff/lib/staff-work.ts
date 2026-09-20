@@ -29,6 +29,7 @@ export type StaffWorkActivityDetails =
       action: "SUBMITTED" | "APPROVED";
       evaluationTitle: string;
       targetName: string;
+      generalNote: string;
       status: string;
       submittedAt: number | null;
       approvedAt: number | null;

@@ -50,6 +50,7 @@ type EvaluationActivityDetails = {
   action: "SUBMITTED" | "APPROVED";
   evaluationTitle: string;
   targetName: string;
+  generalNote: string;
   status: string;
   submittedAt: number | null;
   approvedAt: number | null;
@@ -596,6 +597,7 @@ function evaluationDetails(params: {
     action,
     evaluationTitle,
     targetName,
+    generalNote: text(item.generalNote),
     status: text(item.status),
     submittedAt: timestamp(item.submittedAt),
     approvedAt: timestamp(item.approvedAt),

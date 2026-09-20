@@ -20,6 +20,8 @@ const SHEET_NAME = "التوزيع";
 
 const APPLY_CONFIRMATION =
   "APPLY_5_TEACHER_ASSIGNMENTS";
+// node scripts/teacher-imports/assignments/scripts/apply-teacher-assignments-import.cjs --reconcileMode=TEACHER_SCOPE --apply=APPLY_5_TEACHER_ASSIGNMENTS
+
 
 const INPUT_FILE = path.resolve(
   process.cwd(),
