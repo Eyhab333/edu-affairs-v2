@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-20T04:47:59.721Z",
+  "generatedAt": "2026-09-21T14:31:53.240Z",
   "orgId": "takween",
   "reconcileMode": "TEACHER_SCOPE",
   "mode": "APPLY",
   "summary": {
-    "desiredRows": 7,
+    "desiredRows": 8,
     "distinctTeachers": 1,
-    "createCount": 5,
-    "keepExistingCount": 1,
+    "createCount": 0,
+    "keepExistingCount": 7,
     "updateCount": 1,
     "endObsoleteCount": 0,
     "blockedCount": 0,
-    "documentsCreatedOrUpdated": 52,
+    "documentsCreatedOrUpdated": 12,
     "failedTeachers": 0
   },
   "plannedWriteCounts": {
-    "create": 40,
+    "create": 0,
     "update": 8,
     "endObsolete": 0,
     "membershipProfile": 4
@@ -89,17 +89,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "orgMembershipData": {
         "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
@@ -148,24 +152,30 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "errors": [],
-      "action": "CREATE",
+      "action": "KEEP_EXISTING",
       "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science",
       "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g3-general-1-science",
-      "existingAssignmentId": "",
-      "existingAssignmentIds": [],
+      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science"
+      ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
@@ -270,17 +280,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "orgMembershipData": {
         "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
@@ -329,24 +343,30 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "errors": [],
-      "action": "CREATE",
+      "action": "KEEP_EXISTING",
       "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science",
       "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g3-quran-1-science",
-      "existingAssignmentId": "",
-      "existingAssignmentIds": [],
+      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science"
+      ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
@@ -451,17 +471,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "orgMembershipData": {
         "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
@@ -510,38 +534,33 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "errors": [],
-      "action": "UPDATE",
+      "action": "KEEP_EXISTING",
       "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science",
       "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g3-quran-2-science",
       "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science",
       "existingAssignmentIds": [
         "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science"
       ],
-      "changedFields": [
-        "status",
-        "active"
-      ],
-      "currentValues": {
-        "status": "ENDED",
-        "active": false
-      },
-      "desiredValues": {
-        "status": "ACTIVE",
-        "active": true
-      },
+      "changedFields": [],
+      "currentValues": {},
+      "desiredValues": {},
       "desiredAssignment": {
         "id": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science",
         "orgId": "takween",
@@ -584,7 +603,7 @@
       "academicYearId": "ay-1448",
       "termId": "term-1",
       "classId": "g4-general-1",
-      "classTitle": "رابع عام",
+      "classTitle": "رابع عام أ",
       "classSubjectOfferingId": "mrb-girls-g4-general-1-science",
       "subjectKey": "SCIENCE",
       "subjectTitle": "علوم",
@@ -643,17 +662,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "orgMembershipData": {
         "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
@@ -702,24 +725,30 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "errors": [],
-      "action": "CREATE",
+      "action": "KEEP_EXISTING",
       "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science",
       "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g4-general-1-science",
-      "existingAssignmentId": "",
-      "existingAssignmentIds": [],
+      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science"
+      ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
@@ -764,8 +793,199 @@
       "schoolId": "mrb-girls",
       "academicYearId": "ay-1448",
       "termId": "term-1",
+      "classId": "g4-general-2",
+      "classTitle": "رابع عام ب",
+      "classSubjectOfferingId": "mrb-girls-g4-general-2-science",
+      "subjectKey": "SCIENCE",
+      "subjectTitle": "علوم",
+      "assignmentStatus": "ACTIVE",
+      "uid": "zkEeEG7GaUatYutzhzAE44uIutb2",
+      "personId": "p-r-g-alfraj",
+      "roleKey": "GIRLS_TEACHER",
+      "gradeId": "g4",
+      "streamId": "stream-general",
+      "resolvedClassTitle": "رابع ابتدائي / العام / ب",
+      "resolvedSubjectTitle": "علوم",
+      "userMembershipData": {
+        "id": "takween",
+        "uid": "zkEeEG7GaUatYutzhzAE44uIutb2",
+        "personId": "p-r-g-alfraj",
+        "orgId": "takween",
+        "role": "teacher",
+        "roleKey": "GIRLS_TEACHER",
+        "title": "معلمة",
+        "department": "التعليم",
+        "scopeType": "SCHOOL",
+        "scopeId": "mrb-girls",
+        "permissions": {
+          "manageOrg": false,
+          "manageSchools": false,
+          "manageAcademicYears": false,
+          "manageGrades": false,
+          "manageClasses": false,
+          "manageSubjects": false,
+          "manageUsers": false,
+          "manageDirectory": false,
+          "manageAssignments": false,
+          "manageCases": false,
+          "manageEvaluations": false,
+          "manageDisplay": false,
+          "sendNotifications": false,
+          "viewGuardianFinance": false,
+          "manageGuardianFinance": false,
+          "recordGuardianPayments": false,
+          "applyGuardianFinanceAdjustments": false,
+          "voidGuardianPayments": false,
+          "viewGuardianFinanceReports": false,
+          "manageGuardianFinanceSettings": false
+        },
+        "isActive": true,
+        "createdAt": 1787500259164,
+        "assignmentStatus": "ACTIVE",
+        "provisioningStatus": "ASSIGNED",
+        "scopes": {
+          "schoolIds": [
+            "mrb-girls"
+          ],
+          "routeIds": [],
+          "canAccessAllSchools": false,
+          "gradeIds": [
+            "g3",
+            "g4"
+          ],
+          "subjectKeys": [
+            "SCIENCE",
+            "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
+          ]
+        },
+        "updatedAt": 1789879679722
+      },
+      "orgMembershipData": {
+        "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
+        "uid": "zkEeEG7GaUatYutzhzAE44uIutb2",
+        "personId": "p-r-g-alfraj",
+        "orgId": "takween",
+        "role": "teacher",
+        "roleKey": "GIRLS_TEACHER",
+        "title": "معلمة",
+        "department": "التعليم",
+        "scopeType": "SCHOOL",
+        "scopeId": "mrb-girls",
+        "permissions": {
+          "manageOrg": false,
+          "manageSchools": false,
+          "manageAcademicYears": false,
+          "manageGrades": false,
+          "manageClasses": false,
+          "manageSubjects": false,
+          "manageUsers": false,
+          "manageDirectory": false,
+          "manageAssignments": false,
+          "manageCases": false,
+          "manageEvaluations": false,
+          "manageDisplay": false,
+          "sendNotifications": false,
+          "viewGuardianFinance": false,
+          "manageGuardianFinance": false,
+          "recordGuardianPayments": false,
+          "applyGuardianFinanceAdjustments": false,
+          "voidGuardianPayments": false,
+          "viewGuardianFinanceReports": false,
+          "manageGuardianFinanceSettings": false
+        },
+        "isActive": true,
+        "createdAt": 1787500259164,
+        "assignmentStatus": "ACTIVE",
+        "provisioningStatus": "ASSIGNED",
+        "scopes": {
+          "schoolIds": [
+            "mrb-girls"
+          ],
+          "routeIds": [],
+          "canAccessAllSchools": false,
+          "gradeIds": [
+            "g3",
+            "g4"
+          ],
+          "subjectKeys": [
+            "SCIENCE",
+            "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
+          ]
+        },
+        "updatedAt": 1789879679722
+      },
+      "errors": [],
+      "action": "KEEP_EXISTING",
+      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science",
+      "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g4-general-2-science",
+      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science"
+      ],
+      "changedFields": [],
+      "currentValues": {},
+      "desiredValues": {},
+      "desiredAssignment": {
+        "id": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science",
+        "orgId": "takween",
+        "schoolId": "mrb-girls",
+        "academicYearId": "ay-1448",
+        "termId": "term-1",
+        "teacherPersonId": "p-r-g-alfraj",
+        "teacherEmail": "r-g-alfraj@qz.org.sa",
+        "assignmentKind": "SUBJECT_TEACHER",
+        "targetScopeType": "CLASS",
+        "targetScopeId": "g4-general-2",
+        "coverageMode": "EXPLICIT_CLASSES",
+        "subjectId": "",
+        "subjectKey": "SCIENCE",
+        "classId": "g4-general-2",
+        "classSubjectOfferingId": "mrb-girls-g4-general-2-science",
+        "gradeId": "g4",
+        "streamId": "stream-general",
+        "isHomeroom": false,
+        "roleInAssignment": "MAIN",
+        "status": "ACTIVE",
+        "note": "تم إنشاؤه بواسطة استيراد توزيع المعلمين",
+        "operationKinds": [
+          "STUDENT_MEASUREMENT",
+          "LEARNING_LOSS_FOLLOWUP",
+          "LESSON_PREP",
+          "STUDENT_GAMIFICATION",
+          "STUDENT_NOTES",
+          "VIRTUAL_CLASS"
+        ],
+        "active": true,
+        "managedBy": "TEACHER_PROVISIONING",
+        "assignmentSource": "OFFICIAL_IMPORT"
+      }
+    },
+    {
+      "rowNumber": 7,
+      "email": "r-g-alfraj@qz.org.sa",
+      "schoolId": "mrb-girls",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
       "classId": "g4-general-1",
-      "classTitle": "رابع عام",
+      "classTitle": "رابع عام أ",
       "classSubjectOfferingId": "mrb-girls-g4-general-1-life-skills",
       "subjectKey": "LIFE_SKILLS",
       "subjectTitle": "حياتية",
@@ -824,17 +1044,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "orgMembershipData": {
         "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
@@ -883,17 +1107,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "errors": [],
       "action": "KEEP_EXISTING",
@@ -942,7 +1170,7 @@
       }
     },
     {
-      "rowNumber": 7,
+      "rowNumber": 8,
       "email": "r-g-alfraj@qz.org.sa",
       "schoolId": "mrb-girls",
       "academicYearId": "ay-1448",
@@ -1007,17 +1235,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "orgMembershipData": {
         "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
@@ -1066,24 +1298,30 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "errors": [],
-      "action": "CREATE",
+      "action": "KEEP_EXISTING",
       "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science",
       "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g4-quran-1-science",
-      "existingAssignmentId": "",
-      "existingAssignmentIds": [],
+      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science"
+      ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
@@ -1123,14 +1361,14 @@
       }
     },
     {
-      "rowNumber": 8,
+      "rowNumber": 9,
       "email": "r-g-alfraj@qz.org.sa",
       "schoolId": "mrb-girls",
       "academicYearId": "ay-1448",
       "termId": "term-1",
-      "classId": "g4-general-2",
+      "classId": "g4-quran-2",
       "classTitle": "رابع تحفيظ ب",
-      "classSubjectOfferingId": "mrb-girls-g4-general-2-science",
+      "classSubjectOfferingId": "mrb-girls-g4-quran-2-science",
       "subjectKey": "SCIENCE",
       "subjectTitle": "علوم",
       "assignmentStatus": "ACTIVE",
@@ -1138,8 +1376,8 @@
       "personId": "p-r-g-alfraj",
       "roleKey": "GIRLS_TEACHER",
       "gradeId": "g4",
-      "streamId": "stream-general",
-      "resolvedClassTitle": "رابع ابتدائي / العام / ب",
+      "streamId": "stream-quran",
+      "resolvedClassTitle": "رابع ابتدائي / التحفيظ / ب",
       "resolvedSubjectTitle": "علوم",
       "userMembershipData": {
         "id": "takween",
@@ -1188,17 +1426,21 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "orgMembershipData": {
         "id": "zkEeEG7GaUatYutzhzAE44uIutb2",
@@ -1247,29 +1489,44 @@
             "g3",
             "g4"
           ],
-          "classIds": [
-            "g3-quran-2",
-            "g4-quran-2",
-            "g4-general-1"
-          ],
           "subjectKeys": [
             "SCIENCE",
             "LIFE_SKILLS"
+          ],
+          "classIds": [
+            "g3-quran-2",
+            "g4-quran-2",
+            "g4-general-1",
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g4-general-2"
           ]
         },
-        "updatedAt": 1789878980110
+        "updatedAt": 1789879679722
       },
       "errors": [],
-      "action": "CREATE",
-      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science",
-      "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g4-general-2-science",
-      "existingAssignmentId": "",
-      "existingAssignmentIds": [],
-      "changedFields": [],
-      "currentValues": {},
-      "desiredValues": {},
+      "action": "UPDATE",
+      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science",
+      "assignmentIdentity": "p-r-g-alfraj\u001fmrb-girls\u001fay-1448\u001fterm-1\u001fmrb-girls-g4-quran-2-science",
+      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science"
+      ],
+      "changedFields": [
+        "status",
+        "active"
+      ],
+      "currentValues": {
+        "status": "ENDED",
+        "active": false
+      },
+      "desiredValues": {
+        "status": "ACTIVE",
+        "active": true
+      },
       "desiredAssignment": {
-        "id": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science",
+        "id": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science",
         "orgId": "takween",
         "schoolId": "mrb-girls",
         "academicYearId": "ay-1448",
@@ -1278,14 +1535,14 @@
         "teacherEmail": "r-g-alfraj@qz.org.sa",
         "assignmentKind": "SUBJECT_TEACHER",
         "targetScopeType": "CLASS",
-        "targetScopeId": "g4-general-2",
+        "targetScopeId": "g4-quran-2",
         "coverageMode": "EXPLICIT_CLASSES",
         "subjectId": "",
         "subjectKey": "SCIENCE",
-        "classId": "g4-general-2",
-        "classSubjectOfferingId": "mrb-girls-g4-general-2-science",
+        "classId": "g4-quran-2",
+        "classSubjectOfferingId": "mrb-girls-g4-quran-2-science",
         "gradeId": "g4",
-        "streamId": "stream-general",
+        "streamId": "stream-quran",
         "isHomeroom": false,
         "roleInAssignment": "MAIN",
         "status": "ACTIVE",
@@ -1308,150 +1565,30 @@
   "suppressedReconcileScopes": [],
   "executedActions": [
     {
-      "action": "CREATE",
-      "email": "r-g-alfraj@qz.org.sa",
-      "personId": "p-r-g-alfraj",
-      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science",
-      "schoolId": "mrb-girls",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g3-general-1",
-      "classSubjectOfferingId": "mrb-girls-g3-general-1-science",
-      "subjectKey": "SCIENCE",
-      "existingAssignmentId": "",
-      "changedFields": [],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science__class-link__g3-general-1",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-general-1-science__VIRTUAL_CLASS"
-      ]
-    },
-    {
-      "action": "CREATE",
-      "email": "r-g-alfraj@qz.org.sa",
-      "personId": "p-r-g-alfraj",
-      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science",
-      "schoolId": "mrb-girls",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g3-quran-1",
-      "classSubjectOfferingId": "mrb-girls-g3-quran-1-science",
-      "subjectKey": "SCIENCE",
-      "existingAssignmentId": "",
-      "changedFields": [],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science__class-link__g3-quran-1",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-1-science__VIRTUAL_CLASS"
-      ]
-    },
-    {
-      "action": "CREATE",
-      "email": "r-g-alfraj@qz.org.sa",
-      "personId": "p-r-g-alfraj",
-      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science",
-      "schoolId": "mrb-girls",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g4-general-1",
-      "classSubjectOfferingId": "mrb-girls-g4-general-1-science",
-      "subjectKey": "SCIENCE",
-      "existingAssignmentId": "",
-      "changedFields": [],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science__class-link__g4-general-1",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-1-science__VIRTUAL_CLASS"
-      ]
-    },
-    {
-      "action": "CREATE",
-      "email": "r-g-alfraj@qz.org.sa",
-      "personId": "p-r-g-alfraj",
-      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science",
-      "schoolId": "mrb-girls",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g4-quran-1",
-      "classSubjectOfferingId": "mrb-girls-g4-quran-1-science",
-      "subjectKey": "SCIENCE",
-      "existingAssignmentId": "",
-      "changedFields": [],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science__class-link__g4-quran-1",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-1-science__VIRTUAL_CLASS"
-      ]
-    },
-    {
-      "action": "CREATE",
-      "email": "r-g-alfraj@qz.org.sa",
-      "personId": "p-r-g-alfraj",
-      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science",
-      "schoolId": "mrb-girls",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g4-general-2",
-      "classSubjectOfferingId": "mrb-girls-g4-general-2-science",
-      "subjectKey": "SCIENCE",
-      "existingAssignmentId": "",
-      "changedFields": [],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science__class-link__g4-general-2",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-general-2-science__VIRTUAL_CLASS"
-      ]
-    },
-    {
       "action": "UPDATE",
       "email": "r-g-alfraj@qz.org.sa",
       "personId": "p-r-g-alfraj",
-      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science",
+      "assignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science",
       "schoolId": "mrb-girls",
       "academicYearId": "ay-1448",
       "termId": "term-1",
-      "classId": "g3-quran-2",
-      "classSubjectOfferingId": "mrb-girls-g3-quran-2-science",
+      "classId": "g4-quran-2",
+      "classSubjectOfferingId": "mrb-girls-g4-quran-2-science",
       "subjectKey": "SCIENCE",
-      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science",
+      "existingAssignmentId": "teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science",
       "changedFields": [
         "status",
         "active"
       ],
       "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science__class-link__g3-quran-2",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g3-quran-2-science__VIRTUAL_CLASS"
+        "orgs/takween/teacherAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science",
+        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science__class-link__g4-quran-2",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science__STUDENT_MEASUREMENT",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science__LEARNING_LOSS_FOLLOWUP",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science__LESSON_PREP",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science__STUDENT_GAMIFICATION",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science__STUDENT_NOTES",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-r-g-alfraj__mrb-girls__ay-1448__term-1__mrb-girls-g4-quran-2-science__VIRTUAL_CLASS"
       ]
     }
   ],
@@ -1470,7 +1607,7 @@
   ],
   "failures": [],
   "actualWriteCounts": {
-    "create": 40,
+    "create": 0,
     "update": 8,
     "endObsolete": 0,
     "membershipProfile": 4

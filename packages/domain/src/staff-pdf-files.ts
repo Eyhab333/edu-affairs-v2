@@ -3,9 +3,13 @@ import type {
   OperationalAssignment,
   PersonSupervisionScope,
   StaffPdfFile,
+  TeacherAssignment,
 } from "@takween/contracts";
 
-import { getActiveOperationalAssignmentsForActor } from "./assignments";
+import {
+  getActiveOperationalAssignmentsForActor,
+  getActiveTeacherAssignmentsForActor,
+} from "./assignments";
 import { getPersonSupervisionSchoolIds } from "./person-supervision-scope";
 import {
   STAFF_PORTFOLIO_SCHOOL_MANAGEMENT_ROLE_KEYS,
@@ -18,6 +22,17 @@ const ORG_WIDE_ROLE_KEYS = new Set<MembershipRole>([
   "org_owner",
   "org_admin",
 ]);
+
+export const KINDERGARTEN_VALUE_PDF_SCHOOL_IDS = [
+  "kg-01",
+  "kg-02",
+  "kg-03",
+  "kg-04",
+] as const;
+
+const KINDERGARTEN_VALUE_PDF_SCHOOL_ID_SET = new Set<string>(
+  KINDERGARTEN_VALUE_PDF_SCHOOL_IDS,
+);
 
 function hasIntersection(first: readonly string[], second: readonly string[]) {
   const values = new Set(first);
@@ -56,6 +71,32 @@ function hasSchoolLeadershipRole(roles: readonly MembershipRole[]) {
       STAFF_PORTFOLIO_SCHOOL_MANAGEMENT_ROLE_KEYS.has(role) ||
       STAFF_PORTFOLIO_SUPERVISION_HEAD_ROLE_KEYS.has(role),
   );
+}
+
+/**
+ * KG values assignments currently use subjectKey VALUES. assignmentKind
+ * VALUES_TEACHER is also supported for assignments created through the newer
+ * assignment form.
+ */
+export function hasActiveKindergartenValuesTeacherAssignment(params: {
+  personId: string;
+  assignments: readonly TeacherAssignment[];
+  nowMs?: number;
+}) {
+  const nowMs = params.nowMs ?? Date.now();
+
+  return getActiveTeacherAssignmentsForActor({
+    actorPersonId: params.personId,
+    assignments: [...params.assignments],
+    nowMs,
+  }).some((assignment) => {
+    const subjectKey = assignment.subjectKey.trim().toUpperCase();
+    return (
+      assignment.status === "ACTIVE" &&
+      KINDERGARTEN_VALUE_PDF_SCHOOL_ID_SET.has(assignment.schoolId) &&
+      (assignment.assignmentKind === "VALUES_TEACHER" || subjectKey === "VALUES")
+    );
+  });
 }
 
 function hasViewPermission(assignment: OperationalAssignment) {

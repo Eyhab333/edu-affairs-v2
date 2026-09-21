@@ -8,6 +8,7 @@ import {
 import {
   canBrowseStaffPdfFilesInScope,
   canViewStaffPdfFile,
+  hasActiveKindergartenValuesTeacherAssignment,
   type StaffPdfFileViewer,
 } from "@takween/domain";
 
@@ -17,19 +18,59 @@ import type { StaffActorData } from "@/lib/staff-actor";
 
 export const STAFF_PDF_FILE_MAX_BYTES = 20 * 1024 * 1024;
 
-export const staffPdfFileCategories: Array<{
+export type StaffPdfFileCategoryVisibility =
+  | "ALL_STAFF"
+  | "KG_VALUES_TEACHER";
+
+export type StaffPdfFileCategory = {
   key: StaffPdfFileCategoryKey;
   slug: string;
   title: string;
   description: string;
   href: string;
-}> = [
+  visibility: StaffPdfFileCategoryVisibility;
+};
+
+export const staffPdfFileCategories: StaffPdfFileCategory[] = [
   {
     key: "WORK_DOCUMENTATION",
     slug: "work-documentation",
     title: "توثيق عمل",
     description: "رفع وحفظ ملفات توثيق الأعمال بصيغة PDF",
     href: "/staff/pdf-files/work-documentation",
+    visibility: "ALL_STAFF",
+  },
+  {
+    key: "KG_VALUE_1",
+    slug: "kg-value-1",
+    title: "القيمة الأولى",
+    description: "رفع وحفظ ملفات القيمة الأولى بصيغة PDF",
+    href: "/staff/pdf-files/kg-value-1",
+    visibility: "KG_VALUES_TEACHER",
+  },
+  {
+    key: "KG_VALUE_2",
+    slug: "kg-value-2",
+    title: "القيمة الثانية",
+    description: "رفع وحفظ ملفات القيمة الثانية بصيغة PDF",
+    href: "/staff/pdf-files/kg-value-2",
+    visibility: "KG_VALUES_TEACHER",
+  },
+  {
+    key: "KG_VALUE_3",
+    slug: "kg-value-3",
+    title: "القيمة الثالثة",
+    description: "رفع وحفظ ملفات القيمة الثالثة بصيغة PDF",
+    href: "/staff/pdf-files/kg-value-3",
+    visibility: "KG_VALUES_TEACHER",
+  },
+  {
+    key: "KG_VALUE_4",
+    slug: "kg-value-4",
+    title: "القيمة الرابعة",
+    description: "رفع وحفظ ملفات القيمة الرابعة بصيغة PDF",
+    href: "/staff/pdf-files/kg-value-4",
+    visibility: "KG_VALUES_TEACHER",
   },
 ];
 
@@ -68,6 +109,24 @@ export function getStaffPdfFileCategory(key: string | null | undefined) {
     staffPdfFileCategories.find(
       (category) => category.key === key || category.slug === key,
     ) ?? null
+  );
+}
+
+export function canAccessStaffPdfFileCategory(
+  actor: StaffActorData,
+  category: StaffPdfFileCategory,
+) {
+  if (category.visibility === "ALL_STAFF") return true;
+
+  return hasActiveKindergartenValuesTeacherAssignment({
+    personId: actor.personId,
+    assignments: actor.teacherAssignments,
+  });
+}
+
+export function getVisibleStaffPdfFileCategories(actor: StaffActorData) {
+  return staffPdfFileCategories.filter((category) =>
+    canAccessStaffPdfFileCategory(actor, category),
   );
 }
 
@@ -132,6 +191,11 @@ export async function uploadStaffPdfFile(params: {
   description: string;
   file: File;
 }) {
+  const category = getStaffPdfFileCategory(params.categoryKey);
+  if (!category || !canAccessStaffPdfFileCategory(params.actor, category)) {
+    throw new Error("هذه الفئة غير متاحة لحسابك الحالي.");
+  }
+
   const title = params.title.trim();
   const ownerPersonId = params.actor.personId.trim();
   if (!title) throw new Error("أدخل عنوان الملف.");

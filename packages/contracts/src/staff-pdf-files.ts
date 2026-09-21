@@ -2,7 +2,13 @@ import { z } from "zod";
 
 import { MembershipRole } from "./membership-role";
 
-export const StaffPdfFileCategoryKey = z.enum(["WORK_DOCUMENTATION"]);
+export const StaffPdfFileCategoryKey = z.enum([
+  "WORK_DOCUMENTATION",
+  "KG_VALUE_1",
+  "KG_VALUE_2",
+  "KG_VALUE_3",
+  "KG_VALUE_4",
+]);
 export type StaffPdfFileCategoryKey = z.infer<typeof StaffPdfFileCategoryKey>;
 
 export const StaffPdfFileStatus = z.enum(["ACTIVE", "ARCHIVED"]);
