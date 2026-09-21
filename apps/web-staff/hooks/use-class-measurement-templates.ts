@@ -43,6 +43,7 @@ export type StaffAssessmentTemplateRow = {
   id: string;
   orgId: string;
   schoolId?: string;
+  academicYearId?: string;
   gradeId?: string;
   schoolType: MeasurementSchoolType;
   title: string;
@@ -71,6 +72,7 @@ export type StaffTrackerTemplateRow = {
   id: string;
   orgId: string;
   schoolId?: string;
+  academicYearId?: string;
   gradeId?: string;
   schoolType: MeasurementSchoolType;
   title: string;
@@ -192,6 +194,18 @@ function schoolMatches(
   return value === classSchoolId;
 }
 
+function academicYearMatches(
+  templateAcademicYearId: string | undefined,
+  classAcademicYearId: string | undefined,
+) {
+  const value = templateAcademicYearId ?? "";
+
+  // An empty value denotes a legacy/generic template for every academic year.
+  if (!value) return true;
+
+  return value === (classAcademicYearId ?? "");
+}
+
 function gradeMatches(params: {
   templateGradeId?: string;
   applicableGradeIds?: string[];
@@ -226,6 +240,10 @@ function assessmentTemplateMatchesClass(params: {
   if (schoolType && template.schoolType !== schoolType) return false;
 
   if (!schoolMatches(template.schoolId, classInfo.schoolId ?? "")) {
+    return false;
+  }
+
+  if (!academicYearMatches(template.academicYearId, classInfo.academicYearId)) {
     return false;
   }
 
@@ -272,6 +290,10 @@ function trackerTemplateMatchesClass(params: {
   if (schoolType && template.schoolType !== schoolType) return false;
 
   if (!schoolMatches(template.schoolId, classInfo.schoolId ?? "")) {
+    return false;
+  }
+
+  if (!academicYearMatches(template.academicYearId, classInfo.academicYearId)) {
     return false;
   }
 

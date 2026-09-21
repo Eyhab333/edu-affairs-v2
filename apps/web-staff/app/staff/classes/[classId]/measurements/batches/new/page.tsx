@@ -138,6 +138,7 @@ function requiresUnitSelection(subjectKey: string) {
 const KG_DOMAIN_SUBJECT_KEYS = new Set([
   "QURAN",
   "LEARNING_GARDENS",
+  "COUNT_AND_CALCULATE",
   "NUMBERS",
   "VALUES",
   "CORNERS",
@@ -158,6 +159,20 @@ function normalizeKey(value?: string) {
   return String(value || "")
     .trim()
     .toUpperCase();
+}
+
+function canonicalKgSubjectKey(value?: string) {
+  const key = normalizeKey(value);
+
+  if (
+    key === "COUNT_AND_CALCULATE" ||
+    key === "NUMBERS" ||
+    key === "KG_NUMBERS"
+  ) {
+    return "COUNT_AND_CALCULATE";
+  }
+
+  return key;
 }
 
 function getCurrentTermForAcademicYear(
@@ -257,8 +272,8 @@ function templateMatchesSubject(
   template: StaffMeasurementTemplateOption,
   subjectKey: string,
 ) {
-  const normalizedSubjectKey = normalizeKey(subjectKey);
-  const templateSubjectKey = normalizeKey(template.subjectKey);
+  const normalizedSubjectKey = canonicalKgSubjectKey(subjectKey);
+  const templateSubjectKey = canonicalKgSubjectKey(template.subjectKey);
 
   if (templateSubjectKey) {
     return templateSubjectKey === normalizedSubjectKey;
@@ -287,8 +302,7 @@ function templateMatchesSubject(
   }
 
   if (
-    normalizedSubjectKey === "NUMBERS" ||
-    normalizedSubjectKey === "KG_NUMBERS"
+    normalizedSubjectKey === "COUNT_AND_CALCULATE"
   ) {
     return search.includes("NUMBERS") || template.title.includes("أرقام");
   }

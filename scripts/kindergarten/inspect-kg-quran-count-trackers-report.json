@@ -1,0 +1,3096 @@
+{
+  "metadata": {
+    "generatedAt": "2026-09-21T12:39:00.981Z",
+    "orgId": "takween",
+    "schoolType": "KG",
+    "targetSubjects": [
+      "QURAN",
+      "COUNT_AND_CALCULATE"
+    ],
+    "targetGrades": [
+      "kg1",
+      "kg2",
+      "kg3"
+    ],
+    "readOnly": true,
+    "collectionsInspected": [
+      "studentAssessmentTemplates",
+      "studentTrackerTemplates",
+      "studentMeasurementBatches (targeted templateId lookups only)"
+    ]
+  },
+  "templates": [
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-numbers-class-teacher-assessment-1",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg1-numbers-class-teacher-assessment-1",
+      "code": "KG1_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+      "title": "الأرقام — المستوى الأول — معلمة الصف — القياس الأول",
+      "kind": "KG_MEASUREMENT_1",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg1",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 1,
+      "maxScore": 30,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 30,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_1",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 10,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-1",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-1",
+          "itemTitle": "1",
+          "title": "1",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-2",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-2",
+          "itemTitle": "2",
+          "title": "2",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-3",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-3",
+          "itemTitle": "3",
+          "title": "3",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-4",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-4",
+          "itemTitle": "4",
+          "title": "4",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-5",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-5",
+          "itemTitle": "5",
+          "title": "5",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-6",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-6",
+          "itemTitle": "6",
+          "title": "6",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-7",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-7",
+          "itemTitle": "7",
+          "title": "7",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 8,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-8",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-8",
+          "itemTitle": "8",
+          "title": "8",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 9,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-9",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-9",
+          "itemTitle": "9",
+          "title": "9",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 10,
+          "itemKey": "kg1-numbers-class-teacher-assessment-1-10",
+          "itemId": "kg1-numbers-class-teacher-assessment-1-10",
+          "itemTitle": "10",
+          "title": "10",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-numbers-class-teacher-tracker",
+      "templateCollection": "studentTrackerTemplates",
+      "templateType": "TRACKER",
+      "targetSubjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg1-numbers-class-teacher-tracker",
+      "code": "KG1_NUMBERS_CLASS_TEACHER_TRACKER",
+      "title": "الأرقام — المستوى الأول — معلمة الصف — المتابعة",
+      "kind": "KG_NUMBERS_TRACKER",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg1",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 100,
+      "maxScore": 30,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 30,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": true,
+      "defaultLessonTitle": "متابعة الأرقام",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 10,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg1-numbers-class-teacher-tracker-1",
+          "itemId": "kg1-numbers-class-teacher-tracker-1",
+          "itemTitle": "1",
+          "title": "1",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg1-numbers-class-teacher-tracker-2",
+          "itemId": "kg1-numbers-class-teacher-tracker-2",
+          "itemTitle": "2",
+          "title": "2",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg1-numbers-class-teacher-tracker-3",
+          "itemId": "kg1-numbers-class-teacher-tracker-3",
+          "itemTitle": "3",
+          "title": "3",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg1-numbers-class-teacher-tracker-4",
+          "itemId": "kg1-numbers-class-teacher-tracker-4",
+          "itemTitle": "4",
+          "title": "4",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg1-numbers-class-teacher-tracker-5",
+          "itemId": "kg1-numbers-class-teacher-tracker-5",
+          "itemTitle": "5",
+          "title": "5",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg1-numbers-class-teacher-tracker-6",
+          "itemId": "kg1-numbers-class-teacher-tracker-6",
+          "itemTitle": "6",
+          "title": "6",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg1-numbers-class-teacher-tracker-7",
+          "itemId": "kg1-numbers-class-teacher-tracker-7",
+          "itemTitle": "7",
+          "title": "7",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 8,
+          "itemKey": "kg1-numbers-class-teacher-tracker-8",
+          "itemId": "kg1-numbers-class-teacher-tracker-8",
+          "itemTitle": "8",
+          "title": "8",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 9,
+          "itemKey": "kg1-numbers-class-teacher-tracker-9",
+          "itemId": "kg1-numbers-class-teacher-tracker-9",
+          "itemTitle": "9",
+          "title": "9",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 10,
+          "itemKey": "kg1-numbers-class-teacher-tracker-10",
+          "itemId": "kg1-numbers-class-teacher-tracker-10",
+          "itemTitle": "10",
+          "title": "10",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-numbers-class-teacher-assessment-1",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg2-numbers-class-teacher-assessment-1",
+      "code": "KG2_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+      "title": "الأرقام — المستوى الثاني — معلمة الصف — القياس الأول",
+      "kind": "KG_MEASUREMENT_1",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg2",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 1,
+      "maxScore": 33,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 33,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_1",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 11,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-1",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-1",
+          "itemTitle": "10",
+          "title": "10",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-2",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-2",
+          "itemTitle": "11",
+          "title": "11",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-3",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-3",
+          "itemTitle": "12",
+          "title": "12",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-4",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-4",
+          "itemTitle": "13",
+          "title": "13",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-5",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-5",
+          "itemTitle": "14",
+          "title": "14",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-6",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-6",
+          "itemTitle": "15",
+          "title": "15",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-7",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-7",
+          "itemTitle": "16",
+          "title": "16",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 8,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-8",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-8",
+          "itemTitle": "17",
+          "title": "17",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 9,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-9",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-9",
+          "itemTitle": "18",
+          "title": "18",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 10,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-10",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-10",
+          "itemTitle": "19",
+          "title": "19",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 11,
+          "itemKey": "kg2-numbers-class-teacher-assessment-1-11",
+          "itemId": "kg2-numbers-class-teacher-assessment-1-11",
+          "itemTitle": "20",
+          "title": "20",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-numbers-class-teacher-tracker",
+      "templateCollection": "studentTrackerTemplates",
+      "templateType": "TRACKER",
+      "targetSubjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg2-numbers-class-teacher-tracker",
+      "code": "KG2_NUMBERS_CLASS_TEACHER_TRACKER",
+      "title": "الأرقام — المستوى الثاني — معلمة الصف — المتابعة",
+      "kind": "KG_NUMBERS_TRACKER",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg2",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 100,
+      "maxScore": 33,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 33,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": true,
+      "defaultLessonTitle": "متابعة الأرقام",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 11,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg2-numbers-class-teacher-tracker-1",
+          "itemId": "kg2-numbers-class-teacher-tracker-1",
+          "itemTitle": "10",
+          "title": "10",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg2-numbers-class-teacher-tracker-2",
+          "itemId": "kg2-numbers-class-teacher-tracker-2",
+          "itemTitle": "11",
+          "title": "11",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg2-numbers-class-teacher-tracker-3",
+          "itemId": "kg2-numbers-class-teacher-tracker-3",
+          "itemTitle": "12",
+          "title": "12",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg2-numbers-class-teacher-tracker-4",
+          "itemId": "kg2-numbers-class-teacher-tracker-4",
+          "itemTitle": "13",
+          "title": "13",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg2-numbers-class-teacher-tracker-5",
+          "itemId": "kg2-numbers-class-teacher-tracker-5",
+          "itemTitle": "14",
+          "title": "14",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg2-numbers-class-teacher-tracker-6",
+          "itemId": "kg2-numbers-class-teacher-tracker-6",
+          "itemTitle": "15",
+          "title": "15",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg2-numbers-class-teacher-tracker-7",
+          "itemId": "kg2-numbers-class-teacher-tracker-7",
+          "itemTitle": "16",
+          "title": "16",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 8,
+          "itemKey": "kg2-numbers-class-teacher-tracker-8",
+          "itemId": "kg2-numbers-class-teacher-tracker-8",
+          "itemTitle": "17",
+          "title": "17",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 9,
+          "itemKey": "kg2-numbers-class-teacher-tracker-9",
+          "itemId": "kg2-numbers-class-teacher-tracker-9",
+          "itemTitle": "18",
+          "title": "18",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 10,
+          "itemKey": "kg2-numbers-class-teacher-tracker-10",
+          "itemId": "kg2-numbers-class-teacher-tracker-10",
+          "itemTitle": "19",
+          "title": "19",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 11,
+          "itemKey": "kg2-numbers-class-teacher-tracker-11",
+          "itemId": "kg2-numbers-class-teacher-tracker-11",
+          "itemTitle": "20",
+          "title": "20",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-numbers-class-teacher-assessment-1",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg3-numbers-class-teacher-assessment-1",
+      "code": "KG3_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+      "title": "الأرقام — المستوى الثالث — معلمة الصف — القياس الأول",
+      "kind": "KG_MEASUREMENT_1",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg3",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 1,
+      "maxScore": 45,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 45,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_1",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 15,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-1",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-1",
+          "itemTitle": "16",
+          "title": "16",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-2",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-2",
+          "itemTitle": "17",
+          "title": "17",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-3",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-3",
+          "itemTitle": "18",
+          "title": "18",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-4",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-4",
+          "itemTitle": "19",
+          "title": "19",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-5",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-5",
+          "itemTitle": "20",
+          "title": "20",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-6",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-6",
+          "itemTitle": "21",
+          "title": "21",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-7",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-7",
+          "itemTitle": "22",
+          "title": "22",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 8,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-8",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-8",
+          "itemTitle": "23",
+          "title": "23",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 9,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-9",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-9",
+          "itemTitle": "24",
+          "title": "24",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 10,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-10",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-10",
+          "itemTitle": "25",
+          "title": "25",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 11,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-11",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-11",
+          "itemTitle": "26",
+          "title": "26",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 12,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-12",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-12",
+          "itemTitle": "27",
+          "title": "27",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 13,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-13",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-13",
+          "itemTitle": "28",
+          "title": "28",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 14,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-14",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-14",
+          "itemTitle": "29",
+          "title": "29",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 15,
+          "itemKey": "kg3-numbers-class-teacher-assessment-1-15",
+          "itemId": "kg3-numbers-class-teacher-assessment-1-15",
+          "itemTitle": "30",
+          "title": "30",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-numbers-class-teacher-tracker",
+      "templateCollection": "studentTrackerTemplates",
+      "templateType": "TRACKER",
+      "targetSubjectKey": "COUNT_AND_CALCULATE",
+      "id": "kg3-numbers-class-teacher-tracker",
+      "code": "KG3_NUMBERS_CLASS_TEACHER_TRACKER",
+      "title": "الأرقام — المستوى الثالث — معلمة الصف — المتابعة",
+      "kind": "KG_NUMBERS_TRACKER",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg3",
+      "subjectKey": "NUMBERS",
+      "subjectId": "numbers",
+      "subjectTitle": "الأرقام",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 100,
+      "maxScore": 45,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 45,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": true,
+      "defaultLessonTitle": "متابعة الأرقام",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 15,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg3-numbers-class-teacher-tracker-1",
+          "itemId": "kg3-numbers-class-teacher-tracker-1",
+          "itemTitle": "16",
+          "title": "16",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg3-numbers-class-teacher-tracker-2",
+          "itemId": "kg3-numbers-class-teacher-tracker-2",
+          "itemTitle": "17",
+          "title": "17",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg3-numbers-class-teacher-tracker-3",
+          "itemId": "kg3-numbers-class-teacher-tracker-3",
+          "itemTitle": "18",
+          "title": "18",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg3-numbers-class-teacher-tracker-4",
+          "itemId": "kg3-numbers-class-teacher-tracker-4",
+          "itemTitle": "19",
+          "title": "19",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg3-numbers-class-teacher-tracker-5",
+          "itemId": "kg3-numbers-class-teacher-tracker-5",
+          "itemTitle": "20",
+          "title": "20",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg3-numbers-class-teacher-tracker-6",
+          "itemId": "kg3-numbers-class-teacher-tracker-6",
+          "itemTitle": "21",
+          "title": "21",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg3-numbers-class-teacher-tracker-7",
+          "itemId": "kg3-numbers-class-teacher-tracker-7",
+          "itemTitle": "22",
+          "title": "22",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 8,
+          "itemKey": "kg3-numbers-class-teacher-tracker-8",
+          "itemId": "kg3-numbers-class-teacher-tracker-8",
+          "itemTitle": "23",
+          "title": "23",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 9,
+          "itemKey": "kg3-numbers-class-teacher-tracker-9",
+          "itemId": "kg3-numbers-class-teacher-tracker-9",
+          "itemTitle": "24",
+          "title": "24",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 10,
+          "itemKey": "kg3-numbers-class-teacher-tracker-10",
+          "itemId": "kg3-numbers-class-teacher-tracker-10",
+          "itemTitle": "25",
+          "title": "25",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 11,
+          "itemKey": "kg3-numbers-class-teacher-tracker-11",
+          "itemId": "kg3-numbers-class-teacher-tracker-11",
+          "itemTitle": "26",
+          "title": "26",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 12,
+          "itemKey": "kg3-numbers-class-teacher-tracker-12",
+          "itemId": "kg3-numbers-class-teacher-tracker-12",
+          "itemTitle": "27",
+          "title": "27",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 13,
+          "itemKey": "kg3-numbers-class-teacher-tracker-13",
+          "itemId": "kg3-numbers-class-teacher-tracker-13",
+          "itemTitle": "28",
+          "title": "28",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 14,
+          "itemKey": "kg3-numbers-class-teacher-tracker-14",
+          "itemId": "kg3-numbers-class-teacher-tracker-14",
+          "itemTitle": "29",
+          "title": "29",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 15,
+          "itemKey": "kg3-numbers-class-teacher-tracker-15",
+          "itemId": "kg3-numbers-class-teacher-tracker-15",
+          "itemTitle": "30",
+          "title": "30",
+          "category": "NUMBERS",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-1",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "QURAN",
+      "id": "kg1-quran-class-teacher-assessment-1",
+      "code": "KG1_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+      "title": "القرآن — المستوى الأول — معلمة الصف — القياس الأول",
+      "kind": "KG_MEASUREMENT_1",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg1",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 1,
+      "maxScore": 9,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 9,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_1",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 3,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg1-quran-class-teacher-assessment-1-1",
+          "itemId": "kg1-quran-class-teacher-assessment-1-1",
+          "itemTitle": "الكوثر",
+          "title": "الكوثر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg1-quran-class-teacher-assessment-1-2",
+          "itemId": "kg1-quran-class-teacher-assessment-1-2",
+          "itemTitle": "الماعون",
+          "title": "الماعون",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg1-quran-class-teacher-assessment-1-3",
+          "itemId": "kg1-quran-class-teacher-assessment-1-3",
+          "itemTitle": "قريش",
+          "title": "قريش",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-2",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "QURAN",
+      "id": "kg1-quran-class-teacher-assessment-2",
+      "code": "KG1_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+      "title": "القرآن — المستوى الأول — معلمة الصف — القياس الثاني",
+      "kind": "KG_MEASUREMENT_2",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg1",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 2,
+      "maxScore": 6,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 6,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_2",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 2,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg1-quran-class-teacher-assessment-2-1",
+          "itemId": "kg1-quran-class-teacher-assessment-2-1",
+          "itemTitle": "الفيل",
+          "title": "الفيل",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg1-quran-class-teacher-assessment-2-2",
+          "itemId": "kg1-quran-class-teacher-assessment-2-2",
+          "itemTitle": "آية الكرسي",
+          "title": "آية الكرسي",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-quran-class-teacher-tracker",
+      "templateCollection": "studentTrackerTemplates",
+      "templateType": "TRACKER",
+      "targetSubjectKey": "QURAN",
+      "id": "kg1-quran-class-teacher-tracker",
+      "code": "KG1_QURAN_CLASS_TEACHER_TRACKER",
+      "title": "القرآن — المستوى الأول — معلمة الصف — المتابعة",
+      "kind": "KG_QURAN_TRACKER",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg1",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 100,
+      "maxScore": 15,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 15,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": true,
+      "defaultLessonTitle": "متابعة القرآن",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 5,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg1-quran-class-teacher-tracker-1",
+          "itemId": "kg1-quran-class-teacher-tracker-1",
+          "itemTitle": "الكوثر",
+          "title": "الكوثر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg1-quran-class-teacher-tracker-2",
+          "itemId": "kg1-quran-class-teacher-tracker-2",
+          "itemTitle": "الماعون",
+          "title": "الماعون",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg1-quran-class-teacher-tracker-3",
+          "itemId": "kg1-quran-class-teacher-tracker-3",
+          "itemTitle": "قريش",
+          "title": "قريش",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg1-quran-class-teacher-tracker-4",
+          "itemId": "kg1-quran-class-teacher-tracker-4",
+          "itemTitle": "الفيل",
+          "title": "الفيل",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg1-quran-class-teacher-tracker-5",
+          "itemId": "kg1-quran-class-teacher-tracker-5",
+          "itemTitle": "آية الكرسي",
+          "title": "آية الكرسي",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-1",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "QURAN",
+      "id": "kg2-quran-class-teacher-assessment-1",
+      "code": "KG2_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+      "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الأول",
+      "kind": "KG_MEASUREMENT_1",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg2",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 1,
+      "maxScore": 12,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 12,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_1",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 4,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg2-quran-class-teacher-assessment-1-1",
+          "itemId": "kg2-quran-class-teacher-assessment-1-1",
+          "itemTitle": "الهمزة",
+          "title": "الهمزة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg2-quran-class-teacher-assessment-1-2",
+          "itemId": "kg2-quran-class-teacher-assessment-1-2",
+          "itemTitle": "العصر",
+          "title": "العصر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg2-quran-class-teacher-assessment-1-3",
+          "itemId": "kg2-quran-class-teacher-assessment-1-3",
+          "itemTitle": "التكاثر",
+          "title": "التكاثر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg2-quran-class-teacher-assessment-1-4",
+          "itemId": "kg2-quran-class-teacher-assessment-1-4",
+          "itemTitle": "القارعة",
+          "title": "القارعة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-2",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "QURAN",
+      "id": "kg2-quran-class-teacher-assessment-2",
+      "code": "KG2_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+      "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الثاني",
+      "kind": "KG_MEASUREMENT_2",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg2",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 2,
+      "maxScore": 9,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 9,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_2",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 3,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg2-quran-class-teacher-assessment-2-1",
+          "itemId": "kg2-quran-class-teacher-assessment-2-1",
+          "itemTitle": "البينة",
+          "title": "البينة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg2-quran-class-teacher-assessment-2-2",
+          "itemId": "kg2-quran-class-teacher-assessment-2-2",
+          "itemTitle": "آية الكرسي",
+          "title": "آية الكرسي",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg2-quran-class-teacher-assessment-2-3",
+          "itemId": "kg2-quran-class-teacher-assessment-2-3",
+          "itemTitle": "خواتيم سورة البقرة",
+          "title": "خواتيم سورة البقرة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-quran-class-teacher-tracker",
+      "templateCollection": "studentTrackerTemplates",
+      "templateType": "TRACKER",
+      "targetSubjectKey": "QURAN",
+      "id": "kg2-quran-class-teacher-tracker",
+      "code": "KG2_QURAN_CLASS_TEACHER_TRACKER",
+      "title": "القرآن — المستوى الثاني — معلمة الصف — المتابعة",
+      "kind": "KG_QURAN_TRACKER",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg2",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": 100,
+      "maxScore": 21,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 21,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": true,
+      "defaultLessonTitle": "متابعة القرآن",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 7,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg2-quran-class-teacher-tracker-1",
+          "itemId": "kg2-quran-class-teacher-tracker-1",
+          "itemTitle": "الهمزة",
+          "title": "الهمزة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg2-quran-class-teacher-tracker-2",
+          "itemId": "kg2-quran-class-teacher-tracker-2",
+          "itemTitle": "العصر",
+          "title": "العصر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg2-quran-class-teacher-tracker-3",
+          "itemId": "kg2-quran-class-teacher-tracker-3",
+          "itemTitle": "التكاثر",
+          "title": "التكاثر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg2-quran-class-teacher-tracker-4",
+          "itemId": "kg2-quran-class-teacher-tracker-4",
+          "itemTitle": "القارعة",
+          "title": "القارعة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg2-quran-class-teacher-tracker-5",
+          "itemId": "kg2-quran-class-teacher-tracker-5",
+          "itemTitle": "البينة",
+          "title": "البينة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg2-quran-class-teacher-tracker-6",
+          "itemId": "kg2-quran-class-teacher-tracker-6",
+          "itemTitle": "آية الكرسي",
+          "title": "آية الكرسي",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg2-quran-class-teacher-tracker-7",
+          "itemId": "kg2-quran-class-teacher-tracker-7",
+          "itemTitle": "خواتيم سورة البقرة",
+          "title": "خواتيم سورة البقرة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-1",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "QURAN",
+      "id": "kg3-quran-class-teacher-assessment-1",
+      "code": "KG3_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+      "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الأول",
+      "kind": "KG_MEASUREMENT_1",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg3",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": null,
+      "maxScore": 18,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 18,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_1",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 6,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg3-quran-class-teacher-assessment-1-1",
+          "itemId": "kg3-quran-class-teacher-assessment-1-1",
+          "itemTitle": "الهمزة",
+          "title": "الهمزة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg3-quran-class-teacher-assessment-1-2",
+          "itemId": "kg3-quran-class-teacher-assessment-1-2",
+          "itemTitle": "العصر",
+          "title": "العصر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg3-quran-class-teacher-assessment-1-3",
+          "itemId": "kg3-quran-class-teacher-assessment-1-3",
+          "itemTitle": "التكاثر",
+          "title": "التكاثر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg3-quran-class-teacher-assessment-1-4",
+          "itemId": "kg3-quran-class-teacher-assessment-1-4",
+          "itemTitle": "القارعة",
+          "title": "القارعة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg3-quran-class-teacher-assessment-1-5",
+          "itemId": "kg3-quran-class-teacher-assessment-1-5",
+          "itemTitle": "العاديات",
+          "title": "العاديات",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg3-quran-class-teacher-assessment-1-6",
+          "itemId": "kg3-quran-class-teacher-assessment-1-6",
+          "itemTitle": "الزلزلة",
+          "title": "الزلزلة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 3
+    },
+    {
+      "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-2",
+      "templateCollection": "studentAssessmentTemplates",
+      "templateType": "ASSESSMENT",
+      "targetSubjectKey": "QURAN",
+      "id": "kg3-quran-class-teacher-assessment-2",
+      "code": "KG3_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+      "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الثاني",
+      "kind": "KG_MEASUREMENT_2",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg3",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": null,
+      "maxScore": 9,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 9,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": null,
+      "defaultLessonTitle": "",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "KG_MEASUREMENT_2",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 3,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg3-quran-class-teacher-assessment-2-1",
+          "itemId": "kg3-quran-class-teacher-assessment-2-1",
+          "itemTitle": "البينة",
+          "title": "البينة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg3-quran-class-teacher-assessment-2-2",
+          "itemId": "kg3-quran-class-teacher-assessment-2-2",
+          "itemTitle": "آية الكرسي",
+          "title": "آية الكرسي",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg3-quran-class-teacher-assessment-2-3",
+          "itemId": "kg3-quran-class-teacher-assessment-2-3",
+          "itemTitle": "خواتيم سورة البقرة",
+          "title": "خواتيم سورة البقرة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 0
+    },
+    {
+      "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-quran-class-teacher-tracker",
+      "templateCollection": "studentTrackerTemplates",
+      "templateType": "TRACKER",
+      "targetSubjectKey": "QURAN",
+      "id": "kg3-quran-class-teacher-tracker",
+      "code": "KG3_QURAN_CLASS_TEACHER_TRACKER",
+      "title": "القرآن — المستوى الثالث — معلمة الصف — المتابعة",
+      "kind": "KG_QURAN_TRACKER",
+      "orgId": "takween",
+      "schoolType": "KG",
+      "schoolId": "",
+      "academicYearId": "",
+      "gradeId": "kg3",
+      "subjectKey": "QURAN",
+      "subjectId": "quran",
+      "subjectTitle": "القرآن",
+      "status": "ACTIVE",
+      "isActive": true,
+      "effectiveActive": true,
+      "order": null,
+      "maxScore": 27,
+      "itemMaxScore": 3,
+      "itemMaxScoreSum": 27,
+      "evaluatorRoleKey": "KG_TEACHER",
+      "isContinuous": true,
+      "defaultLessonTitle": "متابعة القرآن",
+      "requiresLearningLossFollowUp": true,
+      "learningLossThresholdPercentage": 60,
+      "learningLossThresholdFields": {
+        "requiresLearningLossFollowUp": true,
+        "learningLossThresholdPercentage": 60
+      },
+      "assessmentSlot": "",
+      "measurementFields": {
+        "assessmentKind": "",
+        "assessmentType": "",
+        "measurementType": "",
+        "measurementKind": "",
+        "trackerKind": "",
+        "scoreType": ""
+      },
+      "templateItemsCount": 9,
+      "templateItems": [
+        {
+          "order": 1,
+          "itemKey": "kg3-quran-class-teacher-tracker-1",
+          "itemId": "kg3-quran-class-teacher-tracker-1",
+          "itemTitle": "الهمزة",
+          "title": "الهمزة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 2,
+          "itemKey": "kg3-quran-class-teacher-tracker-2",
+          "itemId": "kg3-quran-class-teacher-tracker-2",
+          "itemTitle": "العصر",
+          "title": "العصر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 3,
+          "itemKey": "kg3-quran-class-teacher-tracker-3",
+          "itemId": "kg3-quran-class-teacher-tracker-3",
+          "itemTitle": "التكاثر",
+          "title": "التكاثر",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 4,
+          "itemKey": "kg3-quran-class-teacher-tracker-4",
+          "itemId": "kg3-quran-class-teacher-tracker-4",
+          "itemTitle": "القارعة",
+          "title": "القارعة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 5,
+          "itemKey": "kg3-quran-class-teacher-tracker-5",
+          "itemId": "kg3-quran-class-teacher-tracker-5",
+          "itemTitle": "العاديات",
+          "title": "العاديات",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 6,
+          "itemKey": "kg3-quran-class-teacher-tracker-6",
+          "itemId": "kg3-quran-class-teacher-tracker-6",
+          "itemTitle": "الزلزلة",
+          "title": "الزلزلة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 7,
+          "itemKey": "kg3-quran-class-teacher-tracker-7",
+          "itemId": "kg3-quran-class-teacher-tracker-7",
+          "itemTitle": "البينة",
+          "title": "البينة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 8,
+          "itemKey": "kg3-quran-class-teacher-tracker-8",
+          "itemId": "kg3-quran-class-teacher-tracker-8",
+          "itemTitle": "آية الكرسي",
+          "title": "آية الكرسي",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        },
+        {
+          "order": 9,
+          "itemKey": "kg3-quran-class-teacher-tracker-9",
+          "itemId": "kg3-quran-class-teacher-tracker-9",
+          "itemTitle": "خواتيم سورة البقرة",
+          "title": "خواتيم سورة البقرة",
+          "category": "QURAN",
+          "valueType": "NUMERIC",
+          "maxScore": 3,
+          "weight": 1,
+          "affectsTotal": true
+        }
+      ],
+      "deprecated": false,
+      "usageCount": 2
+    }
+  ],
+  "summaryBySubjectAndGrade": {
+    "QURAN": {
+      "kg1": {
+        "totalMatchingTemplates": 3,
+        "active": 3,
+        "inactive": 0,
+        "assessmentTemplatesCount": 2,
+        "trackerTemplatesCount": 1,
+        "ids": [
+          "kg1-quran-class-teacher-assessment-1",
+          "kg1-quran-class-teacher-assessment-2",
+          "kg1-quran-class-teacher-tracker"
+        ],
+        "titles": [
+          "القرآن — المستوى الأول — معلمة الصف — القياس الأول",
+          "القرآن — المستوى الأول — معلمة الصف — القياس الثاني",
+          "القرآن — المستوى الأول — معلمة الصف — المتابعة"
+        ],
+        "kinds": [
+          "KG_MEASUREMENT_1",
+          "KG_MEASUREMENT_2",
+          "KG_QURAN_TRACKER"
+        ],
+        "maxScore": [
+          9,
+          6,
+          15
+        ],
+        "templateItemsCount": [
+          3,
+          2,
+          5
+        ],
+        "academicYearId": [
+          "",
+          "",
+          ""
+        ],
+        "schoolId": [
+          "",
+          "",
+          ""
+        ],
+        "templates": [
+          {
+            "id": "kg1-quran-class-teacher-assessment-1",
+            "title": "القرآن — المستوى الأول — معلمة الصف — القياس الأول",
+            "kind": "KG_MEASUREMENT_1",
+            "templateType": "ASSESSMENT",
+            "maxScore": 9,
+            "templateItemsCount": 3,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-1"
+          },
+          {
+            "id": "kg1-quran-class-teacher-assessment-2",
+            "title": "القرآن — المستوى الأول — معلمة الصف — القياس الثاني",
+            "kind": "KG_MEASUREMENT_2",
+            "templateType": "ASSESSMENT",
+            "maxScore": 6,
+            "templateItemsCount": 2,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-2"
+          },
+          {
+            "id": "kg1-quran-class-teacher-tracker",
+            "title": "القرآن — المستوى الأول — معلمة الصف — المتابعة",
+            "kind": "KG_QURAN_TRACKER",
+            "templateType": "TRACKER",
+            "maxScore": 15,
+            "templateItemsCount": 5,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-quran-class-teacher-tracker"
+          }
+        ]
+      },
+      "kg2": {
+        "totalMatchingTemplates": 3,
+        "active": 3,
+        "inactive": 0,
+        "assessmentTemplatesCount": 2,
+        "trackerTemplatesCount": 1,
+        "ids": [
+          "kg2-quran-class-teacher-assessment-1",
+          "kg2-quran-class-teacher-assessment-2",
+          "kg2-quran-class-teacher-tracker"
+        ],
+        "titles": [
+          "القرآن — المستوى الثاني — معلمة الصف — القياس الأول",
+          "القرآن — المستوى الثاني — معلمة الصف — القياس الثاني",
+          "القرآن — المستوى الثاني — معلمة الصف — المتابعة"
+        ],
+        "kinds": [
+          "KG_MEASUREMENT_1",
+          "KG_MEASUREMENT_2",
+          "KG_QURAN_TRACKER"
+        ],
+        "maxScore": [
+          12,
+          9,
+          21
+        ],
+        "templateItemsCount": [
+          4,
+          3,
+          7
+        ],
+        "academicYearId": [
+          "",
+          "",
+          ""
+        ],
+        "schoolId": [
+          "",
+          "",
+          ""
+        ],
+        "templates": [
+          {
+            "id": "kg2-quran-class-teacher-assessment-1",
+            "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الأول",
+            "kind": "KG_MEASUREMENT_1",
+            "templateType": "ASSESSMENT",
+            "maxScore": 12,
+            "templateItemsCount": 4,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-1"
+          },
+          {
+            "id": "kg2-quran-class-teacher-assessment-2",
+            "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الثاني",
+            "kind": "KG_MEASUREMENT_2",
+            "templateType": "ASSESSMENT",
+            "maxScore": 9,
+            "templateItemsCount": 3,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-2"
+          },
+          {
+            "id": "kg2-quran-class-teacher-tracker",
+            "title": "القرآن — المستوى الثاني — معلمة الصف — المتابعة",
+            "kind": "KG_QURAN_TRACKER",
+            "templateType": "TRACKER",
+            "maxScore": 21,
+            "templateItemsCount": 7,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-quran-class-teacher-tracker"
+          }
+        ]
+      },
+      "kg3": {
+        "totalMatchingTemplates": 3,
+        "active": 3,
+        "inactive": 0,
+        "assessmentTemplatesCount": 2,
+        "trackerTemplatesCount": 1,
+        "ids": [
+          "kg3-quran-class-teacher-assessment-1",
+          "kg3-quran-class-teacher-assessment-2",
+          "kg3-quran-class-teacher-tracker"
+        ],
+        "titles": [
+          "القرآن — المستوى الثالث — معلمة الصف — القياس الأول",
+          "القرآن — المستوى الثالث — معلمة الصف — القياس الثاني",
+          "القرآن — المستوى الثالث — معلمة الصف — المتابعة"
+        ],
+        "kinds": [
+          "KG_MEASUREMENT_1",
+          "KG_MEASUREMENT_2",
+          "KG_QURAN_TRACKER"
+        ],
+        "maxScore": [
+          18,
+          9,
+          27
+        ],
+        "templateItemsCount": [
+          6,
+          3,
+          9
+        ],
+        "academicYearId": [
+          "",
+          "",
+          ""
+        ],
+        "schoolId": [
+          "",
+          "",
+          ""
+        ],
+        "templates": [
+          {
+            "id": "kg3-quran-class-teacher-assessment-1",
+            "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الأول",
+            "kind": "KG_MEASUREMENT_1",
+            "templateType": "ASSESSMENT",
+            "maxScore": 18,
+            "templateItemsCount": 6,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-1"
+          },
+          {
+            "id": "kg3-quran-class-teacher-assessment-2",
+            "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الثاني",
+            "kind": "KG_MEASUREMENT_2",
+            "templateType": "ASSESSMENT",
+            "maxScore": 9,
+            "templateItemsCount": 3,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-2"
+          },
+          {
+            "id": "kg3-quran-class-teacher-tracker",
+            "title": "القرآن — المستوى الثالث — معلمة الصف — المتابعة",
+            "kind": "KG_QURAN_TRACKER",
+            "templateType": "TRACKER",
+            "maxScore": 27,
+            "templateItemsCount": 9,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-quran-class-teacher-tracker"
+          }
+        ]
+      }
+    },
+    "COUNT_AND_CALCULATE": {
+      "kg1": {
+        "totalMatchingTemplates": 2,
+        "active": 2,
+        "inactive": 0,
+        "assessmentTemplatesCount": 1,
+        "trackerTemplatesCount": 1,
+        "ids": [
+          "kg1-numbers-class-teacher-assessment-1",
+          "kg1-numbers-class-teacher-tracker"
+        ],
+        "titles": [
+          "الأرقام — المستوى الأول — معلمة الصف — القياس الأول",
+          "الأرقام — المستوى الأول — معلمة الصف — المتابعة"
+        ],
+        "kinds": [
+          "KG_MEASUREMENT_1",
+          "KG_NUMBERS_TRACKER"
+        ],
+        "maxScore": [
+          30,
+          30
+        ],
+        "templateItemsCount": [
+          10,
+          10
+        ],
+        "academicYearId": [
+          "",
+          ""
+        ],
+        "schoolId": [
+          "",
+          ""
+        ],
+        "templates": [
+          {
+            "id": "kg1-numbers-class-teacher-assessment-1",
+            "title": "الأرقام — المستوى الأول — معلمة الصف — القياس الأول",
+            "kind": "KG_MEASUREMENT_1",
+            "templateType": "ASSESSMENT",
+            "maxScore": 30,
+            "templateItemsCount": 10,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-numbers-class-teacher-assessment-1"
+          },
+          {
+            "id": "kg1-numbers-class-teacher-tracker",
+            "title": "الأرقام — المستوى الأول — معلمة الصف — المتابعة",
+            "kind": "KG_NUMBERS_TRACKER",
+            "templateType": "TRACKER",
+            "maxScore": 30,
+            "templateItemsCount": 10,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-numbers-class-teacher-tracker"
+          }
+        ]
+      },
+      "kg2": {
+        "totalMatchingTemplates": 2,
+        "active": 2,
+        "inactive": 0,
+        "assessmentTemplatesCount": 1,
+        "trackerTemplatesCount": 1,
+        "ids": [
+          "kg2-numbers-class-teacher-assessment-1",
+          "kg2-numbers-class-teacher-tracker"
+        ],
+        "titles": [
+          "الأرقام — المستوى الثاني — معلمة الصف — القياس الأول",
+          "الأرقام — المستوى الثاني — معلمة الصف — المتابعة"
+        ],
+        "kinds": [
+          "KG_MEASUREMENT_1",
+          "KG_NUMBERS_TRACKER"
+        ],
+        "maxScore": [
+          33,
+          33
+        ],
+        "templateItemsCount": [
+          11,
+          11
+        ],
+        "academicYearId": [
+          "",
+          ""
+        ],
+        "schoolId": [
+          "",
+          ""
+        ],
+        "templates": [
+          {
+            "id": "kg2-numbers-class-teacher-assessment-1",
+            "title": "الأرقام — المستوى الثاني — معلمة الصف — القياس الأول",
+            "kind": "KG_MEASUREMENT_1",
+            "templateType": "ASSESSMENT",
+            "maxScore": 33,
+            "templateItemsCount": 11,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-numbers-class-teacher-assessment-1"
+          },
+          {
+            "id": "kg2-numbers-class-teacher-tracker",
+            "title": "الأرقام — المستوى الثاني — معلمة الصف — المتابعة",
+            "kind": "KG_NUMBERS_TRACKER",
+            "templateType": "TRACKER",
+            "maxScore": 33,
+            "templateItemsCount": 11,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-numbers-class-teacher-tracker"
+          }
+        ]
+      },
+      "kg3": {
+        "totalMatchingTemplates": 2,
+        "active": 2,
+        "inactive": 0,
+        "assessmentTemplatesCount": 1,
+        "trackerTemplatesCount": 1,
+        "ids": [
+          "kg3-numbers-class-teacher-assessment-1",
+          "kg3-numbers-class-teacher-tracker"
+        ],
+        "titles": [
+          "الأرقام — المستوى الثالث — معلمة الصف — القياس الأول",
+          "الأرقام — المستوى الثالث — معلمة الصف — المتابعة"
+        ],
+        "kinds": [
+          "KG_MEASUREMENT_1",
+          "KG_NUMBERS_TRACKER"
+        ],
+        "maxScore": [
+          45,
+          45
+        ],
+        "templateItemsCount": [
+          15,
+          15
+        ],
+        "academicYearId": [
+          "",
+          ""
+        ],
+        "schoolId": [
+          "",
+          ""
+        ],
+        "templates": [
+          {
+            "id": "kg3-numbers-class-teacher-assessment-1",
+            "title": "الأرقام — المستوى الثالث — معلمة الصف — القياس الأول",
+            "kind": "KG_MEASUREMENT_1",
+            "templateType": "ASSESSMENT",
+            "maxScore": 45,
+            "templateItemsCount": 15,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-numbers-class-teacher-assessment-1"
+          },
+          {
+            "id": "kg3-numbers-class-teacher-tracker",
+            "title": "الأرقام — المستوى الثالث — معلمة الصف — المتابعة",
+            "kind": "KG_NUMBERS_TRACKER",
+            "templateType": "TRACKER",
+            "maxScore": 45,
+            "templateItemsCount": 15,
+            "academicYearId": "",
+            "schoolId": "",
+            "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-numbers-class-teacher-tracker"
+          }
+        ]
+      }
+    }
+  },
+  "warnings": [
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg1-numbers-class-teacher-assessment-1",
+          "code": "KG1_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الأول — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg1-numbers-class-teacher-assessment-1",
+          "code": "KG1_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الأول — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "LEGACY_OR_UNEXPECTED_SUBJECT_KEY",
+      "message": "Stored subjectKey \"NUMBERS\" is matched as COUNT_AND_CALCULATE.",
+      "templates": [
+        {
+          "id": "kg1-numbers-class-teacher-assessment-1",
+          "code": "KG1_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الأول — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg1-numbers-class-teacher-tracker",
+          "code": "KG1_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الأول — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg1-numbers-class-teacher-tracker",
+          "code": "KG1_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الأول — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "LEGACY_OR_UNEXPECTED_SUBJECT_KEY",
+      "message": "Stored subjectKey \"NUMBERS\" is matched as COUNT_AND_CALCULATE.",
+      "templates": [
+        {
+          "id": "kg1-numbers-class-teacher-tracker",
+          "code": "KG1_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الأول — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg2-numbers-class-teacher-assessment-1",
+          "code": "KG2_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الثاني — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg2-numbers-class-teacher-assessment-1",
+          "code": "KG2_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الثاني — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "LEGACY_OR_UNEXPECTED_SUBJECT_KEY",
+      "message": "Stored subjectKey \"NUMBERS\" is matched as COUNT_AND_CALCULATE.",
+      "templates": [
+        {
+          "id": "kg2-numbers-class-teacher-assessment-1",
+          "code": "KG2_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الثاني — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg2-numbers-class-teacher-tracker",
+          "code": "KG2_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الثاني — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg2-numbers-class-teacher-tracker",
+          "code": "KG2_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الثاني — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "LEGACY_OR_UNEXPECTED_SUBJECT_KEY",
+      "message": "Stored subjectKey \"NUMBERS\" is matched as COUNT_AND_CALCULATE.",
+      "templates": [
+        {
+          "id": "kg2-numbers-class-teacher-tracker",
+          "code": "KG2_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الثاني — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg3-numbers-class-teacher-assessment-1",
+          "code": "KG3_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الثالث — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg3-numbers-class-teacher-assessment-1",
+          "code": "KG3_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الثالث — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "LEGACY_OR_UNEXPECTED_SUBJECT_KEY",
+      "message": "Stored subjectKey \"NUMBERS\" is matched as COUNT_AND_CALCULATE.",
+      "templates": [
+        {
+          "id": "kg3-numbers-class-teacher-assessment-1",
+          "code": "KG3_NUMBERS_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "الأرقام — المستوى الثالث — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-numbers-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg3-numbers-class-teacher-tracker",
+          "code": "KG3_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الثالث — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg3-numbers-class-teacher-tracker",
+          "code": "KG3_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الثالث — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "LEGACY_OR_UNEXPECTED_SUBJECT_KEY",
+      "message": "Stored subjectKey \"NUMBERS\" is matched as COUNT_AND_CALCULATE.",
+      "templates": [
+        {
+          "id": "kg3-numbers-class-teacher-tracker",
+          "code": "KG3_NUMBERS_CLASS_TEACHER_TRACKER",
+          "title": "الأرقام — المستوى الثالث — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-numbers-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg1-quran-class-teacher-assessment-1",
+          "code": "KG1_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "القرآن — المستوى الأول — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg1-quran-class-teacher-assessment-1",
+          "code": "KG1_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "القرآن — المستوى الأول — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg1-quran-class-teacher-assessment-2",
+          "code": "KG1_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+          "title": "القرآن — المستوى الأول — معلمة الصف — القياس الثاني",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-2"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg1-quran-class-teacher-assessment-2",
+          "code": "KG1_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+          "title": "القرآن — المستوى الأول — معلمة الصف — القياس الثاني",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg1-quran-class-teacher-assessment-2"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg1-quran-class-teacher-tracker",
+          "code": "KG1_QURAN_CLASS_TEACHER_TRACKER",
+          "title": "القرآن — المستوى الأول — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-quran-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg1-quran-class-teacher-tracker",
+          "code": "KG1_QURAN_CLASS_TEACHER_TRACKER",
+          "title": "القرآن — المستوى الأول — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg1-quran-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg2-quran-class-teacher-assessment-1",
+          "code": "KG2_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg2-quran-class-teacher-assessment-1",
+          "code": "KG2_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg2-quran-class-teacher-assessment-2",
+          "code": "KG2_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+          "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الثاني",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-2"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg2-quran-class-teacher-assessment-2",
+          "code": "KG2_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+          "title": "القرآن — المستوى الثاني — معلمة الصف — القياس الثاني",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg2-quran-class-teacher-assessment-2"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg2-quran-class-teacher-tracker",
+          "code": "KG2_QURAN_CLASS_TEACHER_TRACKER",
+          "title": "القرآن — المستوى الثاني — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-quran-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg2-quran-class-teacher-tracker",
+          "code": "KG2_QURAN_CLASS_TEACHER_TRACKER",
+          "title": "القرآن — المستوى الثاني — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg2-quran-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-assessment-1",
+          "code": "KG3_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-assessment-1",
+          "code": "KG3_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "TEMPLATE_ALREADY_USED",
+      "message": "Template is referenced by 3 studentMeasurementBatches.",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-assessment-1",
+          "code": "KG3_QURAN_CLASS_TEACHER_ASSESSMENT_1",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الأول",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-1"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-assessment-2",
+          "code": "KG3_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الثاني",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-2"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-assessment-2",
+          "code": "KG3_QURAN_CLASS_TEACHER_ASSESSMENT_2",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — القياس الثاني",
+          "firestorePath": "orgs/takween/studentAssessmentTemplates/kg3-quran-class-teacher-assessment-2"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_SCHOOL_TEMPLATE",
+      "message": "Template uses generic schoolId \"\".",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-tracker",
+          "code": "KG3_QURAN_CLASS_TEACHER_TRACKER",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-quran-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "GENERIC_ACADEMIC_YEAR_TEMPLATE",
+      "message": "Template has academicYearId \"\".",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-tracker",
+          "code": "KG3_QURAN_CLASS_TEACHER_TRACKER",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-quran-class-teacher-tracker"
+        }
+      ]
+    },
+    {
+      "type": "TEMPLATE_ALREADY_USED",
+      "message": "Template is referenced by 2 studentMeasurementBatches.",
+      "templates": [
+        {
+          "id": "kg3-quran-class-teacher-tracker",
+          "code": "KG3_QURAN_CLASS_TEACHER_TRACKER",
+          "title": "القرآن — المستوى الثالث — معلمة الصف — المتابعة",
+          "firestorePath": "orgs/takween/studentTrackerTemplates/kg3-quran-class-teacher-tracker"
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "available": true,
+    "collection": "studentMeasurementBatches",
+    "queriedTemplateIds": [
+      "kg1-numbers-class-teacher-assessment-1",
+      "kg1-numbers-class-teacher-tracker",
+      "kg2-numbers-class-teacher-assessment-1",
+      "kg2-numbers-class-teacher-tracker",
+      "kg3-numbers-class-teacher-assessment-1",
+      "kg3-numbers-class-teacher-tracker",
+      "kg1-quran-class-teacher-assessment-1",
+      "kg1-quran-class-teacher-assessment-2",
+      "kg1-quran-class-teacher-tracker",
+      "kg2-quran-class-teacher-assessment-1",
+      "kg2-quran-class-teacher-assessment-2",
+      "kg2-quran-class-teacher-tracker",
+      "kg3-quran-class-teacher-assessment-1",
+      "kg3-quran-class-teacher-assessment-2",
+      "kg3-quran-class-teacher-tracker"
+    ],
+    "countsByTemplateId": {
+      "kg1-numbers-class-teacher-assessment-1": 0,
+      "kg1-numbers-class-teacher-tracker": 0,
+      "kg2-numbers-class-teacher-assessment-1": 0,
+      "kg2-numbers-class-teacher-tracker": 0,
+      "kg3-numbers-class-teacher-assessment-1": 0,
+      "kg3-numbers-class-teacher-tracker": 0,
+      "kg1-quran-class-teacher-assessment-1": 0,
+      "kg1-quran-class-teacher-assessment-2": 0,
+      "kg1-quran-class-teacher-tracker": 0,
+      "kg2-quran-class-teacher-assessment-1": 0,
+      "kg2-quran-class-teacher-assessment-2": 0,
+      "kg2-quran-class-teacher-tracker": 0,
+      "kg3-quran-class-teacher-assessment-1": 3,
+      "kg3-quran-class-teacher-assessment-2": 0,
+      "kg3-quran-class-teacher-tracker": 2
+    },
+    "referencesByTemplateId": {
+      "kg1-numbers-class-teacher-assessment-1": [],
+      "kg1-numbers-class-teacher-tracker": [],
+      "kg2-numbers-class-teacher-assessment-1": [],
+      "kg2-numbers-class-teacher-tracker": [],
+      "kg3-numbers-class-teacher-assessment-1": [],
+      "kg3-numbers-class-teacher-tracker": [],
+      "kg1-quran-class-teacher-assessment-1": [],
+      "kg1-quran-class-teacher-assessment-2": [],
+      "kg1-quran-class-teacher-tracker": [],
+      "kg2-quran-class-teacher-assessment-1": [],
+      "kg2-quran-class-teacher-assessment-2": [],
+      "kg2-quran-class-teacher-tracker": [],
+      "kg3-quran-class-teacher-assessment-1": [
+        {
+          "id": "4JDqFFZH8MIxTFWJeQP7",
+          "firestorePath": "orgs/takween/studentMeasurementBatches/4JDqFFZH8MIxTFWJeQP7",
+          "status": "DRAFT",
+          "batchKind": "ASSESSMENT",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "classId": "kg3-a",
+          "subjectKey": "QURAN"
+        },
+        {
+          "id": "HZufdZb83UuHdME0FDfy",
+          "firestorePath": "orgs/takween/studentMeasurementBatches/HZufdZb83UuHdME0FDfy",
+          "status": "DRAFT",
+          "batchKind": "ASSESSMENT",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "classId": "kg3-a",
+          "subjectKey": "QURAN"
+        },
+        {
+          "id": "TGInwTmJOodd6MyquRU7",
+          "firestorePath": "orgs/takween/studentMeasurementBatches/TGInwTmJOodd6MyquRU7",
+          "status": "SUBMITTED",
+          "batchKind": "ASSESSMENT",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "classId": "kg3-a",
+          "subjectKey": "QURAN"
+        }
+      ],
+      "kg3-quran-class-teacher-assessment-2": [],
+      "kg3-quran-class-teacher-tracker": [
+        {
+          "id": "7qxXgk0hdvYBvyWqdR8A",
+          "firestorePath": "orgs/takween/studentMeasurementBatches/7qxXgk0hdvYBvyWqdR8A",
+          "status": "DRAFT",
+          "batchKind": "KG_QURAN",
+          "schoolId": "kg-02",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "classId": "kg3-a",
+          "subjectKey": "QURAN"
+        },
+        {
+          "id": "OUnDISLG0Ox67s41jGxE",
+          "firestorePath": "orgs/takween/studentMeasurementBatches/OUnDISLG0Ox67s41jGxE",
+          "status": "SUBMITTED",
+          "batchKind": "KG_QURAN",
+          "schoolId": "kg-01",
+          "academicYearId": "ay-1448",
+          "gradeId": "kg3",
+          "classId": "kg3-a",
+          "subjectKey": "QURAN"
+        }
+      ]
+    }
+  }
+}
