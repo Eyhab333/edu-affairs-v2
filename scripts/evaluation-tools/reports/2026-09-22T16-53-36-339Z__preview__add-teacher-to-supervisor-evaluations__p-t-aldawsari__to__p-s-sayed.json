@@ -1,0 +1,83 @@
+{
+  "decision": "STOPPED",
+  "mode": "PREVIEW",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-t-aldawsari",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-s-sayed",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-girls",
+    "planIdArg": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation"
+  },
+  "teacher": {
+    "uid": "6uycpJm1aBOlI8536EA5V1rHIPk2",
+    "personId": "p-t-aldawsari",
+    "email": "t.aldawsari@qz.org.sa",
+    "displayName": "طيف علي الدوسري",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "aa3uDx6i5uf6Dp5YP3unAqD5Zyo1",
+    "personId": "p-s-sayed",
+    "email": "s.sayed@qz.org.sa",
+    "displayName": "السيد محمد القاضي",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-girls",
+    "schoolTitle": "مدرسة منار الريادة بنات"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 0,
+    "teacherSchools": [],
+    "supervisorPatternAssignments": 36,
+    "supervisorPatternSchools": [
+      "mrb-boys-faleh",
+      "mrb-boys-sayh"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 0,
+    "plans": []
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 0,
+    "createOrUpdateEvaluatorAssignments": 0,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 0
+  },
+  "planReports": [],
+  "weightRebalanceReports": [],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [
+    {
+      "reason": "NO_ACTIVE_SUPERVISOR_PATTERN_FOR_EXPLICIT_PLAN",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "supervisorPersonId": "p-s-sayed"
+    },
+    {
+      "reason": "NO_ACTIVE_TEACHER_PLANS_FOR_SUPERVISOR_IN_SCHOOL",
+      "schoolId": "mrb-girls",
+      "supervisorPersonId": "p-s-sayed",
+      "supervisorEmail": "s.sayed@qz.org.sa"
+    }
+  ],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

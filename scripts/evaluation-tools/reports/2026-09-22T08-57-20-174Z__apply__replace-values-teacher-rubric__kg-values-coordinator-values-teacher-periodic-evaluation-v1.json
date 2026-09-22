@@ -1,0 +1,289 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "framework": {
+    "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1",
+    "title": "تقييم منسقة القيم لمعلمات القيم"
+  },
+  "currentState": {
+    "oldSections": 1,
+    "oldItems": 22,
+    "submissions": 0
+  },
+  "newRubric": {
+    "sections": 8,
+    "items": 33
+  },
+  "plannedChanges": {
+    "deleteOldSections": 1,
+    "deleteOldItems": 22,
+    "createNewSections": 8,
+    "createNewItems": 33,
+    "updateFramework": 1,
+    "totalOperations": 65,
+    "submissionsTouched": 0,
+    "plansTouched": 0,
+    "cyclesTouched": 0,
+    "evaluatorAssignmentsTouched": 0
+  },
+  "createdSections": [
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-01",
+      "title": "التأصيل الشرعي",
+      "order": 1,
+      "itemsCount": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-02",
+      "title": "التحضير والتخطيط",
+      "order": 2,
+      "itemsCount": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-03",
+      "title": "تسلسل الدرس",
+      "order": 3,
+      "itemsCount": 6
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-04",
+      "title": "الاستراتيجيات التعليمية",
+      "order": 4,
+      "itemsCount": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-05",
+      "title": "إدارة الصف وضبط الأطفال",
+      "order": 5,
+      "itemsCount": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-06",
+      "title": "تفاعل الأطفال",
+      "order": 6,
+      "itemsCount": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-07",
+      "title": "تطبيق القيمة",
+      "order": 7,
+      "itemsCount": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-08",
+      "title": "قياس ناتج التعلم",
+      "order": 8,
+      "itemsCount": 4
+    }
+  ],
+  "createdItems": [
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-01-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-01",
+      "title": "صحة المعلومات والمعاني الشرعية.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-01-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-01",
+      "title": "صحة معنى اسم الله المقدم.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-01-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-01",
+      "title": "صحة الربط بين اسم الله والقيمة.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-01-04",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-01",
+      "title": "تبسيط المعنى بما يناسب عمر الطفل.",
+      "order": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-02-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-02",
+      "title": "وجود تحضير مكتوب وشامل العناصر.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-02-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-02",
+      "title": "تحديد ناتج تعلم واضح وقابل للقياس.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-02-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-02",
+      "title": "تجهيز الوسائل والأدوات مسبقًا.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-03-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-03",
+      "title": "مقدمة مناسبة.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-03-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-03",
+      "title": "مراجعة الدرس السابق ومناقشة الأطفال.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-03-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-03",
+      "title": "تمهيد مشوق للدرس.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-03-04",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-03",
+      "title": "تقديم الدرس الأساسي بوضوح وتسلسل.",
+      "order": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-03-05",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-03",
+      "title": "قياس بعدي للتحقق من التعلم.",
+      "order": 5
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-03-06",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-03",
+      "title": "خاتمة تلخص المعنى الرئيس.",
+      "order": 6
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-04-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-04",
+      "title": "استخدام استراتيجية محسوسة.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-04-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-04",
+      "title": "استخدام استراتيجية لفظية وحوارية.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-04-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-04",
+      "title": "تنويع أساليب عرض المعلومة.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-04-04",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-04",
+      "title": "مناسبة الاستراتيجيات لأطفال الروضة.",
+      "order": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-05-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-05",
+      "title": "ضبط الأطفال وإدارة سلوكهم.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-05-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-05",
+      "title": "جذب الانتباه والمحافظة عليه.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-05-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-05",
+      "title": "تنظيم الانتقال بين فقرات الدرس.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-05-04",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-05",
+      "title": "استثمار وقت الحصة بفاعلية.",
+      "order": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-06-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-06",
+      "title": "إشراك الأطفال في الحوار.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-06-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-06",
+      "title": "تنويع الأسئلة الموجهة لهم.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-06-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-06",
+      "title": "إتاحة الفرصة للأطفال للتعبير والإجابة.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-06-04",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-06",
+      "title": "ملاحظة استجابة الأطفال وفهمهم.",
+      "order": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-07-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-07",
+      "title": "وجود تطبيق عملي واضح للقيمة.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-07-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-07",
+      "title": "ربط القيمة بمواقف من حياة الطفل.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-07-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-07",
+      "title": "توضيح السلوك المتوقع من الطفل.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-07-04",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-07",
+      "title": "تشجيع الطفل على ممارسة القيمة خارج الصف.",
+      "order": 4
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-08-01",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-08",
+      "title": "استخدام قياس بعدي مناسب.",
+      "order": 1
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-08-02",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-08",
+      "title": "التحقق من فهم معنى اسم الله والقيمة.",
+      "order": 2
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-08-03",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-08",
+      "title": "تحقق ناتج التعلم المحدد.",
+      "order": 3
+    },
+    {
+      "id": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-item-08-04",
+      "sectionId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1-section-08",
+      "title": "ظهور أثر معرفي وإيماني وسلوكي لدى الطفل.",
+      "order": 4
+    }
+  ],
+  "conflicts": [],
+  "safety": {
+    "submissionsRequiredToBeZero": true,
+    "submissionsTouched": 0,
+    "evaluationPlansTouched": 0,
+    "evaluationCyclesTouched": 0,
+    "evaluatorAssignmentsTouched": 0,
+    "frameworkIdPreserved": true,
+    "requiresApplyFlag": true
+  }
+}

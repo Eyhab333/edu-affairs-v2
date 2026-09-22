@@ -1,0 +1,655 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "people": {
+    "raham": {
+      "uid": "RWyxo00bfrX2jPcCRGUfxASoT4o2",
+      "personId": "p-r-albatel",
+      "email": "r.albatel@qz.org.sa",
+      "displayName": "رهام سويد محمد الباتل",
+      "roleKey": ""
+    },
+    "alanood": {
+      "uid": "7h6mGmwWevSW0meBvDbjel80gUX2",
+      "personId": "p-alanoodf",
+      "email": "alanoodf@qz.org.sa",
+      "displayName": "العنود دخيل عبدالله الفهيد",
+      "roleKey": ""
+    }
+  },
+  "scope": {
+    "orgId": "takween",
+    "schoolId": "kg-02",
+    "academicYearId": "ay-1448",
+    "termId": "term-1"
+  },
+  "changes": {
+    "raham": {
+      "from": "معلمة القيم",
+      "to": "معلمة الصف"
+    },
+    "alanood": {
+      "from": "معلمة الصف",
+      "to": "معلمة القيم"
+    }
+  },
+  "plannedChanges": {
+    "removeTargetAssignments": 4,
+    "removeEvaluatorAssignments": 42,
+    "createOrUpdateTargetAssignments": 4,
+    "createOrUpdateEvaluatorAssignments": 42,
+    "submissionsTouched": 0,
+    "totalWrites": 92
+  },
+  "removedTargets": [
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "id": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-target-p-r-albatel"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-target-p-r-albatel"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "id": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-target-p-alanoodf"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-target-p-alanoodf"
+    }
+  ],
+  "removedEvaluators": [
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-01",
+      "id": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-01-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-02",
+      "id": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-02-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-01",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-01-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-02",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-02-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-03",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-03-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-04",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-04-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-05",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-05-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-06",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-06-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-07",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-07-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-08",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-08-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-09",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-09-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-10",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-10-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-11",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-11-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-12",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-12-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-13",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-13-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-14",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-14-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-15",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-15-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-16",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-16-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-17",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-17-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-18",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-18-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-19",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-19-p-r-albatel-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01",
+      "id": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02",
+      "id": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-01",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-01-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-02",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-02-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-03",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-03-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-04",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-04-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-05",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-05-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-06",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-06-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-07",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-07-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-08",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-08-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-09",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-09-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-10",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-10-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-11",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-11-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-12",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-12-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-13",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-13-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-14",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-14-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-15",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-15-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-16",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-16-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-17",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-17-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-18",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-18-p-alanoodf-p-s-alturiqe"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-19",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-19-p-alanoodf-p-s-alturiqe"
+    }
+  ],
+  "createdTargets": [
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "id": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-target-p-r-albatel",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-target-p-r-albatel",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "id": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-target-p-alanoodf",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-target-p-alanoodf",
+      "targetRoleLabel": "معلمة القيم"
+    }
+  ],
+  "createdEvaluators": [
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01",
+      "id": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02",
+      "id": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-01",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-01-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-02",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-02-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-03",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-03-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-04",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-04-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-05",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-05-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-06",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-06-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-07",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-07-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-08",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-08-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-09",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-09-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-10",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-10-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-11",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-11-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-12",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-12-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-13",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-13-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-14",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-14-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-15",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-15-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-16",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-16-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-17",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-17-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-18",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-18-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-19",
+      "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-19-p-r-albatel-p-s-alturiqe",
+      "targetRoleLabel": "معلمة الصف"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-01",
+      "id": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-01-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-02",
+      "id": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-02-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-01",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-01-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-02",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-02-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-03",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-03-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-04",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-04-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-05",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-05-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-06",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-06-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-07",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-07-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-08",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-08-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-09",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-09-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-10",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-10-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-11",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-11-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-12",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-12-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-13",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-13-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-14",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-14-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-15",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-15-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-16",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-16-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-17",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-17-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-18",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-18-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    },
+    {
+      "personId": "p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-19",
+      "id": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-19-p-alanoodf-p-s-alturiqe",
+      "targetRoleLabel": "معلمة القيم"
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "submissionsRequiredToBeZero": true,
+    "submissionsTouched": 0,
+    "educationalSupervisorPlansTouched": false,
+    "vicePrincipalPlansTouched": false,
+    "kgVpSupervisoryPlansTouched": false,
+    "valuesCoordinatorPlansTouched": false,
+    "onlyDirectorTeacherPlansTouched": true,
+    "firestoreDeletes": 0,
+    "requiresApplyFlag": true
+  }
+}

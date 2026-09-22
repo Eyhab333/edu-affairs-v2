@@ -1,0 +1,79 @@
+{
+  "decision": "STOPPED",
+  "mode": "PREVIEW",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-k-alsadle",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-m-alateeq",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-boys-sayeh",
+    "planIdArg": ""
+  },
+  "teacher": {
+    "uid": "fAx2BeXHAWbg6UkJPvLtnDW8AgT2",
+    "personId": "p-k-alsadle",
+    "email": "k.alsadle@qz.org.sa",
+    "displayName": "خالد محمد الشاذلي معتمد",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "6V8WflFTNzWpejeOrv8JKzfqQC12",
+    "personId": "p-m-alateeq",
+    "email": "m.alateeq@qz.org.sa",
+    "displayName": "محمد صالح حمد العتيق",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-boys-sayeh",
+    "schoolTitle": "mrb-boys-sayeh"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 2,
+    "teacherSchools": [
+      "mrb-boys-sayh"
+    ],
+    "supervisorPatternAssignments": 340,
+    "supervisorPatternSchools": [
+      "mrb-boys-sayh"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 0,
+    "plans": []
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 0,
+    "createOrUpdateEvaluatorAssignments": 0,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 0
+  },
+  "planReports": [],
+  "weightRebalanceReports": [],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [
+    {
+      "reason": "NO_ACTIVE_TEACHER_PLANS_FOR_SUPERVISOR_IN_SCHOOL",
+      "schoolId": "mrb-boys-sayeh",
+      "supervisorPersonId": "p-m-alateeq",
+      "supervisorEmail": "m.alateeq@qz.org.sa"
+    }
+  ],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

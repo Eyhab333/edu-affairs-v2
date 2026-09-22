@@ -18,6 +18,11 @@ import type { StaffActorData } from "@/lib/staff-actor";
 
 export const STAFF_PDF_FILE_MAX_BYTES = 20 * 1024 * 1024;
 
+/* Temporary PDF-center-only exception for scope-target presentation. */
+const PDF_SCOPE_TARGET_EXCLUDED_PERSON_IDS = new Set([
+  "p-a-almansur",
+]);
+
 export type StaffPdfFileCategoryVisibility =
   | "ALL_STAFF"
   | "KG_VALUES_TEACHER";
@@ -169,6 +174,18 @@ export function filterVisibleStaffPdfFiles(params: {
 }) {
   const viewer = getStaffPdfFileViewer(params);
   return params.files.filter((file) => canViewStaffPdfFile({ viewer, file }));
+}
+
+export function excludeFromPdfScopeTarget(personId: string) {
+  return PDF_SCOPE_TARGET_EXCLUDED_PERSON_IDS.has(personId);
+}
+
+/**
+ * Applies only to the "ضمن نطاقي" target list. It deliberately does not
+ * affect an owner's own files or any underlying authorization decision.
+ */
+export function filterStaffPdfFilesForScopeTargets(files: StaffPdfFile[]) {
+  return files.filter((file) => !excludeFromPdfScopeTarget(file.ownerPersonId));
 }
 
 export async function listStaffPdfFiles(params: {

@@ -1,0 +1,319 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-r-g-alfraj",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-s-sayed",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-girls",
+    "planIdArg": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation"
+  },
+  "teacher": {
+    "uid": "zkEeEG7GaUatYutzhzAE44uIutb2",
+    "personId": "p-r-g-alfraj",
+    "email": "r-g-alfraj@qz.org.sa",
+    "displayName": "ريم جوير الفراج",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "aa3uDx6i5uf6Dp5YP3unAqD5Zyo1",
+    "personId": "p-s-sayed",
+    "email": "s.sayed@qz.org.sa",
+    "displayName": "السيد محمد القاضي",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-girls",
+    "schoolTitle": "مدرسة منار الريادة بنات"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 2,
+    "teacherSchools": [
+      "mrb-girls"
+    ],
+    "supervisorPatternAssignments": 171,
+    "supervisorPatternSchools": [
+      "mrb-boys-faleh",
+      "mrb-boys-sayh",
+      "mrb-girls"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 1,
+    "plans": [
+      {
+        "id": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+        "title": "التقييم الفتري للمشرف التعليمي - للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+        "frameworkId": "educational-supervisor-periodic-teacher-evaluation-girls-v2"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 1,
+    "createOrUpdateEvaluatorAssignments": 3,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 4
+  },
+  "planReports": [
+    {
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "title": "التقييم الفتري للمشرف التعليمي - للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-girls-v2",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-target-p-r-g-alfraj",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+          "cycleTitle": "التقييم الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-r-g-alfraj-p-s-sayed",
+              "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-a-a-alsuwaykit-p-s-sayed",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+          "cycleTitle": "التقييم الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-r-g-alfraj-p-s-sayed",
+              "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-a-a-alsuwaykit-p-s-sayed",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+          "cycleTitle": "التقييم الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-r-g-alfraj-p-s-sayed",
+              "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-a-a-alsuwaykit-p-s-sayed",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-r-g-alfraj-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-r-g-alfraj-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-r-g-alfraj-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-r-g-alfraj-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-r-g-alfraj-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-r-g-alfraj-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-r-g-alfraj-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-r-g-alfraj-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-r-g-alfraj",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-r-g-alfraj",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-r-g-alfraj-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

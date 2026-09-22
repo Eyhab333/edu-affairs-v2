@@ -1,0 +1,1440 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-s-alhumaidan",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-s-sayed",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-girls",
+    "planIdArg": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation"
+  },
+  "teacher": {
+    "uid": "utTWIyENEfVyBpYiyu4ERHFi12H3",
+    "personId": "p-s-alhumaidan",
+    "email": "s.alhumaidan@qz.org.sa",
+    "displayName": "سعاد حميدان محمد الحميدان",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "aa3uDx6i5uf6Dp5YP3unAqD5Zyo1",
+    "personId": "p-s-sayed",
+    "email": "s.sayed@qz.org.sa",
+    "displayName": "السيد محمد القاضي",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-girls",
+    "schoolTitle": "مدرسة منار الريادة بنات"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 6,
+    "teacherSchools": [
+      "mrb-girls"
+    ],
+    "supervisorPatternAssignments": 174,
+    "supervisorPatternSchools": [
+      "mrb-boys-faleh",
+      "mrb-boys-sayh",
+      "mrb-girls"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 1,
+    "plans": [
+      {
+        "id": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+        "title": "التقييم الفتري للمشرف التعليمي - للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+        "frameworkId": "educational-supervisor-periodic-teacher-evaluation-girls-v2"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 1,
+    "createOrUpdateEvaluatorAssignments": 3,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 4
+  },
+  "planReports": [
+    {
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "title": "التقييم الفتري للمشرف التعليمي - للمعلمات - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "educational-supervisor-periodic-teacher-evaluation-girls-v2",
+      "cyclesCount": 3,
+      "newTargetId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-target-p-s-alhumaidan",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+          "cycleTitle": "التقييم الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-s-alhumaidan-p-s-sayed",
+              "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-a-a-alsuwaykit-p-s-sayed",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+          "cycleTitle": "التقييم الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-s-alhumaidan-p-s-sayed",
+              "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-a-a-alsuwaykit-p-s-sayed",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+          "cycleTitle": "التقييم الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-s-alhumaidan-p-s-sayed",
+              "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+              "evaluatorPersonId": "p-s-sayed",
+              "evaluatorEmail": "s.sayed@qz.org.sa",
+              "evaluatorDisplayName": "السيد محمد القاضي",
+              "patternId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-a-a-alsuwaykit-p-s-sayed",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-s-alhumaidan-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19-p-s-alhumaidan-p-n-albader",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-01__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-01-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-02__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-02-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-03__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-03-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-04__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-04-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-05__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-05-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-06__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-06-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-07__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-07-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-08__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-08-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-09__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-09-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-10__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-10-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-11__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-11-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-12__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-12-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-13__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-13-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-14__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-14-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-15__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-15-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-16__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-16-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-17__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-17-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-18__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-18-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-19__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-student-counselor-weekly-teacher-evaluation-week-19-p-s-alhumaidan-staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+          "evaluatorEmail": "sarah@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-01__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-01-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-02__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-02-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-03__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-03-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-04__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-04-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-05__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-05-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-06__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-06-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-07__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-07-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-08__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-08-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-09__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-09-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-10__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-10-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-11__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-11-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-12__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-12-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-13__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-13-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-14__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-14-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-15__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-15-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-16__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-16-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-17__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-17-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-18__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-18-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-19__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-vice-principal-weekly-teacher-evaluation-week-19-p-s-alhumaidan-p-f-alobawe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alobawe",
+          "evaluatorEmail": "f.alobawe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-s-alhumaidan-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-s-alhumaidan-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-s-alhumaidan",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-s-alhumaidan",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-s-alhumaidan-p-s-sayed",
+          "source": "NEW",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

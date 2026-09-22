@@ -24,7 +24,7 @@ function getArg(name, fallback = "") {
 const ORG_ID = getArg("org", "takween");
 const YEAR_ID = getArg("year", "ay-1448");
 const TERM_ID = getArg("term", "term-1");
-
+const PLAN_ID_ARG = getArg("planId").trim();
 const TEACHER_PERSON_ID = getArg("teacherPersonId").trim();
 const TEACHER_EMAIL = getArg("teacherEmail").trim().toLowerCase();
 
@@ -644,7 +644,7 @@ async function main() {
         )
         .filter((row) => asString(row.academicYearId, YEAR_ID) === YEAR_ID)
         .filter((row) => asString(row.termId, TERM_ID) === TERM_ID)
-        .filter((row) => asString(row.targetKind) === "TEACHER")
+
         .filter(isActive)
     : [];
 
@@ -696,24 +696,111 @@ async function main() {
   const schoolId = selectedSchoolIds[0] || "";
   const schoolTitle = schoolId ? await getSchoolTitle(orgRef, schoolId) : "";
 
-  const targetPlans = uniqueBy(
-    supervisorPatternAssignments
-      .filter((assignment) => asString(assignment.schoolId) === schoolId)
-      .map((assignment) => plansById.get(asString(assignment.planId)))
-      .filter(Boolean)
-      .filter((plan) => asString(plan.schoolId) === schoolId)
-      .filter((plan) => asString(plan.academicYearId) === YEAR_ID)
-      .filter((plan) => asString(plan.termId) === TERM_ID)
-      .filter(isActive)
-      .filter(isTeacherPlan)
-      .filter((plan) => {
-        const framework = frameworksById.get(asString(plan.frameworkId));
-        return isFrameworkActive(framework);
-      }),
-    (plan) => asString(plan.id),
-  ).sort((a, b) => asString(a.id).localeCompare(asString(b.id)));
+  let targetPlans;
 
-  if (schoolId && targetPlans.length === 0) {
+  if (PLAN_ID_ARG) {
+    const explicitPlan = plans.find(
+      (plan) => asString(plan.id) === PLAN_ID_ARG,
+    );
+
+    if (!explicitPlan) {
+      conflicts.push({
+        reason: "EXPLICIT_PLAN_NOT_FOUND",
+        planId: PLAN_ID_ARG,
+      });
+
+      targetPlans = [];
+    } else if (asString(explicitPlan.schoolId) !== schoolId) {
+      conflicts.push({
+        reason: "EXPLICIT_PLAN_SCHOOL_MISMATCH",
+        planId: PLAN_ID_ARG,
+        planSchoolId: asString(explicitPlan.schoolId),
+        requestedSchoolId: schoolId,
+      });
+
+      targetPlans = [];
+    } else if (!isActive(explicitPlan)) {
+      conflicts.push({
+        reason: "EXPLICIT_PLAN_NOT_ACTIVE",
+        planId: PLAN_ID_ARG,
+        status: explicitPlan.status,
+        isActive: explicitPlan.isActive,
+      });
+
+      targetPlans = [];
+    } else if (!isTeacherPlan(explicitPlan)) {
+      conflicts.push({
+        reason: "EXPLICIT_PLAN_IS_NOT_TEACHER_PLAN",
+        planId: PLAN_ID_ARG,
+        targetKind: explicitPlan.targetKind,
+      });
+
+      targetPlans = [];
+    } else {
+      const framework = frameworksById.get(asString(explicitPlan.frameworkId));
+
+      if (!isFrameworkActive(framework)) {
+        conflicts.push({
+          reason: "EXPLICIT_PLAN_FRAMEWORK_NOT_ACTIVE",
+          planId: PLAN_ID_ARG,
+          frameworkId: asString(explicitPlan.frameworkId),
+          frameworkStatus: framework?.status,
+          frameworkIsActive: framework?.isActive,
+        });
+
+        targetPlans = [];
+      } else {
+        const activePatternsForPlan = supervisorPatternAssignments.filter(
+          (assignment) =>
+            asString(assignment.planId) === PLAN_ID_ARG &&
+            asString(assignment.schoolId) === schoolId &&
+            asString(assignment.evaluatorPersonId) === supervisor.personId &&
+            isActive(assignment),
+        );
+
+        if (activePatternsForPlan.length === 0) {
+          conflicts.push({
+            reason: "NO_ACTIVE_SUPERVISOR_PATTERN_FOR_EXPLICIT_PLAN",
+            planId: PLAN_ID_ARG,
+            supervisorPersonId: supervisor.personId,
+          });
+
+          targetPlans = [];
+        } else {
+          targetPlans = [explicitPlan];
+        }
+      }
+    }
+  } else {
+    targetPlans = uniqueBy(
+      supervisorPatternAssignments
+        .filter((assignment) => asString(assignment.schoolId) === schoolId)
+        .map((assignment) => plansById.get(asString(assignment.planId)))
+        .filter(Boolean)
+        .filter((plan) => asString(plan.schoolId) === schoolId)
+        .filter((plan) => asString(plan.academicYearId, YEAR_ID) === YEAR_ID)
+        .filter((plan) => asString(plan.termId, TERM_ID) === TERM_ID)
+        .filter(isActive)
+        .filter(isTeacherPlan)
+        .filter((plan) => {
+          const framework = frameworksById.get(asString(plan.frameworkId));
+
+          return isFrameworkActive(framework);
+        }),
+      (plan) => asString(plan.id),
+    ).sort((a, b) => asString(a.id).localeCompare(asString(b.id)));
+  }
+
+  // if (schoolId && targetPlans.length === 0) {
+  //   conflicts.push({
+  //     reason: "NO_ACTIVE_TEACHER_PLANS_FOR_SUPERVISOR_IN_SCHOOL",
+  //     schoolId,
+  //     supervisorPersonId: supervisor?.personId,
+  //     supervisorEmail: supervisor?.email,
+  //   });
+  // }
+
+  if (!PLAN_ID_ARG && schoolId && targetPlans.length === 0) {
     conflicts.push({
       reason: "NO_ACTIVE_TEACHER_PLANS_FOR_SUPERVISOR_IN_SCHOOL",
       schoolId,
@@ -1136,6 +1223,7 @@ async function main() {
       supervisorPersonId: SUPERVISOR_PERSON_ID,
       supervisorEmail: SUPERVISOR_EMAIL,
       schoolArg: SCHOOL_ID_ARG,
+      planIdArg: PLAN_ID_ARG,
     },
 
     teacher,

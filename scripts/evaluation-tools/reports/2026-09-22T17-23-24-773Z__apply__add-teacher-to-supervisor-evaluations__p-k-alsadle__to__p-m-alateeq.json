@@ -1,0 +1,986 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-k-alsadle",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-m-alateeq",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-boys-sayh",
+    "planIdArg": ""
+  },
+  "teacher": {
+    "uid": "fAx2BeXHAWbg6UkJPvLtnDW8AgT2",
+    "personId": "p-k-alsadle",
+    "email": "k.alsadle@qz.org.sa",
+    "displayName": "خالد محمد الشاذلي معتمد",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "6V8WflFTNzWpejeOrv8JKzfqQC12",
+    "personId": "p-m-alateeq",
+    "email": "m.alateeq@qz.org.sa",
+    "displayName": "محمد صالح حمد العتيق",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-boys-sayh",
+    "schoolTitle": "مدرسة منار الريادة بنين السيح"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 2,
+    "teacherSchools": [
+      "mrb-boys-sayh"
+    ],
+    "supervisorPatternAssignments": 340,
+    "supervisorPatternSchools": [
+      "mrb-boys-sayh"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 2,
+    "plans": [
+      {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+        "title": "التقييم التشخيصي للمعلمين بواسطة الوكيل التعليمي - منار الريادة بنين السيح - الفصل الأول",
+        "frameworkId": "educational-vice-principal-diagnostic-teacher-evaluation-v1"
+      },
+      {
+        "id": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+        "title": "تقييم الوكيل التعليمي الأسبوعي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+        "frameworkId": "educational-vice-principal-weekly-teacher-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 2,
+    "createOrUpdateEvaluatorAssignments": 20,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 22
+  },
+  "planReports": [
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+      "title": "التقييم التشخيصي للمعلمين بواسطة الوكيل التعليمي - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-vice-principal-diagnostic-teacher-evaluation-v1",
+      "cyclesCount": 1,
+      "newTargetId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-target-p-k-alsadle",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01",
+          "cycleTitle": "التقييم التشخيصي",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "title": "تقييم الوكيل التعليمي الأسبوعي للمعلمين - منار الريادة بنين السيح - الفصل الأول",
+      "frameworkId": "educational-vice-principal-weekly-teacher-evaluation-v1",
+      "cyclesCount": 19,
+      "newTargetId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-target-p-k-alsadle",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+          "cycleTitle": "الأسبوع الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+          "cycleTitle": "الأسبوع الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+          "cycleTitle": "الأسبوع الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+          "cycleTitle": "الأسبوع الرابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+          "cycleTitle": "الأسبوع الخامس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+          "cycleTitle": "الأسبوع السادس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+          "cycleTitle": "الأسبوع السابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+          "cycleTitle": "الأسبوع الثامن",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+          "cycleTitle": "الأسبوع التاسع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+          "cycleTitle": "الأسبوع العاشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+          "cycleTitle": "الأسبوع الحادي عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+          "cycleTitle": "الأسبوع الثاني عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13",
+          "cycleTitle": "الأسبوع الثالث عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14",
+          "cycleTitle": "الأسبوع الرابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15",
+          "cycleTitle": "الأسبوع الخامس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16",
+          "cycleTitle": "الأسبوع السادس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17",
+          "cycleTitle": "الأسبوع السابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18",
+          "cycleTitle": "الأسبوع الثامن عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19",
+          "cycleTitle": "الأسبوع التاسع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19-p-k-alsadle-p-m-alateeq",
+              "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19",
+              "evaluatorPersonId": "p-m-alateeq",
+              "evaluatorEmail": "m.alateeq@qz.org.sa",
+              "evaluatorDisplayName": "محمد صالح حمد العتيق",
+              "patternId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19-p-a-aljidawii-p-m-alateeq",
+              "patternTargetPersonId": "p-a-aljidawii",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-k-alsadle-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-k-alsadle-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-k-alsadle-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-k-alsadle-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-k-alsadle-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-k-alsadle-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-01-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-01-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-02-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-03-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-04-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-05-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-06-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-07-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-08-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-09-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-10-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-11-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-12-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-13-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-14-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-15-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-16-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-17-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-18-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation__mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19__p-k-alsadle",
+      "planId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-k-alsadle",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-mrb-boys-sayh-ay-1448-term-1-educational-vice-principal-weekly-teacher-evaluation-week-19-p-k-alsadle-p-m-alateeq",
+          "source": "NEW",
+          "evaluatorPersonId": "p-m-alateeq",
+          "evaluatorEmail": "m.alateeq@qz.org.sa",
+          "evaluatorDisplayName": "محمد صالح حمد العتيق",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  },
+  "applyResult": {
+    "decision": "APPLIED",
+    "committedWrites": 22,
+    "createdOrUpdatedTargetAssignments": 2,
+    "createdOrUpdatedEvaluatorAssignments": 20,
+    "existingEvaluatorWeightsRebalanced": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "submissionsTouched": 0
+  }
+}
