@@ -313,7 +313,7 @@ export async function loadTeacherWorkMeasurementDetail(params: {
 }
 
 export const teacherWorkMetricLabels: Record<TeacherWorkMetricKey, string> = {
-  measurements: "القياسات",
+  measurements: "القياسات والمتابعات",
   learningLoss: "الفاقد التعليمي",
   notes: "الملاحظات",
   gamification: "التحفيز",

@@ -10,15 +10,17 @@ const CAPABILITY = "TEACHER_WORK_VIEW";
 
 const TARGETS = [
   {
-    label: "منصور رميح حمود الرميح",
-    email: "malrameh@qz.org.sa",
-    personId: "p-malrameh",
+    label: "طيبة سليمان الطوالة",
+    email: "t.altwala@qz.org.sa",
+    personId: "p-t-altwala",
     schoolIds: [
       "kg-01",
       "kg-02",
       "kg-03",
       "kg-04",
     ],
+    subjectScope: "SUBJECT_KEYS",
+    subjectKeys: ["VALUES"],
   },
 ];
 
@@ -48,6 +50,52 @@ function buildScopeId(personId, schoolId) {
   return `${personId}__${CAPABILITY}__${schoolId}`;
 }
 
+function validateTargetScope(target) {
+  assert(
+    target.subjectScope === "ALL_SUBJECTS" ||
+      target.subjectScope === "SUBJECT_KEYS",
+    `Invalid subjectScope for ${target.personId}`,
+  );
+
+  assert(
+    Array.isArray(target.subjectKeys),
+    `subjectKeys must be an array for ${target.personId}`,
+  );
+
+  const subjectKeys = Array.from(
+    new Set(
+      target.subjectKeys
+        .filter((subjectKey) => typeof subjectKey === "string")
+        .map((subjectKey) => subjectKey.trim())
+        .filter(Boolean),
+    ),
+  );
+
+  assert(
+    subjectKeys.length === target.subjectKeys.length,
+    `subjectKeys must contain only non-empty unique values for ${target.personId}`,
+  );
+
+  if (target.subjectScope === "ALL_SUBJECTS") {
+    assert(
+      subjectKeys.length === 0,
+      `subjectKeys must be empty for ALL_SUBJECTS (${target.personId})`,
+    );
+  }
+
+  if (target.subjectScope === "SUBJECT_KEYS") {
+    assert(
+      subjectKeys.length > 0,
+      `subjectKeys must contain at least one value for SUBJECT_KEYS (${target.personId})`,
+    );
+  }
+
+  return {
+    subjectScope: target.subjectScope,
+    subjectKeys,
+  };
+}
+
 async function main() {
   initAdmin();
 
@@ -65,6 +113,8 @@ async function main() {
   const results = [];
 
   for (const target of TARGETS) {
+    const targetScope = validateTargetScope(target);
+
     const personRef = db.doc(
       `${orgRoot}/people/${target.personId}`,
     );
@@ -132,8 +182,8 @@ async function main() {
         personId: target.personId,
         capability: CAPABILITY,
         schoolId,
-        subjectScope: "ALL_SUBJECTS",
-        subjectKeys: [],
+        subjectScope: targetScope.subjectScope,
+        subjectKeys: targetScope.subjectKeys,
         isActive: true,
         createdAt:
           typeof existingScope?.createdAt === "number"
@@ -174,6 +224,7 @@ async function main() {
         scopeId,
         scopeRef,
         desiredScope,
+        targetScope,
       });
     }
   }
@@ -249,13 +300,17 @@ async function main() {
     );
 
     assert(
-      data.subjectScope === "ALL_SUBJECTS",
+      data.subjectScope === result.targetScope.subjectScope,
       `Invalid subjectScope for ${result.scopeId}`,
     );
 
     assert(
       Array.isArray(data.subjectKeys) &&
-        data.subjectKeys.length === 0,
+        data.subjectKeys.length === result.targetScope.subjectKeys.length &&
+        data.subjectKeys.every(
+          (subjectKey, index) =>
+            subjectKey === result.targetScope.subjectKeys[index],
+        ),
       `Invalid subjectKeys for ${result.scopeId}`,
     );
 

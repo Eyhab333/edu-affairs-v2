@@ -115,7 +115,7 @@ export async function loadStudentWorkDetail(params: StudentWorkDetailInput) {
 
 export const studentWorkMetricLabels: Record<StudentWorkMetricKey, string> = {
   attendance: "الغياب",
-  measurements: "القياسات",
+  measurements: "القياسات والمتابعات",
   learningLoss: "خطط الفاقد",
   gamification: "نقاط التحفيز",
 };

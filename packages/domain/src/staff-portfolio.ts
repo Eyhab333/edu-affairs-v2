@@ -6,6 +6,11 @@ export const STAFF_PORTFOLIO_TEACHER_ROLE_KEYS = new Set<MembershipRole>([
 
 export const STAFF_PORTFOLIO_SUPERVISOR_ROLE_KEYS = new Set<MembershipRole>([
   "EDU_SUPERVISOR", "BOYS_EDU_SUPERVISOR", "GIRLS_EDU_SUPERVISOR", "KG_EDU_SUPERVISOR",
+  "VALUES_COORD", "KG_VALUES_COORD",
+]);
+
+export const STAFF_PORTFOLIO_SUBJECT_SCOPED_SUPERVISOR_ROLE_KEYS = new Set<MembershipRole>([
+  "VALUES_COORD", "KG_VALUES_COORD",
 ]);
 
 export const STAFF_PORTFOLIO_SCHOOL_MANAGEMENT_ROLE_KEYS = new Set<MembershipRole>([
@@ -32,6 +37,12 @@ export function canReviewStaffPortfolio(roles: MembershipRole[]) {
     STAFF_PORTFOLIO_SUPERVISION_HEAD_ROLE_KEYS.has(role) ||
     STAFF_PORTFOLIO_ORG_ADMIN_ROLE_KEYS.has(role),
   );
+}
+
+export function isStaffPortfolioSubjectScopedSupervisorRole(
+  role: MembershipRole | undefined,
+) {
+  return !!role && STAFF_PORTFOLIO_SUBJECT_SCOPED_SUPERVISOR_ROLE_KEYS.has(role);
 }
 
 export type StaffPortfolioDomainIssue = "providerName" | "trainingHours";

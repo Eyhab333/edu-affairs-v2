@@ -148,7 +148,7 @@ export const staffNavItems: StaffNavItem[] = [
   
   {
     href: "/staff/measurements",
-    label: "القياسات",
+    label: "القياسات والمتابعات",
     icon: Ruler,
     moduleKey: "MEASUREMENTS",
   },

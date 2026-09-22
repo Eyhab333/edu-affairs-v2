@@ -249,6 +249,7 @@ import { getStorage } from "firebase-admin/storage";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
   MembershipRole,
+  PersonSupervisionScopeSchema,
   StaffPortfolioItemKindSchema,
   StaffPortfolioItemSchema,
   StaffPortfolioListFiltersSchema,
@@ -259,7 +260,10 @@ import {
 import {
   canReadStaffPortfolioItem,
   canReviewStaffPortfolio,
+  getPersonSupervisionSchoolIds,
+  hasPersonSupervisionSubjectAccess,
   isStaffPortfolioTeacherRole,
+  isStaffPortfolioSubjectScopedSupervisorRole,
   validateStaffPortfolioKindFields,
 } from "@takween/domain";
 
@@ -379,20 +383,163 @@ async function caller(orgId: string, uid: string) {
   };
 }
 
-async function supervisedTeacherPersonIds(
-  orgId: string,
-  supervisorPersonId: string,
-) {
+async function rowsForSchoolIds(params: {
+  orgId: string;
+  collectionName: "teacherAssignments" | "classSubjectOfferings";
+  schoolIds: string[];
+}) {
+  const db = getFirestore();
+  const snapshots = await Promise.all(
+    Array.from(
+      { length: Math.ceil(params.schoolIds.length / 10) },
+      (_, index) => params.schoolIds.slice(index * 10, (index + 1) * 10),
+    ).map((schoolIdChunk) =>
+      db
+        .collection(`orgs/${params.orgId}/${params.collectionName}`)
+        .where("schoolId", "in", schoolIdChunk)
+        .get(),
+    ),
+  );
+
+  return snapshots.flatMap((snapshot) =>
+    snapshot.docs.map(
+      (document) => ({ id: document.id, ...document.data() }) as Row,
+    ),
+  );
+}
+
+function subjectKeyFor(assignment: Row, offering?: Row) {
+  return text(assignment.subjectKey) || text(offering?.subjectKey);
+}
+
+async function subjectScopedTeacherPersonIds(params: {
+  orgId: string;
+  actor: {
+    role: MembershipRoleType;
+    personId: string;
+    schoolIds: string[];
+    canAccessAllSchools: boolean;
+  };
+}) {
+  const db = getFirestore();
+  const now = Date.now();
+
+  const scopeSnapshot = await db
+    .collection(`orgs/${params.orgId}/personSupervisionScopes`)
+    .where("personId", "==", params.actor.personId)
+    .get();
+
+  const scopes = scopeSnapshot.docs.flatMap((document) => {
+    const parsed = PersonSupervisionScopeSchema.safeParse({
+      id: document.id,
+      ...document.data(),
+    });
+
+    return parsed.success ? [parsed.data] : [];
+  });
+
+  const supervisionSchoolIds = getPersonSupervisionSchoolIds({
+    scopes,
+    orgId: params.orgId,
+    personId: params.actor.personId,
+    capability: "TEACHER_WORK_VIEW",
+    nowMs: now,
+  });
+
+  const schoolIds = params.actor.canAccessAllSchools
+    ? supervisionSchoolIds
+    : supervisionSchoolIds.filter((schoolId) =>
+        params.actor.schoolIds.includes(schoolId),
+      );
+
+  if (!schoolIds.length) {
+    return new Set<string>();
+  }
+
+  const [assignmentRows, offeringRows] = await Promise.all([
+    rowsForSchoolIds({
+      orgId: params.orgId,
+      collectionName: "teacherAssignments",
+      schoolIds,
+    }),
+    rowsForSchoolIds({
+      orgId: params.orgId,
+      collectionName: "classSubjectOfferings",
+      schoolIds,
+    }),
+  ]);
+
+  const offeringById = new Map(
+    offeringRows.map((offering) => [text(offering.id), offering]),
+  );
+  const ids = new Set<string>();
+
+  assignmentRows.forEach((assignmentRow) => {
+    const parsed = TeacherAssignmentSchema.safeParse({
+      id: text(assignmentRow.id),
+      ...assignmentRow,
+    });
+
+    if (
+      !parsed.success ||
+      parsed.data.status !== "ACTIVE" ||
+      parsed.data.startAt > now ||
+      (parsed.data.endAt !== undefined && parsed.data.endAt < now)
+    ) {
+      return;
+    }
+
+    const subjectKey = subjectKeyFor(
+      assignmentRow,
+      offeringById.get(text(parsed.data.classSubjectOfferingId)),
+    );
+
+    if (
+      hasPersonSupervisionSubjectAccess({
+        scopes,
+        request: {
+          orgId: params.orgId,
+          personId: params.actor.personId,
+          capability: "TEACHER_WORK_VIEW",
+          schoolId: parsed.data.schoolId,
+          subjectKey,
+          nowMs: now,
+        },
+      })
+    ) {
+      ids.add(parsed.data.teacherPersonId);
+    }
+  });
+
+  return ids;
+}
+
+async function supervisedTeacherPersonIds(params: {
+  orgId: string;
+  actor: {
+    role: MembershipRoleType;
+    personId: string;
+    schoolIds: string[];
+    canAccessAllSchools: boolean;
+  };
+}) {
+  if (isStaffPortfolioSubjectScopedSupervisorRole(params.actor.role)) {
+    return subjectScopedTeacherPersonIds(params);
+  }
+
   const db = getFirestore();
   const now = Date.now();
 
   const [assignmentSnapshot, membershipSnapshot] = await Promise.all([
     db
-      .collection(`orgs/${orgId}/teacherAssignments`)
-      .where("supervisorPersonId", "==", supervisorPersonId)
+      .collection(`orgs/${params.orgId}/teacherAssignments`)
+      .where("supervisorPersonId", "==", params.actor.personId)
       .get(),
 
-    db.collectionGroup("orgMemberships").where("orgId", "==", orgId).get(),
+    db
+      .collectionGroup("orgMemberships")
+      .where("orgId", "==", params.orgId)
+      .get(),
   ]);
 
   const ids = new Set<string>();
@@ -419,7 +566,7 @@ async function supervisedTeacherPersonIds(
     const personId = text(data.personId);
 
     if (
-      text(data.supervisorPersonId) === supervisorPersonId &&
+      text(data.supervisorPersonId) === params.actor.personId &&
       role &&
       isStaffPortfolioTeacherRole(role) &&
       personId &&
@@ -456,10 +603,10 @@ async function allowedItems(params: {
 
   const filters = StaffPortfolioListFiltersSchema.parse(params.filters ?? {});
 
-  const supervised = await supervisedTeacherPersonIds(
-    params.orgId,
-    actor.personId,
-  );
+  const supervised = await supervisedTeacherPersonIds({
+    orgId: params.orgId,
+    actor,
+  });
 
   const snapshot = await getFirestore()
     .collection(`orgs/${params.orgId}/staffPortfolioItems`)
