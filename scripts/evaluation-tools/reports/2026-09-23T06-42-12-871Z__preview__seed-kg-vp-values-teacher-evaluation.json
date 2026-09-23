@@ -1,0 +1,88 @@
+{
+  "decision": "SAFE_PREVIEW",
+  "mode": "PREVIEW",
+  "framework": {
+    "id": "kg-vp-values-teacher-evaluation-v1",
+    "title": "تقييم وكيلة الروضة لمعلمة القيم",
+    "itemsCount": 26,
+    "cyclesPerPlan": 3
+  },
+  "schools": [
+    {
+      "schoolId": "kg-01",
+      "schoolTitle": "روضة واحة الرياحين الأولى",
+      "valuesTeacher": {
+        "personId": "p-ma-alfarhod",
+        "displayName": "منى احمد محمد الفرهود",
+        "email": "ma.alfarhod@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+        "displayName": "تماضر صالح محمد العامر",
+        "email": "t.alamer@qz.org.sa"
+      },
+      "planId": "kg-01-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycles": 3,
+      "evaluatorAssignments": 3
+    },
+    {
+      "schoolId": "kg-02",
+      "schoolTitle": "روضة واحة الرياحين الثانية",
+      "valuesTeacher": {
+        "personId": "p-alanoodf",
+        "displayName": "العنود دخيل عبدالله الفهيد",
+        "email": "alanoodf@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "p-h-aljower",
+        "displayName": "هاجر أحمد فهد الجوير",
+        "email": "h.aljower@qz.org.sa"
+      },
+      "planId": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycles": 3,
+      "evaluatorAssignments": 3
+    },
+    {
+      "schoolId": "kg-03",
+      "schoolTitle": "روضة واحة الرياحين الثالثة",
+      "valuesTeacher": {
+        "personId": "p-ss-alfaleh",
+        "displayName": "سارة سعود محمد الفالح",
+        "email": "ss.alfaleh@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "p-s-alslman",
+        "displayName": "ساره سعد أحمد السلمان",
+        "email": "s.alslman@qz.org.sa"
+      },
+      "planId": "kg-03-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycles": 3,
+      "evaluatorAssignments": 3
+    },
+    {
+      "schoolId": "kg-04",
+      "schoolTitle": "روضة واحة الرياحين الرابعة",
+      "valuesTeacher": {
+        "personId": "p-s-bader",
+        "displayName": "ساره عبدالله علي البدر",
+        "email": "s.bader@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "p-h-alshaya",
+        "displayName": "حصه عبدالرزاق احمد الشايع",
+        "email": "h.alshaya@qz.org.sa"
+      },
+      "planId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycles": 3,
+      "evaluatorAssignments": 3
+    }
+  ],
+  "plannedChanges": {
+    "totalWrites": 60,
+    "submissionsTouched": 0,
+    "existingEvaluationsTouched": 0
+  },
+  "warningsCount": 0,
+  "conflictsCount": 0,
+  "conflicts": []
+}

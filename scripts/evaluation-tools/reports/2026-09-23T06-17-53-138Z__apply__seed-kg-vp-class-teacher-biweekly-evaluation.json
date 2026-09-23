@@ -1,0 +1,327 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "framework": {
+    "id": "kg-vp-class-teacher-biweekly-evaluation-v1",
+    "title": "تقييم وكيلة الروضة لمعلمة الصف - كل أسبوعين",
+    "itemsCount": 14,
+    "cyclesPerPlan": 9
+  },
+  "schoolsCount": 4,
+  "schoolReports": [
+    {
+      "schoolId": "kg-01",
+      "schoolTitle": "روضة واحة الرياحين الأولى",
+      "sourcePlans": [
+        {
+          "id": "kg-01-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - الزيارة التشخيصية - روضة واحة الرياحين الأولى - الفصل الأول"
+        },
+        {
+          "id": "kg-01-ay-1448-term-1-class-teacher-weekly-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - المتابعة الأسبوعية - روضة واحة الرياحين الأولى - الفصل الأول"
+        },
+        {
+          "id": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الأولى - الفصل الأول"
+        },
+        {
+          "id": "kg-01-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+          "title": "تقييم المشرفة التعليمية لمعلمات الصف - روضة واحة الرياحين الأولى - الفصل الأول"
+        },
+        {
+          "id": "kg-01-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمة الصف بواسطة وكيلة الروضة - روضة واحة الرياحين الأولى - الفصل الأول"
+        },
+        {
+          "id": "kg-01-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+          "title": "تقييم وكيلة الروضة لمعلمة الصف - المتابعة الأسبوعية - روضة واحة الرياحين الأولى - الفصل الأول"
+        }
+      ],
+      "classTeachersCount": 10,
+      "classTeachers": [
+        {
+          "personId": "p-a-alyahya",
+          "displayName": "امجاد احمد ابراهبم اليحيى"
+        },
+        {
+          "personId": "p-a-alzuwaid",
+          "displayName": "أروى عبدالعزيز محمد الزويد"
+        },
+        {
+          "personId": "p-af-alkhunaini",
+          "displayName": "أسيل فهد محمد الخنيني"
+        },
+        {
+          "personId": "p-h-aldalbaji",
+          "displayName": "حمده منصور إبراهيم الدلبحي"
+        },
+        {
+          "personId": "p-m-a-almansor",
+          "displayName": "ميعاد احمد عبداللطيف المنصور"
+        },
+        {
+          "personId": "p-na-alosami",
+          "displayName": "نهاد عبدالله ناصر العصيمي"
+        },
+        {
+          "personId": "p-no-alosaimi",
+          "displayName": "نوره عبدالرحمن سعود العصيمي"
+        },
+        {
+          "personId": "p-r-alnutifi",
+          "displayName": "رحاب عبدالله محمد النتيفي"
+        },
+        {
+          "personId": "p-s-s-alaues",
+          "displayName": "سمية سعود حمد العويس"
+        },
+        {
+          "personId": "p-t-alghanim",
+          "displayName": "تهاني عبدالبديع حسن الغانم"
+        }
+      ],
+      "evaluator": {
+        "personId": "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2",
+        "displayName": "",
+        "email": "t.alamer@qz.org.sa"
+      },
+      "newPlanId": "kg-01-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycles": 9,
+      "evaluatorAssignments": 90
+    },
+    {
+      "schoolId": "kg-02",
+      "schoolTitle": "روضة واحة الرياحين الثانية",
+      "sourcePlans": [
+        {
+          "id": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - الزيارة التشخيصية - روضة واحة الرياحين الثانية - الفصل الأول"
+        },
+        {
+          "id": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - المتابعة الأسبوعية - روضة واحة الرياحين الثانية - الفصل الأول"
+        },
+        {
+          "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الثانية - الفصل الأول"
+        },
+        {
+          "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+          "title": "تقييم المشرفة التعليمية لمعلمات الصف - روضة واحة الرياحين الثانية - الفصل الأول"
+        },
+        {
+          "id": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمة الصف بواسطة وكيلة الروضة - روضة واحة الرياحين الثانية - الفصل الأول"
+        },
+        {
+          "id": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+          "title": "تقييم وكيلة الروضة لمعلمة الصف - المتابعة الأسبوعية - روضة واحة الرياحين الثانية - الفصل الأول"
+        }
+      ],
+      "classTeachersCount": 9,
+      "classTeachers": [
+        {
+          "personId": "p-l-alatalla",
+          "displayName": "لولو عطالله عبدالعزيز العطالله"
+        },
+        {
+          "personId": "p-la-alturaiqi",
+          "displayName": "لمى عبد اللطيف عبدالعزيز الطريقي"
+        },
+        {
+          "personId": "p-n-a-alhammadi",
+          "displayName": "نوره عبدالله عبدالعزيز الحمادي"
+        },
+        {
+          "personId": "p-n-almunifi",
+          "displayName": "نوره حجرف البواردي المنيفي"
+        },
+        {
+          "personId": "p-r-alawwad",
+          "displayName": "رزان عبدالله سليمان العواد"
+        },
+        {
+          "personId": "p-r-albatel",
+          "displayName": "رهام سويد محمد الباتل"
+        },
+        {
+          "personId": "p-r-alrasheed",
+          "displayName": "رشا عبدالرحمن الرشيد"
+        },
+        {
+          "personId": "p-r-alromi",
+          "displayName": "ريفان مساعد عبدالعزيز الرومي"
+        },
+        {
+          "personId": "p-alanoodf",
+          "displayName": "العنود دخيل عبدالله الفهيد"
+        }
+      ],
+      "evaluator": {
+        "personId": "p-h-aljower",
+        "displayName": "",
+        "email": "h.aljower@qz.org.sa"
+      },
+      "newPlanId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycles": 9,
+      "evaluatorAssignments": 81
+    },
+    {
+      "schoolId": "kg-03",
+      "schoolTitle": "روضة واحة الرياحين الثالثة",
+      "sourcePlans": [
+        {
+          "id": "kg-03-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - الزيارة التشخيصية - روضة واحة الرياحين الثالثة - الفصل الأول"
+        },
+        {
+          "id": "kg-03-ay-1448-term-1-class-teacher-weekly-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - المتابعة الأسبوعية - روضة واحة الرياحين الثالثة - الفصل الأول"
+        },
+        {
+          "id": "kg-03-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الثالثة - الفصل الأول"
+        },
+        {
+          "id": "kg-03-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+          "title": "تقييم المشرفة التعليمية لمعلمات الصف - روضة واحة الرياحين الثالثة - الفصل الأول"
+        },
+        {
+          "id": "kg-03-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمة الصف بواسطة وكيلة الروضة - روضة واحة الرياحين الثالثة - الفصل الأول"
+        },
+        {
+          "id": "kg-03-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+          "title": "تقييم وكيلة الروضة لمعلمة الصف - المتابعة الأسبوعية - روضة واحة الرياحين الثالثة - الفصل الأول"
+        }
+      ],
+      "classTeachersCount": 8,
+      "classTeachers": [
+        {
+          "personId": "p-a-aljabr",
+          "displayName": "اروى محمد احمد الجبر"
+        },
+        {
+          "personId": "p-b-alarajh",
+          "displayName": "بشاير خالد محمد العراجة"
+        },
+        {
+          "personId": "p-b-almahasin",
+          "displayName": "بسمه عبدالرحمن صالح المحاسن"
+        },
+        {
+          "personId": "p-h-alknini",
+          "displayName": "هنادي سليمان صالح الخنيني"
+        },
+        {
+          "personId": "p-n-alsaeayb",
+          "displayName": "نجود خالد صالح الصعيب"
+        },
+        {
+          "personId": "p-nm-alkhunaini",
+          "displayName": "نضيد محمد زيد الخنيني"
+        },
+        {
+          "personId": "p-r-aljower",
+          "displayName": "رنا حمود محمد الجوير"
+        },
+        {
+          "personId": "p-r-f-alosaimi",
+          "displayName": "رغد فهد سليمان العصيمي"
+        }
+      ],
+      "evaluator": {
+        "personId": "p-s-alslman",
+        "displayName": "",
+        "email": "s.alslman@qz.org.sa"
+      },
+      "newPlanId": "kg-03-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycles": 9,
+      "evaluatorAssignments": 72
+    },
+    {
+      "schoolId": "kg-04",
+      "schoolTitle": "روضة واحة الرياحين الرابعة",
+      "sourcePlans": [
+        {
+          "id": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - الزيارة التشخيصية - روضة واحة الرياحين الرابعة - الفصل الأول"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمات الصف - المتابعة الأسبوعية - روضة واحة الرياحين الرابعة - الفصل الأول"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الرابعة - الفصل الأول"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-educational-supervisor-class-teacher-periodic-evaluation",
+          "title": "تقييم المشرفة التعليمية لمعلمات الصف - روضة واحة الرياحين الرابعة - الفصل الأول"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمة الصف بواسطة وكيلة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+          "title": "تقييم وكيلة الروضة لمعلمة الصف - المتابعة الأسبوعية - روضة واحة الرياحين الرابعة - الفصل الأول"
+        }
+      ],
+      "classTeachersCount": 7,
+      "classTeachers": [
+        {
+          "personId": "p-a-alttayar",
+          "displayName": "اروى يوسف احمد الطيار"
+        },
+        {
+          "personId": "p-an-alslman",
+          "displayName": "انفال عبدالله أحمد السلمان"
+        },
+        {
+          "personId": "p-g-alfahid",
+          "displayName": "جواهر عبدالله دخيل الفهيد"
+        },
+        {
+          "personId": "p-m-aljabr",
+          "displayName": "منار جبر احمد الجبر"
+        },
+        {
+          "personId": "p-n-alkhunini",
+          "displayName": "نوره سليمان صالح الخنيني"
+        },
+        {
+          "personId": "p-n-almosa",
+          "displayName": "ندى عبدالله الموسى"
+        },
+        {
+          "personId": "p-sh-aldhuwaikh",
+          "displayName": "شروق يوسف عبدالله الذويخ"
+        }
+      ],
+      "evaluator": {
+        "personId": "p-h-alshaya",
+        "displayName": "",
+        "email": "h.alshaya@qz.org.sa"
+      },
+      "newPlanId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycles": 9,
+      "evaluatorAssignments": 63
+    }
+  ],
+  "plannedChanges": {
+    "totalWrites": 396,
+    "submissionsTouched": 0,
+    "existingPlansTouched": 0,
+    "existingCyclesTouched": 0,
+    "existingAssignmentsTouched": 0
+  },
+  "warnings": [],
+  "conflicts": [],
+  "applyResult": {
+    "decision": "APPLIED",
+    "committedWrites": 396,
+    "submissionsTouched": 0
+  }
+}

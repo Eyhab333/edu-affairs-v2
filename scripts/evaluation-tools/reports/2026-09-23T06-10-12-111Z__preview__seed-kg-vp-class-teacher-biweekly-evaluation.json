@@ -1,0 +1,58 @@
+{
+  "decision": "STOPPED",
+  "mode": "PREVIEW",
+  "framework": {
+    "id": "kg-vp-class-teacher-biweekly-evaluation-v1",
+    "title": "تقييم وكيلة الروضة لمعلمة الصف - كل أسبوعين",
+    "itemsCount": 14,
+    "cyclesPerPlan": 9
+  },
+  "schoolsCount": 0,
+  "schoolReports": [],
+  "plannedChanges": {
+    "totalWrites": 16,
+    "submissionsTouched": 0,
+    "existingPlansTouched": 0,
+    "existingCyclesTouched": 0,
+    "existingAssignmentsTouched": 0
+  },
+  "warnings": [],
+  "conflicts": [
+    {
+      "reason": "EXPECTED_ONE_VP_EVALUATOR",
+      "schoolId": "kg-01",
+      "evaluators": [
+        "p-a-alhomidi",
+        "p-f-alhamaad",
+        "staff-ms10LdA0k5TVkiJo4VO6pprmcOh2"
+      ]
+    },
+    {
+      "reason": "EXPECTED_ONE_VP_EVALUATOR",
+      "schoolId": "kg-02",
+      "evaluators": [
+        "p-s-alturiqe",
+        "p-f-alhamaad",
+        "p-h-aljower"
+      ]
+    },
+    {
+      "reason": "EXPECTED_ONE_VP_EVALUATOR",
+      "schoolId": "kg-03",
+      "evaluators": [
+        "p-s-alnafea",
+        "p-f-alhamaad",
+        "p-s-alslman"
+      ]
+    },
+    {
+      "reason": "EXPECTED_ONE_VP_EVALUATOR",
+      "schoolId": "kg-04",
+      "evaluators": [
+        "p-n-alhamiyn",
+        "p-f-alhamaad",
+        "p-h-alshaya"
+      ]
+    }
+  ]
+}

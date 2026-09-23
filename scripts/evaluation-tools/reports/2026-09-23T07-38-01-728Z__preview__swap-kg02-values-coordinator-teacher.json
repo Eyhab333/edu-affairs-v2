@@ -1,0 +1,88 @@
+{
+  "decision": "SAFE_PREVIEW",
+  "mode": "PREVIEW",
+  "schoolId": "kg-02",
+  "coordinator": {
+    "personId": "p-t-altwala",
+    "displayName": "طيبة سليمان الطوالة"
+  },
+  "oldValuesTeacher": {
+    "personId": "p-r-albatel",
+    "displayName": "رهام سويد محمد الباتل"
+  },
+  "newValuesTeacher": {
+    "personId": "p-alanoodf",
+    "displayName": "العنود دخيل عبدالله الفهيد"
+  },
+  "matchingPlans": [
+    {
+      "id": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation",
+      "title": "تقييم منسقة القيم لمعلمات القيم - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1"
+    },
+    {
+      "id": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "title": "التقييم الأسبوعي لمعلمات القيم بواسطة منسقة القيم - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-values-coordinator-values-teacher-weekly-evaluation-v1"
+    }
+  ],
+  "planReports": [
+    {
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation",
+      "planTitle": "تقييم منسقة القيم لمعلمات القيم - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-values-coordinator-values-teacher-periodic-evaluation-v1",
+      "cycles": 3,
+      "oldTarget": {
+        "personId": "p-r-albatel",
+        "displayName": "رهام سويد محمد الباتل"
+      },
+      "newTarget": {
+        "personId": "p-alanoodf",
+        "displayName": "العنود دخيل عبدالله الفهيد",
+        "email": "alanoodf@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "p-t-altwala",
+        "displayName": "طيبة سليمان الطوالة",
+        "email": "t.altwala@qz.org.sa"
+      },
+      "removeTargetAssignments": 1,
+      "removeEvaluatorAssignments": 3,
+      "createTargetAssignments": 1,
+      "createEvaluatorAssignments": 3
+    },
+    {
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "planTitle": "التقييم الأسبوعي لمعلمات القيم بواسطة منسقة القيم - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-values-coordinator-values-teacher-weekly-evaluation-v1",
+      "cycles": 19,
+      "oldTarget": {
+        "personId": "p-r-albatel",
+        "displayName": "رهام سويد محمد الباتل"
+      },
+      "newTarget": {
+        "personId": "p-alanoodf",
+        "displayName": "العنود دخيل عبدالله الفهيد",
+        "email": "alanoodf@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "p-t-altwala",
+        "displayName": "طيبة سليمان الطوالة",
+        "email": "t.altwala@qz.org.sa"
+      },
+      "removeTargetAssignments": 1,
+      "removeEvaluatorAssignments": 19,
+      "createTargetAssignments": 1,
+      "createEvaluatorAssignments": 19
+    }
+  ],
+  "submissionsFound": 0,
+  "plannedChanges": {
+    "totalWrites": 48,
+    "submissionsTouched": 0
+  },
+  "warningsCount": 0,
+  "conflictsCount": 0,
+  "warnings": [],
+  "conflicts": []
+}

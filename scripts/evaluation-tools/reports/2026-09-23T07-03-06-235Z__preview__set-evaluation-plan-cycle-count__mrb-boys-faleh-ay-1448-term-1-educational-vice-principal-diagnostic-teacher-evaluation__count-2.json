@@ -1,0 +1,53 @@
+{
+  "decision": "SAFE_PREVIEW",
+  "mode": "PREVIEW",
+  "input": {
+    "orgId": "takween",
+    "planId": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+    "requestedCycleCount": 2
+  },
+  "plan": {
+    "id": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation",
+    "title": "التقييم التشخيصي للمعلمين بواسطة الوكيل التعليمي - منار الريادة بنين الفالح - الفصل الأول",
+    "schoolId": "mrb-boys-faleh",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "frameworkId": "educational-vice-principal-diagnostic-teacher-evaluation-v1",
+    "currentCycleCount": 1,
+    "requestedCycleCount": 2
+  },
+  "currentState": {
+    "totalCycles": 1,
+    "activeCycles": 1,
+    "removedCycles": 0,
+    "evaluatorAssignments": 28,
+    "submissions": 0
+  },
+  "plannedChanges": {
+    "updatePlan": 1,
+    "createCycles": 1,
+    "reactivateCycles": 0,
+    "deactivateCycles": 0,
+    "evaluatorAssignmentWrites": 13,
+    "submissionsTouched": 0,
+    "totalWrites": 15
+  },
+  "createdCycles": [
+    {
+      "id": "mrb-boys-faleh-ay-1448-term-1-educational-vice-principal-diagnostic-teacher-evaluation-diagnostic-02",
+      "number": 2
+    }
+  ],
+  "reactivatedCycles": [],
+  "deactivatedCycles": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "firestoreDeletes": 0,
+    "submissionsTouched": 0,
+    "frameworksTouched": 0,
+    "targetAssignmentsTouched": 0,
+    "evaluatorAssignmentsMayBeCreatedReactivatedOrRemoved": true,
+    "requiresApplyFlag": true
+  }
+}

@@ -298,6 +298,13 @@ function getAssignedSubjectNames(
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
     .map(getOfferingSubjectName)
     .filter((name): name is string => Boolean(name))
+    .filter(
+  (name) =>
+    !(
+      classItem.schoolId?.startsWith("kg-") &&
+      ["NUMBERS", "CLASS"].includes(name.trim().toUpperCase())
+    ),
+)
     .filter((name, index, names) => names.indexOf(name) === index);
 }
 
