@@ -1,0 +1,1324 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-n-r-arbya",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-n-albader",
+    "supervisorEmail": "",
+    "schoolArg": "mrb-girls",
+    "planIdArg": ""
+  },
+  "teacher": {
+    "uid": "tJaHYk1FFbPc4plbfuQUJ0Mah4z1",
+    "personId": "p-n-r-arbya",
+    "email": "n-r-arbya@qz.org.sa",
+    "displayName": "نوره ربيعة الربيعة",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "okMSrTs9InbKydR0XGo90ZaBqJC2",
+    "personId": "p-n-albader",
+    "email": "n.albader@qz.org.sa",
+    "displayName": "نادية عثمان ناصر البدر",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "mrb-girls",
+    "schoolTitle": "مدرسة منار الريادة بنات"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 3,
+    "teacherSchools": [
+      "mrb-girls"
+    ],
+    "supervisorPatternAssignments": 587,
+    "supervisorPatternSchools": [
+      "mrb-girls"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 2,
+    "plans": [
+      {
+        "id": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation",
+        "title": "المتابعة الفترية للمعلمات بواسطة مديرة المدرسة - مدرسة منار الريادة بنات - الفصل الأول",
+        "frameworkId": "girls-principal-periodic-teacher-evaluation-v1"
+      },
+      {
+        "id": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+        "title": "التقييم الأسبوعي للمعلمات بواسطة مديرة المدرسة - مدرسة منار الريادة بنات - الفصل الأول",
+        "frameworkId": "girls-principal-weekly-teacher-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 2,
+    "createOrUpdateEvaluatorAssignments": 42,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 44
+  },
+  "planReports": [
+    {
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation",
+      "title": "المتابعة الفترية للمعلمات بواسطة مديرة المدرسة - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "girls-principal-periodic-teacher-evaluation-v1",
+      "cyclesCount": 2,
+      "newTargetId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-target-p-n-r-arbya",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01",
+          "cycleTitle": "التقييم الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02",
+          "cycleTitle": "التقييم الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "title": "التقييم الأسبوعي للمعلمات بواسطة مديرة المدرسة - مدرسة منار الريادة بنات - الفصل الأول",
+      "frameworkId": "girls-principal-weekly-teacher-evaluation-v1",
+      "cyclesCount": 19,
+      "newTargetId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-target-p-n-r-arbya",
+      "cycleReports": [
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01",
+          "cycleTitle": "الأسبوع الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02",
+          "cycleTitle": "الأسبوع الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03",
+          "cycleTitle": "الأسبوع الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04",
+          "cycleTitle": "الأسبوع الرابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05",
+          "cycleTitle": "الأسبوع الخامس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06",
+          "cycleTitle": "الأسبوع السادس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07",
+          "cycleTitle": "الأسبوع السابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08",
+          "cycleTitle": "الأسبوع الثامن",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09",
+          "cycleTitle": "الأسبوع التاسع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10",
+          "cycleTitle": "الأسبوع العاشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11",
+          "cycleTitle": "الأسبوع الحادي عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12",
+          "cycleTitle": "الأسبوع الثاني عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13",
+          "cycleTitle": "الأسبوع الثالث عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14",
+          "cycleTitle": "الأسبوع الرابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15",
+          "cycleTitle": "الأسبوع الخامس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16",
+          "cycleTitle": "الأسبوع السادس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17",
+          "cycleTitle": "الأسبوع السابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18",
+          "cycleTitle": "الأسبوع الثامن عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19",
+          "cycleTitle": "الأسبوع التاسع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19-p-a-a-alsuwaykit-p-n-albader",
+              "patternTargetPersonId": "p-a-a-alsuwaykit",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            },
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19-p-n-r-arbya-p-n-albader",
+              "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19",
+              "evaluatorPersonId": "p-n-albader",
+              "evaluatorEmail": "n.albader@qz.org.sa",
+              "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+              "patternId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19-p-r-g-alfraj-p-n-albader",
+              "patternTargetPersonId": "p-r-g-alfraj",
+              "patternTargetDisplayName": "ريم جوير الفراج",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-01-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-02-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-diagnostic-teacher-evaluation-visit-03-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-n-r-arbya-staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "source": "EXISTING",
+          "evaluatorPersonId": "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
+          "evaluatorEmail": "edu-supervisor-mrb@qz.org.sa",
+          "evaluatorDisplayName": "المشرفة التعليمية - منار الريادة بنات",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-01-p-n-r-arbya-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-02-p-n-r-arbya-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-sayed-educational-supervisor-periodic-teacher-evaluation-evaluation-03-p-n-r-arbya-p-s-sayed",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-sayed",
+          "evaluatorEmail": "s.sayed@qz.org.sa",
+          "evaluatorDisplayName": "السيد محمد القاضي",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-01-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-periodic-teacher-evaluation-evaluation-02-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-01-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-02-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-03-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-04-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-05-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-06-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-07-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-08-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-09-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-10-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-11-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-12-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-13-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-14-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-15-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-16-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-17-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-18-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation__mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19__p-n-r-arbya",
+      "planId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation",
+      "cycleId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19",
+      "targetPersonId": "p-n-r-arbya",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "mrb-girls-ay-1448-term-1-girls-principal-weekly-teacher-evaluation-week-19-p-n-r-arbya-p-n-albader",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-albader",
+          "evaluatorEmail": "n.albader@qz.org.sa",
+          "evaluatorDisplayName": "نادية عثمان ناصر البدر",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

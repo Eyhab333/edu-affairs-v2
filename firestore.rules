@@ -350,7 +350,7 @@ function canUseWorkDocumentation(orgId, schoolId, roleKey) {
 }
 
 
-    function ownsNotificationLog(orgId, notificationData) {
+function ownsNotificationLog(orgId, notificationData) {
       return signedIn()
         && (
           (
@@ -381,6 +381,9 @@ function canUseWorkDocumentation(orgId, schoolId, roleKey) {
           )
         );
     }
+
+
+
 
     /*
      * ============================================================
@@ -1501,10 +1504,14 @@ allow update: if canManageOrg(orgId)
  */
 
 match /pdfResources/{resourceId} {
-  allow get, list: if canReadPdfResource(
-    orgId,
-    resource.data
-  );
+  allow get, list: if hasOrgMembership(orgId);
+  
+  /*
+  # canReadPdfResource(
+  #   orgId,
+  #   resource.data
+  # );
+  */
 
   allow create: if canManageOrg(orgId)
     && request.resource.data.id == resourceId

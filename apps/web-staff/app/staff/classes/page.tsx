@@ -85,10 +85,7 @@ type StaffActorLike = {
 
 function getStudentCount(item: StaffVisibleClass) {
   return (
-    item.studentCount ??
-    item.studentsCount ??
-    item.enrolledStudentCount ??
-    null
+    item.studentCount ?? item.studentsCount ?? item.enrolledStudentCount ?? null
   );
 }
 
@@ -125,10 +122,7 @@ function isCurrentAssignment(
   return true;
 }
 
-function isCurrentOffering(
-  offering: StaffClassSubjectOffering,
-  nowMs: number,
-) {
+function isCurrentOffering(offering: StaffClassSubjectOffering, nowMs: number) {
   if (offering.isArchived) return false;
   if (["ENDED", "ARCHIVED"].includes(offering.status ?? "")) return false;
   if (typeof offering.startAt === "number" && offering.startAt > nowMs) {
@@ -207,15 +201,37 @@ function getOfferingSubjectName(offering: StaffClassSubjectOffering) {
       .map(normalizeText)
       .find(
         (value) =>
-            Boolean(value) &&
-            !isTechnicalIdentifier(value) &&
-            ![offering.id, offering.subjectId, offering.subjectKey]
-              .filter(Boolean)
-              .some(
-                (identifier) =>
-                  value.toLowerCase() === identifier!.toLowerCase(),
-              ),
+          Boolean(value) &&
+          !isTechnicalIdentifier(value) &&
+          ![offering.id, offering.subjectId, offering.subjectKey]
+            .filter(Boolean)
+            .some(
+              (identifier) => value.toLowerCase() === identifier!.toLowerCase(),
+            ),
       ) ?? null
+  );
+}
+
+function isLegacyKgOffering(
+  offering: StaffClassSubjectOffering,
+  classItem: StaffVisibleClass,
+) {
+  if (!classItem.schoolId?.startsWith("kg-")) {
+    return false;
+  }
+
+  const legacyValues = new Set(["NUMBERS", "CLASS"]);
+
+  const candidates = [
+    offering.subjectId,
+    offering.subjectKey,
+    offering.displayName,
+    offering.shortLabel,
+    offering.subjectTitleSnapshot,
+  ];
+
+  return candidates.some((value) =>
+    legacyValues.has(normalizeText(value).toUpperCase()),
   );
 }
 
@@ -230,8 +246,10 @@ function getAssignedSubjectNames(
   const classOfferings = offerings.filter(
     (offering) =>
       offeringBelongsToClass(offering, classItem) &&
-      isCurrentOffering(offering, nowMs),
+      isCurrentOffering(offering, nowMs) &&
+      !isLegacyKgOffering(offering, classItem),
   );
+
   const offeringById = new Map(
     classOfferings.map((offering) => [offering.id, offering]),
   );
@@ -292,19 +310,19 @@ function getAssignedSubjectNames(
 
   return Array.from(assignedOfferingIds)
     .map((offeringId) => offeringById.get(offeringId))
-    .filter(
-      (offering): offering is StaffClassSubjectOffering => Boolean(offering),
+    .filter((offering): offering is StaffClassSubjectOffering =>
+      Boolean(offering),
     )
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
     .map(getOfferingSubjectName)
     .filter((name): name is string => Boolean(name))
     .filter(
-  (name) =>
-    !(
-      classItem.schoolId?.startsWith("kg-") &&
-      ["NUMBERS", "CLASS"].includes(name.trim().toUpperCase())
-    ),
-)
+      (name) =>
+        !(
+          classItem.schoolId?.startsWith("kg-") &&
+          ["NUMBERS", "CLASS"].includes(name.trim().toUpperCase())
+        ),
+    )
     .filter((name, index, names) => names.indexOf(name) === index);
 }
 
@@ -368,9 +386,7 @@ export default function StaffClassesPage() {
   const gradeCount = useMemo(
     () =>
       new Set(
-        classes
-          .map((item) => item.gradeId || item.gradeTitle)
-          .filter(Boolean),
+        classes.map((item) => item.gradeId || item.gradeTitle).filter(Boolean),
       ).size,
     [classes],
   );
@@ -442,11 +458,9 @@ export default function StaffClassesPage() {
         </header>
 
         <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-          {classes.length} {classes.length === 1 ? "فصل" : "فصول"} · {gradeCount}{" "}
-          {gradeCount === 1 ? "صف" : "صفوف"}
-          {schoolCount > 1
-            ? ` · ${schoolCount} مدارس`
-            : ""}
+          {classes.length} {classes.length === 1 ? "فصل" : "فصول"} ·{" "}
+          {gradeCount} {gradeCount === 1 ? "صف" : "صفوف"}
+          {schoolCount > 1 ? ` · ${schoolCount} مدارس` : ""}
         </p>
 
         <div className="relative max-w-xl">
@@ -477,11 +491,7 @@ export default function StaffClassesPage() {
             </p>
           </div>
         ) : (
-
-
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-
-
             {filteredClasses.map((item) => {
               const studentCount = getStudentCount(item);
               const subjectNames = subjectsByClassId.get(item.id) ?? [];
@@ -534,8 +544,6 @@ export default function StaffClassesPage() {
                 </article>
               );
             })}
-
-
           </div>
         )}
       </section>

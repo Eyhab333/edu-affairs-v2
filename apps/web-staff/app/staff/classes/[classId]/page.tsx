@@ -64,10 +64,33 @@ export default function StaffClassDetailsPage() {
   const contextualClassSubjectOfferings = useMemo(() => {
     if (!staffActor || !classInfo) return [];
 
-    return (staffActor.classSubjectOfferings ?? []).filter((offering) =>
-      matchesClassSubjectOfferingContext(offering, classInfo),
-    );
+    const isKindergarten = classInfo.schoolId?.startsWith("kg-") === true;
+    const legacyKgSubjectKeys = new Set(["NUMBERS", "CLASS"]);
+
+    return (staffActor.classSubjectOfferings ?? []).filter((offering) => {
+      if (!matchesClassSubjectOfferingContext(offering, classInfo)) {
+        return false;
+      }
+
+      if (!isKindergarten) {
+        return true;
+      }
+
+      const subjectKey = String(offering.subjectKey ?? offering.subjectId ?? "")
+        .trim()
+        .toUpperCase();
+
+      return !legacyKgSubjectKeys.has(subjectKey);
+    });
   }, [staffActor, classInfo]);
+
+  // const contextualClassSubjectOfferings = useMemo(() => {
+  //   if (!staffActor || !classInfo) return [];
+
+  //   return (staffActor.classSubjectOfferings ?? []).filter((offering) =>
+  //     matchesClassSubjectOfferingContext(offering, classInfo),
+  //   );
+  // }, [staffActor, classInfo]);
 
   const classSubjectWorkspaces = useMemo(() => {
     if (!staffActor || !classInfo) return [];
@@ -239,7 +262,10 @@ export default function StaffClassDetailsPage() {
           <div className="grid gap-2 border-t border-slate-100 p-4 text-sm dark:border-slate-800">
             <InfoRow label="classId" value={classInfo.id} />
             <InfoRow label="code" value={classInfo.code || "غير محدد"} />
-            <InfoRow label="schoolId" value={classInfo.schoolId || "غير محدد"} />
+            <InfoRow
+              label="schoolId"
+              value={classInfo.schoolId || "غير محدد"}
+            />
             <InfoRow
               label="academicYearId"
               value={classInfo.academicYearId || "غير محدد"}

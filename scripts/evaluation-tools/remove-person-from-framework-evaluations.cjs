@@ -45,26 +45,20 @@ async function rows(orgRef, collectionName) {
 
 async function main() {
   if (!PERSON_ID || !FRAMEWORK_ID || !SCHOOL_ID) {
-    throw new Error(
-      "Required: --personId --frameworkId --school",
-    );
+    throw new Error("Required: --personId --frameworkId --school");
   }
 
   console.log(APPLY ? "APPLY mode" : "Preview mode - no writes");
 
   const orgRef = db.collection("orgs").doc(ORG_ID);
 
-  const [
-    plans,
-    targetAssignments,
-    evaluatorAssignments,
-    submissions,
-  ] = await Promise.all([
-    rows(orgRef, "evaluationPlans"),
-    rows(orgRef, "evaluationTargetAssignments"),
-    rows(orgRef, "evaluationEvaluatorAssignments"),
-    rows(orgRef, "evaluationSubmissions"),
-  ]);
+  const [plans, targetAssignments, evaluatorAssignments, submissions] =
+    await Promise.all([
+      rows(orgRef, "evaluationPlans"),
+      rows(orgRef, "evaluationTargetAssignments"),
+      rows(orgRef, "evaluationEvaluatorAssignments"),
+      rows(orgRef, "evaluationSubmissions"),
+    ]);
 
   const matchingPlans = plans.filter(
     (plan) =>
@@ -72,9 +66,7 @@ async function main() {
       text(plan.schoolId) === SCHOOL_ID,
   );
 
-  const planIds = new Set(
-    matchingPlans.map((plan) => text(plan.id)),
-  );
+  const planIds = new Set(matchingPlans.map((plan) => text(plan.id)));
 
   const targets = targetAssignments
     .filter((row) => planIds.has(text(row.planId)))
@@ -142,9 +134,12 @@ async function main() {
     return;
   }
 
-  if (matchingSubmissions.length > 0) {
+  const PRESERVE_SUBMISSIONS = process.argv.includes("--preserveSubmissions");
+
+  if (matchingSubmissions.length > 0 && !PRESERVE_SUBMISSIONS) {
     throw new Error(
-      `Stopped: ${matchingSubmissions.length} submission(s) found.`,
+      `Stopped: ${matchingSubmissions.length} submission(s) found. ` +
+        `Re-run with --preserveSubmissions to keep historical submissions and remove only active assignments.`,
     );
   }
 
@@ -162,6 +157,7 @@ async function main() {
     targetAssignmentsRemoved: targets.length,
     evaluatorAssignmentsRemoved: evaluators.length,
     submissionsTouched: 0,
+    
   });
 }
 
