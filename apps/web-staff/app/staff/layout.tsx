@@ -148,6 +148,8 @@ function StaffShell({ children }: { children: ReactNode }) {
     canAccessLessonPrepApprovals: canAccessLegacyLessonPrepApprovals,
     canAccessTeacherWork: canAccessTeacherWorkRoute,
     canAccessStaffWork: canAccessStaffWorkRoute,
+    canAccessAdminWork: canAccessAdminWorkRoute,
+    canAccessReports: canAccessReportsRoute,
   } = navigationAccess;
   const canAccessLessonPrepApprovals = useMemo(
     () =>
@@ -190,6 +192,11 @@ function StaffShell({ children }: { children: ReactNode }) {
   const isStaffWorkRoute =
     pathname === "/staff/staff-work" ||
     pathname.startsWith("/staff/staff-work/");
+  const isAdminWorkRoute =
+    pathname === "/staff/admin-work" ||
+    pathname.startsWith("/staff/admin-work/");
+  const isReportsRoute =
+    pathname === "/staff/reports" || pathname.startsWith("/staff/reports/");
   const isLessonPrepApprovalsRoute =
     pathname === "/staff/lesson-prep/approvals" ||
     pathname.startsWith("/staff/lesson-prep/approvals/");
@@ -197,6 +204,10 @@ function StaffShell({ children }: { children: ReactNode }) {
     ? canAccessTeacherWorkRoute
     : isStaffWorkRoute
       ? scopesLoading || canAccessStaffWorkRoute
+      : isAdminWorkRoute
+        ? scopesLoading || canAccessAdminWorkRoute
+      : isReportsRoute
+        ? canAccessReportsRoute
       : isLessonPrepApprovalsRoute
         ? scopesLoading || canAccessLessonPrepApprovals
         : isPerformanceImprovementRoute

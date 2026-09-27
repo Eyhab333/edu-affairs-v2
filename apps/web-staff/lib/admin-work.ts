@@ -2,7 +2,7 @@ import { httpsCallable } from "firebase/functions";
 
 import { functions } from "@/lib/firebase";
 
-export type AdminWorkPeriod = "WEEK" | "MONTH" | "ALL";
+export type AdminWorkPeriod = "DAY" | "WEEK" | "MONTH" | "ALL";
 export type AdminWorkMetricKey = "evaluations" | "performanceImprovement" | "studentCases" | "attendance" | "lessonPrepReview" | "workDocumentation" | "schoolActivities";
 export type AdminWorkMetric = { count: number; latestActivityAt: number | null };
 export type AdminWorkAssignment = { schoolId: string; schoolName: string; roleKey: string; roleLabel: string };

@@ -12,6 +12,9 @@ export { onThreadMessageCreated } from "./messaging/on-thread-message-created";
 export { createOrGetStudentContextThread } from "./messaging/create-or-get-student-context-thread";
 export { markThreadRead } from "./messaging/mark-thread-read";
 export { getStudentCommunicationTargets } from "./messaging/get-student-communication-targets";
+export { getStaffChatGroups } from "./staff-chat/get-staff-chat-groups";
+export { sendStaffChatMessage } from "./staff-chat/send-staff-chat-message";
+export { updateStaffChatGroupOverrides } from "./staff-chat/update-staff-chat-group-overrides";
 export { createVirtualClassSessionWithMeet } from "./virtual-classes/create-virtual-class-session-with-meet";
 export { importGoogleMeetAttendance } from "./virtual-classes/import-google-meet-attendance";
 export { registerStudentInActivity } from "./activities/register-student-in-activity";
@@ -39,6 +42,7 @@ export {
   getTeacherWorkDetail,
   getTeacherWorkMeasurementDetail,
   getTeacherWorkOverview,
+  getTeacherWorkReport,
 } from "./teacher-work/teacher-work";
 
 export {

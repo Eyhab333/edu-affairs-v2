@@ -1225,6 +1225,109 @@ match /performanceImprovementPlans/{planId} {
 }
 
 
+/*
+ * Staff chat groups are deliberately separate from guardian/staff threads.
+ * Membership is resolved from the canonical user membership document at read
+ * time, so a stale client-side list can never grant access.
+ */
+function isStaffChatActor(orgId) {
+  return hasOrgMembership(orgId)
+    && orgRole(orgId) != "GUARDIAN";
+}
+
+function staffChatManuallyIncluded(groupData) {
+  return "manualIncludedUids" in groupData
+    && groupData.manualIncludedUids is list
+    && request.auth.uid in groupData.manualIncludedUids;
+}
+
+function staffChatManuallyExcluded(groupData) {
+  return "manualExcludedUids" in groupData
+    && groupData.manualExcludedUids is list
+    && request.auth.uid in groupData.manualExcludedUids;
+}
+
+function staffChatMatchesAutomaticSpecialRule(orgId, groupData) {
+  return "automaticRule" in groupData
+    && groupData.automaticRule is map
+    && (
+      (
+        "roleKeys" in groupData.automaticRule
+        && groupData.automaticRule.roleKeys is list
+        && orgRole(orgId) in groupData.automaticRule.roleKeys
+      )
+      || (
+        "orgUnitIds" in groupData.automaticRule
+        && groupData.automaticRule.orgUnitIds is list
+        && "orgUnitId" in membershipData(orgId)
+        && membershipData(orgId).orgUnitId is string
+        && membershipData(orgId).orgUnitId in groupData.automaticRule.orgUnitIds
+      )
+      || (
+        "positionCodes" in groupData.automaticRule
+        && groupData.automaticRule.positionCodes is list
+        && "positionCode" in membershipData(orgId)
+        && membershipData(orgId).positionCode is string
+        && membershipData(orgId).positionCode in groupData.automaticRule.positionCodes
+      )
+    );
+}
+
+function hasStaffChatDirectSchoolScope(orgId, schoolId) {
+  return hasOrgMembership(orgId)
+    && (
+      (
+        "scopes" in membershipData(orgId)
+        && membershipData(orgId).scopes is map
+        && "schoolIds" in membershipData(orgId).scopes
+        && membershipData(orgId).scopes.schoolIds is list
+        && schoolId in membershipData(orgId).scopes.schoolIds
+      )
+      || (
+        "scopeType" in membershipData(orgId)
+        && "scopeId" in membershipData(orgId)
+        && membershipData(orgId).scopeType == "SCHOOL"
+        && membershipData(orgId).scopeId == schoolId
+      )
+    );
+}
+
+function canAccessStaffChatGroup(orgId, groupData) {
+  return isStaffChatActor(orgId)
+    && groupData.orgId == orgId
+    && groupData.type == "STAFF_GROUP"
+    && groupData.status == "ACTIVE"
+    && groupData.isInternal == true
+    && !staffChatManuallyExcluded(groupData)
+    && (
+      staffChatManuallyIncluded(groupData)
+      || (
+        groupData.groupKind == "SCHOOL"
+        && groupData.schoolId is string
+        && hasStaffChatDirectSchoolScope(orgId, groupData.schoolId)
+      )
+      || (
+        groupData.groupKind == "SPECIAL"
+        && staffChatMatchesAutomaticSpecialRule(orgId, groupData)
+      )
+    );
+}
+
+match /staffChatGroups/{groupId} {
+  allow get, list: if canAccessStaffChatGroup(orgId, resource.data);
+  allow create, update, delete: if false;
+
+  match /messages/{messageId} {
+    allow get, list: if canAccessStaffChatGroup(
+      orgId,
+      get(
+        /databases/$(database)/documents/orgs/$(orgId)/staffChatGroups/$(groupId)
+      ).data
+    );
+    allow create, update, delete: if false;
+  }
+}
+
 /*threads*/
 match /threads/{threadId} {
   allow get, list: if canManageOrg(orgId)

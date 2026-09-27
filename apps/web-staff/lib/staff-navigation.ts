@@ -13,6 +13,7 @@ import {
   Ruler,
   School,
   Star,
+  ChartNoAxesCombined,
   TrendingDown,
   TrendingUp,
   UserCheck,
@@ -51,6 +52,7 @@ export type StaffNavItem = {
   teacherWork?: boolean;
   staffWork?: boolean;
   adminWork?: boolean;
+  reports?: boolean;
 };
 
 export const staffNavItems: StaffNavItem[] = [
@@ -138,6 +140,7 @@ export const staffNavItems: StaffNavItem[] = [
     icon: UsersRound,
     adminWork: true,
   },
+  
   {
     href: "/staff/documents/manage",
     label: "إدارة المستندات",
@@ -202,10 +205,22 @@ export const staffNavItems: StaffNavItem[] = [
     performanceImprovement: true,
   },
   {
+    href: "/staff/reports",
+    label: "التقارير",
+    icon: ChartNoAxesCombined,
+    reports: true,
+  },
+  {
     href: "/staff/messages",
-    label: "المحادثات",
+    label: "تواصل ولي الأمر",
     icon: MessageSquare,
     moduleKey: "MESSAGES",
+  },
+  {
+    href: "/staff/chat",
+    label: "الشات",
+    icon: MessageSquare,
+    moduleKey: "STAFF_CHAT",
   },
   {
     href: "/staff/activities",
@@ -233,6 +248,7 @@ export type StaffNavigationAccess = {
   canAccessTeacherWork: boolean;
   canAccessStaffWork: boolean;
   canAccessAdminWork: boolean;
+  canAccessReports: boolean;
 };
 
 export function getStaffNavigationAccess(
@@ -261,6 +277,14 @@ export function getStaffNavigationAccess(
       roles: actor.roles,
       scopes: supervisionScopes,
     }),
+    canAccessReports:
+      actor.roles.includes("platform_owner") ||
+      actor.roles.includes("ORG_SUPERVISION_HEAD") ||
+      actor.roles.includes("BOYS_EDU_SUPERVISOR") ||
+      actor.roles.includes("EDU_SUPERVISOR") ||
+      actor.roles.includes("BOYS_PRINCIPAL") ||
+      actor.roles.includes("GIRLS_PRINCIPAL") ||
+      actor.roles.includes("KG_PRINCIPAL"),
   };
 }
 
@@ -288,6 +312,7 @@ export function getVisibleStaffNavItems(
     if (item.teacherWork) return access.canAccessTeacherWork;
     if (item.staffWork) return access.canAccessStaffWork;
     if (item.adminWork) return access.canAccessAdminWork;
+    if (item.reports) return access.canAccessReports;
 
     if (item.lessonPrepApprovals) return access.canAccessLessonPrepApprovals;
 

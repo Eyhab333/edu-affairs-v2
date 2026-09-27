@@ -253,6 +253,14 @@ const MembershipSchemaBase = AuditFieldsSchema.merge(
     department: z.string().optional().default(""),
 
     /**
+     * Canonical organizational placement. These are optional because older
+     * memberships are role/scope based, but new organizational integrations
+     * can use them without introducing a second identity model.
+     */
+    orgUnitId: z.string().optional().default(""),
+    positionCode: z.string().optional().default(""),
+
+    /**
      * نطاق سريع مبسط
      */
     scopes: MembershipScopesSchema.default({}),
@@ -5795,3 +5803,4 @@ export * from "./school-scope-groups";
 export * from "./pdf-resources";
 export * from "./staff-portfolio";
 export * from "./staff-pdf-files";
+export * from "./staff-chat";

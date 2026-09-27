@@ -2,7 +2,7 @@ import { httpsCallable } from "firebase/functions";
 
 import { functions } from "@/lib/firebase";
 
-export type TeacherWorkPeriod = "WEEK" | "MONTH" | "ALL";
+export type TeacherWorkPeriod = "DAY" | "WEEK" | "MONTH" | "ALL";
 
 export type TeacherWorkMetricKey =
   | "measurements"
@@ -219,6 +219,12 @@ type TeacherWorkOverviewResponse = {
   teachers: TeacherWorkDirectoryEntry[];
 };
 
+type TeacherWorkReportResponse = {
+  academicYearId: string;
+  period: TeacherWorkPeriod;
+  teachers: TeacherWorkSummary[];
+};
+
 type TeacherWorkDetailInput = TeacherWorkCallableInput & {
   teacherPersonId: string;
 };
@@ -235,6 +241,11 @@ const getTeacherWorkOverview = httpsCallable<
   TeacherWorkCallableInput,
   TeacherWorkOverviewResponse
 >(functions, "getTeacherWorkOverview");
+
+const getTeacherWorkReport = httpsCallable<
+  TeacherWorkCallableInput,
+  TeacherWorkReportResponse
+>(functions, "getTeacherWorkReport");
 
 const getTeacherWorkDetail = httpsCallable<
   TeacherWorkDetailInput,
@@ -258,6 +269,20 @@ export async function loadTeacherWorkDirectory(params: {
   const result = await getTeacherWorkOverview({
     orgId: params.orgId,
     academicYearId: params.academicYearId || undefined,
+  });
+
+  return result.data.teachers;
+}
+
+export async function loadTeacherWorkReport(params: {
+  orgId: string;
+  academicYearId?: string;
+  period: TeacherWorkPeriod;
+}) {
+  const result = await getTeacherWorkReport({
+    orgId: params.orgId,
+    academicYearId: params.academicYearId || undefined,
+    period: params.period,
   });
 
   return result.data.teachers;

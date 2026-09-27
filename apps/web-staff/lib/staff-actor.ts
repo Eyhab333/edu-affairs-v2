@@ -147,6 +147,12 @@ function normalizeMembership(params: {
     title: typeof params.data.title === "string" ? params.data.title : "",
     department:
       typeof params.data.department === "string" ? params.data.department : "",
+    orgUnitId:
+      typeof params.data.orgUnitId === "string" ? params.data.orgUnitId : "",
+    positionCode:
+      typeof params.data.positionCode === "string"
+        ? params.data.positionCode
+        : "",
 
     scopes: {
       ...emptyScopes,
@@ -740,6 +746,7 @@ function resolveVisibleModules(params: {
       "EVALUATIONS",
       "MY_EVALUATIONS",
       "MESSAGES",
+      "STAFF_CHAT",
       "GUARDIAN_SERVICES",
       "PDF_FILES",
     ];
@@ -761,6 +768,7 @@ function resolveVisibleModules(params: {
 
   modules.add("HOME");
   modules.add("MESSAGES");
+  modules.add("STAFF_CHAT");
   modules.add("PDF_FILES");
 
   if (params.visibleClasses.length > 0) {

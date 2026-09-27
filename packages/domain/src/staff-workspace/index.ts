@@ -24,6 +24,7 @@ export type StaffHomeVisibleModule =
   | "EVALUATIONS"
   | "MY_EVALUATIONS"
   | "MESSAGES"
+  | "STAFF_CHAT"
   | "GUARDIAN_SERVICES"
   | "ACTIVITIES"
   | "PDF_FILES";

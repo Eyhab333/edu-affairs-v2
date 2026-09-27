@@ -22,7 +22,7 @@ const TEACHER_WORK_COLLECTIONS = [
 ] as const;
 
 type Row = Record<string, unknown>;
-type TeacherWorkPeriod = "WEEK" | "MONTH" | "ALL";
+type TeacherWorkPeriod = "DAY" | "WEEK" | "MONTH" | "ALL";
 type TeacherWorkMetricKey =
   | "measurements"
   | "learningLoss"
@@ -414,13 +414,29 @@ function hasAllSchoolsAccess(membership: Row, role: MembershipRoleType) {
 }
 
 function getPeriod(value: unknown): TeacherWorkPeriod {
-  return value === "WEEK" || value === "MONTH" || value === "ALL" ? value : "ALL";
+  return value === "DAY" || value === "WEEK" || value === "MONTH" || value === "ALL"
+    ? value
+    : "ALL";
 }
 
 function periodStart(period: TeacherWorkPeriod) {
   if (period === "ALL") return null;
 
   const now = new Date();
+  if (period === "DAY") {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Riyadh",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).formatToParts(now);
+    const valueFor = (type: string) =>
+      Number(parts.find((part) => part.type === type)?.value || 0);
+    return (
+      Date.UTC(valueFor("year"), valueFor("month") - 1, valueFor("day")) -
+      3 * 60 * 60 * 1000
+    );
+  }
   if (period === "WEEK") {
     const start = new Date(now);
     start.setDate(now.getDate() - 6);
@@ -1351,6 +1367,20 @@ export const getTeacherWorkOverview = onCall(
     }
 
     return getTeacherWorkDirectory({
+      uid: request.auth.uid,
+      input: row(request.data),
+    });
+  },
+);
+
+export const getTeacherWorkReport = onCall(
+  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  async (request): Promise<TeacherWorkResponse> => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    return getTeacherWork({
       uid: request.auth.uid,
       input: row(request.data),
     });

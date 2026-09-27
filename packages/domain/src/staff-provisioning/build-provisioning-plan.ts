@@ -121,6 +121,11 @@ export function buildStaffProvisioningPlan(
 
     title: input.title,
     department: "الإشراف والإدارة التعليمية",
+    // These organizational fields are optional in persisted legacy records.
+    // Keep the provisioned plan structurally complete without overwriting
+    // existing values in the merge-based provisioning writer.
+    orgUnitId: "",
+    positionCode: "",
 
     scopeType: profile.scope.scopeType,
     scopeId: primarySchoolId,

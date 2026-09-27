@@ -11,7 +11,7 @@ import { getAdminWorkRoleInfo, getPersonSupervisionSchoolIds, isAdminWorkPrincip
 
 const REGION = "me-central2";
 type Row = Record<string, unknown>;
-type AdminWorkPeriod = "WEEK" | "MONTH" | "ALL";
+type AdminWorkPeriod = "DAY" | "WEEK" | "MONTH" | "ALL";
 type AdminWorkMetricKey = "evaluations" | "performanceImprovement" | "studentCases" | "attendance" | "lessonPrepReview" | "workDocumentation" | "schoolActivities";
 type Metric = { count: number; latestActivityAt: number | null };
 type Details =
@@ -38,8 +38,8 @@ function rows(value: unknown) { return Array.isArray(value) ? value.map(row) : [
 function unique(values: string[]) { return [...new Set(values.map((value) => value.trim()).filter(Boolean))]; }
 function human(value: unknown) { const result = text(value); return /^[a-z0-9]+(?:[-_][a-z0-9]+)+$/i.test(result) || /^[a-z0-9]{16,}$/i.test(result) ? "" : result; }
 function id(value: unknown, name: string) { const result = text(value); if (!result || result.includes("/")) throw new HttpsError("invalid-argument", `${name} is required.`); return result; }
-function period(value: unknown): AdminWorkPeriod { return value === "WEEK" || value === "MONTH" || value === "ALL" ? value : "ALL"; }
-function periodStart(value: AdminWorkPeriod) { if (value === "ALL") return null; const now = new Date(); if (value === "WEEK") { now.setDate(now.getDate() - 6); now.setHours(0, 0, 0, 0); return now.getTime(); } return new Date(now.getFullYear(), now.getMonth(), 1).getTime(); }
+function period(value: unknown): AdminWorkPeriod { return value === "DAY" || value === "WEEK" || value === "MONTH" || value === "ALL" ? value : "ALL"; }
+function periodStart(value: AdminWorkPeriod) { if (value === "ALL") return null; const now = new Date(); if (value === "DAY") { const parts = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Riyadh", year: "numeric", month: "numeric", day: "numeric" }).formatToParts(now); const valueFor = (type: string) => Number(parts.find((part) => part.type === type)?.value || 0); return Date.UTC(valueFor("year"), valueFor("month") - 1, valueFor("day")) - 3 * 60 * 60 * 1000; } if (value === "WEEK") { now.setDate(now.getDate() - 6); now.setHours(0, 0, 0, 0); return now.getTime(); } return new Date(now.getFullYear(), now.getMonth(), 1).getTime(); }
 function inPeriod(at: number | null, startAt: number | null) { return at !== null && (startAt === null || at >= startAt); }
 function currentYear(item: Row, academicYearId: string) { return !academicYearId || text(item.academicYearId) === academicYearId; }
 function active(item: Row, now: number) { return item.isActive !== false && item.active !== false && text(item.status) !== "INACTIVE" && !(num(item.startAt) !== null && num(item.startAt)! > now) && !(num(item.endAt) !== null && num(item.endAt)! < now); }

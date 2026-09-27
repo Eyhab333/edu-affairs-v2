@@ -36,7 +36,7 @@ const ROLE_LABELS: Partial<Record<MembershipRoleType, string>> = {
 };
 
 type Row = Record<string, unknown>;
-type StaffWorkPeriod = "WEEK" | "MONTH" | "ALL";
+type StaffWorkPeriod = "DAY" | "WEEK" | "MONTH" | "ALL";
 type StaffWorkMetricKey =
   | "evaluations"
   | "performanceImprovement"
@@ -255,13 +255,23 @@ function id(value: unknown, name: string) {
   return result;
 }
 function period(value: unknown): StaffWorkPeriod {
-  return value === "WEEK" || value === "MONTH" || value === "ALL"
+  return value === "DAY" || value === "WEEK" || value === "MONTH" || value === "ALL"
     ? value
     : "ALL";
 }
 function periodStart(value: StaffWorkPeriod) {
   if (value === "ALL") return null;
   const now = new Date();
+  if (value === "DAY") {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Riyadh",
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).formatToParts(now);
+    const valueFor = (type: string) => Number(parts.find((part) => part.type === type)?.value || 0);
+    return Date.UTC(valueFor("year"), valueFor("month") - 1, valueFor("day")) - 3 * 60 * 60 * 1000;
+  }
   if (value === "WEEK") {
     now.setDate(now.getDate() - 6);
     now.setHours(0, 0, 0, 0);

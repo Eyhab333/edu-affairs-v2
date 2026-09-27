@@ -2,7 +2,7 @@ import { httpsCallable } from "firebase/functions";
 
 import { functions } from "@/lib/firebase";
 
-export type StaffWorkPeriod = "WEEK" | "MONTH" | "ALL";
+export type StaffWorkPeriod = "DAY" | "WEEK" | "MONTH" | "ALL";
 export type StaffWorkMetricKey =
   | "evaluations"
   | "performanceImprovement"
