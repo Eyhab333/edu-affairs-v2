@@ -154,6 +154,10 @@ const MULTIPLE_TEMPLATE_KEYS = new Set([
   "staff-circulars-acknowledgement",
   "morning-late-students",
   "behavioral-violation-pledge",
+  "classroom-visits-plan",
+  "staff-permission",
+  "daily-supervision",
+  "daily-duty",
 ]);
 
 const template = (
@@ -666,18 +670,22 @@ const principalTemplates: WorkDocumentationTemplate[] = [
   template("daily-supervision", "الإشراف اليومي", "PRINCIPAL", [
     section("الإشراف", [
       text("week", "الأسبوع"),
-      text("day", "اليوم"),
-      date("date", "التاريخ"),
-      text("teacherName", "اسم المعلم"),
-      text("supervisionLocation", "موقع الإشراف"),
+      table("rows", "جدول الإشراف", [
+        { key: "day", label: "اليوم" },
+        { key: "date", label: "التاريخ", type: "date" },
+        { key: "teacherName", label: "اسم المعلم" },
+        { key: "supervisionLocation", label: "موقع الإشراف" },
+      ]),
     ]),
   ]),
   template("daily-duty", "المناوبة اليومية", "PRINCIPAL", [
     section("المناوبة", [
       text("week", "الأسبوع"),
-      text("day", "اليوم"),
-      date("date", "التاريخ"),
-      text("teacherName", "اسم المعلم"),
+      table("rows", "جدول المناوبة", [
+        { key: "day", label: "اليوم" },
+        { key: "date", label: "التاريخ", type: "date" },
+        { key: "teacherName", label: "اسم المعلم" },
+      ]),
     ]),
   ]),
   template("school-purchases", "مشتريات المدرسة", "PRINCIPAL", [
@@ -753,6 +761,11 @@ const principalTemplates: WorkDocumentationTemplate[] = [
     ]),
   ]),
   template("classroom-visits-plan", "خطة الزيارات الصفية", "PRINCIPAL", [
+    section("بيانات الفترة", [
+      text("periodTitle", "اسم الفترة"),
+      date("periodFrom", "من تاريخ"),
+      date("periodTo", "إلى تاريخ"),
+    ]),
     section("بيانات المعلم", [
       text("teacherName", "اسم المعلم"),
       text("specialization", "التخصص"),
@@ -1003,10 +1016,39 @@ export function getInitialWorkDocumentationData(
   savedData?: WorkDocumentationData,
 ) {
   const result: WorkDocumentationData = {};
+  const initialData: WorkDocumentationData = { ...(savedData ?? {}) };
+
+  if (
+    !Array.isArray(initialData.rows) &&
+    (templateDefinition.key === "daily-supervision" ||
+      templateDefinition.key === "daily-duty") &&
+    (typeof initialData.day === "string" ||
+      typeof initialData.date === "string" ||
+      typeof initialData.teacherName === "string")
+  ) {
+    initialData.rows = [
+      {
+        day: typeof initialData.day === "string" ? initialData.day : "",
+        date: typeof initialData.date === "string" ? initialData.date : "",
+        teacherName:
+          typeof initialData.teacherName === "string"
+            ? initialData.teacherName
+            : "",
+        ...(templateDefinition.key === "daily-supervision"
+          ? {
+              supervisionLocation:
+                typeof initialData.supervisionLocation === "string"
+                  ? initialData.supervisionLocation
+                  : "",
+            }
+          : {}),
+      },
+    ];
+  }
 
   templateDefinition.sections.forEach((itemSection) => {
     itemSection.fields.forEach((field) => {
-      const savedValue = savedData?.[field.key];
+      const savedValue = initialData[field.key];
 
       if (field.type === "table") {
         result[field.key] = Array.isArray(savedValue)

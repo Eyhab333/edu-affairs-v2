@@ -1282,6 +1282,32 @@ export async function approveEvaluationSubmission(params: {
   return response.data;
 }
 
+export async function reopenEvaluationSubmission(params: {
+  orgId?: string;
+  submissionId: string;
+}) {
+  const orgId = params.orgId ?? "takween";
+  const reopen = httpsCallable<
+    {
+      orgId: string;
+      submissionId: string;
+    },
+    {
+      ok: true;
+      submissionId: string;
+      cycleSummaryId: string;
+      staffSummaryId: string;
+    }
+  >(functions, "reopenEvaluationSubmission");
+
+  const response = await reopen({
+    orgId,
+    submissionId: params.submissionId,
+  });
+
+  return response.data;
+}
+
 export type MyEvaluationCycleResult = {
   id: string;
   detailsHref: string;

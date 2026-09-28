@@ -50,6 +50,43 @@ function formatUpdatedAt(value: number) {
   }).format(value);
 }
 
+function recordText(value: unknown) {
+  return typeof value === "string" || typeof value === "number"
+    ? String(value)
+    : "";
+}
+
+function getMultipleRecordLabel(
+  templateKey: string,
+  templateTitle: string,
+  data: WorkDocumentationData,
+) {
+  if (templateKey === "classroom-visits-plan") {
+    return (
+      recordText(data.periodTitle) ||
+      [recordText(data.periodFrom), recordText(data.periodTo)]
+        .filter(Boolean)
+        .join(" - ") ||
+      templateTitle
+    );
+  }
+
+  if (templateKey === "staff-permission") {
+    return (
+      [recordText(data.employeeName), recordText(data.date)]
+        .filter(Boolean)
+        .join(" - ") ||
+      templateTitle
+    );
+  }
+
+  if (templateKey === "daily-supervision" || templateKey === "daily-duty") {
+    return recordText(data.week) || templateTitle;
+  }
+
+  return templateTitle;
+}
+
 export default function WorkDocumentationFormPage() {
   const { actor } = useStaffActor();
   const params = useParams<{ templateKey: string }>();
@@ -341,7 +378,11 @@ export default function WorkDocumentationFormPage() {
                   >
                     <div>
                       <p className="font-medium">
-                        {record.templateTitle || template.title}
+                        {getMultipleRecordLabel(
+                          template.key,
+                          record.templateTitle || template.title,
+                          record.data,
+                        )}
                       </p>
                       <p className="mt-1 text-sm text-muted-foreground">
                         آخر تعديل: {formatUpdatedAt(record.updatedAt)}

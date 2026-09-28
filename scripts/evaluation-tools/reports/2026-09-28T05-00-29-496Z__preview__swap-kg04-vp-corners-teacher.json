@@ -1,0 +1,154 @@
+{
+  "decision": "STOPPED",
+  "mode": "PREVIEW",
+  "schoolId": "kg-04",
+  "evaluator": {
+    "personId": "p-h-alshaya"
+  },
+  "oldTarget": {
+    "personId": "p-s-bader"
+  },
+  "newTarget": {
+    "personId": "p-r-a-atyar"
+  },
+  "matchingPlans": [
+    {
+      "id": "kg-04-ay-1448-term-1-corners-teacher-diagnostic-evaluation",
+      "title": "تقييم مديرة الروضة لمعلمة الأركان - الزيارة التشخيصية - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-principal-corners-teacher-diagnostic-evaluation-v1"
+    },
+    {
+      "id": "kg-04-ay-1448-term-1-corners-teacher-weekly-evaluation",
+      "title": "تقييم مديرة الروضة لمعلمة الأركان - التقييم الأسبوعي - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-principal-corners-teacher-weekly-evaluation-v1"
+    },
+    {
+      "id": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة المشرفة التعليمية - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-corners-teacher-diagnostic-evaluation-v1"
+    },
+    {
+      "id": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة وكيلة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vice-principal-corners-teacher-diagnostic-evaluation-v1"
+    },
+    {
+      "id": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "title": "تقييم وكيلة الروضة لمعلمة الأركان - التقييم الأسبوعي - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vice-principal-corners-teacher-weekly-evaluation-v1"
+    }
+  ],
+  "planReports": [
+    {
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation",
+      "planTitle": "الزيارة التشخيصية لمعلمة الأركان بواسطة وكيلة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vice-principal-corners-teacher-diagnostic-evaluation-v1",
+      "cycles": 2,
+      "oldTarget": {
+        "personId": "p-s-bader",
+        "displayName": "ساره عبدالله علي البدر"
+      },
+      "newTarget": {
+        "personId": "p-r-a-atyar",
+        "displayName": "رهام عبدالله محمد الطيار",
+        "email": "r-a-atyar@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "p-h-alshaya",
+        "displayName": "",
+        "email": "h.alshaya@qz.org.sa"
+      },
+      "removeTargetAssignments": 1,
+      "removeEvaluatorAssignments": 2,
+      "createTargetAssignments": 1,
+      "createEvaluatorAssignments": 2
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "planTitle": "تقييم وكيلة الروضة لمعلمة الأركان - التقييم الأسبوعي - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vice-principal-corners-teacher-weekly-evaluation-v1",
+      "cycles": 19,
+      "oldTarget": {
+        "personId": "p-s-bader",
+        "displayName": "ساره عبدالله علي البدر"
+      },
+      "newTarget": {
+        "personId": "p-r-a-atyar",
+        "displayName": "رهام عبدالله محمد الطيار",
+        "email": "r-a-atyar@qz.org.sa"
+      },
+      "evaluator": {
+        "personId": "p-h-alshaya",
+        "displayName": "",
+        "email": "h.alshaya@qz.org.sa"
+      },
+      "removeTargetAssignments": 1,
+      "removeEvaluatorAssignments": 19,
+      "createTargetAssignments": 1,
+      "createEvaluatorAssignments": 19
+    }
+  ],
+  "historicalSubmissions": {
+    "oldTarget": 0,
+    "newTarget": 0,
+    "touched": 0
+  },
+  "plannedChanges": {
+    "totalWrites": 46,
+    "submissionsTouched": 0
+  },
+  "warningsCount": 0,
+  "conflictsCount": 4,
+  "warnings": [],
+  "conflicts": [
+    {
+      "reason": "EXPECTED_EXACTLY_TWO_CORNERS_PLANS",
+      "found": 5,
+      "plans": [
+        {
+          "id": "kg-04-ay-1448-term-1-corners-teacher-diagnostic-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمة الأركان - الزيارة التشخيصية - روضة واحة الرياحين الرابعة - الفصل الأول",
+          "frameworkId": "kg-principal-corners-teacher-diagnostic-evaluation-v1"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-corners-teacher-weekly-evaluation",
+          "title": "تقييم مديرة الروضة لمعلمة الأركان - التقييم الأسبوعي - روضة واحة الرياحين الرابعة - الفصل الأول",
+          "frameworkId": "kg-principal-corners-teacher-weekly-evaluation-v1"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة المشرفة التعليمية - روضة واحة الرياحين الرابعة - الفصل الأول",
+          "frameworkId": "kg-educational-supervisor-corners-teacher-diagnostic-evaluation-v1"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation",
+          "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة وكيلة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول",
+          "frameworkId": "kg-vice-principal-corners-teacher-diagnostic-evaluation-v1"
+        },
+        {
+          "id": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+          "title": "تقييم وكيلة الروضة لمعلمة الأركان - التقييم الأسبوعي - روضة واحة الرياحين الرابعة - الفصل الأول",
+          "frameworkId": "kg-vice-principal-corners-teacher-weekly-evaluation-v1"
+        }
+      ]
+    },
+    {
+      "reason": "NO_ACTIVE_VP_ASSIGNMENT_FOR_OLD_TARGET",
+      "planId": "kg-04-ay-1448-term-1-corners-teacher-diagnostic-evaluation",
+      "evaluatorPersonId": "p-h-alshaya",
+      "targetPersonId": "p-s-bader"
+    },
+    {
+      "reason": "NO_ACTIVE_VP_ASSIGNMENT_FOR_OLD_TARGET",
+      "planId": "kg-04-ay-1448-term-1-corners-teacher-weekly-evaluation",
+      "evaluatorPersonId": "p-h-alshaya",
+      "targetPersonId": "p-s-bader"
+    },
+    {
+      "reason": "NO_ACTIVE_VP_ASSIGNMENT_FOR_OLD_TARGET",
+      "planId": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-diagnostic-evaluation",
+      "evaluatorPersonId": "p-h-alshaya",
+      "targetPersonId": "p-s-bader"
+    }
+  ]
+}

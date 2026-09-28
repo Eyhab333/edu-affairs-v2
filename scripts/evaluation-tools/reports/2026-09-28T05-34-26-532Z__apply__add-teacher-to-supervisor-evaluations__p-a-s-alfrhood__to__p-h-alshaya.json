@@ -1,0 +1,373 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-a-s-alfrhood",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-h-alshaya",
+    "supervisorEmail": "",
+    "schoolArg": "kg-04",
+    "planIdArg": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit"
+  },
+  "teacher": {
+    "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+    "personId": "p-a-s-alfrhood",
+    "email": "a-s-alfrhood@qz.org.sa",
+    "displayName": "الهنوف سليمان عبدالله الفرهود",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "2DtRW3PPQLSjuZR1Pyp1WucwzKy1",
+    "personId": "p-h-alshaya",
+    "email": "h.alshaya@qz.org.sa",
+    "displayName": "حصه عبدالرزاق احمد الشايع",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "kg-04",
+    "schoolTitle": "روضة واحة الرياحين الرابعة"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 3,
+    "teacherSchools": [
+      "kg-04"
+    ],
+    "supervisorPatternAssignments": 278,
+    "supervisorPatternSchools": [
+      "kg-04"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 1,
+    "plans": [
+      {
+        "id": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+        "title": "زيارة إشرافية للوكيلة - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-vp-supervisory-visit-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 1,
+    "createOrUpdateEvaluatorAssignments": 0,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 2,
+    "totalWrites": 1
+  },
+  "planReports": [
+    {
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "title": "زيارة إشرافية للوكيلة - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vp-supervisory-visit-v1",
+      "cyclesCount": 2,
+      "newTargetId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-target-p-a-s-alfrhood",
+      "cycleReports": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+          "cycleTitle": "الزيارة 1",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "SKIP_EXISTING",
+              "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+              "evaluatorPersonId": "p-h-alshaya"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+          "cycleTitle": "الزيارة 2",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "SKIP_EXISTING",
+              "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+              "evaluatorPersonId": "p-h-alshaya"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan__kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan__kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit__kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit__kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [
+    {
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorPersonId": "p-h-alshaya"
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorPersonId": "p-h-alshaya"
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

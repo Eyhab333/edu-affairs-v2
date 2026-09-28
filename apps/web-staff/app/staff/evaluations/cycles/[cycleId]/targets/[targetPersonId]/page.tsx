@@ -11,6 +11,7 @@ import {
   approveEvaluationSubmission,
   EvaluationSubmissionFormData,
   loadEvaluationSubmissionForm,
+  reopenEvaluationSubmission,
   saveEvaluationDraft,
   submitEvaluation,
 } from "@/lib/staff-evaluations";
@@ -47,6 +48,7 @@ export default function EvaluationSubmissionPage() {
   const [saving, setSaving] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [approving, setApproving] = useState(false);
+  const [reopening, setReopening] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const cycleId = params.cycleId;
@@ -272,12 +274,46 @@ export default function EvaluationSubmissionPage() {
     }
   };
 
+  const handleReopenEvaluation = async () => {
+    if (!actor || !formData?.existingSubmissionId) return;
+
+    const confirmed = window.confirm(
+      "سيُعاد فتح التقييم للتعديل، وستُلغى صلاحيته الحالية إلى أن يُرسل ويُعتمد مرة أخرى. هل تريد المتابعة؟",
+    );
+
+    if (!confirmed) return;
+
+    setReopening(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      await reopenEvaluationSubmission({
+        orgId: actor.orgId,
+        submissionId: formData.existingSubmissionId,
+      });
+
+      await loadForm();
+      setSuccessMessage(
+        "تمت إعادة فتح التقييم للتعديل. يجب إرساله واعتماده مرة أخرى.",
+      );
+    } catch (error) {
+      console.error(error);
+      setError(
+        error instanceof Error ? error.message : "تعذر إعادة فتح التقييم للتعديل.",
+      );
+    } finally {
+      setReopening(false);
+    }
+  };
+
   const submissionStatus = formData?.existingSubmissionStatus;
   const isSubmitted = submissionStatus === "SUBMITTED";
   const isApproved = submissionStatus === "APPROVED";
   const isFinal = isApproved || submissionStatus === "LOCKED";
   const isReadOnly = isSubmitted || isFinal;
   const canApprove = formData?.canApprove === true;
+  const canReopen = isApproved && formData?.cycleStatus === "OPEN";
 
   if (checkingAuth || loading) {
     return (
@@ -342,12 +378,14 @@ export default function EvaluationSubmissionPage() {
             <div className="text-sm text-muted-foreground">
               حالة التقييم:{" "}
               {formData.existingSubmissionStatus === "DRAFT"
-                ? "مسودة"
+                ? "مسودة قابلة للتعديل"
                 : formData.existingSubmissionStatus === "SUBMITTED"
                   ? "مرسل"
                   : formData.existingSubmissionStatus === "APPROVED"
-                    ? "معتمد"
-                    : "لم يبدأ"}
+                    ? "معتمد للقراءة فقط"
+                    : formData.existingSubmissionStatus === "LOCKED"
+                      ? "مقفل"
+                      : "لم يبدأ"}
             </div>
           </div>
 
@@ -457,19 +495,25 @@ export default function EvaluationSubmissionPage() {
         ) : null}
 
         <div className="mt-4 flex flex-col gap-3 md:flex-row md:justify-end">
+          {submissionStatus === "DRAFT" && formData.existingSubmissionId ? (
+            <div className="rounded-2xl border border-primary/30 bg-primary/5 px-4 py-2 text-sm text-muted-foreground">
+              التقييم مفتوح للتعديل ولم يعد معتمدًا. أرسله لاعتماده من جديد بعد حفظ التغييرات.
+            </div>
+          ) : null}
+
           {!isReadOnly ? (
             <>
               <Button
                 variant="outline"
                 onClick={() => void handleSaveDraft()}
-                disabled={saving || submitting || approving}
+                disabled={saving || submitting || approving || reopening}
               >
                 {saving ? "جاري حفظ المسودة..." : "حفظ مسودة"}
               </Button>
 
               <Button
                 onClick={() => void handleSubmitEvaluation()}
-                disabled={saving || submitting || approving}
+                disabled={saving || submitting || approving || reopening}
               >
                 {submitting ? "جاري إرسال التقييم..." : "إرسال التقييم"}
               </Button>
@@ -479,7 +523,7 @@ export default function EvaluationSubmissionPage() {
           {isSubmitted && canApprove ? (
             <Button
               onClick={() => void handleApproveEvaluation()}
-              disabled={saving || submitting || approving}
+              disabled={saving || submitting || approving || reopening}
             >
               {approving ? "جاري اعتماد التقييم..." : "اعتماد التقييم"}
             </Button>
@@ -492,9 +536,25 @@ export default function EvaluationSubmissionPage() {
           ) : null}
 
           {isApproved ? (
-            <div className="rounded-2xl border bg-muted px-4 py-2 text-sm text-muted-foreground">
-              هذا التقييم معتمد ولا يمكن تعديله.
-            </div>
+            <>
+              <div className="rounded-2xl border bg-muted px-4 py-2 text-sm text-muted-foreground">
+                هذا التقييم معتمد للقراءة فقط. إعادة فتحه تلغي الاعتماد الحالي قبل أي تعديل.
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => void handleReopenEvaluation()}
+                disabled={
+                  !canReopen || saving || submitting || approving || reopening
+                }
+              >
+                {reopening ? "جارٍ فتح التقييم للتعديل..." : "تعديل التقييم"}
+              </Button>
+              {!canReopen ? (
+                <div className="rounded-2xl border bg-muted px-4 py-2 text-sm text-muted-foreground">
+                  لا يمكن فتح التقييم للتعديل لأن دورة التقييم ليست مفتوحة.
+                </div>
+              ) : null}
+            </>
           ) : null}
         </div>
       </section>

@@ -1,0 +1,1474 @@
+{
+  "decision": "SAFE_PREVIEW",
+  "mode": "PREVIEW",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-a-s-alfrhood",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-h-alshaya",
+    "supervisorEmail": "",
+    "schoolArg": "kg-04",
+    "planIdArg": ""
+  },
+  "teacher": {
+    "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+    "personId": "p-a-s-alfrhood",
+    "email": "a-s-alfrhood@qz.org.sa",
+    "displayName": "الهنوف سليمان عبدالله الفرهود",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "2DtRW3PPQLSjuZR1Pyp1WucwzKy1",
+    "personId": "p-h-alshaya",
+    "email": "h.alshaya@qz.org.sa",
+    "displayName": "حصه عبدالرزاق احمد الشايع",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "kg-04",
+    "schoolTitle": "روضة واحة الرياحين الرابعة"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 2,
+    "teacherSchools": [
+      "kg-04"
+    ],
+    "supervisorPatternAssignments": 269,
+    "supervisorPatternSchools": [
+      "kg-04"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 5,
+    "plans": [
+      {
+        "id": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+        "title": "زيارة إشرافية للوكيلة - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-vp-supervisory-visit-v1"
+      },
+      {
+        "id": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation",
+        "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة وكيلة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-vice-principal-corners-teacher-diagnostic-evaluation-v1"
+      },
+      {
+        "id": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+        "title": "تقييم وكيلة الروضة لمعلمة الأركان - التقييم الأسبوعي - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-vice-principal-corners-teacher-weekly-evaluation-v1"
+      },
+      {
+        "id": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+        "title": "تقييم وكيلة الروضة لمعلمة الصف - كل أسبوعين - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-vp-class-teacher-biweekly-evaluation-v1"
+      },
+      {
+        "id": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation",
+        "title": "تقييم وكيلة الروضة لمعلمة القيم - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-vp-values-teacher-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 5,
+    "createOrUpdateEvaluatorAssignments": 32,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 2,
+    "totalWrites": 37
+  },
+  "planReports": [
+    {
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "title": "زيارة إشرافية للوكيلة - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vp-supervisory-visit-v1",
+      "cyclesCount": 2,
+      "newTargetId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-target-p-a-s-alfrhood",
+      "cycleReports": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+          "cycleTitle": "الزيارة 1",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "SKIP_EXISTING",
+              "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+              "evaluatorPersonId": "p-h-alshaya"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+          "cycleTitle": "الزيارة 2",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "SKIP_EXISTING",
+              "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+              "evaluatorPersonId": "p-h-alshaya"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمة الأركان بواسطة وكيلة الروضة - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vice-principal-corners-teacher-diagnostic-evaluation-v1",
+      "cyclesCount": 2,
+      "newTargetId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-target-p-a-s-alfrhood",
+      "cycleReports": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-01",
+          "cycleTitle": "الزيارة التشخيصية الأولى",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-01-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-01",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-01-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-02",
+          "cycleTitle": "الزيارة التشخيصية الثانية",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-02-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-02",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-02-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "title": "تقييم وكيلة الروضة لمعلمة الأركان - التقييم الأسبوعي - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vice-principal-corners-teacher-weekly-evaluation-v1",
+      "cyclesCount": 19,
+      "newTargetId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-target-p-a-s-alfrhood",
+      "cycleReports": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-01",
+          "cycleTitle": "الأسبوع الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-01-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-01",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-01-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-02",
+          "cycleTitle": "الأسبوع الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-02-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-02",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-02-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-03",
+          "cycleTitle": "الأسبوع الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-03-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-03",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-03-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-04",
+          "cycleTitle": "الأسبوع الرابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-04-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-04",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-04-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-05",
+          "cycleTitle": "الأسبوع الخامس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-05-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-05",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-05-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-06",
+          "cycleTitle": "الأسبوع السادس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-06-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-06",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-06-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-07",
+          "cycleTitle": "الأسبوع السابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-07-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-07",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-07-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-08",
+          "cycleTitle": "الأسبوع الثامن",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-08-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-08",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-08-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-09",
+          "cycleTitle": "الأسبوع التاسع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-09-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-09",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-09-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-10",
+          "cycleTitle": "الأسبوع العاشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-10-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-10",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-10-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-11",
+          "cycleTitle": "الأسبوع الحادي عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-11-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-11",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-11-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-12",
+          "cycleTitle": "الأسبوع الثاني عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-12-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-12",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-12-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-13",
+          "cycleTitle": "الأسبوع الثالث عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-13-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-13",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-13-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-14",
+          "cycleTitle": "الأسبوع الرابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-14-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-14",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-14-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-15",
+          "cycleTitle": "الأسبوع الخامس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-15-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-15",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-15-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-16",
+          "cycleTitle": "الأسبوع السادس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-16-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-16",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-16-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-17",
+          "cycleTitle": "الأسبوع السابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-17-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-17",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-17-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-18",
+          "cycleTitle": "الأسبوع الثامن عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-18-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-18",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-18-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-19",
+          "cycleTitle": "الأسبوع التاسع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-19-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-19",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-19-p-r-a-atyar-p-h-alshaya",
+              "patternTargetPersonId": "p-r-a-atyar",
+              "patternTargetDisplayName": "رهام عبدالله محمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "title": "تقييم وكيلة الروضة لمعلمة الصف - كل أسبوعين - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vp-class-teacher-biweekly-evaluation-v1",
+      "cyclesCount": 9,
+      "newTargetId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-target-p-a-s-alfrhood",
+      "cycleReports": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01",
+          "cycleTitle": "المتابعة 1",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02",
+          "cycleTitle": "المتابعة 2",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03",
+          "cycleTitle": "المتابعة 3",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04",
+          "cycleTitle": "المتابعة 4",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05",
+          "cycleTitle": "المتابعة 5",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06",
+          "cycleTitle": "المتابعة 6",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07",
+          "cycleTitle": "المتابعة 7",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08",
+          "cycleTitle": "المتابعة 8",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09",
+          "cycleTitle": "المتابعة 9",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09-p-a-alttayar-p-h-alshaya",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "اروى يوسف احمد الطيار",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation",
+      "title": "تقييم وكيلة الروضة لمعلمة القيم - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-vp-values-teacher-evaluation-v1",
+      "cyclesCount": 2,
+      "newTargetId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-target-p-a-s-alfrhood",
+      "cycleReports": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01",
+          "cycleTitle": "التقييم 1",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01-p-s-bader-p-h-alshaya",
+              "patternTargetPersonId": "p-s-bader",
+              "patternTargetDisplayName": "ساره عبدالله علي البدر",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02",
+          "cycleTitle": "التقييم 2",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02-p-a-s-alfrhood-p-h-alshaya",
+              "cycleId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-h-alshaya",
+              "evaluatorEmail": "h.alshaya@qz.org.sa",
+              "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+              "patternId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02-p-s-bader-p-h-alshaya",
+              "patternTargetPersonId": "p-s-bader",
+              "patternTargetDisplayName": "ساره عبدالله علي البدر",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan__kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan__kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit__kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit__kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-diagnostic-evaluation-visit-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-03__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-03",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-03-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-04__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-04",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-04-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-05__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-05",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-05-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-06__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-06",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-06-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-07__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-07",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-07-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-08__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-08",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-08-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-09__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-09",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-09-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-10__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-10",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-10-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-11__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-11",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-11-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-12__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-12",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-12-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-13__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-13",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-13-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-14__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-14",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-14-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-15__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-15",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-15-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-16__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-16",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-16-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-17__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-17",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-17-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-18__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-18",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-18-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation__kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-19__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-19",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-kg-04-ay-1448-term-1-vice-principal-corners-teacher-weekly-evaluation-week-19-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation__kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation__kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-values-teacher-evaluation-kg-04-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "NEW",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [
+    {
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorPersonId": "p-h-alshaya"
+    },
+    {
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorPersonId": "p-h-alshaya"
+    }
+  ],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}
