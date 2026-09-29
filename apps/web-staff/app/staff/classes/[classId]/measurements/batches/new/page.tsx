@@ -29,6 +29,8 @@ import {
   type StaffTemplateItem,
 } from "@/hooks/use-class-measurement-templates";
 import { getFriendlyClassTitle } from "@/lib/class-presentation";
+import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
+import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 
 type StaffVisibleClass = {
   id: string;
@@ -1134,6 +1136,24 @@ export default function StaffNewMeasurementBatchPage() {
 
   const batchStudentRows = classStudents.data?.rows ?? [];
 
+  const classAverageSummary = useMemo(() => {
+    return calculateMeasurementClassSummary({
+      maxScore: selectedTemplate
+        ? getTemplateItemsMaxScore(selectedTemplate)
+        : undefined,
+      rows: batchStudentRows.map((row) => {
+        const draft = getDraftRow(draftRows, row.studentId);
+
+        return {
+          status: draft.status,
+          score: selectedTemplate
+            ? calculateDraftScore({ draft, template: selectedTemplate })
+            : undefined,
+        };
+      }),
+    });
+  }, [batchStudentRows, draftRows, selectedTemplate]);
+
   const canSaveDraft =
     !!staffActor &&
     !!classInfo &&
@@ -1818,6 +1838,10 @@ export default function StaffNewMeasurementBatchPage() {
           template={selectedTemplate}
           effectiveSubjectKey={effectiveSubjectKey}
         />
+      ) : null}
+
+      {selectedTemplate ? (
+        <ClassAverageSummary summary={classAverageSummary} />
       ) : null}
 
       {draftSaveError ? <ErrorPanel>{draftSaveError}</ErrorPanel> : null}

@@ -25,6 +25,8 @@ import {
   getFriendlySubjectLabel,
 } from "@/lib/measurement-presentation";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
+import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 
 type VisibleClass = {
   id: string;
@@ -711,6 +713,26 @@ export default function StaffMeasurementBatchPage() {
     };
   }, [rows, sourceTemplate]);
 
+  const classAverageSummary = useMemo(() => {
+    const savedMaxScore = rows
+      .map((row) => row.maxScore)
+      .find(
+        (value): value is number =>
+          typeof value === "number" && Number.isFinite(value),
+      );
+    const templateMaxScore = sourceTemplate?.maxScore;
+
+    return calculateMeasurementClassSummary({
+      maxScore:
+        savedMaxScore ??
+        (typeof templateMaxScore === "number" &&
+        Number.isFinite(templateMaxScore)
+          ? templateMaxScore
+          : undefined),
+      rows,
+    });
+  }, [rows, sourceTemplate]);
+
   const createCompensationBatch = useCallback(async () => {
     if (!currentActor?.orgId || !batch) return;
 
@@ -1102,6 +1124,8 @@ export default function StaffMeasurementBatchPage() {
           </button>
         </section>
       </section>
+
+      <ClassAverageSummary summary={classAverageSummary} />
 
       <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
         <div className="border-b p-5">

@@ -38,6 +38,8 @@ import type {
 import { db } from "@/lib/firebase";
 import { getVisibleStudents } from "@/lib/visible-students";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
+import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 
 type VisibleClass = {
   id: string;
@@ -439,7 +441,7 @@ function calculateDraftScore(params: {
 }
 
 function calculateMaxScore(params: {
-  batch: MeasurementBatchDoc;
+  batch?: MeasurementBatchDoc;
   itemDefinitions: BatchItemDefinition[];
   sourceRow?: EditableBatchRow;
 }) {
@@ -920,6 +922,33 @@ export default function StaffMeasurementBatchEditPage() {
       pending,
     };
   }, [draftRows, rows]);
+
+  const classAverageSummary = useMemo(() => {
+    const maxScore = rows
+      .map((row) =>
+        calculateMaxScore({
+          batch: batch ?? undefined,
+          itemDefinitions,
+          sourceRow: row,
+        }),
+      )
+      .find(
+        (value): value is number =>
+          typeof value === "number" && Number.isFinite(value),
+      );
+
+    return calculateMeasurementClassSummary({
+      maxScore,
+      rows: rows.map((row) => {
+        const draft = getDraftRow(draftRows, row.studentId);
+
+        return {
+          status: draft.status,
+          score: calculateDraftScore({ draft, itemDefinitions }),
+        };
+      }),
+    });
+  }, [batch, draftRows, itemDefinitions, rows]);
 
   const loadBatch = useCallback(async () => {
     if (!currentActor?.orgId || !batchId) return;
@@ -1502,6 +1531,8 @@ export default function StaffMeasurementBatchEditPage() {
         <MiniStat label="معذور" value={summary.excused} />
         <MiniStat label="مستبعد" value={summary.skipped} />
       </div>
+
+      <ClassAverageSummary summary={classAverageSummary} />
 
       <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center gap-3">

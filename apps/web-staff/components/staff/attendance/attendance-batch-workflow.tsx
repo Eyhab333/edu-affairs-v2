@@ -141,6 +141,25 @@ export function useAttendanceBatchWorkflow({
     batch,
   ]);
 
+  const canEditAttendance = useMemo(() => {
+    return (
+      !!batch &&
+      (batch.status === "DRAFT" ||
+        batch.status === "IN_PROGRESS" ||
+        batch.status === "SUBMITTED")
+    );
+  }, [batch]);
+
+  const canSaveDraft = useMemo(() => {
+    return (
+      !!batch &&
+      (batch.status === "DRAFT" || batch.status === "IN_PROGRESS")
+    );
+  }, [batch]);
+
+  const canSubmitBatch = canEditAttendance && canSubmitAttendance;
+  const isSubmittedCorrection = batch?.status === "SUBMITTED";
+
   const updateRows = useCallback(
     (
       updater: (
@@ -148,7 +167,7 @@ export function useAttendanceBatchWorkflow({
       ) => StudentAttendanceBatchStudentRow[],
     ) => {
       setBatch((current) => {
-        if (!current) return current;
+        if (!current || !canEditAttendance) return current;
 
         return withAttendanceBatchSummary({
           ...current,
@@ -157,7 +176,7 @@ export function useAttendanceBatchWorkflow({
         });
       });
     },
-    [setBatch],
+    [canEditAttendance, setBatch],
   );
 
   const handleRowStatusChange = useCallback(
@@ -219,7 +238,7 @@ export function useAttendanceBatchWorkflow({
   }, [updateRows]);
 
   const handleSaveDraft = useCallback(async () => {
-    if (!batch) return;
+    if (!batch || !canSaveDraft) return;
 
     setSaveState({ saving: true, error: null, savedAt: null });
 
@@ -249,12 +268,21 @@ export function useAttendanceBatchWorkflow({
         savedAt: null,
       });
     }
-  }, [actor.orgId, batch, setBatch]);
+  }, [actor.orgId, batch, canSaveDraft, setBatch]);
 
   const handleSubmitBatch = useCallback(async () => {
     if (!batch) return;
 
-    if (!canSubmitAttendance) {
+    if (!canEditAttendance) {
+      setSubmitState({
+        submitting: false,
+        error: "This attendance batch cannot be edited.",
+        submittedAt: null,
+      });
+      return;
+    }
+
+    if (!canSubmitBatch) {
       setSubmitState({
         submitting: false,
         error: "لا تملك صلاحية إرسال حضور هذا الفصل.",
@@ -332,7 +360,13 @@ export function useAttendanceBatchWorkflow({
         submittedAt: null,
       });
     }
-  }, [actor.orgId, batch, canSubmitAttendance, setBatch]);
+  }, [
+    actor.orgId,
+    batch,
+    canEditAttendance,
+    canSubmitBatch,
+    setBatch,
+  ]);
 
   return {
     handleRowFieldChange,
@@ -342,6 +376,10 @@ export function useAttendanceBatchWorkflow({
     markAllAsPresent,
     markAllAsStudySuspended,
     resetAllRows,
+    canEditAttendance,
+    canSaveDraft,
+    canSubmitBatch,
+    isSubmittedCorrection,
     saveState,
     submitState,
   };
@@ -356,12 +394,21 @@ export function AttendanceBatchWorkflowActions({
 }) {
   return (
     <>
-      <Button type="button" onClick={workflow.markAllAsPresent}>
+      <Button
+        type="button"
+        onClick={workflow.markAllAsPresent}
+        disabled={!workflow.canEditAttendance}
+      >
         <CheckCircle className="size-4" />
         اعتبار الجميع حاضر
       </Button>
 
-      <Button type="button" variant="outline" onClick={workflow.resetAllRows}>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={workflow.resetAllRows}
+        disabled={!workflow.canEditAttendance}
+      >
         تصفير الحالات
       </Button>
 
@@ -369,6 +416,7 @@ export function AttendanceBatchWorkflowActions({
         type="button"
         variant="outline"
         onClick={workflow.markAllAsStudySuspended}
+        disabled={!workflow.canEditAttendance}
       >
         تعليق الدراسة
       </Button>
@@ -377,7 +425,7 @@ export function AttendanceBatchWorkflowActions({
         type="button"
         variant="secondary"
         onClick={workflow.handleSaveDraft}
-        disabled={!batch || workflow.saveState.saving}
+        disabled={!batch || !workflow.canSaveDraft || workflow.saveState.saving}
       >
         {workflow.saveState.saving ? (
           <Loader2 className="size-4 animate-spin" />
@@ -392,7 +440,7 @@ export function AttendanceBatchWorkflowActions({
         onClick={workflow.handleSubmitBatch}
         disabled={
           !batch ||
-          batch.status === "SUBMITTED" ||
+          !workflow.canSubmitBatch ||
           workflow.saveState.saving ||
           workflow.submitState.submitting
         }
@@ -402,7 +450,7 @@ export function AttendanceBatchWorkflowActions({
         ) : (
           <SendHorizontal className="size-4" />
         )}
-        إرسال الدفعة
+        {workflow.isSubmittedCorrection ? "حفظ التعديل" : "إرسال الدفعة"}
       </Button>
     </>
   );

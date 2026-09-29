@@ -427,6 +427,7 @@ export default function AttendanceBatchViewPage() {
                       <td className="px-3 py-3">
                         <select
                           value={row.status}
+                          disabled={!workflow.canEditAttendance}
                           onChange={(event) =>
                             workflow.handleRowStatusChange(
                               row.studentId,
@@ -453,7 +454,10 @@ export default function AttendanceBatchViewPage() {
                         <input
                           type="number"
                           min={0}
-                          disabled={!needsLateMinutes(row.status)}
+                          disabled={
+                            !workflow.canEditAttendance ||
+                            !needsLateMinutes(row.status)
+                          }
                           value={
                             needsLateMinutes(row.status)
                               ? String(row.lateMinutes || "")
@@ -475,7 +479,10 @@ export default function AttendanceBatchViewPage() {
                         <input
                           type="number"
                           min={0}
-                          disabled={!needsLeftEarlyMinutes(row.status)}
+                          disabled={
+                            !workflow.canEditAttendance ||
+                            !needsLeftEarlyMinutes(row.status)
+                          }
                           value={
                             needsLeftEarlyMinutes(row.status)
                               ? String(row.leftEarlyMinutes || "")
@@ -496,7 +503,10 @@ export default function AttendanceBatchViewPage() {
                       <td className="px-3 py-3">
                         <input
                           type="text"
-                          disabled={!needsExcuseReason(row.status)}
+                          disabled={
+                            !workflow.canEditAttendance ||
+                            !needsExcuseReason(row.status)
+                          }
                           value={
                             needsExcuseReason(row.status)
                               ? row.excuseReason
@@ -517,6 +527,7 @@ export default function AttendanceBatchViewPage() {
                       <td className="px-3 py-3">
                         <input
                           type="text"
+                          disabled={!workflow.canEditAttendance}
                           value={row.note}
                           onChange={(event) =>
                             workflow.handleRowFieldChange(

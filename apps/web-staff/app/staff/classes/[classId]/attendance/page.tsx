@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -159,12 +159,12 @@ export default function ClassAttendancePage() {
   const { actor } = useStaffActor();
 
   const [dateInput, setDateInput] = useState(() => formatDateInput(new Date()));
-  const [students, setStudents] = useState<AttendanceStudentInput[]>([]);
   const [draft, setDraft] = useState<StudentAttendanceBatch | null>(null);
   const [loadState, setLoadState] = useState<LoadState>({
     loading: true,
     error: null,
   });
+  const attendanceLoadRequestRef = useRef(0);
   const workflow = useAttendanceBatchWorkflow({
     batch: draft,
     setBatch: setDraft,
@@ -181,6 +181,12 @@ export default function ClassAttendancePage() {
 
   const canViewClass = !!classInfo;
 
+  const handleDateChange = useCallback((nextDateInput: string) => {
+    attendanceLoadRequestRef.current += 1;
+    setDraft(null);
+    setDateInput(nextDateInput);
+  }, []);
+
   const summary = useMemo(() => {
     if (!draft) {
       return calculateAttendanceBatchSummary([]);
@@ -189,66 +195,9 @@ export default function ClassAttendancePage() {
     return calculateAttendanceBatchSummary(draft.studentRows);
   }, [draft]);
 
-  const rebuildDraft = useCallback(
-    (nextStudents: AttendanceStudentInput[]) => {
-      if (!classInfo) {
-        setDraft(null);
-        return;
-      }
-
-      const dayKey = toCompactDateKey(dateInput);
-      const now = Date.now();
-
-      const currentTerm =
-        actor.currentTermsByAcademicYear[classInfo.academicYearId];
-
-      const termContext = currentTerm
-        ? {
-            termId: currentTerm.id,
-            termTitle: currentTerm.title,
-            termShortTitle: currentTerm.shortTitle,
-          }
-        : undefined;
-
-      const nextDraft = buildAttendanceBatchDraft({
-        id: `attendance_${classInfo.schoolId}_${classInfo.academicYearId}_${classId}_${dayKey}`,
-
-        orgId: actor.orgId,
-        schoolId: classInfo.schoolId,
-        academicYearId: classInfo.academicYearId,
-
-        termContext,
-        schoolDayId: `schoolDay_${classInfo.schoolId}_${classInfo.academicYearId}_${dayKey}`,
-
-        gradeId: classInfo.gradeId ?? "",
-        classId,
-
-        scopeType: "CLASS",
-        scopeId: classId,
-
-        createdByPersonId: actor.personId || actor.uid,
-        createdByRoleKey: roleKey,
-
-        students: nextStudents,
-
-        now,
-        defaultStatus: "NOT_RECORDED",
-      });
-
-      setDraft(nextDraft);
-    },
-    [
-      actor.orgId,
-      actor.personId,
-      actor.uid,
-      classId,
-      classInfo,
-      dateInput,
-      roleKey,
-    ],
-  );
-
   const loadPage = useCallback(async () => {
+    const requestId = ++attendanceLoadRequestRef.current;
+
     if (!classInfo) {
       setLoadState({
         loading: false,
@@ -263,6 +212,31 @@ export default function ClassAttendancePage() {
     });
 
     try {
+      const dayKey = toCompactDateKey(dateInput);
+      const batchId = `attendance_${classInfo.schoolId}_${classInfo.academicYearId}_${classId}_${dayKey}`;
+      const batchRef = doc(
+        db,
+        "orgs",
+        actor.orgId,
+        "studentAttendanceBatches",
+        batchId,
+      );
+      const existingBatchSnap = await getDoc(batchRef);
+
+      if (requestId !== attendanceLoadRequestRef.current) return;
+
+      if (existingBatchSnap.exists()) {
+        setDraft({
+          id: existingBatchSnap.id,
+          ...(existingBatchSnap.data() as Omit<StudentAttendanceBatch, "id">),
+        });
+        setLoadState({
+          loading: false,
+          error: null,
+        });
+        return;
+      }
+
       const loadedStudents = await loadClassStudents({
         orgId: actor.orgId,
         schoolId: classInfo.schoolId,
@@ -270,29 +244,66 @@ export default function ClassAttendancePage() {
         classId,
       });
 
-      setStudents(loadedStudents);
-      rebuildDraft(loadedStudents);
+      if (requestId !== attendanceLoadRequestRef.current) return;
+
+      const now = Date.now();
+      const currentTerm =
+        actor.currentTermsByAcademicYear[classInfo.academicYearId];
+      const termContext = currentTerm
+        ? {
+            termId: currentTerm.id,
+            termTitle: currentTerm.title,
+            termShortTitle: currentTerm.shortTitle,
+          }
+        : undefined;
+
+      setDraft(
+        buildAttendanceBatchDraft({
+          id: batchId,
+          orgId: actor.orgId,
+          schoolId: classInfo.schoolId,
+          academicYearId: classInfo.academicYearId,
+          termContext,
+          schoolDayId: `schoolDay_${classInfo.schoolId}_${classInfo.academicYearId}_${dayKey}`,
+          gradeId: classInfo.gradeId ?? "",
+          classId,
+          scopeType: "CLASS",
+          scopeId: classId,
+          createdByPersonId: actor.personId || actor.uid,
+          createdByRoleKey: roleKey,
+          students: loadedStudents,
+          now,
+          defaultStatus: "NOT_RECORDED",
+        }),
+      );
 
       setLoadState({
         loading: false,
         error: null,
       });
     } catch (error) {
+      if (requestId !== attendanceLoadRequestRef.current) return;
+
       console.error("Failed to load class attendance:", error);
       setLoadState({
         loading: false,
         error: getErrorMessage(error),
       });
     }
-  }, [actor.orgId, classId, classInfo, rebuildDraft]);
+  }, [
+    actor.currentTermsByAcademicYear,
+    actor.orgId,
+    actor.personId,
+    actor.uid,
+    classId,
+    classInfo,
+    dateInput,
+    roleKey,
+  ]);
 
   useEffect(() => {
     void loadPage();
   }, [loadPage]);
-
-  useEffect(() => {
-    rebuildDraft(students);
-  }, [dateInput, rebuildDraft, students]);
 
   if (!canViewClass) {
     return (
@@ -363,7 +374,7 @@ export default function ClassAttendancePage() {
               <input
                 type="date"
                 value={dateInput}
-                onChange={(event) => setDateInput(event.target.value)}
+                onChange={(event) => handleDateChange(event.target.value)}
                 className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
               />
             </div>
@@ -460,6 +471,7 @@ export default function ClassAttendancePage() {
                       <td className="px-3 py-3">
                         <select
                           value={row.status}
+                          disabled={!workflow.canEditAttendance}
                           onChange={(event) =>
                               workflow.handleRowStatusChange(
                               row.studentId,
@@ -486,7 +498,10 @@ export default function ClassAttendancePage() {
                         <input
                           type="number"
                           min={0}
-                          disabled={!needsLateMinutes(row.status)}
+                          disabled={
+                            !workflow.canEditAttendance ||
+                            !needsLateMinutes(row.status)
+                          }
                           value={
                             needsLateMinutes(row.status)
                               ? String(row.lateMinutes || "")
@@ -508,7 +523,10 @@ export default function ClassAttendancePage() {
                         <input
                           type="number"
                           min={0}
-                          disabled={!needsLeftEarlyMinutes(row.status)}
+                          disabled={
+                            !workflow.canEditAttendance ||
+                            !needsLeftEarlyMinutes(row.status)
+                          }
                           value={
                             needsLeftEarlyMinutes(row.status)
                               ? String(row.leftEarlyMinutes || "")
@@ -529,7 +547,10 @@ export default function ClassAttendancePage() {
                       <td className="px-3 py-3">
                         <input
                           type="text"
-                          disabled={!needsExcuseReason(row.status)}
+                          disabled={
+                            !workflow.canEditAttendance ||
+                            !needsExcuseReason(row.status)
+                          }
                           value={
                             needsExcuseReason(row.status)
                               ? row.excuseReason
@@ -550,6 +571,7 @@ export default function ClassAttendancePage() {
                       <td className="px-3 py-3">
                         <input
                           type="text"
+                          disabled={!workflow.canEditAttendance}
                           value={row.note}
                           onChange={(event) =>
                               workflow.handleRowFieldChange(
