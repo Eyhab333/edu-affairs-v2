@@ -13,7 +13,9 @@ import {
 } from "lucide-react";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
 import { Button } from "@/components/ui/button";
+import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import {
   loadTeacherWorkDetail,
@@ -150,6 +152,25 @@ function measurementResultValue(result: TeacherWorkMeasurementStudentResult) {
   }
 
   return result.valueText.trim() || result.level.trim() || "—";
+}
+
+function MeasurementClassAverageSummary({
+  results,
+}: {
+  results: TeacherWorkMeasurementStudentResult[];
+}) {
+  const savedMaxScore = results
+    .map((result) => result.maxScore)
+    .find(
+      (value): value is number =>
+        typeof value === "number" && Number.isFinite(value),
+    );
+  const summary = calculateMeasurementClassSummary({
+    maxScore: savedMaxScore,
+    rows: results,
+  });
+
+  return <ClassAverageSummary summary={summary} className="mt-4" />;
 }
 
 function MeasurementStudentResults({
@@ -527,6 +548,9 @@ function DrillDownDetails({
                 ["المكتمل", item.details.completedCount?.toLocaleString("ar-SA") ?? "غير محدد"],
                 ["غير المكتمل", item.details.missingCount?.toLocaleString("ar-SA") ?? "غير محدد"],
               ]}
+            />
+            <MeasurementClassAverageSummary
+              results={item.details.studentResults}
             />
             <MeasurementStudentResults
               results={item.details.studentResults}
