@@ -365,7 +365,7 @@ export default function EvaluationSubmissionPage() {
             </div>
 
             <h1 className="text-2xl font-bold">
-              تقييم المعلم: {formData.targetDisplayName}
+              تقييم الموظف: {formData.targetDisplayName}
             </h1>
 
             <div className="text-sm text-muted-foreground">

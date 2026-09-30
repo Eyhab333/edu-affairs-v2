@@ -1000,7 +1000,10 @@ export async function saveEvaluationDraft(params: {
   const maxScore = formData.items.reduce((sum, item) => sum + item.maxScore, 0);
 
   const normalizedScore = maxScore > 0 ? (rawScore / maxScore) * 100 : 0;
-  const weightedScore = normalizedScore * (formData.weight / 100);
+  // The server combines evaluator scores using all active assignment weights.
+  // A standalone submission keeps its own normalized score independent of its
+  // stored relative weight.
+  const weightedScore = normalizedScore;
 
   const ts = Date.now();
 
@@ -1154,7 +1157,10 @@ export async function submitEvaluation(params: {
   const maxScore = formData.items.reduce((sum, item) => sum + item.maxScore, 0);
 
   const normalizedScore = maxScore > 0 ? (rawScore / maxScore) * 100 : 0;
-  const weightedScore = normalizedScore * (formData.weight / 100);
+  // The server combines evaluator scores using all active assignment weights.
+  // A standalone submission keeps its own normalized score independent of its
+  // stored relative weight.
+  const weightedScore = normalizedScore;
 
   const ts = Date.now();
 

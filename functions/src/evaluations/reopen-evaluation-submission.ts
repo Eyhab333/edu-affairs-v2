@@ -4,6 +4,7 @@ import {
   EvaluationCycleTargetSummarySchema,
   EvaluationStaffSummarySchema,
 } from "@takween/contracts";
+import { normalizeEvaluatorWeights } from "./evaluator-weighting";
 
 const REGION = "me-central2";
 
@@ -349,18 +350,9 @@ export const reopenEvaluationSubmission = onCall(
         const expectedAssignments = Array.from(
           expectedAssignmentsByEvaluator.values(),
         );
-        const totalAssignmentWeight = expectedAssignments.reduce(
-          (total, assignment) =>
-            total + clampPercentage(readNumber(assignment.weight, 100)),
-          0,
+        const normalizedAssignments = normalizeEvaluatorWeights(
+          expectedAssignments,
         );
-
-        if (Math.abs(totalAssignmentWeight - 100) > 0.001) {
-          throw new HttpsError(
-            "failed-precondition",
-            "Active evaluator assignment weights must total 100.",
-          );
-        }
 
         const approvedSubmissionsByEvaluator = new Map<string, EvaluationRow>();
 
@@ -387,7 +379,7 @@ export const reopenEvaluationSubmission = onCall(
         let finalScore = 0;
         let latestSubmittedAt: number | undefined;
 
-        for (const assignment of expectedAssignments) {
+        for (const { assignment, effectiveWeight } of normalizedAssignments) {
           const approvedSubmission = approvedSubmissionsByEvaluator.get(
             readString(assignment.evaluatorPersonId),
           );
@@ -396,7 +388,7 @@ export const reopenEvaluationSubmission = onCall(
           completedSubmissionsCount += 1;
           finalScore +=
             clampPercentage(readNumber(approvedSubmission.normalizedScore)) *
-            (clampPercentage(readNumber(assignment.weight, 100)) / 100);
+            effectiveWeight;
 
           const submittedAt = readOptionalTimestamp(approvedSubmission.submittedAt);
           if (submittedAt !== undefined) {

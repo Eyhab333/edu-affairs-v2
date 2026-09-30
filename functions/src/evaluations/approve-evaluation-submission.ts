@@ -10,6 +10,7 @@ import {
   buildPerformanceImprovementDetection,
   DEFAULT_PERFORMANCE_IMPROVEMENT_THRESHOLDS,
 } from "./build-performance-improvement-signal";
+import { normalizeEvaluatorWeights } from "./evaluator-weighting";
 
 const REGION = "me-central2";
 
@@ -488,18 +489,9 @@ export const approveEvaluationSubmission = onCall(
         const expectedAssignments = Array.from(
           expectedAssignmentsByEvaluator.values(),
         );
-        const totalAssignmentWeight = expectedAssignments.reduce(
-          (total, assignment) =>
-            total + clampPercentage(readNumber(assignment.weight, 100)),
-          0,
+        const normalizedAssignments = normalizeEvaluatorWeights(
+          expectedAssignments,
         );
-
-        if (Math.abs(totalAssignmentWeight - 100) > 0.001) {
-          throw new HttpsError(
-            "failed-precondition",
-            "Active evaluator assignment weights must total 100.",
-          );
-        }
 
         const approvedSubmissionsByEvaluator = new Map<
           string,
@@ -535,7 +527,7 @@ export const approveEvaluationSubmission = onCall(
         let completedSubmissionsCount = 0;
         let finalScore = 0;
 
-        for (const assignment of expectedAssignments) {
+        for (const { assignment, effectiveWeight } of normalizedAssignments) {
           const assignmentEvaluatorPersonId = readString(
             assignment.evaluatorPersonId,
           );
@@ -550,9 +542,7 @@ export const approveEvaluationSubmission = onCall(
           const normalizedScore = clampPercentage(
             readNumber(approvedSubmission.normalizedScore),
           );
-          const weight = clampPercentage(readNumber(assignment.weight, 100));
-
-          finalScore += normalizedScore * (weight / 100);
+          finalScore += normalizedScore * effectiveWeight;
         }
 
         finalScore = clampPercentage(finalScore);
@@ -570,10 +560,10 @@ export const approveEvaluationSubmission = onCall(
         const normalizedScore = clampPercentage(
           readNumber(submission.normalizedScore),
         );
-        const actorWeight = clampPercentage(
-          readNumber(actorAssignment.weight, 100),
-        );
-        const weightedScore = normalizedScore * (actorWeight / 100);
+        const actorEffectiveWeight = normalizedAssignments.find(
+          ({ assignment }) => assignment.id === actorAssignment.id,
+        )?.effectiveWeight ?? 0;
+        const weightedScore = normalizedScore * actorEffectiveWeight;
         const cycle = cycleSnapshot.data() ?? {};
 
         const cycleSummaryId = `${planId}-${cycleId}-${targetPersonId}`;
