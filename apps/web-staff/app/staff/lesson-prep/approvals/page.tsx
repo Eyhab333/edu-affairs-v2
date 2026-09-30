@@ -177,18 +177,22 @@ export default function LessonPrepApprovalsPage() {
       getLessonPrepReviewSchoolIds({
         orgId: actor.orgId,
         personId,
+        roles: actor.roles,
+        orgWideSchoolIds: actor.schools.map((school) => school.id),
         scopes: supervisionScopes,
       }),
-    [actor.orgId, personId, supervisionScopes],
+    [actor.orgId, actor.roles, actor.schools, personId, supervisionScopes],
   );
   const reviewQueryScopes = useMemo(
     () =>
       getLessonPrepReviewQueryScopes({
         orgId: actor.orgId,
         personId,
+        roles: actor.roles,
+        orgWideSchoolIds: actor.schools.map((school) => school.id),
         scopes: supervisionScopes,
       }),
-    [actor.orgId, personId, supervisionScopes],
+    [actor.orgId, actor.roles, actor.schools, personId, supervisionScopes],
   );
   const [rows, setRows] = useState<SubjectLessonPrepRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -300,6 +304,7 @@ export default function LessonPrepApprovalsPage() {
           canReviewLessonPrepAtSchool({
             orgId: actor.orgId,
             personId,
+            roles: actor.roles,
             schoolId: prep.schoolId,
             subjectKey: prep.subjectKey,
             scopes: supervisionScopes,
@@ -318,6 +323,7 @@ export default function LessonPrepApprovalsPage() {
     }
   }, [
     actor.orgId,
+    actor.roles,
     personId,
     reviewQueryScopes,
     scopesLoading,

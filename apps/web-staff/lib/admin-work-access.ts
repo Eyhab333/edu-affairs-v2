@@ -1,10 +1,11 @@
-import type { PersonSupervisionScope } from "@takween/contracts";
+import type { MembershipRole, PersonSupervisionScope } from "@takween/contracts";
+import { hasOrgWideAccess } from "@takween/domain";
 
 /** Client-side navigation hint only. Admin Work callables remain authoritative. */
 export function canAccessAdminWork(params: {
   orgId?: string | null;
   personId?: string | null;
-  roles?: readonly string[];
+  roles?: readonly MembershipRole[];
   scopes?: readonly PersonSupervisionScope[];
 }) {
   const orgId = String(params.orgId || "").trim();
@@ -26,5 +27,5 @@ export function canAccessAdminWork(params: {
     };
     return raw.orgId === orgId && raw.personId === personId && raw.capability === "ADMIN_WORK_VIEW" && raw.isActive !== false && !(typeof raw.startAt === "number" && raw.startAt > now) && !(typeof raw.endAt === "number" && raw.endAt < now);
   });
-  return !!orgId && !!personId && isPrincipal && hasScope;
+  return !!orgId && !!personId && (hasOrgWideAccess(params.roles) || (isPrincipal && hasScope));
 }

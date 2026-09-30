@@ -33,6 +33,7 @@ import {
 } from "@/lib/staff-portfolio";
 import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
+import { hasOrgWideAccess } from "@takween/domain";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import { canAccessStaffWork } from "@/lib/staff-work-access";
 import { canAccessAdminWork } from "@/lib/admin-work-access";
@@ -61,6 +62,12 @@ export const staffNavItems: StaffNavItem[] = [
     label: "الرئيسية",
     icon: LayoutDashboard,
     moduleKey: "HOME",
+  },
+  {
+    href: "/staff/reports",
+    label: "التقارير",
+    icon: ChartNoAxesCombined,
+    reports: true,
   },
   {
     href: "/staff/classes",
@@ -204,12 +211,7 @@ export const staffNavItems: StaffNavItem[] = [
     moduleKey: "MY_EVALUATIONS",
     performanceImprovement: true,
   },
-  {
-    href: "/staff/reports",
-    label: "التقارير",
-    icon: ChartNoAxesCombined,
-    reports: true,
-  },
+  
   {
     href: "/staff/messages",
     label: "تواصل ولي الأمر",
@@ -259,16 +261,23 @@ export function getStaffNavigationAccess(
     visibleModuleSet: new Set(actor.visibleModules),
     canAccessDocumentation: canAccessWorkDocumentation(actor.roles),
     canManageDocuments: canManagePdfResources(actor.roles),
-    canAccessTeachingResources: isTeacherPdfResourceActor(actor),
+    canAccessTeachingResources:
+      isTeacherPdfResourceActor(actor) || hasOrgWideAccess(actor.roles),
     canAccessMyPortfolio: canUseMyStaffPortfolio(actor),
     canAccessTeacherPortfolio: canReviewTeacherPortfolios(actor),
     canAccessPerformanceImprovement: canAccessPerformanceImprovement(actor),
     canAccessLessonPrepApprovals:
-      getLessonPrepReviewSchoolIds({ personId: actor.personId }).length > 0,
+      getLessonPrepReviewSchoolIds({
+        orgId: actor.orgId,
+        personId: actor.personId,
+        roles: actor.roles,
+        orgWideSchoolIds: actor.schools.map((school) => school.id),
+      }).length > 0,
     canAccessTeacherWork: canAccessTeacherWork(actor),
     canAccessStaffWork: canAccessStaffWork({
       orgId: actor.orgId,
       personId: actor.personId,
+      roles: actor.roles,
       scopes: supervisionScopes,
     }),
     canAccessAdminWork: canAccessAdminWork({
@@ -278,7 +287,7 @@ export function getStaffNavigationAccess(
       scopes: supervisionScopes,
     }),
     canAccessReports:
-      actor.roles.includes("platform_owner") ||
+      hasOrgWideAccess(actor.roles) ||
       actor.roles.includes("ORG_SUPERVISION_HEAD") ||
       actor.roles.includes("BOYS_EDU_SUPERVISOR") ||
       actor.roles.includes("EDU_SUPERVISOR") ||

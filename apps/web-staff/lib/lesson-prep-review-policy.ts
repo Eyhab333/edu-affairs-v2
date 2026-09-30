@@ -1,7 +1,8 @@
-import type { PersonSupervisionScope } from "@takween/contracts";
+import type { MembershipRole, PersonSupervisionScope } from "@takween/contracts";
 import {
   getPersonSupervisionSchoolIds,
   getPersonSupervisionSubjectScope,
+  hasOrgWideAccess,
   hasPersonSupervisionSubjectAccess,
 } from "@takween/domain";
 
@@ -34,11 +35,22 @@ export function getLessonPrepReviewSchoolIds(
   params: {
     orgId?: string | null;
     personId?: string | null;
+    roles?: readonly MembershipRole[];
+    orgWideSchoolIds?: readonly string[];
     scopes?: readonly PersonSupervisionScope[];
   },
 ): readonly string[] {
   const personId = String(params.personId || "").trim();
   const orgId = String(params.orgId || "").trim();
+  if (hasOrgWideAccess(params.roles)) {
+    return Array.from(
+      new Set(
+        (params.orgWideSchoolIds ?? [])
+          .map((schoolId) => schoolId.trim())
+          .filter(Boolean),
+      ),
+    );
+  }
   const kindergartenSchoolIds = getKindergartenReviewSchoolIds(personId);
   const scopedSchoolIds = orgId
     ? getPersonSupervisionSchoolIds({
@@ -55,11 +67,20 @@ export function getLessonPrepReviewSchoolIds(
 export function getLessonPrepReviewQueryScopes(params: {
   orgId?: string | null;
   personId?: string | null;
+  roles?: readonly MembershipRole[];
+  orgWideSchoolIds?: readonly string[];
   scopes?: readonly PersonSupervisionScope[];
 }) {
   const personId = String(params.personId || "").trim();
   const orgId = String(params.orgId || "").trim();
   const queryScopes = new Map<string, { schoolId: string; subjectKey?: string }>();
+
+  if (hasOrgWideAccess(params.roles)) {
+    for (const schoolId of params.orgWideSchoolIds ?? []) {
+      if (schoolId.trim()) queryScopes.set(schoolId, { schoolId });
+    }
+    return [...queryScopes.values()];
+  }
 
   for (const schoolId of getKindergartenReviewSchoolIds(personId)) {
     queryScopes.set(schoolId, { schoolId });
@@ -93,6 +114,7 @@ export function getLessonPrepReviewQueryScopes(params: {
 export function canReviewLessonPrepAtSchool(params: {
   orgId?: string | null;
   personId?: string | null;
+  roles?: readonly MembershipRole[];
   schoolId?: string | null;
   subjectKey?: string | null;
   scopes?: readonly PersonSupervisionScope[];
@@ -103,6 +125,7 @@ export function canReviewLessonPrepAtSchool(params: {
   const orgId = String(params.orgId || "").trim();
 
   return (
+    hasOrgWideAccess(params.roles) ||
     getKindergartenReviewSchoolIds(personId).includes(schoolId) ||
     (!!orgId &&
       !!subjectKey &&

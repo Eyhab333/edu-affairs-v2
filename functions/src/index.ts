@@ -59,7 +59,10 @@ export {
 
 export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-resource-acknowledgement-report";
 export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
-export { listMyTeachingPdfResources } from "./pdf-resources/list-my-teaching-pdf-resources";
+export {
+  listMyTeachingPdfResources,
+  listOrgTeachingPdfResources,
+} from "./pdf-resources/list-my-teaching-pdf-resources";
 export { getMyGuardianChildren } from "./guardian/get-my-guardian-children";
 export { getMyGuardianAttendance } from "./guardian/get-my-guardian-attendance";
 export { getMyGuardianGamification } from "./guardian/get-my-guardian-gamification";

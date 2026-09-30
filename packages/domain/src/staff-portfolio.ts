@@ -1,4 +1,5 @@
 import type { MembershipRole, StaffPortfolioItem, StaffPortfolioItemKind } from "@takween/contracts";
+import { hasOrgWideAccess } from "./access";
 
 export const STAFF_PORTFOLIO_TEACHER_ROLE_KEYS = new Set<MembershipRole>([
   "teacher", "BOYS_TEACHER", "GIRLS_TEACHER", "KG_TEACHER",
@@ -22,10 +23,6 @@ export const STAFF_PORTFOLIO_SUPERVISION_HEAD_ROLE_KEYS = new Set<MembershipRole
   "ORG_SUPERVISION_HEAD", "BOYS_SUPERVISION_HEAD",
 ]);
 
-export const STAFF_PORTFOLIO_ORG_ADMIN_ROLE_KEYS = new Set<MembershipRole>([
-  "platform_owner", "platform_admin", "org_owner", "org_admin",
-]);
-
 export function isStaffPortfolioTeacherRole(role: MembershipRole | undefined) {
   return !!role && STAFF_PORTFOLIO_TEACHER_ROLE_KEYS.has(role);
 }
@@ -34,9 +31,8 @@ export function canReviewStaffPortfolio(roles: MembershipRole[]) {
   return roles.some((role) =>
     STAFF_PORTFOLIO_SUPERVISOR_ROLE_KEYS.has(role) ||
     STAFF_PORTFOLIO_SCHOOL_MANAGEMENT_ROLE_KEYS.has(role) ||
-    STAFF_PORTFOLIO_SUPERVISION_HEAD_ROLE_KEYS.has(role) ||
-    STAFF_PORTFOLIO_ORG_ADMIN_ROLE_KEYS.has(role),
-  );
+    STAFF_PORTFOLIO_SUPERVISION_HEAD_ROLE_KEYS.has(role),
+  ) || hasOrgWideAccess(roles);
 }
 
 export function isStaffPortfolioSubjectScopedSupervisorRole(
@@ -69,7 +65,7 @@ export function canReadStaffPortfolioItem(params: {
 }): boolean {
   const { item, actor } = params;
   if (item.ownerUid === actor.uid && item.ownerPersonId === actor.personId && actor.roles.some(isStaffPortfolioTeacherRole)) return true;
-  if (actor.roles.some((role) => STAFF_PORTFOLIO_ORG_ADMIN_ROLE_KEYS.has(role))) return true;
+  if (hasOrgWideAccess(actor.roles)) return true;
   if (actor.roles.some((role) => STAFF_PORTFOLIO_SUPERVISOR_ROLE_KEYS.has(role)) && params.supervisedTeacherPersonIds.has(item.ownerPersonId)) return true;
   const schoolInScope = actor.canAccessAllSchools || actor.schoolIds.includes(item.schoolId);
   if (!schoolInScope) return false;

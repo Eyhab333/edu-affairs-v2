@@ -4,6 +4,7 @@ import type {
   SubjectLessonPrep,
   SubjectLessonPrepStatus,
 } from "@takween/contracts";
+import { hasOrgWideAccess } from "../access";
 
 export type SubjectLessonPrepActionKey =
   | "EDIT"
@@ -83,10 +84,6 @@ export type SubjectLessonPrepEditPatch = {
 };
 
 const LESSON_PREP_REVIEW_ROLES = new Set<MembershipRole>([
-  "platform_owner",
-  "platform_admin",
-  "org_owner",
-  "org_admin",
   "school_admin",
   "school_manager",
   "BOYS_PRINCIPAL",
@@ -255,7 +252,7 @@ export function isSubjectLessonPrepAdminReviewer(
 
   const roles = getSubjectLessonPrepActorRoleKeys(actor);
 
-  return roles.some((role) => LESSON_PREP_REVIEW_ROLES.has(role));
+  return hasOrgWideAccess(roles) || roles.some((role) => LESSON_PREP_REVIEW_ROLES.has(role));
 }
 
 export function isSubjectLessonPrepOwner(

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, BarChart3, ClipboardCheck, UsersRound } from "lucide-react";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import { hasOrgWideAccess } from "@takween/domain";
 
 const reportAreas = [
   {
@@ -32,7 +33,7 @@ const reportAreas = [
 export default function ReportsPage() {
   const { actor } = useStaffActor();
   const canAccessReports =
-    actor.roles.includes("platform_owner") ||
+    hasOrgWideAccess(actor.roles) ||
     actor.roles.includes("ORG_SUPERVISION_HEAD") ||
     actor.roles.includes("BOYS_EDU_SUPERVISOR") ||
     actor.roles.includes("EDU_SUPERVISOR") ||

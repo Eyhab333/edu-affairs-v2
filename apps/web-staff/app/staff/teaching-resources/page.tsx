@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Download, Eye, FileText, Loader2, RefreshCw } from "lucide-react";
 import type { PdfResource } from "@takween/contracts";
+import { hasOrgWideAccess } from "@takween/domain";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { downloadPdfResource, isTeacherPdfResourceActor, listMyTeachingPdfResources, viewPdfResource } from "@/lib/pdf-resources";
+import { canAccessTeachingPdfResources, downloadPdfResource, listMyTeachingPdfResources, listTeachingPdfResourcesForAdmin, viewPdfResource } from "@/lib/pdf-resources";
 import { appToast } from "@/lib/app-toast";
 import { getErrorMessage } from "@/lib/error-message";
 
@@ -30,7 +31,13 @@ export default function TeachingResourcesPage() {
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
-    try { setResources(await listMyTeachingPdfResources(actor)); }
+    try {
+      setResources(
+        hasOrgWideAccess(actor.roles)
+          ? await listTeachingPdfResourcesForAdmin(actor)
+          : await listMyTeachingPdfResources(actor),
+      );
+    }
     catch (loadError) { console.error("Failed to load teaching resources:", loadError); setError(getErrorMessage(loadError)); }
     finally { setLoading(false); }
   }, [actor]);
@@ -51,7 +58,7 @@ export default function TeachingResourcesPage() {
     finally { setBusyId(""); }
   }
 
-  if (!isTeacherPdfResourceActor(actor)) {
+  if (!canAccessTeachingPdfResources(actor)) {
     return <Card className="border-destructive/40"><CardHeader><CardTitle>غير مصرح بالوصول</CardTitle></CardHeader><CardContent className="text-sm text-muted-foreground">هذه الصفحة متاحة للمعلمين أصحاب الإسنادات التعليمية فقط.</CardContent></Card>;
   }
 

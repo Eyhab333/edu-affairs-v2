@@ -6,6 +6,7 @@ import type {
   OperationPermission,
   TeacherAssignment,
   TeacherAssignmentClassLink,
+  MembershipRole,
 } from "@takween/contracts";
 
 import {
@@ -94,20 +95,30 @@ function teacherAssignmentAllowsClass(params: {
   });
 }
 
+export const ORG_WIDE_ADMIN_ROLE_KEYS = new Set<MembershipRole>([
+  "platform_owner",
+  "platform_admin",
+  "org_owner",
+  "org_admin",
+]);
+
+export function isOrgWideRole(role: MembershipRole | undefined): boolean {
+  return !!role && ORG_WIDE_ADMIN_ROLE_KEYS.has(role);
+}
+
+export function hasOrgWideAccess(
+  roles: readonly MembershipRole[] | undefined,
+): boolean {
+  return !!roles?.some(isOrgWideRole);
+}
+
 function isOrgWideMembership(membership: Membership): boolean {
   const roleKey = membership.roleKey ?? membership.role;
-
-  const orgWideRoles = new Set<string>([
-    "platform_owner",
-    "platform_admin",
-    "org_owner",
-    "org_admin",
-  ]);
 
   return (
     membership.orgId.length > 0 &&
     membership.isActive !== false &&
-    (orgWideRoles.has(roleKey ?? "") ||
+    (isOrgWideRole(roleKey) ||
       membership.permissions?.manageOrg === true ||
       membership.permissions?.manageSchools === true ||
       membership.permissions?.manageDirectory === true ||

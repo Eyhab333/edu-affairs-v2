@@ -20,6 +20,7 @@ import {
 } from "@takween/contracts";
 import {
   canStaffAcknowledgePdfResource,
+  hasOrgWideAccess,
   isStaffTargetedByPdfResource,
   isTeacherTargetedByPdfResource,
   resolveActiveTeacherOfferingIds,
@@ -29,15 +30,8 @@ import {
 import { db, functions, storage } from "@/lib/firebase";
 import type { StaffActorData } from "@/lib/staff-actor";
 
-export const PDF_RESOURCE_MANAGEMENT_ROLES = new Set<MembershipRole>([
-  "platform_owner",
-  "platform_admin",
-  "org_owner",
-  "org_admin",
-]);
-
 export function canManagePdfResources(roles: MembershipRole[]) {
-  return roles.some((role) => PDF_RESOURCE_MANAGEMENT_ROLES.has(role));
+  return hasOrgWideAccess(roles);
 }
 
 function currentMembership(actor: StaffActorData) {
@@ -117,6 +111,10 @@ export function isTeacherPdfResourceActor(actor: StaffActorData) {
   return actor.roles.some((role) => TEACHER_PDF_RESOURCE_ROLE_KEYS.has(role));
 }
 
+export function canAccessTeachingPdfResources(actor: StaffActorData) {
+  return isTeacherPdfResourceActor(actor) || hasOrgWideAccess(actor.roles);
+}
+
 export async function listMyTeachingPdfResources(actor: StaffActorData) {
   if (!actor.personId || !isTeacherPdfResourceActor(actor)) return [];
 
@@ -148,6 +146,21 @@ export async function listMyTeachingPdfResources(actor: StaffActorData) {
     })
       ? [parsed.data]
       : [];
+  });
+}
+
+export async function listTeachingPdfResourcesForAdmin(actor: StaffActorData) {
+  if (!hasOrgWideAccess(actor.roles)) return [];
+
+  const callable = httpsCallable<{ orgId: string }, PdfResource[]>(
+    functions,
+    "listOrgTeachingPdfResources",
+  );
+  const result = await callable({ orgId: actor.orgId });
+
+  return result.data.flatMap((resource) => {
+    const parsed = PdfResourceSchema.safeParse(resource);
+    return parsed.success ? [parsed.data] : [];
   });
 }
 

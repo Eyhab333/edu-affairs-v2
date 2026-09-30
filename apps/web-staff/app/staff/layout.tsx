@@ -33,6 +33,7 @@ import {
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
 import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
 import type { PersonSupervisionScope } from "@takween/contracts";
+import { hasOrgWideAccess } from "@takween/domain";
 
 function isActiveHref(pathname: string, href: string) {
   if (href === "/staff") return pathname === "/staff";
@@ -50,13 +51,9 @@ function StaffShell({ children }: { children: ReactNode }) {
   const stats = getStaffActorStats(actor);
 
   const schoolContext = useMemo(() => {
-    const hasOrgWideAccess = actor.roles.some((role) =>
-      ["platform_owner", "platform_admin", "org_owner", "org_admin"].includes(
-        role,
-      ),
-    );
+    const hasOrgWideSchoolAccess = hasOrgWideAccess(actor.roles);
 
-    if (hasOrgWideAccess) {
+    if (hasOrgWideSchoolAccess) {
       return {
         label: "المدرسة / الروضة:",
         value: "جميع المدارس والروضات",
@@ -157,11 +154,15 @@ function StaffShell({ children }: { children: ReactNode }) {
       getLessonPrepReviewSchoolIds({
         orgId: actor.orgId,
         personId: actor.personId,
+        roles: actor.roles,
+        orgWideSchoolIds: actor.schools.map((school) => school.id),
         scopes: supervisionScopes,
       }).length > 0,
     [
       actor.orgId,
       actor.personId,
+      actor.roles,
+      actor.schools,
       canAccessLegacyLessonPrepApprovals,
       supervisionScopes,
     ],

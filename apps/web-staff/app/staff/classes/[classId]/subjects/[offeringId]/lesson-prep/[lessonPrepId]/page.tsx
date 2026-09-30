@@ -37,6 +37,7 @@ import type { PersonSupervisionScope } from "@takween/contracts";
 
 type StaffActorLike = LessonPrepWorkspaceActor & {
   orgId?: string;
+  schools?: Array<{ id: string }>;
 };
 
 type SubjectLessonPrepStatus =
@@ -165,9 +166,11 @@ export default function SubjectLessonPrepDetailsPage() {
       getLessonPrepReviewSchoolIds({
         orgId,
         personId: actorPersonId,
+        roles: staffActor?.roles,
+        orgWideSchoolIds: staffActor?.schools?.map((school) => school.id),
         scopes: supervisionScopes,
       }),
-    [actorPersonId, orgId, supervisionScopes],
+    [actorPersonId, orgId, staffActor?.roles, staffActor?.schools, supervisionScopes],
   );
   const canAttemptReviewerAccess =
     scopesLoading || reviewSchoolIds.length > 0;
@@ -282,6 +285,7 @@ export default function SubjectLessonPrepDetailsPage() {
         canReviewLessonPrepAtSchool({
           orgId,
           personId: actorPersonId,
+          roles: staffActor?.roles,
           schoolId: data.schoolId,
           subjectKey: data.subjectKey,
           scopes: supervisionScopes,
@@ -310,6 +314,7 @@ export default function SubjectLessonPrepDetailsPage() {
     classId,
     offeringId,
     actorPersonId,
+    staffActor?.roles,
     scopesLoading,
     supervisionScopes,
   ]);
@@ -337,6 +342,7 @@ export default function SubjectLessonPrepDetailsPage() {
       canReviewLessonPrepAtSchool({
         orgId,
         personId: actorPersonId,
+        roles: staffActor?.roles,
         schoolId: prep.schoolId,
         subjectKey: prep.subjectKey,
         scopes: supervisionScopes,
@@ -365,6 +371,7 @@ export default function SubjectLessonPrepDetailsPage() {
       !canReviewLessonPrepAtSchool({
         orgId,
         personId: actorPersonId,
+        roles: staffActor?.roles,
         schoolId: current.schoolId,
         subjectKey: current.subjectKey,
         scopes: supervisionScopes,

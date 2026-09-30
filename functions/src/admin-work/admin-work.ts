@@ -7,7 +7,7 @@ import {
   type MembershipRole as MembershipRoleType,
   type PersonSupervisionScope,
 } from "@takween/contracts";
-import { getAdminWorkRoleInfo, getPersonSupervisionSchoolIds, isAdminWorkPrincipal } from "@takween/domain";
+import { getAdminWorkRoleInfo, getPersonSupervisionSchoolIds, hasOrgWideAccess, isAdminWorkPrincipal } from "@takween/domain";
 
 const REGION = "me-central2";
 type Row = Record<string, unknown>;
@@ -52,14 +52,17 @@ async function resolveActor(uid: string, orgId: string): Promise<Actor> {
   const snap = await db.doc(`users/${uid}/orgMemberships/${orgId}`).get();
   const membership = row(snap.data());
   const viewerRole = parseRole(membership.roleKey ?? membership.role);
-  if (!snap.exists || !active(membership, Date.now()) || !text(membership.personId) || !isAdminWorkPrincipal(viewerRole)) throw new HttpsError("permission-denied", "Principal admin-work access is required.");
+  const isOrgWideAdministrator = viewerRole !== null && hasOrgWideAccess([viewerRole]);
+  if (!snap.exists || !active(membership, Date.now()) || !text(membership.personId) || (!isOrgWideAdministrator && !isAdminWorkPrincipal(viewerRole))) throw new HttpsError("permission-denied", "Principal or organization-wide administrative access is required.");
   const personId = text(membership.personId);
   const scopeSnapshot = await db.collection(`orgs/${orgId}/personSupervisionScopes`).where("personId", "==", personId).get();
   const scopes: PersonSupervisionScope[] = scopeSnapshot.docs.flatMap((document) => { const parsed = PersonSupervisionScopeSchema.safeParse({ id: document.id, ...document.data() }); return parsed.success ? [parsed.data] : []; });
   const scopedIds = getPersonSupervisionSchoolIds({ scopes, orgId, personId, capability: "ADMIN_WORK_VIEW" });
-  if (!scopedIds.length) throw new HttpsError("permission-denied", "Admin work monitoring access is required.");
-  const schoolSnapshots = await db.getAll(...scopedIds.map((schoolId) => db.doc(`orgs/${orgId}/schools/${schoolId}`)));
-  const schools = schoolSnapshots.flatMap((document) => { const school = row(document.data()); const profile = SchoolProfileSchema.safeParse(school.profile); return document.exists && school.archived !== true && text(school.status) !== "ARCHIVED" && profile.success ? [{ id: document.id, name: text(school.name) || "مدرسة غير محددة", profile: profile.data as unknown as Row }] : []; });
+  if (!isOrgWideAdministrator && !scopedIds.length) throw new HttpsError("permission-denied", "Admin work monitoring access is required.");
+  const schoolSnapshots = isOrgWideAdministrator
+    ? (await db.collection(`orgs/${orgId}/schools`).get()).docs
+    : await db.getAll(...scopedIds.map((schoolId) => db.doc(`orgs/${orgId}/schools/${schoolId}`)));
+  const schools = schoolSnapshots.flatMap((document) => { const school = row(document.data()); const profile = SchoolProfileSchema.safeParse(school.profile); return document.exists && school.isArchived !== true && school.archived !== true && text(school.status) !== "ARCHIVED" && profile.success ? [{ id: document.id, name: text(school.name) || "مدرسة غير محددة", profile: profile.data as unknown as Row }] : []; });
   if (!schools.length) throw new HttpsError("permission-denied", "No valid admin-work school scope is available.");
   return { personId, schoolIds: schools.map((school) => school.id), schools };
 }

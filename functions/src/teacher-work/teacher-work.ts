@@ -8,6 +8,7 @@ import {
 } from "@takween/contracts";
 import {
   canReviewStaffPortfolio,
+  hasOrgWideAccess,
   hasPersonSupervisionSubjectAccess,
 } from "@takween/domain";
 
@@ -237,6 +238,7 @@ type TeacherWorkActor = {
   schoolIds: string[];
   schools: Array<{ id: string; name: string }>;
   supervisionScopes: PersonSupervisionScope[];
+  hasOrgWideAccess: boolean;
 };
 
 function text(value: unknown) {
@@ -407,7 +409,7 @@ function schoolIdsOf(membership: Row) {
 function hasAllSchoolsAccess(membership: Row, role: MembershipRoleType) {
   const scopes = row(membership.scopes);
   return (
-    ["platform_owner", "platform_admin", "org_owner", "org_admin"].includes(role) ||
+    hasOrgWideAccess([role]) ||
     scopes.canAccessAllSchools === true ||
     text(membership.scopeType) === "ORG"
   );
@@ -547,6 +549,7 @@ async function resolveActor(params: {
   }
 
   const scopedSchoolIds = schoolIdsOf(membership);
+  const actorHasOrgWideAccess = hasOrgWideAccess([role]);
   const schoolSnapshots = hasAllSchoolsAccess(membership, role)
     ? (await db.collection(`orgs/${params.orgId}/schools`).get()).docs
     : await Promise.all(
@@ -556,7 +559,13 @@ async function resolveActor(params: {
       );
 
   const schools = schoolSnapshots
-    .filter((snapshot) => snapshot.exists)
+    .filter(
+      (snapshot) =>
+        snapshot.exists &&
+        snapshot.data()?.isArchived !== true &&
+        snapshot.data()?.archived !== true &&
+        text(snapshot.data()?.status) !== "ARCHIVED",
+    )
     .map((snapshot) => ({
       id: snapshot.id,
       name: text(snapshot.data()?.name),
@@ -583,6 +592,7 @@ async function resolveActor(params: {
     schoolIds: schools.map((school) => school.id),
     schools,
     supervisionScopes,
+    hasOrgWideAccess: actorHasOrgWideAccess,
   };
 }
 
@@ -679,6 +689,7 @@ function canViewTeacherWorkSubject(params: {
   schoolId: string;
   subjectKey: string;
 }) {
+  if (params.actor.hasOrgWideAccess) return true;
   return hasPersonSupervisionSubjectAccess({
     scopes: params.actor.supervisionScopes,
     request: {

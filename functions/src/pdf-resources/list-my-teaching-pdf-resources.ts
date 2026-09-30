@@ -12,6 +12,7 @@ import {
 } from "@takween/contracts";
 import {
   isTeacherTargetedByPdfResource,
+  hasOrgWideAccess,
   resolveActiveTeacherOfferingIds,
   TEACHER_PDF_RESOURCE_ROLE_KEYS,
 } from "@takween/domain";
@@ -137,6 +138,42 @@ export const listMyTeachingPdfResources = onCall(
           teacherOfferingIds: resolveActiveTeacherOfferingIds({ assignments, classLinks, now }),
         }),
       )
+      .sort((left, right) => right.publishedAt - left.publishedAt);
+  },
+);
+
+export const listOrgTeachingPdfResources = onCall(
+  { region: REGION, cors: true, invoker: "public" },
+  async (request) => {
+    const uid = request.auth?.uid;
+    const orgId = readString(request.data?.orgId);
+    if (!uid) throw new HttpsError("unauthenticated", "Authentication is required.");
+    if (!orgId || orgId.includes("/")) {
+      throw new HttpsError("invalid-argument", "A valid organization identifier is required.");
+    }
+
+    const db = getFirestore();
+    const membershipSnapshot = await db.doc(`users/${uid}/orgMemberships/${orgId}`).get();
+    if (!membershipSnapshot.exists) {
+      throw new HttpsError("permission-denied", "Organization membership was not found.");
+    }
+
+    const membership = membershipSnapshot.data() ?? {};
+    const role = resolveRole(membership);
+    if (!isActiveMembership(membership, Date.now()) || !role || !hasOrgWideAccess([role])) {
+      throw new HttpsError("permission-denied", "Organization-wide administrative access is required.");
+    }
+
+    const resourcesSnapshot = await db
+      .collection(`orgs/${orgId}/pdfResources`)
+      .where("kind", "in", ["ENRICHMENT_MATERIAL", "CURRICULUM_DISTRIBUTION"])
+      .get();
+
+    return resourcesSnapshot.docs
+      .flatMap((item) => {
+        const parsed = PdfResourceSchema.safeParse({ id: item.id, orgId, ...item.data() });
+        return parsed.success && parsed.data.status === "PUBLISHED" ? [parsed.data] : [];
+      })
       .sort((left, right) => right.publishedAt - left.publishedAt);
   },
 );

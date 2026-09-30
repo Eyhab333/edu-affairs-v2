@@ -6,7 +6,7 @@ import {
   type MembershipRole as MembershipRoleType,
   type PersonSupervisionScope,
 } from "@takween/contracts";
-import { getPersonSupervisionSchoolIds } from "@takween/domain";
+import { getPersonSupervisionSchoolIds, hasOrgWideAccess } from "@takween/domain";
 
 const REGION = "me-central2";
 const STAFF_ROLE_KEYS = new Set<MembershipRoleType>([
@@ -176,6 +176,7 @@ type StaffRecord = Omit<
 >;
 type Actor = {
   personId: string;
+  isOrgWideAdministrator: boolean;
   schoolIds: string[];
   schools: Array<{ id: string; name: string }>;
 };
@@ -383,11 +384,16 @@ async function resolveActor(params: {
       "An active staff membership is required.",
     );
 
-  const scopeSnapshot = await db
-    .collection(`orgs/${params.orgId}/personSupervisionScopes`)
-    .where("personId", "==", personId)
-    .get();
-  const scopes: PersonSupervisionScope[] = scopeSnapshot.docs.flatMap(
+  const viewerRole = role(member.roleKey ?? member.role);
+  const isOrgWideAdministrator =
+    viewerRole !== null && hasOrgWideAccess([viewerRole]);
+  const scopeSnapshot = isOrgWideAdministrator
+    ? null
+    : await db
+        .collection(`orgs/${params.orgId}/personSupervisionScopes`)
+        .where("personId", "==", personId)
+        .get();
+  const scopes: PersonSupervisionScope[] = scopeSnapshot?.docs.flatMap(
     (item) => {
       const parsed = PersonSupervisionScopeSchema.safeParse({
         id: item.id,
@@ -395,32 +401,47 @@ async function resolveActor(params: {
       });
       return parsed.success ? [parsed.data] : [];
     },
-  );
-  const schoolIds = getPersonSupervisionSchoolIds({
-    scopes,
-    orgId: params.orgId,
-    personId,
-    capability: "STAFF_WORK_VIEW",
-  });
-  if (!schoolIds.length)
+  ) ?? [];
+  const schoolIds = isOrgWideAdministrator
+    ? []
+    : getPersonSupervisionSchoolIds({
+        scopes,
+        orgId: params.orgId,
+        personId,
+        capability: "STAFF_WORK_VIEW",
+      });
+  if (!isOrgWideAdministrator && !schoolIds.length)
     throw new HttpsError(
       "permission-denied",
       "Staff work monitoring access is required.",
     );
-  const schoolSnapshots = await Promise.all(
-    schoolIds.map((schoolId) =>
-      db.doc(`orgs/${params.orgId}/schools/${schoolId}`).get(),
-    ),
-  );
+  const schoolSnapshots = isOrgWideAdministrator
+    ? (await db.collection(`orgs/${params.orgId}/schools`).get()).docs
+    : await Promise.all(
+        schoolIds.map((schoolId) =>
+          db.doc(`orgs/${params.orgId}/schools/${schoolId}`).get(),
+        ),
+      );
   const schools = schoolSnapshots
-    .filter((item) => item.exists)
+    .filter(
+      (item) =>
+        item.exists &&
+        item.data()?.isArchived !== true &&
+        item.data()?.archived !== true &&
+        text(item.data()?.status) !== "ARCHIVED",
+    )
     .map((item) => ({ id: item.id, name: text(item.data()?.name) || item.id }));
   if (!schools.length)
     throw new HttpsError(
       "permission-denied",
       "No active staff-work school scope is available.",
     );
-  return { personId, schoolIds: schools.map((item) => item.id), schools };
+  return {
+    personId,
+    isOrgWideAdministrator,
+    schoolIds: schools.map((item) => item.id),
+    schools,
+  };
 }
 
 async function rowsForSchools(params: {
@@ -1141,10 +1162,12 @@ async function staffWork(params: { uid: string; input: Row }) {
     orgId,
   });
 
-  const viewerConfig = await loadStaffWorkViewerConfig({
-    orgId,
-    viewerPersonId: actor.personId,
-  });
+  const viewerConfig = actor.isOrgWideAdministrator
+    ? { includedPersonIds: [], excludedPersonIds: [] }
+    : await loadStaffWorkViewerConfig({
+        orgId,
+        viewerPersonId: actor.personId,
+      });
 
   const staff = await listEligibleStaff({
     orgId,
@@ -1248,10 +1271,12 @@ export const getStaffWorkDocumentationRecord = onCall(
     const staffPersonId = id(input.staffPersonId, "staffPersonId");
     const sourceEntityId = id(input.sourceEntityId, "sourceEntityId");
     const actor = await resolveActor({ uid: request.auth.uid, orgId });
-    const viewerConfig = await loadStaffWorkViewerConfig({
-      orgId,
-      viewerPersonId: actor.personId,
-    });
+    const viewerConfig = actor.isOrgWideAdministrator
+      ? { includedPersonIds: [], excludedPersonIds: [] }
+      : await loadStaffWorkViewerConfig({
+          orgId,
+          viewerPersonId: actor.personId,
+        });
     const eligibleStaff = await listEligibleStaff({
       orgId,
       actor,

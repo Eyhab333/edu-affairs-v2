@@ -28,6 +28,8 @@ import type { OrgSummary } from "@/hooks/use-org-summary";
 import {
   buildStaffHome,
   getVisibleClassesForActor,
+  hasOrgWideAccess,
+  isOrgWideRole,
   type StaffHomeVisibleModule,
 } from "@takween/domain";
 
@@ -702,19 +704,6 @@ function getMembershipRoles(memberships: Membership[]): MembershipRole[] {
       .map((membership) => getMembershipRole(membership))
       .filter((role): role is MembershipRole => !!role),
   );
-}
-
-function isOrgWideRole(role: MembershipRole) {
-  return [
-    "platform_owner",
-    "platform_admin",
-    "org_owner",
-    "org_admin",
-  ].includes(role);
-}
-
-function hasOrgWideAccess(roles: MembershipRole[]) {
-  return roles.some((role) => isOrgWideRole(role));
 }
 
 function resolveVisibleModules(params: {
