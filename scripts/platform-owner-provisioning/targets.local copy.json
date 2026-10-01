@@ -1,0 +1,38 @@
+{
+  "orgId": "takween",
+  "targets": [
+    {
+      "key": "chairman",
+      "email": "pres.tk@qz.org.sa",
+      "displayName": "عبدالرحمن سليمان عبدالرحمن الطواله",
+      "nationalId": "1067081024",
+      "title": "رئيس مجلس الإدارة",
+      "expectedUid": "TyHCEjrmO7gISv4Lmj1k1j8L1P13",
+      "createIfMissing": false,
+      "resetPasswordOnApply": true,
+      "expectGuardianAccess": true
+    },
+    {
+      "key": "ceo",
+      "email": "asalfayez@qz.org.sa",
+      "displayName": "عبد الله سليمان فايز الفايز",
+      "nationalId": "1077448080",
+      "title": "الرئيس التنفيذي",
+      "expectedUid": "",
+      "createIfMissing": false,
+      "resetPasswordOnApply": true,
+      "expectGuardianAccess": false
+    },
+    {
+      "key": "supervision_head",
+      "email": "h-alnasser@qz.org.sa",
+      "displayName": "حمد زيد عبدالعزيز الناصر",
+      "nationalId": "1010154001",
+      "title": "رئيس قسم الإشراف",
+      "expectedUid": "atmGJJCwkIZdJHarm9gL0WYLCyQ2",
+      "createIfMissing": false,
+      "resetPasswordOnApply": true,
+      "expectGuardianAccess": false
+    }
+  ]
+}

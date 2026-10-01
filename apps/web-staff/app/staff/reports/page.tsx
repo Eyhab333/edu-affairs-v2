@@ -33,13 +33,15 @@ const reportAreas = [
 export default function ReportsPage() {
   const { actor } = useStaffActor();
   const canAccessReports =
-    hasOrgWideAccess(actor.roles) ||
-    actor.roles.includes("ORG_SUPERVISION_HEAD") ||
-    actor.roles.includes("BOYS_EDU_SUPERVISOR") ||
-    actor.roles.includes("EDU_SUPERVISOR") ||
-    actor.roles.includes("BOYS_PRINCIPAL") ||
-    actor.roles.includes("GIRLS_PRINCIPAL") ||
-    actor.roles.includes("KG_PRINCIPAL");
+    hasOrgWideAccess(actor.roles)
+    //  ||
+    // actor.roles.includes("ORG_SUPERVISION_HEAD") ||
+    // actor.roles.includes("BOYS_EDU_SUPERVISOR") ||
+    // actor.roles.includes("EDU_SUPERVISOR") ||
+    // actor.roles.includes("BOYS_PRINCIPAL") ||
+    // actor.roles.includes("GIRLS_PRINCIPAL") ||
+    // actor.roles.includes("KG_PRINCIPAL")
+    ;
 
   if (!canAccessReports) return null;
 

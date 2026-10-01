@@ -9,6 +9,8 @@ import {
   canBrowseStaffPdfFilesInScope,
   canViewStaffPdfFile,
   hasActiveKindergartenValuesTeacherAssignment,
+  resolveStaffAuthorityPersonIds,
+  resolveStaffHomeSchoolIds,
   type StaffPdfFileViewer,
 } from "@takween/domain";
 
@@ -104,6 +106,21 @@ function ownerSchoolIds(actor: StaffActorData) {
   ]);
 }
 
+function ownerMembershipSchoolIds(actor: StaffActorData) {
+  return resolveStaffHomeSchoolIds({
+    personId: actor.personId,
+    memberships: actor.memberships,
+    teacherAssignments: actor.teacherAssignments,
+  });
+}
+
+function ownerAuthorityPersonIds(actor: StaffActorData) {
+  return resolveStaffAuthorityPersonIds({
+    personId: actor.personId,
+    memberships: actor.memberships,
+  });
+}
+
 function isPermissionError(error: unknown) {
   const { code } = getErrorDetails(error);
   return code === "permission-denied" || code.endsWith("/unauthorized") || code.endsWith("/permission-denied");
@@ -154,7 +171,7 @@ export function getStaffPdfFileViewer(params: {
     uid: params.actor.uid,
     personId: params.actor.personId,
     roles: params.actor.roles,
-    schoolIds: ownerSchoolIds(params.actor),
+    homeSchoolIds: ownerMembershipSchoolIds(params.actor),
     operationalAssignments: params.actor.operationalAssignments,
     supervisionScopes: params.supervisionScopes,
   };
@@ -241,6 +258,8 @@ export async function uploadStaffPdfFile(params: {
     ownerPersonId,
     ownerUid: params.actor.uid,
     ownerDisplayName: ownerDisplayName(params.actor),
+    ownerMembershipSchoolIds: ownerMembershipSchoolIds(params.actor),
+    ownerAuthorityPersonIds: ownerAuthorityPersonIds(params.actor),
     ownerSchoolIds: ownerSchoolIds(params.actor),
     ownerOrgUnitIds: [],
     ownerRoleKeys: params.actor.roles,

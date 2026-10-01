@@ -178,6 +178,7 @@ export const approveEvaluationSubmission = onCall(
     region: REGION,
     cors: CORS_ORIGINS,
     invoker: "public",
+    memory: "512MiB",
   },
   async (
     request,

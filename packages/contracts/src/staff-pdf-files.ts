@@ -22,6 +22,12 @@ export const StaffPdfFileSchema = z.object({
   ownerPersonId: z.string().trim().min(1),
   ownerUid: z.string().trim().min(1),
   ownerDisplayName: z.string().trim().min(1),
+  /** Actual membership/teaching placement; unlike ownerSchoolIds, this never
+   * represents a school the owner merely supervises or can access. */
+  ownerMembershipSchoolIds: z.array(z.string().trim().min(1)).default([]),
+  /** Direct target-to-manager relationships snapshotted from memberships. */
+  ownerAuthorityPersonIds: z.array(z.string().trim().min(1)).default([]),
+  /** Legacy mixed-scope snapshot retained for display compatibility. */
   ownerSchoolIds: z.array(z.string().trim().min(1)).default([]),
   ownerOrgUnitIds: z.array(z.string().trim().min(1)).default([]),
   ownerRoleKeys: z.array(MembershipRole).default([]),
