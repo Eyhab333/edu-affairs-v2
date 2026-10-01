@@ -1762,7 +1762,9 @@ match /staffPdfFiles/{fileId} {
     && resource.data.orgId == orgId
     && request.resource.data.orgId == orgId;
 
-  allow delete: if false;
+  allow delete: if membershipExists(orgId)
+    && resource.data.orgId == orgId
+    && resource.data.ownerUid == request.auth.uid;
 }
 
 

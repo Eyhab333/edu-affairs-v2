@@ -145,6 +145,18 @@ service firebase.storage {
       return firestore.get(staffPortfolioItemPath(orgId, itemId)).data;
     }
 
+    function staffPdfFilePath(orgId, fileId) {
+      return /databases/(default)/documents/orgs/$(orgId)/staffPdfFiles/$(fileId);
+    }
+
+    function staffPdfFileExists(orgId, fileId) {
+      return firestore.exists(staffPdfFilePath(orgId, fileId));
+    }
+
+    function staffPdfFileData(orgId, fileId) {
+      return firestore.get(staffPdfFilePath(orgId, fileId)).data;
+    }
+
     match /orgs/{orgId}/staffPortfolioItems/{itemId}/{fileName} {
       /* Evidence is read only through a short-lived URL issued by an authorized
        * Callable; no public or permanent download URLs are stored. */
@@ -177,7 +189,12 @@ service firebase.storage {
         && request.resource.size > 0
         && request.resource.size <= 20 * 1024 * 1024;
 
-      allow update, delete: if false;
+      allow update: if false;
+
+      allow delete: if membershipExists(orgId)
+        && staffPdfFileExists(orgId, fileId)
+        && staffPdfFileData(orgId, fileId).orgId == orgId
+        && staffPdfFileData(orgId, fileId).ownerUid == request.auth.uid;
     }
 
     match /{allPaths=**} {

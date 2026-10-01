@@ -1,23 +1,37 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ChevronDown,
   Download,
   ExternalLink,
   FileText,
   Loader2,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { StaffPdfFile } from "@takween/contracts";
 
+import type { StaffActorData } from "@/lib/staff-actor";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  deleteStaffPdfFile,
   downloadStaffPdfFile,
   formatStaffPdfFileSize,
   getStaffPdfFileErrorMessage,
+  isStaffPdfFileOwner,
   viewStaffPdfFile,
 } from "@/lib/staff-pdf-files";
 
@@ -47,14 +61,21 @@ function fileCountLabel(count: number) {
 
 function StaffPdfFileCards(props: {
   files: StaffPdfFile[];
+  actor: StaffActorData;
   showOwner: boolean;
   busyId: string;
+  deletingId: string;
   onAction: (file: StaffPdfFile, action: "view" | "download") => void;
+  onDeleteRequest: (file: StaffPdfFile) => void;
 }) {
   return (
     <div className="space-y-2">
-      {props.files.map((file) => (
-        <Card key={file.id}>
+      {props.files.map((file) => {
+        const isDeleting = props.deletingId === file.id;
+        const canDelete = isStaffPdfFileOwner({ actor: props.actor, file });
+
+        return (
+          <Card key={file.id}>
           <CardContent className="flex flex-col gap-4 p-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -79,7 +100,7 @@ function StaffPdfFileCards(props: {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={props.busyId === `view-${file.id}`}
+                disabled={isDeleting || props.busyId === `view-${file.id}`}
                 onClick={() => props.onAction(file, "view")}
               >
                 {props.busyId === `view-${file.id}` ? (
@@ -92,7 +113,7 @@ function StaffPdfFileCards(props: {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={props.busyId === `download-${file.id}`}
+                disabled={isDeleting || props.busyId === `download-${file.id}`}
                 onClick={() => props.onAction(file, "download")}
               >
                 {props.busyId === `download-${file.id}` ? (
@@ -102,21 +123,42 @@ function StaffPdfFileCards(props: {
                 )}
                 تنزيل
               </Button>
+              {canDelete ? (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  disabled={isDeleting}
+                  onClick={() => props.onDeleteRequest(file)}
+                >
+                  {isDeleting ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="size-4" />
+                  )}
+                  حذف
+                </Button>
+              ) : null}
             </div>
           </CardContent>
         </Card>
-      ))}
+        );
+      })}
     </div>
   );
 }
 
 export function StaffPdfFileList(props: {
   files: StaffPdfFile[];
+  actor: StaffActorData;
   showOwner: boolean;
   schoolNames: Map<string, string>;
   emptyLabel: string;
+  onDeleted: (fileId: string) => void;
 }) {
   const [busyId, setBusyId] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<StaffPdfFile | null>(null);
+  const [deletingId, setDeletingId] = useState("");
+  const deleteInFlight = useRef(false);
   const [openOwnerPersonIds, setOpenOwnerPersonIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -149,6 +191,25 @@ export function StaffPdfFileList(props: {
     }
   }
 
+  async function confirmDelete() {
+    const file = deleteTarget;
+    if (!file || deleteInFlight.current) return;
+
+    deleteInFlight.current = true;
+    setDeletingId(file.id);
+    try {
+      await deleteStaffPdfFile({ actor: props.actor, file });
+      props.onDeleted(file.id);
+      setDeleteTarget(null);
+      toast.success("تم حذف الملف.");
+    } catch (error) {
+      toast.error(getStaffPdfFileErrorMessage(error));
+    } finally {
+      deleteInFlight.current = false;
+      setDeletingId("");
+    }
+  }
+
   function toggleOwner(ownerPersonId: string) {
     setOpenOwnerPersonIds((current) => {
       const next = new Set(current);
@@ -157,6 +218,39 @@ export function StaffPdfFileList(props: {
       return next;
     });
   }
+
+  const deleteDialog = (
+    <AlertDialog
+      open={deleteTarget !== null}
+      onOpenChange={(open) => {
+        if (!open && !deletingId) setDeleteTarget(null);
+      }}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>حذف ملف PDF</AlertDialogTitle>
+          <AlertDialogDescription>
+            هل تريد حذف هذا الملف نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel asChild>
+            <Button variant="outline" disabled={Boolean(deletingId)}>إلغاء</Button>
+          </AlertDialogCancel>
+          <AlertDialogAction asChild>
+            <Button
+              variant="destructive"
+              disabled={Boolean(deletingId)}
+              onClick={() => void confirmDelete()}
+            >
+              {deletingId ? <Loader2 className="size-4 animate-spin" /> : null}
+              حذف
+            </Button>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 
   if (props.files.length === 0) {
     return (
@@ -170,7 +264,8 @@ export function StaffPdfFileList(props: {
 
   if (props.showOwner) {
     return (
-      <div className="space-y-2">
+      <>
+        <div className="space-y-2">
         {fileGroups.map((group) => {
           const owner = group[0];
           const isOpen = openOwnerPersonIds.has(owner.ownerPersonId);
@@ -203,22 +298,28 @@ export function StaffPdfFileList(props: {
                 <div id={panelId} className="border-t bg-muted/20 p-3 sm:p-4">
                   <StaffPdfFileCards
                     files={group}
+                    actor={props.actor}
                     showOwner={false}
                     busyId={busyId}
+                    deletingId={deletingId}
                     onAction={(file, action) => void runAction(file, action)}
+                    onDeleteRequest={setDeleteTarget}
                   />
                 </div>
               ) : null}
             </section>
           );
         })}
-      </div>
+        </div>
+        {deleteDialog}
+      </>
     );
   }
 
   // Keep the existing flat "ملفاتي" presentation unchanged.
   return (
-    <div className="space-y-5">
+    <>
+      <div className="space-y-5">
       {fileGroups.map((group) => (
         <section key={group[0].ownerPersonId} className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -230,12 +331,17 @@ export function StaffPdfFileList(props: {
           </div>
           <StaffPdfFileCards
             files={group}
+            actor={props.actor}
             showOwner={false}
             busyId={busyId}
+            deletingId={deletingId}
             onAction={(file, action) => void runAction(file, action)}
+            onDeleteRequest={setDeleteTarget}
           />
         </section>
       ))}
-    </div>
+      </div>
+      {deleteDialog}
+    </>
   );
 }

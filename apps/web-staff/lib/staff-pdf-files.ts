@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { deleteObject, getBlob, ref, uploadBytes } from "firebase/storage";
 import {
@@ -125,6 +125,19 @@ function ownerAuthorityPersonIds(actor: StaffActorData) {
 function isPermissionError(error: unknown) {
   const { code } = getErrorDetails(error);
   return code === "permission-denied" || code.endsWith("/unauthorized") || code.endsWith("/permission-denied");
+}
+
+function isStorageObjectNotFoundError(error: unknown) {
+  const { code } = getErrorDetails(error);
+  return code === "storage/object-not-found" || code.endsWith("/object-not-found");
+}
+
+export function isStaffPdfFileOwner(params: {
+  actor: Pick<StaffActorData, "uid">;
+  file: StaffPdfFile;
+}) {
+  const actorUid = params.actor.uid.trim();
+  return actorUid.length > 0 && params.file.ownerUid === actorUid;
 }
 
 export function getStaffPdfFileCategory(key: string | null | undefined) {
@@ -315,6 +328,42 @@ export async function uploadStaffPdfFile(params: {
   }
 
   return record;
+}
+
+export async function deleteStaffPdfFile(params: {
+  actor: StaffActorData;
+  file: StaffPdfFile;
+}) {
+  const { actor, file } = params;
+
+  if (file.orgId !== actor.orgId) {
+    throw new Error("لا يمكنك حذف ملف خارج المؤسسة الحالية.");
+  }
+  if (!isStaffPdfFileOwner({ actor, file })) {
+    throw new Error("لا يمكنك حذف ملف لا تملكه.");
+  }
+
+  try {
+    await deleteObject(ref(storage, file.storagePath));
+  } catch (error) {
+    if (!isStorageObjectNotFoundError(error)) {
+      if (isPermissionError(error)) {
+        throw new Error("ليس لديك صلاحية لحذف هذا الملف.");
+      }
+      throw new Error("تعذر حذف الملف. حاول مرة أخرى.");
+    }
+  }
+
+  try {
+    await deleteDoc(doc(db, "orgs", actor.orgId, "staffPdfFiles", file.id));
+  } catch (error) {
+    if (isPermissionError(error)) {
+      throw new Error("ليس لديك صلاحية لحذف هذا الملف.");
+    }
+    throw new Error("تعذر حذف بيانات الملف بعد حذف الملف من التخزين. حاول مرة أخرى.");
+  }
+
+  return { fileId: file.id };
 }
 
 async function getStaffPdfBlob(file: StaffPdfFile) {
