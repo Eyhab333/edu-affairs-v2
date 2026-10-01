@@ -1,4 +1,5 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 import { deleteObject, getBlob, ref, uploadBytes } from "firebase/storage";
 import {
   StaffPdfFileSchema,
@@ -14,7 +15,7 @@ import {
   type StaffPdfFileViewer,
 } from "@takween/domain";
 
-import { db, storage } from "@/lib/firebase";
+import { db, functions, storage } from "@/lib/firebase";
 import { getErrorDetails, getErrorMessage } from "@/lib/error-message";
 import type { StaffActorData } from "@/lib/staff-actor";
 
@@ -205,15 +206,43 @@ export function filterStaffPdfFilesForScopeTargets(files: StaffPdfFile[]) {
   return files.filter((file) => !excludeFromPdfScopeTarget(file.ownerPersonId));
 }
 
-export async function listStaffPdfFiles(params: {
+export async function listMyStaffPdfFiles(params: {
   orgId: string;
+  personId: string;
   categoryKey: StaffPdfFileCategoryKey;
 }) {
-  const snapshot = await getDocs(collection(db, "orgs", params.orgId, "staffPdfFiles"));
+  const snapshot = await getDocs(
+    query(
+      collection(db, "orgs", params.orgId, "staffPdfFiles"),
+      where("ownerPersonId", "==", params.personId),
+    ),
+  );
   return snapshot.docs
     .flatMap((document) => {
       const parsed = StaffPdfFileSchema.safeParse({ id: document.id, ...document.data() });
-      return parsed.success && parsed.data.categoryKey === params.categoryKey ? [parsed.data] : [];
+      return parsed.success && parsed.data.status === "ACTIVE" && parsed.data.categoryKey === params.categoryKey ? [parsed.data] : [];
+    })
+    .sort((left, right) => right.createdAt - left.createdAt);
+}
+
+export async function listStaffPdfFilesInScope(params: {
+  orgId: string;
+  categoryKey: StaffPdfFileCategoryKey;
+}) {
+  const callable = httpsCallable<
+    { orgId: string; categoryKey: StaffPdfFileCategoryKey },
+    unknown
+  >(functions, "listStaffPdfFilesInScope");
+  const result = await callable(params);
+
+  if (!Array.isArray(result.data)) {
+    throw new Error("تعذر تحميل ملفات النطاق.");
+  }
+
+  return result.data
+    .flatMap((item) => {
+      const parsed = StaffPdfFileSchema.safeParse(item);
+      return parsed.success ? [parsed.data] : [];
     })
     .sort((left, right) => right.createdAt - left.createdAt);
 }

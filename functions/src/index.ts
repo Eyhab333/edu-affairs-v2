@@ -59,6 +59,7 @@ export {
 
 export { getPdfResourceAcknowledgementReport } from "./pdf-resources/get-pdf-resource-acknowledgement-report";
 export { listMyPdfResources } from "./pdf-resources/list-my-pdf-resources";
+export { listStaffPdfFilesInScope } from "./staff-pdf-files/list-staff-pdf-files-in-scope";
 export {
   listMyTeachingPdfResources,
   listOrgTeachingPdfResources,

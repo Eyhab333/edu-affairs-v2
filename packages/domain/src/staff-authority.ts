@@ -105,7 +105,10 @@ function hasIntersection(first: readonly string[], second: readonly string[]) {
   return second.some((value) => firstValues.has(value));
 }
 
-function isActiveMembership(membership: Membership, nowMs: number) {
+export function isStaffMembershipActive(
+  membership: Membership,
+  nowMs = Date.now(),
+) {
   if (membership.isActive === false) return false;
   if (typeof membership.startAt === "number" && membership.startAt > nowMs) {
     return false;
@@ -135,7 +138,7 @@ export function resolveStaffHomeSchoolIds(params: {
   const membershipSchoolIds = params.memberships.flatMap((membership) => {
     if (
       !membershipMatchesPerson(membership, params.personId) ||
-      !isActiveMembership(membership, nowMs) ||
+      !isStaffMembershipActive(membership, nowMs) ||
       membership.scopeType !== "SCHOOL" ||
       !membership.scopeId
     ) {
@@ -169,7 +172,7 @@ export function resolveStaffAuthorityPersonIds(params: {
     params.memberships.flatMap((membership) => {
       if (
         !membershipMatchesPerson(membership, params.personId) ||
-        !isActiveMembership(membership, nowMs)
+        !isStaffMembershipActive(membership, nowMs)
       ) {
         return [];
       }
