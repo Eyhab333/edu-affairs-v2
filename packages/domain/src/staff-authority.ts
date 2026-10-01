@@ -11,7 +11,12 @@ import {
   getActiveOperationalAssignmentsForActor,
   getActiveTeacherAssignmentsForActor,
 } from "./assignments";
-import { getPersonSupervisionSchoolIds } from "./person-supervision-scope";
+import {
+  getPersonSupervisionSchoolIds,
+  getPersonSupervisionSubjectScope,
+  hasPersonSupervisionSubjectAccess,
+  normalizePersonSupervisionSubjectKey,
+} from "./person-supervision-scope";
 
 const SCHOOL_PRINCIPAL_ROLE_KEYS = new Set<MembershipRole>([
   "school_admin",
@@ -63,6 +68,13 @@ const LOCAL_STAFF_ROLE_KEYS = new Set<MembershipRole>([
   "KG_TEACHER",
 ]);
 
+const TEACHING_STAFF_ROLE_KEYS = new Set<MembershipRole>([
+  "teacher",
+  "BOYS_TEACHER",
+  "GIRLS_TEACHER",
+  "KG_TEACHER",
+]);
+
 export type StaffAuthorityViewer = {
   orgId: string;
   personId: string;
@@ -76,6 +88,8 @@ export type StaffAuthorityTarget = {
   personId: string;
   roles: MembershipRole[];
   homeSchoolIds: string[];
+  /** Current active teacher-assignment subjects; never PDF metadata. */
+  subjectKeys?: string[];
   authorityPersonIds?: string[];
 };
 
@@ -159,6 +173,29 @@ export function resolveStaffHomeSchoolIds(params: {
 }
 
 /**
+ * Resolves the target's current teaching subjects from active teacher
+ * assignments. No membership scope or historical document snapshot is used.
+ */
+export function resolveStaffActiveTeachingSubjectKeys(params: {
+  personId: string;
+  teacherAssignments: readonly TeacherAssignment[];
+  nowMs?: number;
+}) {
+  const nowMs = params.nowMs ?? Date.now();
+  return uniqueStrings(
+    getActiveTeacherAssignmentsForActor({
+      actorPersonId: params.personId,
+      assignments: [...params.teacherAssignments],
+      nowMs,
+    })
+      .filter((assignment) => assignment.status === "ACTIVE")
+      .map((assignment) =>
+        normalizePersonSupervisionSubjectKey(assignment.subjectKey),
+      ),
+  );
+}
+
+/**
  * Snapshots direct target-to-manager relationships already present on a
  * membership. These relationships are directional: target -> viewer.
  */
@@ -211,6 +248,19 @@ function isVicePrincipalTarget(target: StaffAuthorityTarget) {
   );
 }
 
+function isTeachingStaffTarget(target: StaffAuthorityTarget) {
+  return (
+    (target.subjectKeys ?? []).some((subjectKey) =>
+      Boolean(normalizePersonSupervisionSubjectKey(subjectKey)),
+    ) || hasRole(target.roles, TEACHING_STAFF_ROLE_KEYS)
+  );
+}
+
+/**
+ * Broad capability discovery for showing the scope-browsing control. It is
+ * never used to authorize a target, because that decision must retain the
+ * capability and subject scope of the matching supervision document.
+ */
 function getViewerSupervisionSchoolIds(
   viewer: StaffAuthorityViewer,
   nowMs: number,
@@ -231,6 +281,71 @@ function getViewerSupervisionSchoolIds(
       nowMs,
     }),
   ]);
+}
+
+function hasTeacherSupervisionAuthority(params: {
+  viewer: StaffAuthorityViewer;
+  target: StaffAuthorityTarget;
+  nowMs: number;
+}) {
+  const subjectKeys = uniqueStrings(
+    (params.target.subjectKeys ?? []).map(normalizePersonSupervisionSubjectKey),
+  );
+
+  return params.target.homeSchoolIds.some((schoolId) => {
+    const request = {
+      orgId: params.viewer.orgId,
+      personId: params.viewer.personId,
+      capability: "TEACHER_WORK_VIEW" as const,
+      schoolId,
+      nowMs: params.nowMs,
+    };
+    const subjectScope = getPersonSupervisionSubjectScope({
+      scopes: params.viewer.supervisionScopes ?? [],
+      request,
+    });
+
+    if (subjectScope.allSubjects) return true;
+    return subjectKeys.some((subjectKey) =>
+      hasPersonSupervisionSubjectAccess({
+        scopes: params.viewer.supervisionScopes ?? [],
+        request: { ...request, subjectKey },
+      }),
+    );
+  });
+}
+
+function hasStaffSupervisionAuthority(params: {
+  viewer: StaffAuthorityViewer;
+  target: StaffAuthorityTarget;
+  nowMs: number;
+}) {
+  const schoolIds = getPersonSupervisionSchoolIds({
+    scopes: params.viewer.supervisionScopes ?? [],
+    orgId: params.viewer.orgId,
+    personId: params.viewer.personId,
+    capability: "STAFF_WORK_VIEW",
+    nowMs: params.nowMs,
+  });
+  return hasIntersection(schoolIds, params.target.homeSchoolIds);
+}
+
+function hasSupervisionAuthority(params: {
+  viewer: StaffAuthorityViewer;
+  target: StaffAuthorityTarget;
+  nowMs: number;
+}) {
+  if (!isLocalStaffTarget(params.target)) return false;
+
+  // Teaching staff can be reached only through TEACHER_WORK_VIEW. This keeps
+  // a STAFF_WORK_VIEW school scope from bypassing subject-scoped supervision.
+  if (isTeachingStaffTarget(params.target)) {
+    return hasTeacherSupervisionAuthority(params);
+  }
+
+  // Non-teaching local staff have no teaching subject to match. Preserve the
+  // existing STAFF_WORK_VIEW school-scoped behavior for that branch only.
+  return hasStaffSupervisionAuthority(params);
 }
 
 function hasExplicitOperationalAuthority(params: {
@@ -282,15 +397,7 @@ export function resolveStaffAuthority(params: {
     return { allowed: true, source: "TARGET_MEMBERSHIP_RELATION" };
   }
 
-  const viewerSupervisionSchoolIds = getViewerSupervisionSchoolIds(
-    viewer,
-    nowMs,
-  );
-  if (
-    viewerSupervisionSchoolIds.length > 0 &&
-    isLocalStaffTarget(target) &&
-    hasIntersection(viewerSupervisionSchoolIds, target.homeSchoolIds)
-  ) {
+  if (hasSupervisionAuthority({ viewer, target, nowMs })) {
     return { allowed: true, source: "PERSON_SUPERVISION_SCOPE" };
   }
 

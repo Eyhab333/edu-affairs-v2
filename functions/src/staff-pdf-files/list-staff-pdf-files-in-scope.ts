@@ -18,6 +18,7 @@ import {
   canViewerAccessTargetStaff,
   canViewerBrowseStaffTargets,
   resolveStaffAuthorityPersonIds,
+  resolveStaffActiveTeachingSubjectKeys,
   resolveStaffHomeSchoolIds,
   isStaffMembershipActive,
   type StaffAuthorityTarget,
@@ -290,6 +291,11 @@ async function resolveLiveTargets(params: {
       homeSchoolIds: resolveStaffHomeSchoolIds({
         personId: membership.personId,
         memberships: [membership],
+        teacherAssignments: teacherAssignmentsByPersonId.get(membership.personId) ?? [],
+        nowMs: params.nowMs,
+      }),
+      subjectKeys: resolveStaffActiveTeachingSubjectKeys({
+        personId: membership.personId,
         teacherAssignments: teacherAssignmentsByPersonId.get(membership.personId) ?? [],
         nowMs: params.nowMs,
       }),

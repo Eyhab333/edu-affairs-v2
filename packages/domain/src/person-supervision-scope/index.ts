@@ -11,6 +11,14 @@ export type PersonSupervisionScopeRequest = {
   nowMs?: number;
 };
 
+/**
+ * Subject keys are technical identifiers. Normalize only whitespace/casing;
+ * aliases remain the responsibility of the canonical assignment data.
+ */
+export function normalizePersonSupervisionSubjectKey(value: string) {
+  return value.trim().toUpperCase();
+}
+
 function isMatchingScope(
   scope: PersonSupervisionScope,
   request: PersonSupervisionScopeRequest,
@@ -45,14 +53,19 @@ export function hasPersonSupervisionSubjectAccess(params: {
   scopes: readonly PersonSupervisionScope[];
   request: PersonSupervisionScopeRequest & { subjectKey: string };
 }) {
-  const subjectKey = params.request.subjectKey.trim();
+  const subjectKey = normalizePersonSupervisionSubjectKey(
+    params.request.subjectKey,
+  );
   if (!subjectKey) return false;
 
   return params.scopes.some(
     (scope) =>
       isMatchingScope(scope, params.request) &&
       (scope.subjectScope === "ALL_SUBJECTS" ||
-        scope.subjectKeys.includes(subjectKey)),
+        scope.subjectKeys.some(
+          (scopeSubjectKey) =>
+            normalizePersonSupervisionSubjectKey(scopeSubjectKey) === subjectKey,
+        )),
   );
 }
 
@@ -95,7 +108,9 @@ export function getPersonSupervisionSubjectScope(params: {
     subjectKeys: Array.from(
       new Set(
         matchingScopes.flatMap((scope) =>
-          scope.subjectScope === "SUBJECT_KEYS" ? scope.subjectKeys : [],
+          scope.subjectScope === "SUBJECT_KEYS"
+            ? scope.subjectKeys.map(normalizePersonSupervisionSubjectKey)
+            : [],
         ),
       ),
     ),
