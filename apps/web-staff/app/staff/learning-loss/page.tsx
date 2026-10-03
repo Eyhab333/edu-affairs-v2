@@ -1077,6 +1077,15 @@ export default function StaffLearningLossPage() {
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
+              onClick={() => router.push("/staff/learning-loss/summary")}
+              disabled={isLoading || creatingPlanRecordId !== null}
+              className="inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-medium transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              ملخص الفاقد التعليمي
+            </button>
+
+            <button
+              type="button"
               onClick={() =>
                 router.push(buildManualLearningLossHref(contextFilter))
               }

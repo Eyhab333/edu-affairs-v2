@@ -44,6 +44,7 @@ export {
 } from "./teacher-management/get-teacher-management-read-model";
 export { getClassRoster } from "./class-roster/get-class-roster";
 export { getVisibleStudents } from "./visible-students/get-visible-students";
+export { getLearningLossSummary } from "./learning-loss/learning-loss-summary";
 export {
   getStudentWorkDetail,
   getStudentWorkOverview,

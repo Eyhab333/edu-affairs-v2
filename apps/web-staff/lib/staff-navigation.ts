@@ -81,6 +81,32 @@ export const staffNavItems: StaffNavItem[] = [
     icon: Users,
     moduleKey: "STUDENTS",
   },
+
+  {
+    href: "/staff/measurements",
+    label: "القياسات والمتابعات",
+    icon: Ruler,
+    moduleKey: "MEASUREMENTS",
+  },
+  {
+    href: "/staff/learning-loss",
+    label: "الفاقد التعليمي",
+    icon: TrendingDown,
+    moduleKey: "LEARNING_LOSS",
+  },
+  {
+    href: "/staff/attendance",
+    label: "الحضور",
+    icon: UserCheck,
+    moduleKey: "ATTENDANCE",
+  },
+
+  {
+    href: "/staff/cases",
+    label: "إحالات الطلاب",
+    icon: FileText,
+    moduleKey: "CASES",
+  },
   {
     href: "/staff/my-documents",
     label: "مهام وظيفتي",
@@ -147,39 +173,14 @@ export const staffNavItems: StaffNavItem[] = [
     icon: UsersRound,
     adminWork: true,
   },
-  
+
   {
     href: "/staff/documents/manage",
     label: "إدارة المستندات",
     icon: FileText,
     pdfDocuments: "MANAGE",
   },
-  
-  
-  {
-    href: "/staff/measurements",
-    label: "القياسات والمتابعات",
-    icon: Ruler,
-    moduleKey: "MEASUREMENTS",
-  },
-  {
-    href: "/staff/learning-loss",
-    label: "الفاقد التعليمي",
-    icon: TrendingDown,
-    moduleKey: "LEARNING_LOSS",
-  },
-  {
-    href: "/staff/attendance",
-    label: "الحضور",
-    icon: UserCheck,
-    moduleKey: "ATTENDANCE",
-  },
-  {
-    href: "/staff/cases",
-    label: "إحالات الطلاب",
-    icon: FileText,
-    moduleKey: "CASES",
-  },
+
   {
     href: "/staff/gamification",
     label: "التحفيز",
@@ -211,7 +212,7 @@ export const staffNavItems: StaffNavItem[] = [
     moduleKey: "MY_EVALUATIONS",
     performanceImprovement: true,
   },
-  
+
   {
     href: "/staff/messages",
     label: "تواصل ولي الأمر",
@@ -289,10 +290,10 @@ export function getStaffNavigationAccess(
     canAccessReports:
       hasOrgWideAccess(actor.roles) ||
       actor.roles.includes("ORG_SUPERVISION_HEAD"),
-      // ||
-      // actor.roles.includes("BOYS_EDU_SUPERVISOR"),
-      //  ||
-      // actor.roles.includes("EDU_SUPERVISOR"),
+    // ||
+    // actor.roles.includes("BOYS_EDU_SUPERVISOR"),
+    //  ||
+    // actor.roles.includes("EDU_SUPERVISOR"),
   };
 }
 
