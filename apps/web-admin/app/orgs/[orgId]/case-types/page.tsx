@@ -118,7 +118,7 @@ export default function CaseTypesPage() {
     if (error) toast.error("تعذر تحميل أنواع القضايا");
   }, [error]);
 
-  const rows = data?.caseTypes ?? [];
+  const rows = useMemo(() => data?.caseTypes ?? [], [data?.caseTypes]);
   const total = rows.length;
   const active = rows.filter((row) => row.isActive !== false).length;
   const inactive = total - active;

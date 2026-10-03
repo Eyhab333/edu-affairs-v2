@@ -288,9 +288,11 @@ export function getStaffNavigationAccess(
     }),
     canAccessReports:
       hasOrgWideAccess(actor.roles) ||
-      actor.roles.includes("ORG_SUPERVISION_HEAD") ||
-      actor.roles.includes("BOYS_EDU_SUPERVISOR") ||
-      actor.roles.includes("EDU_SUPERVISOR"),
+      actor.roles.includes("ORG_SUPERVISION_HEAD"),
+      // ||
+      // actor.roles.includes("BOYS_EDU_SUPERVISOR"),
+      //  ||
+      // actor.roles.includes("EDU_SUPERVISOR"),
   };
 }
 

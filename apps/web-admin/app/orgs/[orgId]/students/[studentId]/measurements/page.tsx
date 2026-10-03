@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   BarChart3,
   BookOpenCheck,
-  ClipboardList,
   Loader2,
   Plus,
   Ruler,

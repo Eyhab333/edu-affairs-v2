@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, FileStack, Plus } from "lucide-react";
-import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import { toast } from "sonner";
 
 import { db } from "@/lib/firebase";

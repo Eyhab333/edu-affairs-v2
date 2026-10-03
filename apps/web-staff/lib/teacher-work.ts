@@ -134,17 +134,67 @@ export type TeacherWorkMeasurementDrillDown = TeacherWorkDrillDownBase & {
   };
 };
 
+export type TeacherWorkLearningLossSkill = {
+  id: string;
+  title: string;
+  description: string;
+  domain: string;
+  severity: string;
+};
+
+export type TeacherWorkLearningLossRemediationAction = {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  dueAt: number | null;
+  completedAt: number | null;
+  note: string;
+};
+
 export type TeacherWorkLearningLossDrillDown = TeacherWorkDrillDownBase & {
   kind: "learningLoss";
   details: {
+    studentId: string;
+    studentDisplayName: string;
+    schoolId: string;
+    academicYearId: string;
+    termId: string;
+    gradeId: string;
+    classId: string;
+    classTitle: string;
+    subjectKey: string;
+    classSubjectOfferingId: string;
+    subjectTitle: string;
+    sourceType: string;
     sourceTitle: string;
+    sourceKind: string;
+    sourceAssessmentRecordId: string;
+    sourceTrackerEntryId: string;
+    sourceTemplateId: string;
+    sourceBatchId: string;
+    planTitle: string;
     planText: string;
     planStartAt: number | null;
     planEndAt: number | null;
-    closedAt: number | null;
+    lostSkills: TeacherWorkLearningLossSkill[];
+    remediationActions: TeacherWorkLearningLossRemediationAction[];
+    baselineScore: number | null;
+    baselineMaxScore: number | null;
+    baselineMeasuredAt: number | null;
+    firstCheckScore: number | null;
+    firstCheckMaxScore: number | null;
+    firstCheckMeasuredAt: number | null;
+    firstCheckNote: string;
+    secondCheckScore: number | null;
+    secondCheckMaxScore: number | null;
+    secondCheckMeasuredAt: number | null;
+    secondCheckNote: string;
+    improvementDelta: number | null;
+    improvementPercentage: number | null;
     improvementIndicator: string;
-    lostSkillTitles: string[];
-    remediationActionTitles: string[];
+    createdAt: number | null;
+    updatedAt: number | null;
   };
 };
 

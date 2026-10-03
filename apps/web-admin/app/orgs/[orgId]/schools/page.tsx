@@ -5,10 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   Building2,
-  GraduationCap,
   Plus,
   School,
-  Shapes,
 } from "lucide-react";
 import {
   collection,
@@ -81,13 +79,11 @@ function getTrackLabel(track?: "BOYS" | "GIRLS" | "MIXED") {
 function SchoolGroupTable({
   title,
   description,
-  icon,
   rows,
   orgId,
 }: {
   title: string;
   description: string;
-  icon: React.ReactNode;
   rows: SchoolRow[];
   orgId: string;
 }) {
@@ -96,7 +92,6 @@ function SchoolGroupTable({
       title={title}
       description={description}
       contentClassName="p-0"
-      //titleIcon={icon}
     >
       {rows.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 px-6 py-14 text-center">
@@ -306,7 +301,6 @@ export default function SchoolsPage() {
           <SchoolGroupTable
             title="المدارس الابتدائية"
             description="مدارس المرحلة الابتدائية، بما فيها الصفوف والمسارات الدراسية مثل العام والتحفيظ والعالمي."
-            icon={<GraduationCap className="h-4 w-4" />}
             rows={primaryRows}
             orgId={orgId}
           />
@@ -314,7 +308,6 @@ export default function SchoolsPage() {
           <SchoolGroupTable
             title="الروضات"
             description="الروضات مع فصل التجربة الخاصة بالمستويات والمتابعات والقياسات المبكرة."
-            icon={<Shapes className="h-4 w-4" />}
             rows={kgRows}
             orgId={orgId}
           />

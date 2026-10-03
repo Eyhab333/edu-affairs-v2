@@ -151,17 +151,67 @@ type TeacherWorkMeasurementDrillDown = TeacherWorkDrillDownBase & {
   };
 };
 
+type TeacherWorkLearningLossSkill = {
+  id: string;
+  title: string;
+  description: string;
+  domain: string;
+  severity: string;
+};
+
+type TeacherWorkLearningLossRemediationAction = {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  dueAt: number | null;
+  completedAt: number | null;
+  note: string;
+};
+
 type TeacherWorkLearningLossDrillDown = TeacherWorkDrillDownBase & {
   kind: "learningLoss";
   details: {
+    studentId: string;
+    studentDisplayName: string;
+    schoolId: string;
+    academicYearId: string;
+    termId: string;
+    gradeId: string;
+    classId: string;
+    classTitle: string;
+    subjectKey: string;
+    classSubjectOfferingId: string;
+    subjectTitle: string;
+    sourceType: string;
     sourceTitle: string;
+    sourceKind: string;
+    sourceAssessmentRecordId: string;
+    sourceTrackerEntryId: string;
+    sourceTemplateId: string;
+    sourceBatchId: string;
+    planTitle: string;
     planText: string;
     planStartAt: number | null;
     planEndAt: number | null;
-    closedAt: number | null;
+    lostSkills: TeacherWorkLearningLossSkill[];
+    remediationActions: TeacherWorkLearningLossRemediationAction[];
+    baselineScore: number | null;
+    baselineMaxScore: number | null;
+    baselineMeasuredAt: number | null;
+    firstCheckScore: number | null;
+    firstCheckMaxScore: number | null;
+    firstCheckMeasuredAt: number | null;
+    firstCheckNote: string;
+    secondCheckScore: number | null;
+    secondCheckMaxScore: number | null;
+    secondCheckMeasuredAt: number | null;
+    secondCheckNote: string;
+    improvementDelta: number | null;
+    improvementPercentage: number | null;
     improvementIndicator: string;
-    lostSkillTitles: string[];
-    remediationActionTitles: string[];
+    createdAt: number | null;
+    updatedAt: number | null;
   };
 };
 
@@ -278,12 +328,32 @@ function readStringArray(value: unknown) {
     : [];
 }
 
-function titlesFromRows(value: unknown) {
-  return unique(
-    Array.isArray(value)
-      ? value.map((item) => text(row(item).title))
-      : [],
-  );
+function learningLossSkills(value: unknown): TeacherWorkLearningLossSkill[] {
+  return (Array.isArray(value) ? value : [])
+    .map(row)
+    .map((skill) => ({
+      id: text(skill.id),
+      title: text(skill.title),
+      description: text(skill.description),
+      domain: text(skill.domain),
+      severity: text(skill.severity),
+    }));
+}
+
+function learningLossRemediationActions(
+  value: unknown,
+): TeacherWorkLearningLossRemediationAction[] {
+  return (Array.isArray(value) ? value : [])
+    .map(row)
+    .map((action) => ({
+      id: text(action.id),
+      title: text(action.title),
+      description: text(action.description),
+      status: text(action.status),
+      dueAt: numberValue(action.dueAt),
+      completedAt: numberValue(action.completedAt),
+      note: text(action.note),
+    }));
 }
 
 function noteBodyIsVisibleToStaff(visibility: string) {
@@ -377,6 +447,62 @@ async function loadMeasurementStudentNames(params: {
       }
     });
   }
+
+  const unresolvedLookups = uniqueLookups.filter(
+    ({ schoolId, studentId }) => !names.has(`${schoolId}:${studentId}`),
+  );
+  const studentsById = new Map<string, Row>();
+
+  for (let start = 0; start < unresolvedLookups.length; start += 100) {
+    const lookupChunk = unresolvedLookups.slice(start, start + 100);
+    const snapshots = await db.getAll(
+      ...lookupChunk.map(({ studentId }) =>
+        db.doc(`orgs/${params.orgId}/students/${studentId}`),
+      ),
+    );
+
+    snapshots.forEach((snapshot, index) => {
+      const lookup = lookupChunk[index];
+      if (!lookup || !snapshot.exists) return;
+      studentsById.set(lookup.studentId, row(snapshot.data()));
+    });
+  }
+
+  const peopleById = new Map<string, Row>();
+  const personIds = unique(
+    Array.from(studentsById.values()).map((student) => text(student.personId)),
+  );
+
+  for (let start = 0; start < personIds.length; start += 100) {
+    const personIdChunk = personIds.slice(start, start + 100);
+    const snapshots = await db.getAll(
+      ...personIdChunk.map((personId) =>
+        db.doc(`orgs/${params.orgId}/people/${personId}`),
+      ),
+    );
+
+    snapshots.forEach((snapshot, index) => {
+      const personId = personIdChunk[index];
+      if (!personId || !snapshot.exists) return;
+      peopleById.set(personId, row(snapshot.data()));
+    });
+  }
+
+  unresolvedLookups.forEach(({ schoolId, studentId }) => {
+    const student = studentsById.get(studentId);
+    const person = peopleById.get(text(student?.personId));
+    const displayName =
+      text(person?.displayName) ||
+      text(person?.fullName) ||
+      text(person?.nameAr) ||
+      text(person?.name) ||
+      text(student?.displayName) ||
+      text(student?.fullName) ||
+      text(student?.nameAr) ||
+      text(student?.name);
+
+    if (displayName) names.set(`${schoolId}:${studentId}`, displayName);
+  });
 
   return names;
 }
@@ -1219,7 +1345,13 @@ async function buildTeacherWorkDrillDowns(params: {
     });
   }
 
+  const learningLossItems: Array<{
+    item: TeacherWorkDrillDownBase;
+    rowData: Row;
+  }> = [];
+
   for (const rowData of learningLossRows) {
+    // Teacher Work attributes plans to the teacher who created them.
     if (text(rowData.createdByPersonId) !== params.teacherPersonId) continue;
     const item = baseItem({
       rowData,
@@ -1228,18 +1360,73 @@ async function buildTeacherWorkDrillDowns(params: {
       activityFields: ["createdAt"],
     });
     if (!item) continue;
+    learningLossItems.push({ item, rowData });
+  }
+
+  const learningLossStudentNames = await loadMeasurementStudentNames({
+    orgId: params.orgId,
+    lookups: learningLossItems.map(({ rowData }) => ({
+      schoolId: text(rowData.schoolId),
+      studentId: text(rowData.studentId),
+    })),
+  });
+
+  for (const { item, rowData } of learningLossItems) {
+    const studentId = text(rowData.studentId);
+    const schoolId = text(rowData.schoolId);
+    const subjectKey = subjectKeyFor(
+      rowData,
+      offeringById.get(text(rowData.classSubjectOfferingId)),
+    );
+
     drillDowns.learningLoss.push({
       ...item,
       kind: "learningLoss",
       details: {
+        studentId,
+        studentDisplayName:
+          learningLossStudentNames.get(`${schoolId}:${studentId}`) ||
+          "طالب غير محدد",
+        schoolId,
+        academicYearId: text(rowData.academicYearId),
+        termId: text(rowData.termId),
+        gradeId: text(rowData.gradeId),
+        classId: text(rowData.classId),
+        classTitle: item.classLabel,
+        subjectKey,
+        classSubjectOfferingId: text(rowData.classSubjectOfferingId),
+        subjectTitle: item.subjectLabel || subjectKey,
+        sourceType: text(rowData.sourceType),
         sourceTitle: text(rowData.sourceTitle),
+        sourceKind: text(rowData.sourceKind),
+        sourceAssessmentRecordId: text(rowData.sourceAssessmentRecordId),
+        sourceTrackerEntryId: text(rowData.sourceTrackerEntryId),
+        sourceTemplateId: text(rowData.sourceTemplateId),
+        sourceBatchId: text(rowData.sourceBatchId),
+        planTitle: text(rowData.planTitle),
         planText: text(rowData.planText),
         planStartAt: numberValue(rowData.planStartAt),
         planEndAt: numberValue(rowData.planEndAt),
-        closedAt: numberValue(rowData.closedAt),
+        lostSkills: learningLossSkills(rowData.lostSkills),
+        remediationActions: learningLossRemediationActions(
+          rowData.remediationActions,
+        ),
+        baselineScore: numberValue(rowData.baselineScore),
+        baselineMaxScore: numberValue(rowData.baselineMaxScore),
+        baselineMeasuredAt: numberValue(rowData.baselineMeasuredAt),
+        firstCheckScore: numberValue(rowData.firstCheckScore),
+        firstCheckMaxScore: numberValue(rowData.firstCheckMaxScore),
+        firstCheckMeasuredAt: numberValue(rowData.firstCheckMeasuredAt),
+        firstCheckNote: text(rowData.firstCheckNote),
+        secondCheckScore: numberValue(rowData.secondCheckScore),
+        secondCheckMaxScore: numberValue(rowData.secondCheckMaxScore),
+        secondCheckMeasuredAt: numberValue(rowData.secondCheckMeasuredAt),
+        secondCheckNote: text(rowData.secondCheckNote),
+        improvementDelta: numberValue(rowData.improvementDelta),
+        improvementPercentage: numberValue(rowData.improvementPercentage),
         improvementIndicator: text(rowData.improvementIndicator),
-        lostSkillTitles: titlesFromRows(rowData.lostSkills),
-        remediationActionTitles: titlesFromRows(rowData.remediationActions),
+        createdAt: numberValue(rowData.createdAt),
+        updatedAt: numberValue(rowData.updatedAt),
       },
     });
   }

@@ -185,7 +185,7 @@ export default function ManageGradePage() {
     };
   }, [orgId, schoolId, yearId, gradeId]);
 
-  const { data, loading, error, notFound, reload } = useDocumentLoader<PageData>(
+  const { data, loading, error, notFound } = useDocumentLoader<PageData>(
     {
       enabled: !!user,
       loader: loadPageData,

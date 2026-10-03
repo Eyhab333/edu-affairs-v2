@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
-  EvaluationApprovalMode,
-  EvaluationCycleType,
-  EvaluationFrequencyType,
-  EvaluationPlanSchema,
-  EvaluationTargetKind,
+  LegacyEvaluationApprovalMode as EvaluationApprovalMode,
+  LegacyEvaluationCycleType as EvaluationCycleType,
+  LegacyEvaluationFrequencyType as EvaluationFrequencyType,
+  LegacyEvaluationPlanSchema as EvaluationPlanSchema,
+  LegacyEvaluationTargetKind as EvaluationTargetKind,
   MembershipRole,
 } from "@takween/contracts";
 import { ArrowLeft, GitBranch, Loader2, Save } from "lucide-react";

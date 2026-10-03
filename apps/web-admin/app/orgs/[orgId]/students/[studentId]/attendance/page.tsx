@@ -6,10 +6,7 @@ import { useParams } from "next/navigation";
 import {
   ArrowLeft,
   CalendarDays,
-  CheckCircle2,
-  Clock3,
   Plus,
-  XCircle,
 } from "lucide-react";
 import {
   collection,

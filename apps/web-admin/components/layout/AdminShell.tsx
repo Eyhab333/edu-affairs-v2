@@ -7,13 +7,11 @@ import { useTheme } from "next-themes";
 import {
   CalendarRange,
   ChevronLeft,
-  GraduationCap,
   LayoutDashboard,
   Menu,
   Moon,
   School,
   Sun,
-  Users,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";

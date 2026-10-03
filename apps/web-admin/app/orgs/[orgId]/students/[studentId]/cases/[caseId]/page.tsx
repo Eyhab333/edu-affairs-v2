@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import {
   ArrowLeft,
   Building2,
@@ -21,7 +21,7 @@ import {
   StudentCaseLogEntrySchema,
   StudentCaseRoutingActionType,
   StudentCaseRoutingEventSchema,
-  StudentCaseSchema,
+  LegacyStudentCaseSchema as StudentCaseSchema,
 } from "@takween/contracts";
 import {
   collection,
@@ -246,7 +246,6 @@ function getLogActionLabel(action?: string) {
 }
 
 export default function EditStudentCasePage() {
-  const router = useRouter();
   const params = useParams<{ orgId: string; studentId: string; caseId: string }>();
   const orgId = params.orgId;
   const studentId = params.studentId;

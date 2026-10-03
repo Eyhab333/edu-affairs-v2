@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, GraduationCap, Loader2, Plus, Save, Shapes } from "lucide-react";
+import { ArrowLeft, GraduationCap, Loader2, Save, Shapes } from "lucide-react";
 import { GradeSchema, SchoolType } from "@takween/contracts";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { toast } from "sonner";

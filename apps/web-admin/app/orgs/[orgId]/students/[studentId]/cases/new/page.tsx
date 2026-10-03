@@ -14,11 +14,10 @@ import {
   StudentCaseLogEntrySchema,
   StudentCaseOriginKind,
   StudentCaseRoutingEventSchema,
-  StudentCaseSchema,
+  LegacyStudentCaseSchema as StudentCaseSchema,
 } from "@takween/contracts";
 import {
   collection,
-  collectionGroup,
   doc,
   getDoc,
   getDocs,
@@ -233,7 +232,7 @@ export default function NewStudentCasePage() {
 
     const enrollmentsSnap = await getDocs(
       query(
-        collectionGroup(db, "studentEnrollments"),
+        collection(db, `orgs/${orgId}/studentEnrollments`),
         where("studentId", "==", studentId)
       )
     );
@@ -243,7 +242,6 @@ export default function NewStudentCasePage() {
         id: item.id,
         ...(item.data() as Omit<EnrollmentRow, "id">),
       }))
-      .filter((item) => item.orgId === orgId)
       .sort((a, b) => (b.startAt ?? 0) - (a.startAt ?? 0));
 
     const caseTypes = caseTypesSnap.docs

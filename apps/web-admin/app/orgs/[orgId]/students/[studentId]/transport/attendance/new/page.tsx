@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   MembershipRole,
-  StudentTransportAttendanceRecordSchema,
+  LegacyStudentTransportAttendanceRecordSchema as StudentTransportAttendanceRecordSchema,
   TransportAttendanceStatus,
   TransportTripDirection,
 } from "@takween/contracts";

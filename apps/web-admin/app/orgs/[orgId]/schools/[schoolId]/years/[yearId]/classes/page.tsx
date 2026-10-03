@@ -190,9 +190,9 @@ export default function ClassesPage() {
   }, [data?.school.profile?.schoolType]);
 
   const schoolName = data?.school.name ?? "المدرسة";
-  const rows = data?.classes ?? [];
-  const gradeOptions = data?.grades ?? [];
-  const streamOptions = data?.streams ?? [];
+  const rows = useMemo(() => data?.classes ?? [], [data?.classes]);
+  const gradeOptions = useMemo(() => data?.grades ?? [], [data?.grades]);
+  const streamOptions = useMemo(() => data?.streams ?? [], [data?.streams]);
 
   const gradeMap = useMemo(
     () => new Map(gradeOptions.map((item) => [item.id, item.title])),

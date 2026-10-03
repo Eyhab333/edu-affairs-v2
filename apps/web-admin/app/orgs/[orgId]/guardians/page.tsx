@@ -141,7 +141,7 @@ export default function GuardiansPage() {
     }
   }, [error]);
 
-  const rows = data?.guardians ?? [];
+  const rows = useMemo(() => data?.guardians ?? [], [data?.guardians]);
 
   const filteredRows = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();

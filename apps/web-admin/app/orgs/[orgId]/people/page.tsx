@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   Building2,
   CheckCircle2,
-  Filter,
   GraduationCap,
   Search,
   ShieldCheck,

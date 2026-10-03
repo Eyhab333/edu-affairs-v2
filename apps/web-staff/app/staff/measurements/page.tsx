@@ -6,6 +6,7 @@ import type { ComponentType } from "react";
 import {
   AlertTriangle,
   ArrowRight,
+  ChartNoAxesCombined,
   FileText,
   GraduationCap,
   Plus,
@@ -628,6 +629,14 @@ export default function StaffMeasurementsPage() {
               </div>
 
               <div className="flex flex-wrap gap-2">
+                <Link
+                  href="/staff/measurements/central-summary"
+                  className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border bg-background px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  <ChartNoAxesCombined className="h-4 w-4" />
+                  خلاصة القياسات المركزية
+                </Link>
+
                 <Link
                   href="/staff/classes"
                   className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"

@@ -1027,9 +1027,10 @@ export type LearningLossSkillSeverity = z.infer<
 export const LearningLossActionStatus = z.enum([
   "PLANNED",
   "IN_PROGRESS",
+  "COMPLETED",
+  // Kept for plans saved before COMPLETED became the canonical completed state.
   "DONE",
   "CANCELLED",
-  "IN_PROGRESS",
 ]);
 export type LearningLossActionStatus = z.infer<typeof LearningLossActionStatus>;
 
@@ -5804,3 +5805,4 @@ export * from "./pdf-resources";
 export * from "./staff-portfolio";
 export * from "./staff-pdf-files";
 export * from "./staff-chat";
+export * from "./student-management";

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   ArrowLeft,
-  CalendarDays,
   GraduationCap,
   Layers3,
   Milestone,

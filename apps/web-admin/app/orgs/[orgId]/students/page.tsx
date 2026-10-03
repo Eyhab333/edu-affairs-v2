@@ -4,50 +4,27 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, Plus, Search, UserRound, Users, X } from "lucide-react";
-import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { toast } from "sonner";
 
 import { db } from "@/lib/firebase";
+import { loadStudentDirectory } from "@/lib/student-read-model";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 
 import PageHero from "@/components/shared/PageHero";
 import FormSection from "@/components/shared/FormSection";
 import InfoCard from "@/components/shared/InfoCard";
+import StatusBadge from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-type PersonRow = {
-  id: string;
-  displayName?: string;
-  nationalId?: string;
-  phone?: string;
-  email?: string;
-};
-
-type StudentRow = {
-  id: string;
-  personId: string;
-  orgId: string;
-  isArchived?: boolean;
-};
-
-type StudentListRow = StudentRow & {
-  displayName: string;
-  nationalId: string;
-  phone: string;
-  email: string;
-};
-
-type PageData = {
-  org: {
-    id: string;
-    nameAr?: string;
-    nameEn?: string;
-    shortName?: string;
-  };
-  students: StudentListRow[];
-};
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 function StudentsPageSkeleton() {
   return (
@@ -58,116 +35,65 @@ function StudentsPageSkeleton() {
           <div key={index} className="h-28 animate-pulse rounded-2xl bg-muted" />
         ))}
       </div>
-      <div className="h-[220px] animate-pulse rounded-2xl bg-muted" />
+      <div className="h-44 animate-pulse rounded-2xl bg-muted" />
       <div className="h-[520px] animate-pulse rounded-2xl bg-muted" />
     </div>
   );
 }
 
-function getOrgDisplayName(
-  org: PageData["org"] | null | undefined,
-  fallback: string
-) {
-  return org?.nameAr ?? org?.shortName ?? org?.nameEn ?? fallback;
+function enrollmentStatusLabel(status: string) {
+  switch (status) {
+    case "ACTIVE": return "نشط";
+    case "COMPLETED": return "مكتمل";
+    case "REPEATING": return "إعادة";
+    case "TRANSFERRED": return "منقول";
+    case "WITHDRAWN": return "منسحب";
+    case "SUSPENDED": return "موقوف";
+    case "PENDING": return "معلّق";
+    default: return status || "—";
+  }
 }
 
 export default function StudentsPage() {
   const params = useParams<{ orgId: string }>();
   const orgId = params.orgId;
-
   const { user, checkingAuth } = useRequireAuth();
-
+  const [schoolId, setSchoolId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const loadStudents = useCallback(async (): Promise<PageData | null> => {
-    const orgRef = doc(db, `orgs/${orgId}`);
-    const studentsRef = collection(db, `orgs/${orgId}/students`);
-    const peopleRef = collection(db, `orgs/${orgId}/people`);
-
-    const [orgSnap, studentsSnap, peopleSnap] = await Promise.all([
-      getDoc(orgRef),
-      getDocs(query(studentsRef)),
-      getDocs(query(peopleRef)),
-    ]);
-
-    if (!orgSnap.exists()) {
-      return null;
-    }
-
-    const peopleMap = new Map<string, PersonRow>();
-    peopleSnap.docs.forEach((item) => {
-      peopleMap.set(item.id, {
-        id: item.id,
-        ...(item.data() as Omit<PersonRow, "id">),
-      });
-    });
-
-    const rows: StudentListRow[] = studentsSnap.docs
-      .map((item) => {
-        const student = item.data() as StudentRow;
-        const person = peopleMap.get(student.personId);
-
-        return {
-          id: item.id,
-          personId: student.personId,
-          orgId: student.orgId,
-          isArchived: !!student.isArchived,
-          displayName: person?.displayName ?? item.id,
-          nationalId: person?.nationalId ?? "",
-          phone: person?.phone ?? "",
-          email: person?.email ?? "",
-        };
-      })
-      .sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
-
-    return {
-      org: {
-        id: orgSnap.id,
-        ...(orgSnap.data() as Omit<PageData["org"], "id">),
-      },
-      students: rows,
-    };
-  }, [orgId]);
-
-  const { data, loading, error, notFound, reload } = useDocumentLoader<PageData>({
+  const loadDirectory = useCallback(() => loadStudentDirectory({ db, orgId }), [orgId]);
+  const { data, loading, error, notFound, reload } = useDocumentLoader({
     enabled: !!user,
-    loader: loadStudents,
+    loader: loadDirectory,
     deps: [orgId],
   });
 
   useEffect(() => {
-    if (error) {
-      toast.error("تعذر تحميل قائمة الطلاب");
-    }
+    if (error) toast.error("تعذر تحميل دليل الطلاب");
   }, [error]);
 
-  const rows = data?.students ?? [];
+  const schoolCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    (data?.rows ?? []).forEach((row) => {
+      if (!row.currentEnrollment) return;
+      counts.set(row.currentEnrollment.schoolId, (counts.get(row.currentEnrollment.schoolId) ?? 0) + 1);
+    });
+    return counts;
+  }, [data?.rows]);
 
   const filteredRows = useMemo(() => {
-    const q = searchTerm.trim().toLowerCase();
-    if (!q) return rows;
-
-    return rows.filter((item) => {
-      const haystack = [
-        item.displayName,
-        item.nationalId,
-        item.phone,
-        item.email,
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return haystack.includes(q);
+    const normalizedSearch = searchTerm.trim().toLocaleLowerCase();
+    return (data?.rows ?? []).filter((row) => {
+      if (schoolId && row.currentEnrollment?.schoolId !== schoolId) return false;
+      if (!normalizedSearch) return true;
+      return [row.displayName, row.nationalId].join(" ").toLocaleLowerCase().includes(normalizedSearch);
     });
-  }, [rows, searchTerm]);
+  }, [data?.rows, schoolId, searchTerm]);
 
-  const totalStudents = rows.length;
-  const archivedStudents = rows.filter((item) => item.isArchived).length;
-  const activeStudents = totalStudents - archivedStudents;
+  const archivedCount = (data?.rows ?? []).filter((row) => row.isArchived).length;
+  const currentEnrollmentCount = (data?.rows ?? []).filter((row) => row.currentEnrollment).length;
 
-  if (checkingAuth || loading) {
-    return <StudentsPageSkeleton />;
-  }
+  if (checkingAuth || loading) return <StudentsPageSkeleton />;
 
   if (notFound) {
     return (
@@ -176,14 +102,7 @@ export default function StudentsPage() {
         badgeIcon={<Users className="h-3.5 w-3.5" />}
         title="تعذر العثور على المؤسسة"
         description="قد تكون المؤسسة غير موجودة أو لا تملك صلاحية الوصول إليها."
-        actions={
-          <Button asChild variant="outline">
-            <Link href="/orgs">
-              <ArrowLeft className="h-4 w-4" />
-              العودة
-            </Link>
-          </Button>
-        }
+        actions={<Button asChild variant="outline"><Link href="/orgs"><ArrowLeft className="h-4 w-4" />العودة</Link></Button>}
       />
     );
   }
@@ -193,161 +112,94 @@ export default function StudentsPage() {
       <PageHero
         badge="الطلاب"
         badgeIcon={<Users className="h-3.5 w-3.5" />}
-        title={`الطلاب - ${getOrgDisplayName(data?.org, orgId)}`}
-        description="عرض جميع الطلاب المسجلين داخل المؤسسة الحالية."
-        actions={
-          <div className="flex flex-wrap gap-2">
-            <Button asChild variant="outline">
-              <Link href={`/orgs/${orgId}`}>
-                <ArrowLeft className="h-4 w-4" />
-                العودة إلى المؤسسة
-              </Link>
-            </Button>
-
-            <Button asChild>
-              <Link href={`/orgs/${orgId}/students/new`}>
-                <Plus className="h-4 w-4" />
-                إضافة طالب
-              </Link>
-            </Button>
-          </div>
-        }
+        title={`دليل الطلاب - ${data?.orgName ?? orgId}`}
+        description="عرض الطلاب ومواضعهم الحالية من القيود الدراسية التشغيلية المعتمدة."
+        actions={<Button asChild variant="outline"><Link href={`/orgs/${orgId}`}><ArrowLeft className="h-4 w-4" />العودة إلى المؤسسة</Link></Button>}
       />
 
+      <div className="flex justify-start">
+        <Button asChild>
+          <Link href={`/orgs/${orgId}/students/new`}>
+            <Plus className="h-4 w-4" />
+            {"إضافة طالب"}
+          </Link>
+        </Button>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-3">
-        <InfoCard
-          label="إجمالي الطلاب"
-          value={totalStudents}
-          hint="يشمل النشط والمؤرشف"
-        />
-        <InfoCard
-          label="الطلاب النشطون"
-          value={activeStudents}
-          hint="غير المؤرشفين"
-        />
-        <InfoCard
-          label="الطلاب المؤرشفون"
-          value={archivedStudents}
-          hint="المعلَّمون كأرشيف"
-        />
+        <InfoCard label="إجمالي الطلاب" value={data?.rows.length ?? 0} hint="يشمل الطلاب المؤرشفين" />
+        <InfoCard label="ذوو القيد النشط" value={currentEnrollmentCount} hint="بحسب القيد التشغيلي الحالي" />
+        <InfoCard label="الطلاب المؤرشفون" value={archivedCount} hint="حالة سجل الطالب مستقلة عن القيد" />
       </div>
 
       {error ? (
-        <FormSection
-          title="حدث خطأ"
-          description="تعذر تحميل البيانات المطلوبة."
-          contentClassName="space-y-4"
-        >
-          <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-            {error}
-          </div>
-
-          <Button variant="outline" onClick={() => void reload()}>
-            إعادة المحاولة
-          </Button>
+        <FormSection title="حدث خطأ" description="تعذر تحميل البيانات المطلوبة." contentClassName="space-y-4">
+          <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>
+          <Button variant="outline" onClick={() => void reload()}>إعادة المحاولة</Button>
         </FormSection>
       ) : null}
 
-      <FormSection
-        title="بحث"
-        description="ابحث باسم الطالب أو السجل المدني أو الهاتف أو البريد."
-        contentClassName="space-y-4"
-      >
-        <div className="grid gap-4 md:grid-cols-[1fr_auto]">
-          <div className="relative">
-            <Search className="pointer-events-none absolute inset-y-0 right-3 my-auto h-4 w-4 text-muted-foreground" />
-            <Input
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="ابحث عن طالب"
-              className="pr-9"
-            />
+      <FormSection title="البحث والتصفية" description="صفِّ الطلاب حسب المدرسة، ثم ابحث بالاسم أو رقم الهوية." contentClassName="space-y-4">
+        <div className="grid gap-4 lg:grid-cols-[280px_1fr_auto]">
+          <div className="space-y-2">
+            <label htmlFor="school-filter" className="text-sm font-medium">المدرسة</label>
+            <select id="school-filter" value={schoolId} onChange={(event) => setSchoolId(event.target.value)} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none ring-offset-background transition focus-visible:ring-2 focus-visible:ring-ring">
+              <option value="">كل المدارس ({data?.rows.length ?? 0})</option>
+              {(data?.schools ?? []).map((school) => <option key={school.id} value={school.id}>{school.name} ({schoolCounts.get(school.id) ?? 0})</option>)}
+            </select>
           </div>
-
-          <Button variant="outline" onClick={() => setSearchTerm("")}>
-            <X className="h-4 w-4" />
-            مسح
-          </Button>
+          <div className="space-y-2">
+            <label htmlFor="student-search" className="text-sm font-medium">البحث</label>
+            <div className="relative">
+              <Search className="pointer-events-none absolute inset-y-0 right-3 my-auto h-4 w-4 text-muted-foreground" />
+              <Input id="student-search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="ابحث باسم الطالب أو رقم الهوية" className="pr-9" />
+            </div>
+          </div>
+          <Button className="self-end" variant="outline" onClick={() => { setSchoolId(""); setSearchTerm(""); }}><X className="h-4 w-4" />مسح</Button>
         </div>
-
-        <div className="text-sm text-muted-foreground">
-          المعروض الآن:{" "}
-          <span className="font-medium text-foreground">{filteredRows.length}</span>{" "}
-          من أصل{" "}
-          <span className="font-medium text-foreground">{totalStudents}</span>{" "}
-          طالبًا.
-        </div>
+        <p className="text-sm text-muted-foreground">المعروض الآن: <span className="font-medium text-foreground">{filteredRows.length}</span> طالبًا.</p>
       </FormSection>
 
-      <FormSection
-        title="قائمة الطلاب"
-        description="الطلاب المسجلون داخل المؤسسة الحالية."
-        contentClassName="space-y-4"
-      >
+      <FormSection title="قائمة الطلاب" description="الموضع المعروض هو أحدث قيد نشط، مع تفضيل السنة الدراسية المعلَّمة كنشطة." contentClassName="space-y-4">
         {filteredRows.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed px-6 py-16 text-center">
-            <div className="rounded-2xl bg-muted p-4">
-              <Users className="h-6 w-6 text-muted-foreground" />
-            </div>
-
-            <div className="space-y-1">
-              <p className="font-medium">
-                {totalStudents === 0 ? "لا يوجد طلاب حتى الآن" : "لا توجد نتائج مطابقة"}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {totalStudents === 0
-                  ? "ابدأ بإضافة أول طالب داخل المؤسسة."
-                  : "جرّب تعديل كلمة البحث."}
-              </p>
-            </div>
-
-            <Button asChild>
-              <Link href={`/orgs/${orgId}/students/new`}>
-                <Plus className="h-4 w-4" />
-                إضافة طالب
-              </Link>
-            </Button>
+            <Users className="h-7 w-7 text-muted-foreground" />
+            <div><p className="font-medium">لا توجد نتائج مطابقة</p><p className="mt-1 text-sm text-muted-foreground">جرّب تغيير المدرسة المحددة أو عبارة البحث.</p></div>
           </div>
         ) : (
-          <div className="grid gap-4">
-            {filteredRows.map((row) => (
-              <div
-                key={row.id}
-                className={`rounded-2xl border bg-card p-4 ${row.isArchived ? "opacity-60" : ""}`}
-              >
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                      <div className="rounded-xl bg-primary/10 p-2 text-primary">
-                        <UserRound className="h-4 w-4" />
-                      </div>
+          <>
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader><TableRow><TableHead>الطالب</TableHead><TableHead>رقم الهوية</TableHead><TableHead>المدرسة</TableHead><TableHead>المستوى</TableHead><TableHead>الفصل</TableHead><TableHead>حالة القيد</TableHead></TableRow></TableHeader>
+                <TableBody>
+                  {filteredRows.map((row) => {
+                    const enrollment = row.currentEnrollment;
+                    return <TableRow key={row.id}>
+                      <TableCell><Link href={`/orgs/${orgId}/students/${row.id}`} className="font-medium hover:text-primary hover:underline">{row.displayName}</Link>{row.isArchived ? <div className="mt-1"><StatusBadge archived /></div> : null}</TableCell>
+                      <TableCell>{row.nationalId || "—"}</TableCell>
+                      <TableCell>{enrollment?.labels.school || "لا يوجد قيد نشط"}</TableCell>
+                      <TableCell>{enrollment?.labels.grade || "—"}</TableCell>
+                      <TableCell>{enrollment?.labels.className || "—"}</TableCell>
+                      <TableCell><StatusBadge archived={!enrollment} activeText={enrollmentStatusLabel(enrollment?.status ?? "")} archivedText="لا يوجد قيد نشط" /></TableCell>
+                    </TableRow>;
+                  })}
+                </TableBody>
+              </Table>
+            </div>
 
-                      <div>
-                        <div className="text-base font-semibold">{row.displayName}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {row.nationalId || "بدون سجل مدني"}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                      {row.phone ? <span>الهاتف: {row.phone}</span> : null}
-                      {row.email ? <span>البريد: {row.email}</span> : null}
-                      {row.isArchived ? <span>الحالة: مؤرشف</span> : <span>الحالة: نشط</span>}
-                    </div>
+            <div className="grid gap-3 md:hidden">
+              {filteredRows.map((row) => {
+                const enrollment = row.currentEnrollment;
+                return <Link key={row.id} href={`/orgs/${orgId}/students/${row.id}`} className="rounded-2xl border bg-card p-4 transition-colors hover:bg-muted/40">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 gap-3"><div className="rounded-xl bg-primary/10 p-2 text-primary"><UserRound className="h-4 w-4" /></div><div className="min-w-0"><p className="truncate font-semibold">{row.displayName}</p><p className="mt-1 text-sm text-muted-foreground">{row.nationalId || "بدون رقم هوية"}</p></div></div>
+                    <StatusBadge archived={!enrollment} activeText="نشط" archivedText="بلا قيد" />
                   </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    <Button asChild variant="outline" size="sm">
-                      <Link href={`/orgs/${orgId}/students/${row.id}`}>
-                        عرض الملف
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                  {enrollment ? <div className="mt-4 grid gap-1 text-sm text-muted-foreground"><span>{enrollment.labels.school}</span><span>{[enrollment.labels.grade, enrollment.labels.className].filter(Boolean).join(" — ") || "—"}</span></div> : null}
+                </Link>;
+              })}
+            </div>
+          </>
         )}
       </FormSection>
     </div>

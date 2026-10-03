@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useMemo, useRef, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   AlertTriangle,
   ArrowRight,
@@ -14,7 +14,15 @@ import {
   Send,
   UsersRound,
 } from "lucide-react";
-import { collection, doc, setDoc, writeBatch } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
@@ -94,6 +102,17 @@ type BatchDraftRow = {
 };
 
 type BatchDraftRows = Record<string, BatchDraftRow>;
+
+type ExistingDraftLookup = {
+  orgId: string;
+  schoolId: string;
+  academicYearId: string;
+  termId: string;
+  classId: string;
+  classSubjectOfferingId: string;
+  templateId: string;
+  teacherAssignmentId: string;
+};
 
 type LearningLossPolicyFields = {
   requiresLearningLossFollowUp?: boolean;
@@ -338,6 +357,39 @@ function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
   if (typeof error === "string") return error;
   return "حدث خطأ غير متوقع";
+}
+
+function getTimestampMs(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+
+  if (value && typeof value === "object" && "toMillis" in value) {
+    const toMillis = value.toMillis;
+
+    if (typeof toMillis === "function") {
+      const timestamp = toMillis.call(value);
+      return typeof timestamp === "number" && Number.isFinite(timestamp)
+        ? timestamp
+        : 0;
+    }
+  }
+
+  return 0;
+}
+
+function matchesExistingDraft(
+  batch: Record<string, unknown>,
+  lookup: ExistingDraftLookup,
+) {
+  return (
+    batch.status === "DRAFT" &&
+    batch.schoolId === lookup.schoolId &&
+    batch.academicYearId === lookup.academicYearId &&
+    batch.termId === lookup.termId &&
+    batch.classId === lookup.classId &&
+    batch.classSubjectOfferingId === lookup.classSubjectOfferingId &&
+    batch.templateId === lookup.templateId &&
+    batch.teacherAssignmentId === lookup.teacherAssignmentId
+  );
 }
 
 function getActorPersonId(actor: StaffActorLike) {
@@ -990,6 +1042,7 @@ function buildTrackerEntryPayload({
 
 export default function StaffNewMeasurementBatchPage() {
   const params = useParams();
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [selectedTemplateOptionId, setSelectedTemplateOptionId] = useState("");
@@ -1000,10 +1053,13 @@ export default function StaffNewMeasurementBatchPage() {
   const [savingDraft, setSavingDraft] = useState(false);
   const [draftSaveError, setDraftSaveError] = useState<string | null>(null);
   const [savedBatchId, setSavedBatchId] = useState<string | null>(null);
+  const [checkingExistingDraft, setCheckingExistingDraft] = useState(false);
 
   const [submittingBatch, setSubmittingBatch] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submittedBatchId, setSubmittedBatchId] = useState<string | null>(null);
+
+  const existingDraftRequestRef = useRef(0);
 
   const { actor } = useStaffActor();
 
@@ -1163,6 +1219,7 @@ export default function StaffNewMeasurementBatchPage() {
     hasCurrentTerm &&
     hasRequiredUnitSelection &&
     batchStudentRows.length > 0 &&
+    !checkingExistingDraft &&
     !savingDraft &&
     !submittingBatch &&
     !submittedBatchId;
@@ -1176,6 +1233,7 @@ export default function StaffNewMeasurementBatchPage() {
     hasCurrentTerm &&
     hasRequiredUnitSelection &&
     batchStudentRows.length > 0 &&
+    !checkingExistingDraft &&
     !savingDraft &&
     !submittingBatch &&
     !submittedBatchId;
@@ -1235,6 +1293,88 @@ export default function StaffNewMeasurementBatchPage() {
 
       return next;
     });
+  }
+
+  function handleTemplateSelection(templateOptionId: string) {
+    setSelectedTemplateOptionId(templateOptionId);
+    setDraftSaveError(null);
+
+    const requestId = existingDraftRequestRef.current + 1;
+    existingDraftRequestRef.current = requestId;
+    const template = templateOptions.find(
+      (item) => item.optionId === templateOptionId,
+    );
+
+    if (
+      !template ||
+      savedBatchId ||
+      !resolvedOrgId ||
+      !resolvedSchoolId ||
+      !resolvedAcademicYearId ||
+      !termContext.termId ||
+      !classInfo?.id
+    ) {
+      setCheckingExistingDraft(false);
+      return;
+    }
+
+    const lookup: ExistingDraftLookup = {
+      orgId: resolvedOrgId,
+      schoolId: resolvedSchoolId,
+      academicYearId: resolvedAcademicYearId,
+      termId: termContext.termId,
+      classId: classInfo.id,
+      classSubjectOfferingId: resolvedClassSubjectOfferingId,
+      templateId: template.id,
+      teacherAssignmentId: resolvedTeacherAssignmentId,
+    };
+
+    const batchesRef = collection(
+      db,
+      "orgs",
+      lookup.orgId,
+      "studentMeasurementBatches",
+    );
+
+    setCheckingExistingDraft(true);
+
+    void (async () => {
+      try {
+        const snapshot = await getDocs(
+          query(batchesRef, where("schoolId", "==", lookup.schoolId)),
+        );
+        const existingBatchId = snapshot.docs
+          .map((item) => ({
+            id: item.id,
+            data: item.data() as Record<string, unknown>,
+          }))
+          .filter((item) => matchesExistingDraft(item.data, lookup))
+          .sort((left, right) => {
+            const leftUpdatedAt = getTimestampMs(
+              left.data.updatedAt ?? left.data.createdAt,
+            );
+            const rightUpdatedAt = getTimestampMs(
+              right.data.updatedAt ?? right.data.createdAt,
+            );
+
+            return rightUpdatedAt - leftUpdatedAt;
+          })[0]?.id;
+
+        if (existingBatchId && existingDraftRequestRef.current === requestId) {
+          router.replace(`/staff/measurements/batches/${existingBatchId}/edit`);
+        }
+      } catch (error: unknown) {
+        if (existingDraftRequestRef.current === requestId) {
+          setDraftSaveError(
+            `تعذر التحقق من المسودة الحالية: ${getErrorMessage(error)}`,
+          );
+        }
+      } finally {
+        if (existingDraftRequestRef.current === requestId) {
+          setCheckingExistingDraft(false);
+        }
+      }
+    })();
   }
 
   async function saveDraftBatch() {
@@ -1828,7 +1968,7 @@ export default function StaffNewMeasurementBatchPage() {
         loading={classTemplates.loading}
         error={classTemplates.error}
         selectedTemplateOptionId={selectedTemplateOptionId}
-        onSelectTemplate={setSelectedTemplateOptionId}
+        onSelectTemplate={handleTemplateSelection}
         canUseCurrentContext={canUseCurrentContext}
         effectiveSubjectKey={effectiveSubjectKey}
       />

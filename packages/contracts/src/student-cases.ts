@@ -137,3 +137,139 @@ export const StudentCaseEventSchema = z.object({
 });
 
 export type StudentCaseEvent = z.infer<typeof StudentCaseEventSchema>;
+
+/**
+ * Legacy student-case records are still used by the admin case-management
+ * screens. Keep these contracts separate from the event-based model above so
+ * existing Firestore documents remain valid while that UI is migrated.
+ */
+export const CaseStatus = z.enum([
+  "OPEN",
+  "IN_PROGRESS",
+  "REFERRED",
+  "RESOLVED",
+  "CLOSED",
+  "CANCELLED",
+]);
+export type CaseStatus = z.infer<typeof CaseStatus>;
+
+export const CasePriority = z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]);
+export type CasePriority = z.infer<typeof CasePriority>;
+
+export const StudentCaseOriginKind = z.enum([
+  "TEACHER_REFERRAL",
+  "STUDENT_AFFAIRS_REFERRAL",
+  "COUNSELOR_REFERRAL",
+  "GUARDIAN_REQUEST",
+  "MANUAL",
+]);
+export type StudentCaseOriginKind = z.infer<typeof StudentCaseOriginKind>;
+
+export const StudentCaseRoutingActionType = z.enum([
+  "CREATE",
+  "ASSIGN",
+  "FORWARD",
+  "RETURN",
+  "ESCALATE",
+  "RESOLVE",
+  "CLOSE",
+  "CANCEL",
+  "REOPEN",
+]);
+export type StudentCaseRoutingActionType = z.infer<
+  typeof StudentCaseRoutingActionType
+>;
+
+export const StudentCaseLogActionType = z.enum([
+  "NOTE",
+  "MEETING",
+  "CALL_GUARDIAN",
+  "NOTIFY_GUARDIAN",
+  "ATTACHMENT",
+  "STATUS_CHANGE",
+]);
+export type StudentCaseLogActionType = z.infer<typeof StudentCaseLogActionType>;
+
+const LegacyAuditFieldsSchema = z.object({
+  createdAt: z.number().int().nonnegative().optional(),
+  updatedAt: z.number().int().nonnegative().optional(),
+});
+
+export const StudentCaseTypeSchema = LegacyAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1),
+    title: z.string().min(1),
+    schoolType: z.enum(["KG", "PRIMARY"]),
+    defaultOwnerRoleKey: z.string().min(1),
+    allowedForwardToRoleKeys: z.array(z.string()).default([]),
+    allowTeacherCreate: z.boolean().default(true),
+    allowGuardianCreate: z.boolean().default(false),
+    notifyGuardianOnCreate: z.boolean().default(false),
+    notifyGuardianOnForward: z.boolean().default(false),
+    notifyGuardianOnClose: z.boolean().default(false),
+    autoCloseWhenResolved: z.boolean().default(false),
+    isActive: z.boolean().default(true),
+  }),
+);
+export type StudentCaseType = z.infer<typeof StudentCaseTypeSchema>;
+
+export const LegacyStudentCaseSchema = LegacyAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1),
+    orgId: z.string().min(1),
+    schoolId: z.string().min(1),
+    academicYearId: z.string().min(1),
+    studentId: z.string().min(1),
+    caseTypeId: z.string().min(1),
+    title: z.string().min(1),
+    description: z.string().default(""),
+    status: CaseStatus.default("OPEN"),
+    priority: CasePriority.default("MEDIUM"),
+    originKind: StudentCaseOriginKind.default("MANUAL"),
+    currentOwnerRoleKey: z.string().min(1),
+    currentAssignedPersonId: z.string().default(""),
+    createdByPersonId: z.string().min(1),
+    createdByRoleKey: z.string().optional(),
+    latestNote: z.string().default(""),
+    guardianNotifiedOnCreate: z.boolean().default(false),
+    guardianNotifiedOnForward: z.boolean().default(false),
+    guardianNotifiedOnClose: z.boolean().default(false),
+    resolvedAt: z.number().int().nonnegative().optional(),
+    resolvedByPersonId: z.string().default(""),
+    closedAt: z.number().int().nonnegative().optional(),
+    closedByPersonId: z.string().default(""),
+    cancelledAt: z.number().int().nonnegative().optional(),
+    cancelledByPersonId: z.string().default(""),
+  }),
+);
+export type LegacyStudentCase = z.infer<typeof LegacyStudentCaseSchema>;
+
+export const StudentCaseRoutingEventSchema = LegacyAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1),
+    caseId: z.string().min(1),
+    orgId: z.string().min(1),
+    actionType: StudentCaseRoutingActionType,
+    fromOwnerRoleKey: z.string().optional(),
+    fromAssignedPersonId: z.string().default(""),
+    toOwnerRoleKey: z.string().optional(),
+    toAssignedPersonId: z.string().default(""),
+    performedByPersonId: z.string().min(1),
+    performedByRoleKey: z.string().optional(),
+    performedAt: z.number().int().nonnegative(),
+    note: z.string().default(""),
+  }),
+);
+
+export const StudentCaseLogEntrySchema = LegacyAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1),
+    caseId: z.string().min(1),
+    orgId: z.string().min(1),
+    actionType: StudentCaseLogActionType,
+    createdByPersonId: z.string().min(1),
+    createdByRoleKey: z.string().optional(),
+    note: z.string().default(""),
+    attachmentRefId: z.string().default(""),
+  }),
+);

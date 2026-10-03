@@ -33,6 +33,15 @@ export { dismissPerformanceImprovementSignal } from "./evaluations/dismiss-perfo
 export { updatePerformanceImprovementSettings } from "./evaluations/update-performance-improvement-settings";
 export * from "./student-directory";
 export { getStudentCaseReferralOptions } from "./student-cases/get-student-case-referral-options";
+export { createStudent } from "./student-management/create-student";
+export { endStudentEnrollment } from "./student-management/end-student-enrollment";
+export { reEnrollStudent } from "./student-management/re-enroll-student";
+export { transferStudent } from "./student-management/transfer-student";
+export { updateStudentIdentity } from "./student-management/update-student-identity";
+export {
+  getTeacherDirectory,
+  getTeacherProfile,
+} from "./teacher-management/get-teacher-management-read-model";
 export { getClassRoster } from "./class-roster/get-class-roster";
 export { getVisibleStudents } from "./visible-students/get-visible-students";
 export {

@@ -9,7 +9,6 @@ import {
   DoorOpen,
   GraduationCap,
   Loader2,
-  Milestone,
   Save,
   Shapes,
 } from "lucide-react";

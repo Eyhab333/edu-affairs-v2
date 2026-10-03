@@ -6,10 +6,8 @@ import { useParams } from "next/navigation";
 import {
   ArrowLeft,
   Bus,
-  CheckCircle2,
   Plus,
   Route,
-  XCircle,
 } from "lucide-react";
 import {
   collection,

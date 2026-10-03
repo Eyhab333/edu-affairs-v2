@@ -119,7 +119,12 @@ export default function EditAcademicYearPage() {
       return null;
     }
 
-    const data = yearSnap.data() as any;
+    const data = yearSnap.data() as {
+      title?: string;
+      startsAt?: number;
+      endsAt?: number;
+      isActive?: boolean;
+    };
 
     return {
       year: {

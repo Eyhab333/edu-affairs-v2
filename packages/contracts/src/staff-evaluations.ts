@@ -575,3 +575,86 @@ export const EvaluationStaffSummarySchema = z.object({
 export type EvaluationStaffSummary = z.infer<
   typeof EvaluationStaffSummarySchema
 >;
+
+/** Legacy evaluation documents retained for the existing web-admin workflow. */
+export const LegacyEvaluationFrameworkStatus = z.enum(["DRAFT", "ACTIVE", "ARCHIVED"]);
+export const LegacyEvaluationFrequencyType = z.enum([
+  "WEEKLY", "VISITS", "PERIODIC_ANALYSIS", "MONTHLY", "TERM", "CUSTOM",
+]);
+export const LegacyEvaluationCycleType = z.enum([
+  "WEEK", "VISIT", "MONTH", "TERM", "PERIODIC_ANALYSIS", "CUSTOM",
+]);
+export const LegacyEvaluationSubmissionStatus = z.enum([
+  "DRAFT", "SUBMITTED", "UNDER_REVIEW", "APPROVED", "RETURNED", "LOCKED", "CANCELLED",
+]);
+export const LegacyEvaluationApprovalMode = z.enum([
+  "NONE", "OPTIONAL_APPROVAL", "REQUIRED_APPROVAL",
+]);
+export const LegacyEvaluationTargetKind = z.enum(["TEACHER", "STAFF", "LEADER", "ADMIN"]);
+
+const LegacyEvaluationAuditFieldsSchema = z.object({
+  createdAt: z.number().int().nonnegative().optional(),
+  updatedAt: z.number().int().nonnegative().optional(),
+});
+
+export const LegacyEvaluationFrameworkSchema = LegacyEvaluationAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1), orgId: z.string().min(1), schoolId: z.string().default(""),
+    title: z.string().min(1), targetRoleKey: z.string().optional(),
+    targetKind: LegacyEvaluationTargetKind.default("TEACHER"),
+    status: LegacyEvaluationFrameworkStatus.default("DRAFT"),
+    version: z.number().int().positive().default(1), description: z.string().default(""),
+    isActive: z.boolean().default(true),
+  }),
+);
+
+export const LegacyEvaluationPlanSchema = LegacyEvaluationAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1), frameworkId: z.string().optional(), orgId: z.string().default(""),
+    schoolId: z.string().default(""), evaluatorRoleKey: z.string().optional(),
+    targetRoleKey: z.string().optional(), targetKind: LegacyEvaluationTargetKind.default("TEACHER"),
+    templateKey: z.string().default(""), title: z.string().min(1),
+    frequencyType: LegacyEvaluationFrequencyType, cycleType: LegacyEvaluationCycleType.optional(),
+    weeksCount: z.number().int().min(0).default(0), visitsCount: z.number().int().min(0).default(0),
+    monthsCount: z.number().int().min(0).default(0), termsCount: z.number().int().min(0).default(0),
+    approvalMode: LegacyEvaluationApprovalMode.default("NONE"), tags: z.array(z.string()).default([]),
+    isActive: z.boolean().default(true), description: z.string().default(""),
+  }),
+);
+
+export const LegacyEvaluationCycleSchema = LegacyEvaluationAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1), planId: z.string().min(1), orgId: z.string().default(""),
+    schoolId: z.string().default(""), academicYearId: z.string().min(1),
+    cycleType: LegacyEvaluationCycleType, label: z.string().min(1),
+    order: z.number().int().min(0).default(0), startsAt: z.number().int().nonnegative().optional(),
+    endsAt: z.number().int().nonnegative().optional(), isOpen: z.boolean().default(true),
+    isLocked: z.boolean().default(false),
+  }),
+);
+
+export const LegacyEvaluationSubmissionSchema = LegacyEvaluationAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1), planId: z.string().min(1), cycleId: z.string().default(""),
+    orgId: z.string().default(""), schoolId: z.string().min(1), academicYearId: z.string().min(1),
+    evaluatorPersonId: z.string().min(1), evaluatorRoleKey: z.string().optional(),
+    targetPersonId: z.string().default(""), targetTeacherPersonId: z.string().default(""),
+    targetRoleKey: z.string().optional(), cycleLabel: z.string().min(1), templateKey: z.string().default(""),
+    status: LegacyEvaluationSubmissionStatus.default("DRAFT"),
+    submittedAt: z.number().int().nonnegative().optional(), reviewedAt: z.number().int().nonnegative().optional(),
+    approvedAt: z.number().int().nonnegative().optional(), lockedAt: z.number().int().nonnegative().optional(),
+    reviewedByPersonId: z.string().default(""), approvedByPersonId: z.string().default(""),
+    totalScore: z.number().min(0).default(0), maxScore: z.number().min(0).default(0),
+    weightedScore: z.number().min(0).default(0), summary: z.string().default(""),
+    recommendations: z.string().default(""),
+  }),
+);
+
+export const LegacyEvaluationSubmissionItemScoreSchema = LegacyEvaluationAuditFieldsSchema.merge(
+  z.object({
+    id: z.string().min(1), submissionId: z.string().min(1), rubricItemId: z.string().min(1),
+    title: z.string().min(1), category: z.string().default(""), score: z.number().min(0).default(0),
+    maxScore: z.number().min(0).default(0), weight: z.number().min(0).default(1),
+    comment: z.string().default(""),
+  }),
+);

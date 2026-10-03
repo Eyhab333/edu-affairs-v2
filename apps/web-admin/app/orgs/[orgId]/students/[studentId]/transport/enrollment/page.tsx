@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
   StudentTransportDirection,
-  StudentTransportEnrollmentSchema,
+  LegacyStudentTransportEnrollmentSchema as StudentTransportEnrollmentSchema,
   StudentTransportEnrollmentStatus,
 } from "@takween/contracts";
 import { ArrowLeft, Bus, Loader2, Save } from "lucide-react";

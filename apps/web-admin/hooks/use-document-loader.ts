@@ -32,6 +32,7 @@ export function useDocumentLoader<T>({
   const [loading, setLoading] = useState<boolean>(enabled);
   const [error, setError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const depsKey = JSON.stringify(deps);
 
   const load = useCallback(async () => {
     if (!enabled) {
@@ -102,7 +103,7 @@ export function useDocumentLoader<T>({
     return () => {
       active = false;
     };
-  }, [enabled, loader, ...deps]);
+  }, [enabled, loader, depsKey]);
 
   return {
     data,

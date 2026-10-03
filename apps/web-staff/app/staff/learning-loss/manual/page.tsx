@@ -88,6 +88,9 @@ type ManualForm = {
   subjectKey: string;
   classSubjectOfferingId: string;
   title: string;
+  planText: string;
+  planStartAt: string;
+  planEndAt: string;
   reason: string;
   skillTitle: string;
   severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
@@ -103,6 +106,22 @@ function getErrorMessage(error: unknown) {
 
 function nowMs() {
   return Date.now();
+}
+
+function toDateInputValue(value?: number) {
+  if (!value) return "";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function dateInputToMs(value: string) {
+  if (!value) return undefined;
+
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isNaN(date.getTime()) ? undefined : date.getTime();
 }
 
 function parseOptionalNumber(value: string) {
@@ -373,6 +392,9 @@ export default function ManualLearningLossPage() {
     subjectKey: "",
     classSubjectOfferingId: "",
     title: "",
+    planText: "",
+    planStartAt: toDateInputValue(nowMs()),
+    planEndAt: "",
     reason: "",
     skillTitle: "",
     severity: "MEDIUM",
@@ -582,6 +604,24 @@ export default function ManualLearningLossPage() {
       return;
     }
 
+    const planStartAt = dateInputToMs(form.planStartAt);
+    const planEndAt = dateInputToMs(form.planEndAt);
+
+    if (!planStartAt) {
+      setError("أدخل تاريخ بدء الخطة.");
+      return;
+    }
+
+    if (form.planEndAt && !planEndAt) {
+      setError("أدخل التاريخ المستهدف للانتهاء بشكل صحيح.");
+      return;
+    }
+
+    if (planEndAt && planEndAt < planStartAt) {
+      setError("تاريخ نهاية الخطة لا يمكن أن يسبق تاريخ البداية.");
+      return;
+    }
+
     const baselineScore = parseOptionalNumber(form.baselineScore);
     const baselineMaxScore = parseOptionalNumber(form.baselineMaxScore);
 
@@ -696,13 +736,15 @@ export default function ManualLearningLossPage() {
         ],
 
         planTitle,
-        planText: buildPlanText({
-          reason: form.reason.trim(),
-          subjectKey: resolvedSubjectKey,
-          classSubjectOfferingId: resolvedClassSubjectOfferingId,
-          baselineScore,
-          baselineMaxScore,
-        }),
+        planText:
+          form.planText.trim() ||
+          buildPlanText({
+            reason: form.reason.trim(),
+            subjectKey: resolvedSubjectKey,
+            classSubjectOfferingId: resolvedClassSubjectOfferingId,
+            baselineScore,
+            baselineMaxScore,
+          }),
 
         remediationActions: [
           {
@@ -715,7 +757,8 @@ export default function ManualLearningLossPage() {
           },
         ],
 
-        planStartAt: createdAt,
+        planStartAt,
+        ...(planEndAt ? { planEndAt } : {}),
 
         ownerPersonId: actorPersonId,
         ...(actorRoleKey ? { ownerRoleKey: actorRoleKey } : {}),
@@ -921,6 +964,56 @@ export default function ManualLearningLossPage() {
                   className="h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                 />
               </label>
+
+              <label className="space-y-2">
+                <span className="text-sm font-medium">الخطة العلاجية</span>
+                <textarea
+                  value={form.planText}
+                  disabled={saving}
+                  rows={5}
+                  placeholder="اكتب الخطة العلاجية المبدئية، أو اتركها فارغة لاستخدام الخطة الافتراضية."
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      planText: event.target.value,
+                    }))
+                  }
+                  className="w-full rounded-xl border bg-background px-3 py-2 text-sm leading-7 outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                />
+              </label>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="text-sm font-medium">تاريخ بدء الخطة</span>
+                  <input
+                    type="date"
+                    value={form.planStartAt}
+                    disabled={saving}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        planStartAt: event.target.value,
+                      }))
+                    }
+                    className="h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                  />
+                </label>
+                <label className="space-y-2">
+                  <span className="text-sm font-medium">التاريخ المستهدف للانتهاء</span>
+                  <input
+                    type="date"
+                    value={form.planEndAt}
+                    disabled={saving}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        planEndAt: event.target.value,
+                      }))
+                    }
+                    className="h-10 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                  />
+                </label>
+              </div>
 
               <label className="space-y-2">
                 <span className="text-sm font-medium">المجال / المادة</span>

@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import {
   ArrowLeft,
   BookOpen,
-  GraduationCap,
   Layers3,
   Milestone,
   Plus,

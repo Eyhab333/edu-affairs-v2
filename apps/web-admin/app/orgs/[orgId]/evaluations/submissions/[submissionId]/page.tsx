@@ -4,9 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
-  EvaluationSubmissionSchema,
-  EvaluationSubmissionStatus,
-  EvaluationSubmissionItemScoreSchema,
+  LegacyEvaluationSubmissionSchema as EvaluationSubmissionSchema,
+  LegacyEvaluationSubmissionStatus as EvaluationSubmissionStatus,
+  LegacyEvaluationSubmissionItemScoreSchema as EvaluationSubmissionItemScoreSchema,
 } from "@takween/contracts";
 import { ArrowLeft, ClipboardCheck, Loader2, Save } from "lucide-react";
 import {
@@ -15,7 +15,6 @@ import {
   getDoc,
   getDocs,
   query,
-  setDoc,
   writeBatch,
 } from "firebase/firestore";
 import { toast } from "sonner";
@@ -25,7 +24,6 @@ import { useRequireAuth } from "@/hooks/use-require-auth";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 import {
   buildEvaluationSummaryReadModels,
-  type EvaluationSummaryReadModel,
 } from "@/lib/evaluation-read-model";
 
 import PageHero from "@/components/shared/PageHero";

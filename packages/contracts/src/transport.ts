@@ -366,3 +366,63 @@ export const TransportNoteSchema = z.object({
 });
 
 export type TransportNote = z.infer<typeof TransportNoteSchema>;
+
+/** Legacy transport documents retained for the existing web-admin workflow. */
+export const StudentTransportDirection = z.enum([
+  "TO_SCHOOL",
+  "FROM_SCHOOL",
+  "ROUND_TRIP",
+]);
+
+export const TransportAttendanceStatus = z.enum([
+  "BOARDED",
+  "NOT_BOARDED",
+  "DROPPED_OFF",
+  "NOT_DROPPED_OFF",
+  "EXCUSED",
+]);
+export const TransportTripDirection = z.enum([
+  "MORNING_TO_SCHOOL",
+  "AFTERNOON_FROM_SCHOOL",
+]);
+
+export const StudentTransportEnrollmentStatus =
+  StudentTransportEnrollmentStatusSchema;
+
+export const LegacyStudentTransportEnrollmentSchema = z.object({
+  id: z.string().min(1),
+  orgId: z.string().min(1),
+  schoolId: z.string().min(1),
+  academicYearId: z.string().min(1),
+  studentId: z.string().min(1),
+  enrollmentId: z.string().default(""),
+  routeId: z.string().min(1),
+  direction: StudentTransportDirection.default("ROUND_TRIP"),
+  status: StudentTransportEnrollmentStatus.default("ACTIVE"),
+  startAt: z.number().int().nonnegative(),
+  endAt: z.number().int().nonnegative().optional(),
+  note: z.string().default(""),
+  createdAt: z.number().int().nonnegative().optional(),
+  updatedAt: z.number().int().nonnegative().optional(),
+});
+
+export const LegacyStudentTransportAttendanceRecordSchema = z.object({
+  id: z.string().min(1),
+  orgId: z.string().min(1),
+  schoolId: z.string().min(1),
+  academicYearId: z.string().min(1),
+  schoolDayId: z.string().min(1),
+  studentId: z.string().min(1),
+  enrollmentId: z.string().default(""),
+  transportEnrollmentId: z.string().min(1),
+  routeId: z.string().min(1),
+  tripDirection: TransportTripDirection,
+  status: TransportAttendanceStatus,
+  batchId: z.string().default(""),
+  recordedByPersonId: z.string().min(1),
+  recorderRoleKey: z.string().min(1),
+  recordedAt: z.number().int().nonnegative(),
+  note: z.string().default(""),
+  createdAt: z.number().int().nonnegative().optional(),
+  updatedAt: z.number().int().nonnegative().optional(),
+});

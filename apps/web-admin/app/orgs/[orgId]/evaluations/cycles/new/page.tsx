@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
-  EvaluationCycleSchema,
-  EvaluationCycleType,
+  LegacyEvaluationCycleSchema as EvaluationCycleSchema,
+  LegacyEvaluationCycleType as EvaluationCycleType,
 } from "@takween/contracts";
 import { ArrowLeft, CalendarRange, Loader2, Save } from "lucide-react";
 import { collection, getDocs, query, setDoc, doc } from "firebase/firestore";

@@ -6,7 +6,6 @@ import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import {
   ArrowRight,
-  BookOpen,
   BookOpenCheck,
   Bus,
   CalendarDays,

@@ -28,7 +28,6 @@ import { useDocumentLoader } from "@/hooks/use-document-loader";
 import PageHero from "@/components/shared/PageHero";
 import FormSection from "@/components/shared/FormSection";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 type SchoolTypeValue = "PRIMARY" | "KG";
 type AssignmentKindValue =
@@ -386,9 +385,6 @@ export default function EditAssignmentPage() {
 
       await setDoc(assignmentRef, parsed.data, { merge: true });
 
-      const existingLinkIds = new Set(
-        (data?.assignmentClassLinks ?? []).map((item) => item.classId),
-      );
       const nextLinkIds = new Set(selectedClassIds);
 
       if (coverageMode === "EXPLICIT_CLASSES") {

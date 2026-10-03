@@ -16,6 +16,10 @@ import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
 import { Button } from "@/components/ui/button";
 import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
+import {
+  getFriendlyMeasurementLabel,
+  getFriendlySubjectLabel,
+} from "@/lib/measurement-presentation";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import {
   loadTeacherWorkDetail,
@@ -25,6 +29,7 @@ import {
   type TeacherWorkLessonPrep,
   type TeacherWorkDrillDownItem,
   type TeacherWorkDrillDowns,
+  type TeacherWorkLearningLossDrillDown,
   type TeacherWorkMeasurementStudentResult,
   type TeacherWorkMeasurementDetail,
   type TeacherWorkMeasurementItemScore,
@@ -69,8 +74,25 @@ function formatDate(value: number | null) {
   );
 }
 
-function safeText(value: string, fallback = "غير محدد") {
-  return value.trim() || fallback;
+function safeText(value: string | null | undefined, fallback = "غير محدد") {
+  return typeof value === "string" && value.trim() ? value.trim() : fallback;
+}
+
+function displayLearningLossPlanTitle(plan: TeacherWorkLearningLossDrillDown) {
+  const { details } = plan;
+  const storedTitle = safeText(details.planTitle, plan.title);
+  const friendlySubject = getFriendlySubjectLabel(details.subjectKey);
+  const friendlySource = getFriendlyMeasurementLabel(details.sourceKind);
+  let displayTitle = storedTitle;
+
+  if (friendlySubject && details.subjectKey) {
+    displayTitle = displayTitle.split(details.subjectKey).join(friendlySubject);
+  }
+  if (friendlySource && details.sourceKind) {
+    displayTitle = displayTitle.split(details.sourceKind).join(friendlySource);
+  }
+
+  return displayTitle;
 }
 
 function lessonPrepStatusLabel(status: string) {
@@ -130,8 +152,124 @@ function detailLabel(value: string, labels: Record<string, string>) {
   return labels[value] || safeText(value);
 }
 
-function chipList(values: string[]) {
-  return values.length ? values.join(" • ") : "لا توجد بيانات مسجلة";
+function learningLossStatusLabel(status: string) {
+  return detailLabel(status, {
+    DRAFT: "مسودة",
+    ACTIVE: "نشطة",
+    IN_PROGRESS: "قيد المتابعة",
+    IMPROVED: "تحسن",
+    PARTIALLY_IMPROVED: "تحسن جزئي",
+    NOT_IMPROVED: "لم يتحسن",
+    CLOSED: "مغلقة",
+    CANCELLED: "ملغاة",
+  });
+}
+
+function learningLossIndicatorLabel(indicator: string) {
+  return detailLabel(indicator, {
+    UNKNOWN: "غير محسوب",
+    IMPROVED: "تحسن واضح",
+    PARTIAL_IMPROVEMENT: "تحسن جزئي",
+    NO_IMPROVEMENT: "لم يتحسن",
+    REGRESSED: "تراجع",
+  });
+}
+
+function remediationActionStatusLabel(status: string) {
+  return detailLabel(status, {
+    PLANNED: "مخطط لها",
+    IN_PROGRESS: "قيد التنفيذ",
+    COMPLETED: "مكتملة",
+    DONE: "مكتملة",
+    CANCELLED: "ملغاة",
+  });
+}
+
+function formatLearningLossMeasurement(
+  score: number | null,
+  maxScore: number | null,
+) {
+  if (score === null || maxScore === null) return "لم يُرصد";
+
+  const result = `${score.toLocaleString("ar-SA")} / ${maxScore.toLocaleString("ar-SA")}`;
+  if (maxScore <= 0) return `${result} — غير محدد`;
+
+  const percentage = (score / maxScore) * 100;
+  return `${result} — ${percentage.toLocaleString("ar-SA", {
+    maximumFractionDigits: 1,
+  })}%`;
+}
+
+type LearningLossTimelineItem = {
+  id: string;
+  date: number;
+  title: string;
+  order: number;
+};
+
+function buildLearningLossTimeline(
+  plan: TeacherWorkLearningLossDrillDown,
+): LearningLossTimelineItem[] {
+  const timeline: LearningLossTimelineItem[] = [];
+  const { details } = plan;
+
+  if (details.planStartAt !== null) {
+    timeline.push({
+      id: "plan-start",
+      date: details.planStartAt,
+      title: "بدء الخطة العلاجية",
+      order: 0,
+    });
+  }
+
+  details.remediationActions.forEach((action, index) => {
+    const actionId = action.id || `action-${index}`;
+    const title = safeText(action.title, "إجراء علاجي");
+
+    if (action.dueAt !== null) {
+      timeline.push({
+        id: `${actionId}-due`,
+        date: action.dueAt,
+        title: `موعد مستهدف: ${title}`,
+        order: 1,
+      });
+    }
+    if (action.completedAt !== null) {
+      timeline.push({
+        id: `${actionId}-completed`,
+        date: action.completedAt,
+        title: `تنفيذ إجراء علاجي: ${title}`,
+        order: 2,
+      });
+    }
+  });
+
+  if (details.firstCheckMeasuredAt !== null) {
+    timeline.push({
+      id: "first-check",
+      date: details.firstCheckMeasuredAt,
+      title: "قياس نتيجة الخطة الأول",
+      order: 3,
+    });
+  }
+  if (details.secondCheckMeasuredAt !== null) {
+    timeline.push({
+      id: "second-check",
+      date: details.secondCheckMeasuredAt,
+      title: "قياس نتيجة الخطة الثاني",
+      order: 4,
+    });
+  }
+  if (details.planEndAt !== null) {
+    timeline.push({
+      id: "plan-end",
+      date: details.planEndAt,
+      title: "التاريخ المستهدف لانتهاء الخطة",
+      order: 5,
+    });
+  }
+
+  return timeline.sort((left, right) => left.date - right.date || left.order - right.order);
 }
 
 function measurementRowStatusLabel(status: string) {
@@ -484,6 +622,317 @@ function DetailSection({ label, children }: { label: string; children: ReactNode
   );
 }
 
+function LearningLossResultBlock({
+  title,
+  score,
+  maxScore,
+  measuredAt,
+  note,
+}: {
+  title: string;
+  score: number | null;
+  maxScore: number | null;
+  measuredAt: number | null;
+  note?: string;
+}) {
+  const isRecorded = score !== null && maxScore !== null;
+
+  return (
+    <div className="rounded-xl border bg-background p-3">
+      <p className="text-xs font-semibold text-muted-foreground">{title}</p>
+      <p className="mt-2 font-medium text-foreground">
+        {formatLearningLossMeasurement(score, maxScore)}
+      </p>
+      {isRecorded ? (
+        <p className="mt-1 text-xs text-muted-foreground">
+          التاريخ: {detailDate(measuredAt)}
+        </p>
+      ) : null}
+      {isRecorded && note?.trim() ? (
+        <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
+          ملاحظة: {note}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function LearningLossPlanDetails({
+  item,
+}: {
+  item: TeacherWorkLearningLossDrillDown;
+}) {
+  const { details } = item;
+  const timeline = buildLearningLossTimeline(item);
+
+  return (
+    <>
+      <DetailSection label="بيانات الخطة">
+        <DetailFields
+          fields={[
+            ["الطالب", safeText(details.studentDisplayName, "طالب غير محدد")],
+            ["المادة", safeText(details.subjectTitle, details.subjectKey || "غير محدد")],
+            ["الصف والفصل", safeText(details.classTitle, "غير محدد")],
+            ["حالة الخطة", learningLossStatusLabel(item.status)],
+            ["تاريخ بدء الخطة", detailDate(details.planStartAt)],
+            ["التاريخ المستهدف للانتهاء", detailDate(details.planEndAt)],
+          ]}
+        />
+      </DetailSection>
+
+      <DetailSection label="مصدر الفاقد">
+        <DetailFields
+          fields={[
+            [
+              "نوع المصدر",
+              detailLabel(details.sourceType, {
+                ASSESSMENT_RECORD: "قياس",
+                TRACKER_ENTRY: "متابعة",
+                MANUAL: "فتح يدوي",
+              }),
+            ],
+            ["عنوان المصدر", safeText(details.sourceTitle)],
+            ["نوع المصدر التفصيلي", safeText(details.sourceKind)],
+          ]}
+        />
+      </DetailSection>
+
+      <DetailSection label="المهارات المفقودة">
+        {details.lostSkills.length ? (
+          <div className="space-y-2">
+            {details.lostSkills.map((skill, index) => (
+              <div
+                key={skill.id || `skill-${index}`}
+                className="rounded-lg border bg-background p-3"
+              >
+                <p className="font-medium">{safeText(skill.title, "مهارة")}</p>
+                {skill.description ? (
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {skill.description}
+                  </p>
+                ) : null}
+                {(skill.domain || skill.severity) ? (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {[skill.domain, skill.severity].filter(Boolean).join(" • ")}
+                  </p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        ) : (
+          "لا توجد مهارات مفقودة مسجلة."
+        )}
+      </DetailSection>
+
+      <DetailSection label="الخطة العلاجية">
+        <p className="font-medium">
+          عنوان الخطة العلاجية: {displayLearningLossPlanTitle(item)}
+        </p>
+        <p className="mt-3 whitespace-pre-wrap text-muted-foreground">
+          {safeText(details.planText, "لا توجد بيانات مسجلة")}
+        </p>
+      </DetailSection>
+
+      <DetailSection label="أحداث وإجراءات الخطة العلاجية">
+        {details.remediationActions.length ? (
+          <div className="space-y-3">
+            {details.remediationActions.map((action, index) => (
+              <article
+                key={action.id || `action-${index}`}
+                className="rounded-lg border bg-background p-3"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-medium">{safeText(action.title, "إجراء علاجي")}</p>
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                    {remediationActionStatusLabel(action.status)}
+                  </span>
+                </div>
+                <p className="mt-2 text-muted-foreground">
+                  {safeText(action.description, "لا يوجد وصف.")}
+                </p>
+                <DetailFields
+                  fields={[
+                    ["التاريخ المستهدف", detailDate(action.dueAt)],
+                    ["تاريخ التنفيذ", detailDate(action.completedAt)],
+                    ["الملاحظة", safeText(action.note)],
+                  ]}
+                />
+              </article>
+            ))}
+          </div>
+        ) : (
+          "لا توجد إجراءات علاجية مسجلة."
+        )}
+      </DetailSection>
+
+      <DetailSection label="قياسات نتيجة الخطة">
+        <div className="grid gap-3 md:grid-cols-3">
+          <LearningLossResultBlock
+            title="القياس الأساسي"
+            score={details.baselineScore}
+            maxScore={details.baselineMaxScore}
+            measuredAt={details.baselineMeasuredAt}
+          />
+          <LearningLossResultBlock
+            title="قياس نتيجة الخطة الأول"
+            score={details.firstCheckScore}
+            maxScore={details.firstCheckMaxScore}
+            measuredAt={details.firstCheckMeasuredAt}
+            note={details.firstCheckNote}
+          />
+          <LearningLossResultBlock
+            title="قياس نتيجة الخطة الثاني"
+            score={details.secondCheckScore}
+            maxScore={details.secondCheckMaxScore}
+            measuredAt={details.secondCheckMeasuredAt}
+            note={details.secondCheckNote}
+          />
+        </div>
+      </DetailSection>
+
+      <DetailSection label="مؤشر التحسن">
+        <DetailFields
+          fields={[
+            ["مؤشر التحسن", learningLossIndicatorLabel(details.improvementIndicator)],
+            [
+              "فرق الدرجة",
+              details.improvementDelta === null
+                ? "غير محدد"
+                : details.improvementDelta.toLocaleString("ar-SA", {
+                    maximumFractionDigits: 1,
+                  }),
+            ],
+            [
+              "فرق النسبة",
+              details.improvementPercentage === null
+                ? "غير محدد"
+                : `${details.improvementPercentage.toLocaleString("ar-SA", {
+                    maximumFractionDigits: 1,
+                  })}%`,
+            ],
+          ]}
+        />
+      </DetailSection>
+
+      <DetailSection label="السجل الزمني">
+        {timeline.length ? (
+          <ol className="space-y-3 border-r-2 border-muted pr-4">
+            {timeline.map((entry) => (
+              <li key={entry.id} className="relative rounded-lg border bg-background p-3">
+                <span className="absolute -right-[1.48rem] top-5 size-2.5 rounded-full bg-primary" />
+                <p className="text-xs text-muted-foreground">{formatDate(entry.date)}</p>
+                <p className="mt-1 font-medium">{entry.title}</p>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          "لا توجد تواريخ تعليمية مسجلة للخطة بعد."
+        )}
+      </DetailSection>
+    </>
+  );
+}
+
+function LearningLossModule({
+  items,
+}: {
+  items: TeacherWorkLearningLossDrillDown[];
+}) {
+  const [openedPlanId, setOpenedPlanId] = useState<string | null>(null);
+  const summary = [
+    ["إجمالي الخطط", items.length],
+    [
+      "النشطة",
+      items.filter((item) => ["ACTIVE", "IN_PROGRESS"].includes(item.status))
+        .length,
+    ],
+    ["تحسن", items.filter((item) => item.status === "IMPROVED").length],
+    [
+      "لم يتحسن",
+      items.filter((item) => item.status === "NOT_IMPROVED").length,
+    ],
+  ] as const;
+
+  return (
+    <div className="space-y-4">
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {summary.map(([label, count]) => (
+          <div key={label} className="rounded-xl border bg-card p-3">
+            <p className="text-xs font-semibold text-muted-foreground">{label}</p>
+            <p className="mt-1 text-xl font-bold text-foreground">
+              {count.toLocaleString("ar-SA")}
+            </p>
+          </div>
+        ))}
+      </section>
+
+      {!items.length ? (
+        <div className="rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">
+          لا توجد خطط فاقد تعليمي مسجلة لهذا المعلم.
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {items.map((item) => {
+            const isOpen = openedPlanId === item.id;
+            const { details } = item;
+
+            return (
+              <article key={item.id} className="rounded-2xl border bg-card p-4 shadow-sm">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="font-bold text-foreground">
+                        {safeText(details.studentDisplayName, "طالب غير محدد")}
+                      </h3>
+                      <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                        {learningLossStatusLabel(item.status)}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {[
+                        safeText(details.subjectTitle, details.subjectKey || "المادة غير محددة"),
+                        safeText(details.classTitle, "الفصل غير محدد"),
+                      ].join(" • ")}
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-foreground">
+                      {displayLearningLossPlanTitle(item)}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setOpenedPlanId(isOpen ? null : item.id)}
+                  >
+                    {isOpen ? "إغلاق" : "فتح"}
+                    <ChevronLeft className="size-4" />
+                  </Button>
+                </div>
+
+                <div className="mt-4 grid gap-2 text-sm sm:grid-cols-2 xl:grid-cols-4">
+                  <p><span className="text-muted-foreground">القياس الأساسي: </span>{formatLearningLossMeasurement(details.baselineScore, details.baselineMaxScore)}</p>
+                  <p><span className="text-muted-foreground">القياس الأول: </span>{formatLearningLossMeasurement(details.firstCheckScore, details.firstCheckMaxScore)}</p>
+                  <p><span className="text-muted-foreground">القياس الثاني: </span>{formatLearningLossMeasurement(details.secondCheckScore, details.secondCheckMaxScore)}</p>
+                  <p><span className="text-muted-foreground">التحسن: </span>{learningLossIndicatorLabel(details.improvementIndicator)}</p>
+                </div>
+
+                {isOpen ? (
+                  <DrillDownDetails
+                    item={item}
+                    onClose={() => setOpenedPlanId(null)}
+                    loadingMeasurementDetail={false}
+                    measurementDetailError=""
+                    onLoadMeasurementDetail={() => undefined}
+                  />
+                ) : null}
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function DrillDownDetails({
   item,
   onClose,
@@ -562,34 +1011,7 @@ function DrillDownDetails({
           </>
         );
       case "learningLoss":
-        return (
-          <>
-            <DetailFields
-              fields={[
-                ["مصدر الخطة", safeText(item.details.sourceTitle)],
-                ["بداية الخطة", detailDate(item.details.planStartAt)],
-                ["نهاية الخطة", detailDate(item.details.planEndAt)],
-                ["تاريخ الإغلاق", detailDate(item.details.closedAt)],
-                ["مؤشر التحسن", detailLabel(item.details.improvementIndicator, {
-                  UNKNOWN: "غير محدد",
-                  NO_IMPROVEMENT: "لم يتحسن",
-                  PARTIAL_IMPROVEMENT: "تحسن جزئي",
-                  IMPROVED: "تحسن",
-                  REGRESSED: "تراجع",
-                })],
-              ]}
-            />
-            <DetailSection label="الخطة العلاجية">
-              {safeText(item.details.planText, "لا توجد بيانات مسجلة")}
-            </DetailSection>
-            <DetailSection label="المهارات المحددة">
-              {chipList(item.details.lostSkillTitles)}
-            </DetailSection>
-            <DetailSection label="الإجراءات العلاجية">
-              {chipList(item.details.remediationActionTitles)}
-            </DetailSection>
-          </>
-        );
+        return <LearningLossPlanDetails item={item} />;
       case "notes":
         return (
           <>
@@ -921,6 +1343,8 @@ export default function TeacherWorkDetailPage() {
             </div>
             {selectedModule === "lessonPrep" ? (
               <LessonPrepList lessonPreps={lessonPreps} />
+            ) : selectedModule === "learningLoss" ? (
+              <LearningLossModule items={drillDowns.learningLoss} />
             ) : (
               <ModuleDrillDown
                 metric={teacher.metrics[selectedModule]}

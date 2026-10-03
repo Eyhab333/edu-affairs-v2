@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
-  EvaluationFrameworkSchema,
-  EvaluationFrameworkStatus,
-  EvaluationTargetKind,
+  LegacyEvaluationFrameworkSchema as EvaluationFrameworkSchema,
+  LegacyEvaluationFrameworkStatus as EvaluationFrameworkStatus,
+  LegacyEvaluationTargetKind as EvaluationTargetKind,
   MembershipRole,
 } from "@takween/contracts";
 import { ArrowLeft, FileStack, Loader2, Save } from "lucide-react";

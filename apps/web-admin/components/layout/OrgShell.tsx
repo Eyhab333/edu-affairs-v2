@@ -55,6 +55,11 @@ function buildNavItems(orgId: string) {
       icon: Person,
     },
     {
+      title: "المعلمون",
+      href: `/orgs/${orgId}/teachers`,
+      icon: GraduationCap,
+    },
+    {
       title: "تقييمات المعلمين",
       href: `/orgs/${orgId}/evaluations`,
       icon: ClipboardCheck,
