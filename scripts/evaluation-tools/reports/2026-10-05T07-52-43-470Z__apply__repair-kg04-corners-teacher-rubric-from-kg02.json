@@ -1,0 +1,114 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "source": {
+    "schoolId": "kg-02",
+    "planId": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation",
+    "frameworkId": "kg-educational-supervisor-corners-teacher-periodic-evaluation-v1",
+    "cycles": [
+      {
+        "id": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01",
+        "title": "التقييم الأول"
+      },
+      {
+        "id": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02",
+        "title": "التقييم الثاني"
+      }
+    ]
+  },
+  "target": {
+    "schoolId": "kg-04",
+    "planId": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation",
+    "frameworkId": "kg-educational-supervisor-corners-teacher-periodic-evaluation-v1",
+    "targetPersonId": "p-r-a-atyar",
+    "evaluatorPersonId": "p-f-alhamaad",
+    "cycles": [
+      {
+        "id": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01",
+        "title": "التقييم الأول"
+      },
+      {
+        "id": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02",
+        "title": "التقييم الثاني"
+      }
+    ]
+  },
+  "historicalSubmissions": {
+    "found": 0,
+    "touched": 0
+  },
+  "plannedChanges": {
+    "evaluatorAssignmentsToRepair": 2,
+    "targetAssignmentsTouched": 0,
+    "submissionsTouched": 0,
+    "totalWrites": 2
+  },
+  "changes": [
+    {
+      "targetCycleId": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01",
+      "targetAssignmentId": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01-p-r-a-atyar-p-f-alhamaad",
+      "sourceCycleId": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01",
+      "sourceAssignmentId": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01-p-h-almadallah-p-f-alhamaad",
+      "sourceTargetPersonId": "p-h-almadallah",
+      "sourceTargetDisplayName": "",
+      "changedFields": [
+        {
+          "field": "updatedAt",
+          "before": 1790668070490,
+          "after": 1791186745340
+        },
+        {
+          "field": "rubricRepairTool",
+          "after": "repair-kg04-corners-teacher-rubric-from-kg02.cjs"
+        },
+        {
+          "field": "rubricRepairSourcePlanId",
+          "after": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation"
+        },
+        {
+          "field": "rubricRepairSourceAssignmentId",
+          "after": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-01-p-h-almadallah-p-f-alhamaad"
+        },
+        {
+          "field": "rubricRepairedAt",
+          "after": 1791186745340
+        }
+      ]
+    },
+    {
+      "targetCycleId": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02",
+      "targetAssignmentId": "kg-04-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-visit-01-p-r-a-atyar-p-f-alhamaad",
+      "sourceCycleId": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02",
+      "sourceAssignmentId": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02-p-h-almadallah-p-f-alhamaad",
+      "sourceTargetPersonId": "p-h-almadallah",
+      "sourceTargetDisplayName": "",
+      "changedFields": [
+        {
+          "field": "updatedAt",
+          "before": 1790667487237,
+          "after": 1791186745340
+        },
+        {
+          "field": "rubricRepairTool",
+          "after": "repair-kg04-corners-teacher-rubric-from-kg02.cjs"
+        },
+        {
+          "field": "rubricRepairSourcePlanId",
+          "after": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation"
+        },
+        {
+          "field": "rubricRepairSourceAssignmentId",
+          "after": "kg-02-ay-1448-term-1-educational-supervisor-corners-teacher-periodic-evaluation-evaluation-02-p-h-almadallah-p-f-alhamaad"
+        },
+        {
+          "field": "rubricRepairedAt",
+          "after": 1791186745340
+        }
+      ]
+    }
+  ],
+  "warningsCount": 0,
+  "warnings": [],
+  "conflictsCount": 0,
+  "conflicts": []
+}

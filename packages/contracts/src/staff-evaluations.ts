@@ -576,6 +576,113 @@ export type EvaluationStaffSummary = z.infer<
   typeof EvaluationStaffSummarySchema
 >;
 
+/** Trusted web-admin operations for one existing evaluation plan. */
+export const EvaluationAdminPlanChangeActionSchema = z.enum([
+  "ADD_TARGET",
+  "REMOVE_TARGET",
+  "REPLACE_TARGET",
+  "SET_CYCLE_COUNT",
+]);
+
+export type EvaluationAdminPlanChangeAction = z.infer<
+  typeof EvaluationAdminPlanChangeActionSchema
+>;
+
+export const EvaluationAdminPlanChangeInputSchema = z
+  .object({
+    orgId: z.string().min(1),
+    planId: z.string().min(1),
+    action: EvaluationAdminPlanChangeActionSchema,
+    targetPersonId: z.string().min(1).optional(),
+    evaluatorPersonId: z.string().min(1).optional(),
+    replacementTargetPersonId: z.string().min(1).optional(),
+    cycleCount: z.number().int().min(0).max(100).optional(),
+    reason: z.string().trim().min(1).max(1000).optional(),
+  })
+  .superRefine((value, context) => {
+    if (
+      ["ADD_TARGET", "REMOVE_TARGET", "REPLACE_TARGET"].includes(
+        value.action,
+      ) &&
+      !value.targetPersonId
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["targetPersonId"],
+        message: "targetPersonId is required for this action.",
+      });
+    }
+
+    if (value.action === "ADD_TARGET" && !value.evaluatorPersonId) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["evaluatorPersonId"],
+        message: "evaluatorPersonId is required when adding a target.",
+      });
+    }
+
+    if (
+      value.action === "REPLACE_TARGET" &&
+      !value.replacementTargetPersonId
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["replacementTargetPersonId"],
+        message: "replacementTargetPersonId is required when replacing a target.",
+      });
+    }
+
+    if (value.action === "SET_CYCLE_COUNT" && value.cycleCount === undefined) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["cycleCount"],
+        message: "cycleCount is required when changing the cycle count.",
+      });
+    }
+  });
+
+export type EvaluationAdminPlanChangeInput = z.infer<
+  typeof EvaluationAdminPlanChangeInputSchema
+>;
+
+export type EvaluationAdminPlanChangeItem = {
+  id: string;
+  action: "CREATE" | "UPDATE" | "REMOVE" | "REACTIVATE";
+  label: string;
+  cycleId?: string;
+  targetPersonId?: string;
+  evaluatorPersonId?: string;
+};
+
+export type EvaluationAdminPlanChangePreview = {
+  action: EvaluationAdminPlanChangeAction;
+  fingerprint: string;
+  canApply: boolean;
+  plan: {
+    id: string;
+    title: string;
+    schoolId: string;
+    academicYearId: string;
+    termId: string;
+    frameworkId: string;
+  };
+  targetAssignments: EvaluationAdminPlanChangeItem[];
+  evaluatorAssignments: EvaluationAdminPlanChangeItem[];
+  cycles: EvaluationAdminPlanChangeItem[];
+  planUpdates: EvaluationAdminPlanChangeItem[];
+  historicalSubmissionCount: number;
+  warnings: string[];
+  conflicts: string[];
+  totalWrites: number;
+};
+
+export type EvaluationAdminPlanChangeApplyResult = {
+  ok: true;
+  auditEventId: string;
+  appliedWrites: number;
+  preview: EvaluationAdminPlanChangePreview;
+};
+
 /** Legacy evaluation documents retained for the existing web-admin workflow. */
 export const LegacyEvaluationFrameworkStatus = z.enum(["DRAFT", "ACTIVE", "ARCHIVED"]);
 export const LegacyEvaluationFrequencyType = z.enum([

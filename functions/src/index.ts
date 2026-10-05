@@ -27,6 +27,10 @@ export { getGuardianFinanceWorkspace } from "./guardian-finance/get-guardian-fin
 export { getMyGuardianFinanceOverview } from "./guardian-finance/get-my-guardian-finance-overview";
 export { approveEvaluationSubmission } from "./evaluations/approve-evaluation-submission";
 export { reopenEvaluationSubmission } from "./evaluations/reopen-evaluation-submission";
+export {
+  adminApplyEvaluationPlanChange,
+  adminPreviewEvaluationPlanChange,
+} from "./evaluations/admin-evaluation-plan-changes";
 export { createPerformanceImprovementPlan } from "./evaluations/create-performance-improvement-plan";
 export { updatePerformanceImprovementPlan } from "./evaluations/update-performance-improvement-plan";
 export { dismissPerformanceImprovementSignal } from "./evaluations/dismiss-performance-improvement-signal";

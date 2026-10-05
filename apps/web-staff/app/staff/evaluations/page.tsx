@@ -1,99 +1,40 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ListFilter, RefreshCw, Search, Target } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { EvaluationPlanList } from "@/components/staff/evaluations/evaluation-plan-list";
+import { EvaluationTargetList } from "@/components/staff/evaluations/evaluation-target-list";
+import type { EvaluationPlanGroup, PersonTaskGroup } from "@/components/staff/evaluations/types";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import { Button } from "@/components/ui/button";
 import { useRequireAuth } from "@/hooks/use-require-auth";
-import {
-  buildStaffEvaluationWorkspace,
-  getEvaluationTaskStatusLabel,
-  StaffEvaluationTask,
-  StaffEvaluationWorkspace,
-} from "@/lib/staff-evaluations";
-import { AlertTriangle, CheckCircle2, Target } from "lucide-react";
-
-type PersonTaskGroup = {
-  key: string;
-  displayName: string;
-  email: string;
-  tasks: StaffEvaluationTask[];
-  total: number;
-  pending: number;
-  draft: number;
-  submitted: number;
-  approved: number;
-  performanceImprovementStatus?: "NEEDS_REVIEW" | "PLAN_OPEN";
-};
-
-type EvaluationPlanGroup = {
-  id: string;
-  title: string;
-  frameworkTitle: string;
-  tasks: StaffEvaluationTask[];
-  people: number;
-  total: number;
-  pending: number;
-  draft: number;
-  submitted: number;
-  approved: number;
-};
-
-function SummaryCard({ title, value }: { title: string; value: number }) {
-  return (
-    <div className="rounded-2xl border bg-card p-4 shadow-sm">
-      <div className="text-sm text-muted-foreground">{title}</div>
-      <div className="mt-2 text-2xl font-bold">{value}</div>
-    </div>
-  );
-}
+import { buildStaffEvaluationWorkspace, type StaffEvaluationTask, type StaffEvaluationWorkspace } from "@/lib/staff-evaluations";
 
 function getCycleOrder(task: StaffEvaluationTask) {
-  const match = task.cycleId.match(
-    /(?:week|evaluation|visit|diagnostic|period)-(\d+)/,
-  );
+  const match = task.cycleId.match(/(?:week|evaluation|visit|diagnostic|period)-(\d+)/);
   if (!match) return 9999;
-
   const value = Number(match[1]);
   return Number.isFinite(value) ? value : 9999;
 }
 
-function getActionLabel(status: StaffEvaluationTask["status"]) {
-  switch (status) {
-    case "PENDING":
-      return "فتح التقييم";
-    case "DRAFT":
-      return "متابعة المسودة";
-    case "SUBMITTED":
-      return "مراجعة / اعتماد";
-    case "APPROVED":
-      return "عرض التقييم";
-    default:
-      return "فتح";
-  }
-}
-
 function getTargetKey(task: StaffEvaluationTask) {
-  const extended = task as StaffEvaluationTask & {
-    targetPersonId?: string;
-  };
-
-  return extended.targetPersonId || task.targetEmail || task.targetDisplayName;
+  return task.targetPersonId || task.targetEmail || task.targetDisplayName;
 }
 
 function buildPersonGroups(tasks: StaffEvaluationTask[]) {
   const map = new Map<string, PersonTaskGroup>();
-
   for (const task of tasks) {
     const key = getTargetKey(task);
     const existing = map.get(key);
-
     if (!existing) {
       map.set(key, {
         key,
         displayName: task.targetDisplayName,
         email: task.targetEmail || "",
+        roleKey: task.targetRoleKey,
         tasks: [task],
         total: 1,
         pending: task.status === "PENDING" ? 1 : 0,
@@ -102,56 +43,40 @@ function buildPersonGroups(tasks: StaffEvaluationTask[]) {
         approved: task.status === "APPROVED" ? 1 : 0,
         performanceImprovementStatus: task.performanceImprovementStatus,
       });
-
       continue;
     }
-
     existing.tasks.push(task);
     existing.total += 1;
-
     if (task.status === "PENDING") existing.pending += 1;
     if (task.status === "DRAFT") existing.draft += 1;
     if (task.status === "SUBMITTED") existing.submitted += 1;
     if (task.status === "APPROVED") existing.approved += 1;
-    if (task.performanceImprovementStatus) {
-      existing.performanceImprovementStatus = task.performanceImprovementStatus;
-    }
+    if (task.targetRoleKey) existing.roleKey = task.targetRoleKey;
+    if (task.performanceImprovementStatus) existing.performanceImprovementStatus = task.performanceImprovementStatus;
   }
 
   return Array.from(map.values())
-    .map((group) => ({
-      ...group,
-      tasks: [...group.tasks].sort(
-        (a, b) => getCycleOrder(a) - getCycleOrder(b),
-      ),
-    }))
+    .map((group) => ({ ...group, tasks: [...group.tasks].sort((a, b) => getCycleOrder(a) - getCycleOrder(b)) }))
     .sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
 }
 
 function buildPlanGroups(tasks: StaffEvaluationTask[]) {
   const map = new Map<string, StaffEvaluationTask[]>();
-
   for (const task of tasks) {
     const current = map.get(task.planId);
-
-    if (current) {
-      current.push(task);
-    } else {
-      map.set(task.planId, [task]);
-    }
+    if (current) current.push(task);
+    else map.set(task.planId, [task]);
   }
 
   return Array.from(map.entries())
     .map(([planId, planTasks]): EvaluationPlanGroup => {
       const firstTask = planTasks[0];
-      const people = new Set(planTasks.map(getTargetKey)).size;
-
       return {
         id: planId,
         title: firstTask.planTitle,
         frameworkTitle: firstTask.frameworkTitle,
         tasks: planTasks,
-        people,
+        people: new Set(planTasks.map(getTargetKey)).size,
         total: planTasks.length,
         pending: planTasks.filter((task) => task.status === "PENDING").length,
         draft: planTasks.filter((task) => task.status === "DRAFT").length,
@@ -162,447 +87,181 @@ function buildPlanGroups(tasks: StaffEvaluationTask[]) {
     .sort((left, right) => left.title.localeCompare(right.title, "ar"));
 }
 
-function EvaluationStatusBadge({
-  status,
-}: {
-  status: StaffEvaluationTask["status"];
-}) {
-  const isApproved = status === "APPROVED";
-
-  return (
-    <span
-      className={[
-        "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs",
-        isApproved
-          ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
-          : "",
-      ].join(" ")}
-    >
-      {isApproved ? <CheckCircle2 className="size-4" /> : null}
-      {getEvaluationTaskStatusLabel(status)}
-    </span>
-  );
-}
-
-function PersonStatusSummary({ group }: { group: PersonTaskGroup }) {
-  return (
-    <div className="mt-4 grid grid-cols-2 gap-2 text-sm md:grid-cols-4">
-      <div className="rounded-xl border bg-background p-3">
-        <div className="text-muted-foreground">لم يبدأ</div>
-        <div className="mt-1 font-bold">{group.pending}</div>
-      </div>
-
-      <div className="rounded-xl border bg-background p-3">
-        <div className="text-muted-foreground">مسودة</div>
-        <div className="mt-1 font-bold">{group.draft}</div>
-      </div>
-
-      <div className="rounded-xl border bg-background p-3">
-        <div className="text-muted-foreground">مرسل</div>
-        <div className="mt-1 font-bold">{group.submitted}</div>
-      </div>
-
-      <div className="rounded-xl border bg-background p-3">
-        <div className="text-muted-foreground">معتمد</div>
-        <div className="mt-1 font-bold">{group.approved}</div>
-      </div>
-    </div>
-  );
+function Summary({ title, value }: { title: string; value: number }) {
+  return <div className="rounded-lg bg-muted/50 px-3 py-2">
+    <div className="text-xs text-muted-foreground">{title}</div>
+    <div className="mt-0.5 text-lg font-semibold tabular-nums">{value}</div>
+  </div>;
 }
 
 export default function StaffEvaluationsPage() {
   const { user, checkingAuth } = useRequireAuth();
   const { actor } = useStaffActor();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const visibleSchoolIds = useMemo(() => Array.from(new Set(
+    (actor?.schools ?? []).map((item) => item.id).filter(
+      (schoolId): schoolId is string => typeof schoolId === "string" && schoolId.trim().length > 0,
+    ),
+  )), [actor?.schools]);
 
-  const visibleSchoolIds = useMemo(() => {
-    return Array.from(
-      new Set(
-        (actor?.schools ?? [])
-          .map((item) => item.id)
-          .filter(
-            (schoolId): schoolId is string =>
-              typeof schoolId === "string" && schoolId.trim().length > 0,
-          ),
-      ),
-    );
-  }, [actor?.schools]);
-
-  const [workspace, setWorkspace] = useState<StaffEvaluationWorkspace | null>(
-    null,
-  );
+  const [workspace, setWorkspace] = useState<StaffEvaluationWorkspace | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const [activePlanId, setActivePlanId] = useState<string | null>(null);
-
   const [searchText, setSearchText] = useState("");
-  const [expandedPersonKey, setExpandedPersonKey] = useState<string | null>(
-    null,
-  );
+  const [expandedPersonKey, setExpandedPersonKey] = useState<string | null>(null);
+  const [mobilePlansOpen, setMobilePlansOpen] = useState(false);
 
+  const loadWorkspace = useCallback(async () => {
+    if (!user || !actor) return;
+    setLoading(true);
+    setError(null);
+    try {
+      setWorkspace(await buildStaffEvaluationWorkspace({
+        uid: user.uid,
+        orgId: actor.orgId,
+        schoolIds: visibleSchoolIds,
+      }));
+    } catch (loadError) {
+      console.error(loadError);
+      setError(loadError instanceof Error ? loadError.message : "تعذر تحميل تقييماتي");
+    } finally {
+      setLoading(false);
+    }
+  }, [actor, user, visibleSchoolIds]);
 
+  useEffect(() => {
+    if (checkingAuth) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    if (actor) void loadWorkspace();
+  }, [actor, checkingAuth, loadWorkspace, user]);
 
-const loadWorkspace = useCallback(async () => {
-  if (!user || !actor) return;
-
-  setLoading(true);
-  setError(null);
-
-  try {
-    const result = await buildStaffEvaluationWorkspace({
-      uid: user.uid,
-      orgId: actor.orgId,
-      schoolIds: visibleSchoolIds,
-    });
-
-    setWorkspace(result);
-  } catch (error) {
-    console.error(error);
-
-    setError(
-      error instanceof Error
-        ? error.message
-        : "تعذر تحميل تقييماتي",
-    );
-  } finally {
-    setLoading(false);
-  }
-}, [
-  actor,
-  user,
-  visibleSchoolIds,
-]);
-
-useEffect(() => {
-  if (checkingAuth) return;
-
-  if (!user) {
-    setLoading(false);
-    return;
-  }
-
-  if (!actor) {
-    return;
-  }
-
-  void loadWorkspace();
-}, [
-  actor,
-  checkingAuth,
-  user,
-  loadWorkspace,
-]);
-
-
-
-
-
-
-
-  const tasks = workspace?.tasks ?? [];
-
-  const planGroups = useMemo(() => buildPlanGroups(tasks), [tasks]);
-
+  const planGroups = useMemo(() => buildPlanGroups(workspace?.tasks ?? []), [workspace]);
+  const requestedPlanId = searchParams.get("planId");
   const activePlan = useMemo(
-    () => planGroups.find((plan) => plan.id === activePlanId) ?? planGroups[0],
-    [planGroups, activePlanId],
+    () => planGroups.find((plan) => plan.id === requestedPlanId) ?? planGroups[0],
+    [planGroups, requestedPlanId],
   );
+  const activePlanId = activePlan?.id ?? null;
+
+  useEffect(() => {
+    if (!activePlan || requestedPlanId === activePlan.id) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("planId", activePlan.id);
+    router.replace(`/staff/evaluations?${params.toString()}`);
+  }, [activePlan, requestedPlanId, router, searchParams]);
+
+  const selectPlan = useCallback((planId: string) => {
+    if (planId !== activePlanId) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("planId", planId);
+      router.push(`/staff/evaluations?${params.toString()}`);
+    }
+    setMobilePlansOpen(false);
+  }, [activePlanId, router, searchParams]);
 
   const activePlanTasks = activePlan?.tasks ?? [];
-
-  const summary = useMemo(() => {
-    const groups = buildPersonGroups(activePlanTasks);
-
-    return {
-      people: groups.length,
-      total: activePlanTasks.length,
-      pending: activePlanTasks.filter((task) => task.status === "PENDING").length,
-      draft: activePlanTasks.filter((task) => task.status === "DRAFT").length,
-      submitted: activePlanTasks.filter((task) => task.status === "SUBMITTED").length,
-      approved: activePlanTasks.filter((task) => task.status === "APPROVED").length,
-    };
-  }, [activePlanTasks]);
-
+  const summary = useMemo(() => ({
+    people: buildPersonGroups(activePlanTasks).length,
+    total: activePlanTasks.length,
+    pending: activePlanTasks.filter((task) => task.status === "PENDING").length,
+    draft: activePlanTasks.filter((task) => task.status === "DRAFT").length,
+    submitted: activePlanTasks.filter((task) => task.status === "SUBMITTED").length,
+    approved: activePlanTasks.filter((task) => task.status === "APPROVED").length,
+  }), [activePlanTasks]);
   const personGroups = useMemo(() => {
-    const search = searchText.trim().toLowerCase();
+    const search = searchText.trim().toLocaleLowerCase();
     const groups = buildPersonGroups(activePlanTasks);
-
     if (!search) return groups;
-
-    return groups.filter((group) => {
-      const haystack = [group.displayName, group.email]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      return haystack.includes(search);
-    });
+    return groups.filter((group) => [group.displayName, group.email]
+      .filter(Boolean).join(" ").toLocaleLowerCase().includes(search));
   }, [activePlanTasks, searchText]);
 
+  useEffect(() => { setExpandedPersonKey(null); }, [activePlanId]);
   useEffect(() => {
-    if (
-      planGroups.length > 0 &&
-      !planGroups.some((plan) => plan.id === activePlanId)
-    ) {
-      setActivePlanId(planGroups[0].id);
-    }
-  }, [planGroups, activePlanId]);
-
-  useEffect(() => {
-    setExpandedPersonKey(null);
-    setSearchText("");
-  }, [activePlanId]);
-
-  useEffect(() => {
-    if (!expandedPersonKey) return;
-
-    const stillExists = personGroups.some(
-      (group) => group.key === expandedPersonKey,
-    );
-
-    if (!stillExists) {
+    if (expandedPersonKey && !personGroups.some((group) => group.key === expandedPersonKey)) {
       setExpandedPersonKey(null);
     }
-  }, [personGroups, expandedPersonKey]);
+  }, [expandedPersonKey, personGroups]);
 
   if (checkingAuth || loading) {
-    return (
-      <main className="mx-auto max-w-7xl p-6">
-        <div className="rounded-2xl border bg-card p-6">
-          جاري تحميل تقييم الموظفين...
-        </div>
-      </main>
-    );
+    return <main dir="rtl" className="mx-auto w-full max-w-7xl space-y-4 p-4 md:p-6">
+      <div className="h-20 animate-pulse rounded-2xl bg-muted" />
+      <div className="grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
+        <div className="h-96 animate-pulse rounded-2xl bg-muted" />
+        <div className="h-96 animate-pulse rounded-2xl bg-muted" />
+      </div>
+    </main>;
   }
 
   if (error) {
-    return (
-      <main className="mx-auto max-w-7xl p-6">
-        <div className="rounded-2xl border border-destructive/40 bg-card p-6">
-          <h1 className="text-xl font-bold">تعذر تحميل تقييماتي</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{error}</p>
-          <Button className="mt-4" onClick={() => void loadWorkspace()}>
-            إعادة المحاولة
-          </Button>
-        </div>
-      </main>
-    );
+    return <main dir="rtl" className="mx-auto w-full max-w-7xl p-4 md:p-6">
+      <div className="rounded-2xl border border-destructive/40 bg-card p-6">
+        <h1 className="text-xl font-bold">تعذر تحميل تقييماتي</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+        <Button className="mt-4" onClick={() => void loadWorkspace()}>إعادة المحاولة</Button>
+      </div>
+    </main>;
   }
 
+  const hasSearch = Boolean(searchText.trim());
   return (
-    <main className="mx-auto max-w-7xl space-y-6 p-6">
-      <section className="rounded-3xl border bg-card p-6 shadow-sm">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="space-y-2">
-            <h1 className="text-2xl font-bold">مساحة التقييمات</h1>
-            <p className="text-sm text-muted-foreground">
-              اختر خطة التقييم، ثم ابحث عن الشخص المطلوب وافتح دورته الحالية.
-            </p>
-          </div>
+    <main dir="rtl" className="mx-auto w-full max-w-7xl space-y-4 p-4 md:p-6">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">مساحة التقييمات</h1>
+          <p className="mt-1 text-sm text-muted-foreground">اختر الخطة ثم افتح تقييم الموظف المطلوب مباشرة.</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm" onClick={() => void loadWorkspace()}><RefreshCw className="size-4" /> تحديث</Button>
+          <Button asChild variant="outline" size="sm"><Link href="/staff/performance-improvement"><Target className="size-4" /> خطط تحسين الأداء</Link></Button>
+        </div>
+      </header>
 
-          <Button variant="outline" onClick={() => void loadWorkspace()}>
-            تحديث
+      <section className="rounded-2xl border bg-card p-3 shadow-sm">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="relative block min-w-0 flex-1">
+            <Search className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <input value={searchText} onChange={(event) => setSearchText(event.target.value)} className="h-10 w-full rounded-xl border bg-background pr-9 pl-3 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50" placeholder="ابحث باسم الموظف أو بريده الإلكتروني..." />
+          </label>
+          {hasSearch ? <Button variant="ghost" size="sm" onClick={() => setSearchText("")}>مسح البحث</Button> : null}
+          <Button variant="outline" size="sm" className="lg:hidden" aria-expanded={mobilePlansOpen} onClick={() => setMobilePlansOpen((open) => !open)}>
+
+            <ListFilter className="size-4" /> <span className="max-w-48 text-right leading-6 whitespace-normal break-words line-clamp-4">{activePlan?.title ?? "اختيار خطة"}</span>
           </Button>
-          <Button asChild variant="outline">
-            <Link href="/staff/performance-improvement">
-              <Target className="size-4" /> خطط تحسين الأداء
-            </Link>
-          </Button>
         </div>
+        {mobilePlansOpen ? <div className="mt-3 rounded-xl border bg-background p-2 lg:hidden">
+          <div className="mb-2 flex items-center justify-between px-2 text-sm font-semibold"><span>خطط التقييم</span><span className="text-xs font-normal text-muted-foreground">{planGroups.length}</span></div>
+          {planGroups.length === 0 ? <p className="px-2 py-4 text-sm text-muted-foreground">لا توجد خطط تقييم مسندة إليك حالياً.</p> : <div className="max-h-72 overflow-y-auto"><EvaluationPlanList plans={planGroups} selectedPlanId={activePlanId} onSelect={selectPlan} /></div>}
+        </div> : null}
       </section>
 
-      <section className="rounded-3xl border bg-card p-5 shadow-sm">
-        <div className="mb-4">
-          <h2 className="text-lg font-bold">خطط التقييم المسندة إليك</h2>
-          <p className="text-sm text-muted-foreground">
-            تظهر هذه الكروت تلقائيًا حسب التقييمات المسندة لك.
-          </p>
-        </div>
+      {planGroups.length === 0 ? <section className="rounded-2xl border border-dashed bg-card p-8 text-center text-sm text-muted-foreground">لا توجد خطط تقييم مسندة إليك حالياً.</section> : (
+        <section className="grid items-start gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
+          <aside className="sticky top-4 hidden max-h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border bg-card shadow-sm lg:block">
+            <div className="flex items-center justify-between border-b px-4 py-3"><h2 className="font-semibold">خطط التقييم</h2><span className="text-xs tabular-nums text-muted-foreground">{planGroups.length}</span></div>
+            <div className="max-h-[calc(100vh-5.75rem)] overflow-y-auto p-2"><EvaluationPlanList plans={planGroups} selectedPlanId={activePlanId} onSelect={selectPlan} /></div>
+          </aside>
 
-        {planGroups.length === 0 ? (
-          <div className="rounded-2xl border border-dashed p-5 text-sm text-muted-foreground">
-            لا توجد خطط تقييم مسندة إليك حاليًا.
-          </div>
-        ) : (
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {planGroups.map((plan) => {
-              const isActive = activePlan?.id === plan.id;
-              const remaining = plan.pending + plan.draft;
-
-              return (
-                <button
-                  key={plan.id}
-                  type="button"
-                  onClick={() => setActivePlanId(plan.id)}
-                  className={[
-                    "rounded-2xl border p-5 text-right transition",
-                    isActive
-                      ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                      : "bg-background hover:border-primary/50 hover:bg-muted/40",
-                  ].join(" ")}
-                >
-                  <div className="font-bold">{plan.title}</div>
-                  {plan.frameworkTitle !== plan.title ? (
-                    <div
-                      className={[
-                        "mt-1 text-xs",
-                        isActive
-                          ? "text-primary-foreground/80"
-                          : "text-muted-foreground",
-                      ].join(" ")}
-                    >
-                      {plan.frameworkTitle}
-                    </div>
-                  ) : null}
-
-                  <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-full border border-current/20 px-2.5 py-1">
-                      {plan.people} أشخاص
-                    </span>
-                    <span className="rounded-full border border-current/20 px-2.5 py-1">
-                      المتبقي {remaining}
-                    </span>
-                    <span className="rounded-full border border-current/20 px-2.5 py-1">
-                      مرسل {plan.submitted}
-                    </span>
-                    <span className="rounded-full border border-current/20 px-2.5 py-1">
-                      معتمد {plan.approved}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-6">
-        <SummaryCard title="الأشخاص" value={summary.people} />
-        <SummaryCard title="الإجمالي" value={summary.total} />
-        <SummaryCard title="لم يبدأ" value={summary.pending} />
-        <SummaryCard title="مسودات" value={summary.draft} />
-        <SummaryCard title="مرسل" value={summary.submitted} />
-        <SummaryCard title="معتمد" value={summary.approved} />
-      </section>
-
-      <section className="rounded-3xl border bg-card p-6 shadow-sm">
-        <div className="mb-4">
-          <h2 className="text-lg font-bold">
-            {activePlan?.title ?? "تفاصيل خطة التقييم"}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            {activePlan?.frameworkTitle ?? "اختر إحدى الخطط لعرض الأشخاص والدورات."}
-          </p>
-        </div>
-
-        <input
-          value={searchText}
-          onChange={(event) => setSearchText(event.target.value)}
-          className="h-11 w-full rounded-xl border bg-background px-3"
-          placeholder="ابحث بالاسم أو البريد..."
-        />
-      </section>
-
-      <section className="space-y-4">
-        {personGroups.length === 0 ? (
-          <div className="rounded-3xl border border-dashed bg-card p-6 text-sm text-muted-foreground">
-            لا توجد تقييمات في هذا القسم أو لا توجد نتائج مطابقة للبحث الحالي.
-          </div>
-        ) : (
-          personGroups.map((group) => {
-            const isExpanded = expandedPersonKey === group.key;
-
-            return (
-              <div
-                key={group.key}
-                className="rounded-3xl border bg-card p-6 shadow-sm"
-              >
-                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold">{group.displayName}</h2>
-
-                    {group.performanceImprovementStatus ? (
-                      <Link
-                        href="/staff/performance-improvement"
-                        className="mt-2 inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-700 dark:text-amber-300"
-                      >
-                        <AlertTriangle className="size-3.5" />
-                        {group.performanceImprovementStatus === "PLAN_OPEN"
-                          ? "لديه خطة تحسين نشطة"
-                          : "يحتاج مراجعة أداء"}
-                      </Link>
-                    ) : null}
-
-                    {group.email ? (
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {group.email}
-                      </p>
-                    ) : null}
-
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      عدد التقييمات المسندة: {group.total}
-                    </p>
-                  </div>
-
-                  <Button
-                    variant={isExpanded ? "secondary" : "outline"}
-                    onClick={() =>
-                      setExpandedPersonKey(isExpanded ? null : group.key)
-                    }
-                  >
-                    {isExpanded ? "إخفاء التقييمات" : "عرض التقييمات"}
-                  </Button>
-                </div>
-
-                <PersonStatusSummary group={group} />
-
-                {isExpanded ? (
-                  <div className="mt-5 overflow-hidden rounded-2xl border">
-                    <div className="hidden grid-cols-[1fr_1.4fr_120px_140px] gap-3 border-b bg-muted/40 px-4 py-3 text-sm font-medium md:grid">
-                      <div>الدورة</div>
-                      <div>نوع التقييم</div>
-                      <div>الحالة</div>
-                      <div className="text-center">الإجراء</div>
-                    </div>
-
-                    <div className="divide-y">
-                      {group.tasks.map((task) => (
-                        <div
-                          key={task.id}
-                          className="grid gap-3 px-4 py-4 md:grid-cols-[1fr_1.4fr_120px_140px] md:items-center"
-                        >
-                          <div>
-                            <div className="font-medium">{task.cycleTitle}</div>
-                            <div className="text-xs text-muted-foreground">
-                              الوزن: {task.weight}%
-                            </div>
-                          </div>
-
-                          <div className="text-sm text-muted-foreground">
-                            {task.frameworkTitle}
-                          </div>
-
-                          <div>
-                            <EvaluationStatusBadge status={task.status} />
-                          </div>
-
-                          <div className="md:text-center">
-                            <Button asChild size="sm">
-                              <Link href={task.actionHref}>
-                                {getActionLabel(task.status)}
-                              </Link>
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
+          <section className="min-w-0 rounded-2xl border bg-card shadow-sm">
+            <div className="border-b p-4 md:p-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0"><h2 className="text-xl font-bold leading-6 whitespace-normal break-words line-clamp-4">{activePlan?.title}</h2>{activePlan?.frameworkTitle && activePlan.frameworkTitle !== activePlan.title ? <p className="mt-1 truncate text-sm text-muted-foreground">{activePlan.frameworkTitle}</p> : null}</div>
+                <span className="shrink-0 text-sm text-muted-foreground">{summary.people} موظفين</span>
               </div>
-            );
-          })
-        )}
-      </section>
+              <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
+                <Summary title="الموظفون" value={summary.people} /><Summary title="الإجمالي" value={summary.total} /><Summary title="لم يبدأ" value={summary.pending} /><Summary title="مسودة" value={summary.draft} /><Summary title="مرسل" value={summary.submitted} /><Summary title="معتمد" value={summary.approved} />
+              </div>
+            </div>
+            <div className="p-2 md:p-3">
+              {personGroups.length === 0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">{hasSearch ? "لا توجد نتائج مطابقة للبحث الحالي." : "لا توجد أهداف ضمن خطة التقييم هذه."}</div> : <EvaluationTargetList groups={personGroups} expandedPersonKey={expandedPersonKey} onExpandedPersonChange={setExpandedPersonKey} />}
+            </div>
+          </section>
+        </section>
+      )}
     </main>
   );
 }

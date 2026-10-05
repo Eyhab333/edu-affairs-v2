@@ -1,0 +1,1134 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-a-s-alfrhood",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-n-alhamiyn",
+    "supervisorEmail": "",
+    "schoolArg": "kg-04",
+    "planIdArg": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation"
+  },
+  "teacher": {
+    "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
+    "personId": "p-a-s-alfrhood",
+    "email": "a-s-alfrhood@qz.org.sa",
+    "displayName": "الهنوف سليمان عبدالله الفرهود",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "uVQmM9JaIWWvMzLuaWZs4VDB7zD3",
+    "personId": "p-n-alhamiyn",
+    "email": "n.alhamiyn@qz.org.sa",
+    "displayName": "نورة علي عبدالعزيز الحمين",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "kg-04",
+    "schoolTitle": "روضة واحة الرياحين الرابعة"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 4,
+    "teacherSchools": [
+      "kg-04"
+    ],
+    "supervisorPatternAssignments": 255,
+    "supervisorPatternSchools": [
+      "kg-04"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 1,
+    "plans": [
+      {
+        "id": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+        "title": "تقييم مديرة الروضة لمعلمات الصف - المتابعة الأسبوعية - روضة واحة الرياحين الرابعة - الفصل الأول",
+        "frameworkId": "kg-principal-class-teacher-weekly-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 1,
+    "createOrUpdateEvaluatorAssignments": 19,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 20
+  },
+  "planReports": [
+    {
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "title": "تقييم مديرة الروضة لمعلمات الصف - المتابعة الأسبوعية - روضة واحة الرياحين الرابعة - الفصل الأول",
+      "frameworkId": "kg-principal-class-teacher-weekly-evaluation-v1",
+      "cyclesCount": 19,
+      "newTargetId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-target-p-a-s-alfrhood",
+      "cycleReports": [
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01",
+          "cycleTitle": "الأسبوع الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02",
+          "cycleTitle": "الأسبوع الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03",
+          "cycleTitle": "الأسبوع الثالث",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04",
+          "cycleTitle": "الأسبوع الرابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05",
+          "cycleTitle": "الأسبوع الخامس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06",
+          "cycleTitle": "الأسبوع السادس",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07",
+          "cycleTitle": "الأسبوع السابع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08",
+          "cycleTitle": "الأسبوع الثامن",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09",
+          "cycleTitle": "الأسبوع التاسع",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10",
+          "cycleTitle": "الأسبوع العاشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11",
+          "cycleTitle": "الأسبوع الحادي عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12",
+          "cycleTitle": "الأسبوع الثاني عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13",
+          "cycleTitle": "الأسبوع الثالث عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14",
+          "cycleTitle": "الأسبوع الرابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15",
+          "cycleTitle": "الأسبوع الخامس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16",
+          "cycleTitle": "الأسبوع السادس عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17",
+          "cycleTitle": "الأسبوع السابع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18",
+          "cycleTitle": "الأسبوع الثامن عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19",
+          "cycleTitle": "الأسبوع التاسع عشر",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19-p-a-s-alfrhood-p-n-alhamiyn",
+              "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19",
+              "evaluatorPersonId": "p-n-alhamiyn",
+              "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+              "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+              "patternId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19-p-a-alttayar-p-n-alhamiyn",
+              "patternPlanId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+              "patternCycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19",
+              "patternTargetPersonId": "p-a-alttayar",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation__kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation__kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-kg-04-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan__kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan__kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-plan-kg-04-ay-1448-term-1-kg-vp-supervisory-plan-visit-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit__kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit__kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-kg-vp-supervisory-visit-kg-04-ay-1448-term-1-kg-vp-supervisory-visit-visit-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-04-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09-p-a-s-alfrhood-p-h-alshaya",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-alshaya",
+          "evaluatorEmail": "h.alshaya@qz.org.sa",
+          "evaluatorDisplayName": "حصه عبدالرزاق احمد الشايع",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-01-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-02-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-03-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-04-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-05-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-06-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-07-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-08-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-09-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-10-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-11-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-12-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-13-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-14-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-15-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-16-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-17-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-18-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation__kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19__p-a-s-alfrhood",
+      "planId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19",
+      "targetPersonId": "p-a-s-alfrhood",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-kg-04-ay-1448-term-1-class-teacher-weekly-evaluation-week-19-p-a-s-alfrhood-p-n-alhamiyn",
+          "source": "NEW",
+          "evaluatorPersonId": "p-n-alhamiyn",
+          "evaluatorEmail": "n.alhamiyn@qz.org.sa",
+          "evaluatorDisplayName": "نورة علي عبدالعزيز الحمين",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}
