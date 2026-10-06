@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   BarChart3,
   Building2,
   CheckCircle2,
+  ChevronDown,
+  ChevronUp,
   Clock3,
   FilterX,
   Loader2,
@@ -42,6 +44,10 @@ type Filters = {
   evaluationType: string;
   status: EvaluationReportStatusFilter | "";
 };
+
+type PersonDetail = Awaited<
+  ReturnType<typeof loadEvaluationReportPersonDetail>
+>;
 
 const statusLabels: Record<EvaluationReportStatusFilter, string> = {
   PENDING: "لم يبدأ / معلّق",
@@ -110,10 +116,12 @@ function FiltersSkeleton() {
 
 function EmployeeTable({
   employees,
-  onOpen,
+  expandedEmployeeId,
+  onToggle,
 }: {
   employees: EvaluationReportEmployee[];
-  onOpen: (personId: string) => void;
+  expandedEmployeeId: string;
+  onToggle: (personId: string) => void;
 }) {
   return (
     <div className="overflow-x-auto rounded-2xl border bg-card">
@@ -136,8 +144,18 @@ function EmployeeTable({
           {employees.map((employee) => (
             <tr key={employee.targetPersonId} className="border-b last:border-0 hover:bg-muted/30">
               <td className="px-4 py-3">
-                <button type="button" className="text-right font-semibold hover:text-primary hover:underline" onClick={() => onOpen(employee.targetPersonId)}>
+                <button
+                  type="button"
+                  aria-expanded={expandedEmployeeId === employee.targetPersonId}
+                  className="inline-flex items-center gap-1.5 text-right font-semibold hover:text-primary hover:underline"
+                  onClick={() => onToggle(employee.targetPersonId)}
+                >
                   {employee.displayName}
+                  {expandedEmployeeId === employee.targetPersonId ? (
+                    <ChevronUp className="size-4" />
+                  ) : (
+                    <ChevronDown className="size-4" />
+                  )}
                 </button>
                 {employee.email ? <p className="mt-1 text-xs font-normal text-muted-foreground">{employee.email}</p> : null}
               </td>
@@ -172,9 +190,14 @@ export default function EvaluationReportWorkspace() {
   const [error, setError] = useState("");
   const [selectedSchoolId, setSelectedSchoolId] = useState("");
   const [detailOpen, setDetailOpen] = useState(false);
+  const [detailTargetPersonId, setDetailTargetPersonId] = useState("");
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState("");
-  const [detail, setDetail] = useState<Awaited<ReturnType<typeof loadEvaluationReportPersonDetail>> | null>(null);
+  const [detail, setDetail] = useState<PersonDetail | null>(null);
+  const [detailByPersonId, setDetailByPersonId] = useState<
+    Map<string, PersonDetail>
+  >(new Map());
+  const detailRequestId = useRef(0);
 
   const canAccessReports = hasOrgWideAccess(actor.roles);
   const fallbackSchools = actor.schools.map((school) => ({ id: school.id, label: school.name }));
@@ -192,6 +215,11 @@ export default function EvaluationReportWorkspace() {
     setFilters((current) => ({ ...current, [key]: value }));
     setReport(null);
     setSelectedSchoolId("");
+    setDetailOpen(false);
+    setDetailTargetPersonId("");
+    setDetail(null);
+    setDetailByPersonId(new Map());
+    detailRequestId.current += 1;
     setError("");
   }
 
@@ -200,6 +228,11 @@ export default function EvaluationReportWorkspace() {
     setPersonSearch("");
     setReport(null);
     setSelectedSchoolId("");
+    setDetailOpen(false);
+    setDetailTargetPersonId("");
+    setDetail(null);
+    setDetailByPersonId(new Map());
+    detailRequestId.current += 1;
     setError("");
   }
 
@@ -207,6 +240,11 @@ export default function EvaluationReportWorkspace() {
     setLoading(true);
     setError("");
     setSelectedSchoolId("");
+    setDetailOpen(false);
+    setDetailTargetPersonId("");
+    setDetail(null);
+    setDetailByPersonId(new Map());
+    detailRequestId.current += 1;
     try {
       const nextReport = await loadEvaluationReportOverview(toRequest(actor.orgId, filters));
       setFilterOptions(nextReport.filters);
@@ -219,20 +257,52 @@ export default function EvaluationReportWorkspace() {
     }
   }
 
-  async function openPerson(targetPersonId: string) {
+  function closePersonDetail() {
+    detailRequestId.current += 1;
+    setDetailOpen(false);
+  }
+
+  async function togglePersonDetail(targetPersonId: string) {
+    if (detailOpen && detailTargetPersonId === targetPersonId) {
+      closePersonDetail();
+      return;
+    }
+
     setDetailOpen(true);
-    setDetail(null);
+    setDetailTargetPersonId(targetPersonId);
     setDetailError("");
+    const requestId = detailRequestId.current + 1;
+    detailRequestId.current = requestId;
+    const cachedDetail = detailByPersonId.get(targetPersonId);
+
+    if (cachedDetail) {
+      setDetail(cachedDetail);
+      setDetailLoading(false);
+      return;
+    }
+
+    setDetail(null);
     setDetailLoading(true);
     try {
-      setDetail(await loadEvaluationReportPersonDetail({
+      const nextDetail = await loadEvaluationReportPersonDetail({
         ...toRequest(actor.orgId, filters),
         targetPersonId,
-      }));
+      });
+      if (detailRequestId.current !== requestId) return;
+
+      setDetail(nextDetail);
+      setDetailByPersonId((current) => {
+        const next = new Map(current);
+        next.set(targetPersonId, nextDetail);
+        return next;
+      });
     } catch (cause) {
+      if (detailRequestId.current !== requestId) return;
       setDetailError(getErrorMessage(cause));
     } finally {
-      setDetailLoading(false);
+      if (detailRequestId.current === requestId) {
+        setDetailLoading(false);
+      }
     }
   }
 
@@ -371,7 +441,13 @@ export default function EvaluationReportWorkspace() {
             <p className="text-sm text-muted-foreground">لا تُفسَّر الدورات بلا إرسال على أنها درجات صفرية.</p>
           </section>
 
-          {view === "PEOPLE" ? <EmployeeTable employees={report.employees} onOpen={(personId) => void openPerson(personId)} /> : null}
+          {view === "PEOPLE" ? (
+            <EmployeeTable
+              employees={report.employees}
+              expandedEmployeeId={detailOpen ? detailTargetPersonId : ""}
+              onToggle={(personId) => void togglePersonDetail(personId)}
+            />
+          ) : null}
 
           {view === "SCHOOLS" ? (
             <section className="overflow-x-auto rounded-2xl border bg-card">
@@ -388,13 +464,23 @@ export default function EvaluationReportWorkspace() {
           {selectedSchoolId ? (
             <section className="space-y-3 rounded-3xl border bg-card p-4 sm:p-5">
               <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-bold">تفصيل موظفي {report.schools.find((school) => school.schoolId === selectedSchoolId)?.schoolName || selectedSchoolId}</h2><p className="mt-1 text-sm text-muted-foreground">استنادًا إلى نتيجة التقرير المحمّلة نفسها.</p></div><Button type="button" size="sm" variant="ghost" onClick={() => setSelectedSchoolId("")}>إغلاق</Button></div>
-              <EmployeeTable employees={selectedSchoolEmployees} onOpen={(personId) => void openPerson(personId)} />
+              <EmployeeTable
+                employees={selectedSchoolEmployees}
+                expandedEmployeeId={detailOpen ? detailTargetPersonId : ""}
+                onToggle={(personId) => void togglePersonDetail(personId)}
+              />
             </section>
           ) : null}
         </>
       ) : null}
 
-      <EvaluationPersonDetailDrawer open={detailOpen} detail={detail} loading={detailLoading} error={detailError} onClose={() => setDetailOpen(false)} />
+      <EvaluationPersonDetailDrawer
+        open={detailOpen}
+        detail={detail}
+        loading={detailLoading}
+        error={detailError}
+        onClose={closePersonDetail}
+      />
     </main>
   );
 }
