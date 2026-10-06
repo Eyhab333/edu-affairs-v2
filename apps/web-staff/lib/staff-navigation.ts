@@ -70,6 +70,13 @@ export const staffNavItems: StaffNavItem[] = [
     reports: true,
   },
   {
+    href: "/staff/documents/manage",
+    label: "إدارة المستندات",
+    icon: FileText,
+    pdfDocuments: "MANAGE",
+  },
+
+  {
     href: "/staff/classes",
     label: "الفصول",
     icon: School,
@@ -172,13 +179,6 @@ export const staffNavItems: StaffNavItem[] = [
     label: "متابعة أعمال الإداريين",
     icon: UsersRound,
     adminWork: true,
-  },
-
-  {
-    href: "/staff/documents/manage",
-    label: "إدارة المستندات",
-    icon: FileText,
-    pdfDocuments: "MANAGE",
   },
 
   {

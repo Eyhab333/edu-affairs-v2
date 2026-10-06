@@ -1,38 +1,24 @@
 {
-  "generatedAt": "2026-08-28T20:35:49.245Z",
+  "generatedAt": "2026-10-05T13:53:44.740Z",
   "orgId": "takween",
   "summary": {
-    "requested": 2,
-    "created": 2,
+    "requested": 1,
+    "created": 1,
     "failed": 0
   },
   "results": [
     {
-      "uid": "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
-      "personId": "p-a-s-alfrhood",
-      "email": "a-s-alfrhood@qz.org.sa",
-      "displayName": "الهنوف سليمان عبدالله الفرهود",
-      "schoolId": "kg-04",
+      "uid": "ohjqaZSjuXN6WZWsHFECP4CHtHj2",
+      "personId": "p-d-a-athunian",
+      "email": "d-a-athunian@qz.org.sa",
+      "displayName": "ديم عبدالله عبدالكريم الثنيان",
+      "schoolId": "kg-01",
       "roleKey": "KG_TEACHER",
       "paths": [
-        "users/rvnb1rhuAIbB1kuBtNmm1CpHfVQ2",
-        "users/rvnb1rhuAIbB1kuBtNmm1CpHfVQ2/orgMemberships/takween",
-        "orgs/takween/people/p-a-s-alfrhood",
-        "orgs/takween/memberships/rvnb1rhuAIbB1kuBtNmm1CpHfVQ2"
-      ]
-    },
-    {
-      "uid": "FxemvSJNxhSrIazMvkEn1E4HkUs1",
-      "personId": "p-r-a-atyar",
-      "email": "r-a-atyar@qz.org.sa",
-      "displayName": "رهام عبدالله محمد الطيار",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
-      "paths": [
-        "users/FxemvSJNxhSrIazMvkEn1E4HkUs1",
-        "users/FxemvSJNxhSrIazMvkEn1E4HkUs1/orgMemberships/takween",
-        "orgs/takween/people/p-r-a-atyar",
-        "orgs/takween/memberships/FxemvSJNxhSrIazMvkEn1E4HkUs1"
+        "users/ohjqaZSjuXN6WZWsHFECP4CHtHj2",
+        "users/ohjqaZSjuXN6WZWsHFECP4CHtHj2/orgMemberships/takween",
+        "orgs/takween/people/p-d-a-athunian",
+        "orgs/takween/memberships/ohjqaZSjuXN6WZWsHFECP4CHtHj2"
       ]
     }
   ],

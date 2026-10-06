@@ -27,6 +27,7 @@ import {
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
 import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
+import { getEffectiveMeasurementRows } from "@/lib/measurement-compensation";
 
 type VisibleClass = {
   id: string;
@@ -503,11 +504,11 @@ async function loadSourceTemplate(params: {
   }
 }
 
-async function findExistingCompensationBatch(params: {
+async function loadCompensationBatches(params: {
   orgId: string;
   schoolId: string;
   originalBatchId: string;
-}): Promise<string | null> {
+}): Promise<MeasurementBatchDoc[]> {
   const batchesRef = collection(
     db,
     "orgs",
@@ -523,26 +524,50 @@ async function findExistingCompensationBatch(params: {
 
   const compensationSnap = await getDocs(compensationQuery);
 
-  const existing = compensationSnap.docs
-    .map((item) => {
-      const data = item.data() as {
-        isCompensationBatch?: boolean;
-        status?: string;
-        createdAt?: number;
-      };
+  return compensationSnap.docs
+    .map((item) => ({
+      id: item.id,
+      ...(item.data() as Omit<MeasurementBatchDoc, "id">),
+    }))
+    .filter((item) => item.isCompensationBatch === true)
+    .filter((item) => item.originalBatchId === params.originalBatchId);
+}
 
-      return {
-        id: item.id,
-        isCompensationBatch: data.isCompensationBatch === true,
-        status: data.status || "",
-        createdAt: data.createdAt || 0,
-      };
-    })
-    .filter((item) => item.isCompensationBatch)
+function getExistingCompensationBatchId(batches: MeasurementBatchDoc[]) {
+  return batches
     .filter((item) => item.status !== "CANCELLED")
-    .sort((a, b) => b.createdAt - a.createdAt)[0];
+    .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))[0]?.id ?? null;
+}
 
-  return existing?.id || null;
+async function findExistingCompensationBatch(params: {
+  orgId: string;
+  schoolId: string;
+  originalBatchId: string;
+}): Promise<string | null> {
+  return getExistingCompensationBatchId(await loadCompensationBatches(params));
+}
+
+function calculateBatchClassAverageSummary(params: {
+  rows: StudentMeasurementBatchStudentRow[];
+  sourceTemplate: SourceTemplateDoc | null;
+}) {
+  const savedMaxScore = params.rows
+    .map((row) => row.maxScore)
+    .find(
+      (value): value is number =>
+        typeof value === "number" && Number.isFinite(value),
+    );
+  const templateMaxScore = params.sourceTemplate?.maxScore;
+
+  return calculateMeasurementClassSummary({
+    maxScore:
+      savedMaxScore ??
+      (typeof templateMaxScore === "number" &&
+      Number.isFinite(templateMaxScore)
+        ? templateMaxScore
+        : undefined),
+    rows: params.rows,
+  });
 }
 
 export default function StaffMeasurementBatchPage() {
@@ -563,6 +588,9 @@ export default function StaffMeasurementBatchPage() {
     useState(false);
   const [existingCompensationBatchId, setExistingCompensationBatchId] =
     useState<string | null>(null);
+  const [compensationBatches, setCompensationBatches] = useState<
+    MeasurementBatchDoc[]
+  >([]);
 
   const visibleClasses = useMemo(() => {
     return currentActor?.visibleClasses ?? [];
@@ -609,6 +637,7 @@ export default function StaffMeasurementBatchPage() {
     setStatus("loading");
     setError(null);
     setExistingCompensationBatchId(null);
+    setCompensationBatches([]);
     setSourceTemplate(null);
 
     try {
@@ -654,13 +683,16 @@ export default function StaffMeasurementBatchPage() {
       if (loadedBatch.isCompensationBatch === true) {
         setExistingCompensationBatchId(loadedBatch.id);
       } else {
-        const existingId = await findExistingCompensationBatch({
+        const loadedCompensationBatches = await loadCompensationBatches({
           orgId: currentActor.orgId,
           schoolId: loadedBatch.schoolId,
           originalBatchId: loadedBatch.id,
         });
 
-        setExistingCompensationBatchId(existingId);
+        setCompensationBatches(loadedCompensationBatches);
+        setExistingCompensationBatchId(
+          getExistingCompensationBatchId(loadedCompensationBatches),
+        );
       }
 
       setStatus("success");
@@ -669,6 +701,7 @@ export default function StaffMeasurementBatchPage() {
       setRows([]);
       setSourceTemplate(null);
       setExistingCompensationBatchId(null);
+      setCompensationBatches([]);
       setError(getErrorMessage(error));
       setStatus("error");
     }
@@ -714,24 +747,43 @@ export default function StaffMeasurementBatchPage() {
   }, [rows, sourceTemplate]);
 
   const classAverageSummary = useMemo(() => {
-    const savedMaxScore = rows
-      .map((row) => row.maxScore)
-      .find(
-        (value): value is number =>
-          typeof value === "number" && Number.isFinite(value),
-      );
-    const templateMaxScore = sourceTemplate?.maxScore;
-
-    return calculateMeasurementClassSummary({
-      maxScore:
-        savedMaxScore ??
-        (typeof templateMaxScore === "number" &&
-        Number.isFinite(templateMaxScore)
-          ? templateMaxScore
-          : undefined),
+    return calculateBatchClassAverageSummary({
       rows,
+      sourceTemplate,
     });
   }, [rows, sourceTemplate]);
+
+  const submittedCompensationBatches = useMemo(() => {
+    if (!batch || batch.isCompensationBatch === true) return [];
+
+    return compensationBatches.filter(
+      (compensation) =>
+        compensation.isCompensationBatch === true &&
+        compensation.originalBatchId === batch.id &&
+        compensation.status === "SUBMITTED",
+    );
+  }, [batch, compensationBatches]);
+
+  const finalClassAverageSummary = useMemo(() => {
+    if (
+      !batch ||
+      batch.isCompensationBatch === true ||
+      submittedCompensationBatches.length === 0
+    ) {
+      return null;
+    }
+
+    const effectiveRows = getEffectiveMeasurementRows({
+      originalBatchId: batch.id,
+      originalRows: rows,
+      compensationBatches: submittedCompensationBatches,
+    });
+
+    return calculateBatchClassAverageSummary({
+      rows: effectiveRows,
+      sourceTemplate,
+    });
+  }, [batch, rows, sourceTemplate, submittedCompensationBatches]);
 
   const createCompensationBatch = useCallback(async () => {
     if (!currentActor?.orgId || !batch) return;
@@ -1125,7 +1177,28 @@ export default function StaffMeasurementBatchPage() {
         </section>
       </section>
 
-      <ClassAverageSummary summary={classAverageSummary} />
+      {finalClassAverageSummary ? (
+        <>
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold">قبل التعويض</h2>
+            <ClassAverageSummary summary={classAverageSummary} />
+          </section>
+
+          <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5 shadow-sm">
+            <h2 className="text-lg font-semibold">
+              متوسط الفصل النهائي بعد التعويض
+            </h2>
+            <div className="mt-4">
+              <ClassAverageSummary summary={finalClassAverageSummary} />
+            </div>
+            <p className="mt-4 text-sm leading-7 text-muted-foreground">
+              تم احتساب نتائج الطلاب الذين أدوا القياس التعويضي ضمن النتيجة النهائية، مع الاحتفاظ بالدفعة الأصلية دون تعديل.
+            </p>
+          </section>
+        </>
+      ) : (
+        <ClassAverageSummary summary={classAverageSummary} />
+      )}
 
       <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
         <div className="border-b p-5">

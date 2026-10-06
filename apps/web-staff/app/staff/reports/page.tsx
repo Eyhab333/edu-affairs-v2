@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, BarChart3, ClipboardCheck, UsersRound } from "lucide-react";
+import { ArrowLeft, BarChart3, ClipboardCheck, ListChecks, UsersRound } from "lucide-react";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { hasOrgWideAccess } from "@takween/domain";
@@ -27,6 +27,13 @@ const reportAreas = [
     description: "متابعة الحضور والحالات والأنشطة ووثائق العمل حسب الدور والمدرسة.",
     icon: ClipboardCheck,
     tone: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+  },
+  {
+    href: "/staff/reports/evaluations",
+    title: "تقرير تقييمات الموظفين",
+    description: "تحليل نتائج تقييمات المعلمين والقيادات والإداريين على مستوى الموظف والمدرسة.",
+    icon: ListChecks,
+    tone: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
   },
 ] as const;
 
@@ -55,7 +62,7 @@ export default function ReportsPage() {
         </p>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {reportAreas.map((area) => {
           const Icon = area.icon;
           return (

@@ -1,70 +1,29 @@
 {
-  "generatedAt": "2026-09-08T11:35:39.562Z",
+  "generatedAt": "2026-10-05T13:17:11.094Z",
   "orgId": "takween",
   "summary": {
-    "totalRows": 2,
-    "newAccounts": 0,
-    "existingComplete": 2,
+    "totalRows": 1,
+    "newAccounts": 1,
+    "existingComplete": 0,
     "existingIncomplete": 0,
     "conflicts": 0
   },
   "results": [
     {
       "rowNumber": 2,
-      "displayName": "ميعاد احمد عبداللطيف المنصور",
-      "email": "m.a.almansor@qz.org.sa",
-      "employeeNumber": "KF100000122",
+      "displayName": "ديم عبدالله عبدالكريم الثنيان",
+      "email": "d-a-athunian@qz.org.sa",
+      "employeeNumber": "KF100000101",
       "schoolId": "kg-01",
       "roleKey": "KG_TEACHER",
-      "previewStatus": "EXISTING_COMPLETE",
+      "previewStatus": "NEW",
       "schoolExists": true,
-      "authExists": true,
-      "uid": "gsL51GoUEBam1cpAjRO03x718dg1",
-      "peopleMatches": [
-        {
-          "id": "p-m-a-almansor",
-          "personId": "p-m-a-almansor",
-          "displayName": "ميعاد احمد عبداللطيف المنصور"
-        }
-      ],
-      "userMatches": [
-        {
-          "uid": "gsL51GoUEBam1cpAjRO03x718dg1",
-          "personId": "p-m-a-almansor",
-          "displayName": "ميعاد احمد عبداللطيف المنصور"
-        }
-      ],
-      "userMembershipExists": true,
-      "orgMembershipExists": true,
-      "conflicts": []
-    },
-    {
-      "rowNumber": 3,
-      "displayName": "منار جبر احمد الجبر",
-      "email": "m.aljabr@qz.org.sa",
-      "employeeNumber": "KF100000100",
-      "schoolId": "kg-04",
-      "roleKey": "KG_TEACHER",
-      "previewStatus": "EXISTING_COMPLETE",
-      "schoolExists": true,
-      "authExists": true,
-      "uid": "bWXCcSYPZHdMM1qNVgk1ML7Gx3b2",
-      "peopleMatches": [
-        {
-          "id": "p-m-aljabr",
-          "personId": "p-m-aljabr",
-          "displayName": "منار جبر احمد الجبر"
-        }
-      ],
-      "userMatches": [
-        {
-          "uid": "bWXCcSYPZHdMM1qNVgk1ML7Gx3b2",
-          "personId": "p-m-aljabr",
-          "displayName": "منار جبر احمد الجبر"
-        }
-      ],
-      "userMembershipExists": true,
-      "orgMembershipExists": true,
+      "authExists": false,
+      "uid": "",
+      "peopleMatches": [],
+      "userMatches": [],
+      "userMembershipExists": false,
+      "orgMembershipExists": false,
       "conflicts": []
     }
   ]

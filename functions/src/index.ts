@@ -28,6 +28,10 @@ export { getMyGuardianFinanceOverview } from "./guardian-finance/get-my-guardian
 export { approveEvaluationSubmission } from "./evaluations/approve-evaluation-submission";
 export { reopenEvaluationSubmission } from "./evaluations/reopen-evaluation-submission";
 export {
+  getEvaluationReportOverview,
+  getEvaluationReportPersonDetail,
+} from "./evaluation-reports/evaluation-reports";
+export {
   adminApplyEvaluationPlanChange,
   adminPreviewEvaluationPlanChange,
 } from "./evaluations/admin-evaluation-plan-changes";

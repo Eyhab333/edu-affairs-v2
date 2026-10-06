@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { db } from "@/lib/firebase";
 import { getFriendlyClassTitle } from "@/lib/class-presentation";
+import { getEffectiveMeasurementRows } from "@/lib/measurement-compensation";
 import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 import { getFriendlySubjectLabel } from "@/lib/measurement-presentation";
 
@@ -75,7 +76,11 @@ type StaffActorLike = {
   } | null;
 };
 
-type CentralBatch = StudentMeasurementBatch & { id: string };
+type CentralBatch = StudentMeasurementBatch & {
+  id: string;
+  isCompensationBatch?: boolean;
+  originalBatchId?: string;
+};
 
 type SummaryRow = {
   key: string;
@@ -150,17 +155,26 @@ function isTeacherOnlyActor(actor: StaffActorLike | null) {
   return hasTeacherRole && !hasSupervisorOrAdminRole;
 }
 
-function getSavedMaxScore(batch: CentralBatch) {
-  return (batch.studentRows ?? [])
+function getSavedMaxScore(rows: CentralBatch["studentRows"]) {
+  return rows
     .map((row) => row.maxScore)
     .find((value): value is number => typeof value === "number" && Number.isFinite(value));
 }
 
-function getBatchPercentage(batch: CentralBatch, templateMaxScoreById: Map<string, number>) {
-  const savedMaxScore = getSavedMaxScore(batch);
-  const templateMaxScore = templateMaxScoreById.get(batch.templateId);
+function getBatchPercentage(params: {
+  batch: CentralBatch;
+  compensationBatches: CentralBatch[];
+  templateMaxScoreById: Map<string, number>;
+}) {
+  const effectiveRows = getEffectiveMeasurementRows({
+    originalBatchId: params.batch.id,
+    originalRows: params.batch.studentRows ?? [],
+    compensationBatches: params.compensationBatches,
+  });
+  const savedMaxScore = getSavedMaxScore(effectiveRows);
+  const templateMaxScore = params.templateMaxScoreById.get(params.batch.templateId);
   return calculateMeasurementClassSummary({
-    rows: batch.studentRows ?? [],
+    rows: effectiveRows,
     maxScore: savedMaxScore ?? templateMaxScore,
   }).percentage;
 }
@@ -258,11 +272,13 @@ export default function StaffCentralMeasurementSummaryPage() {
   const [status, setStatus] = useState<LoadingState>("idle");
   const [error, setError] = useState("");
   const [batches, setBatches] = useState<CentralBatch[]>([]);
+  const [compensationBatches, setCompensationBatches] = useState<CentralBatch[]>([]);
   const [teacherNameByAssignmentId, setTeacherNameByAssignmentId] = useState<Map<string, string>>(new Map());
   const [templateMaxScoreById, setTemplateMaxScoreById] = useState<Map<string, number>>(new Map());
   const [schoolFilter, setSchoolFilter] = useState("ALL");
   const [subjectFilter, setSubjectFilter] = useState("ALL");
   const [classFilter, setClassFilter] = useState("ALL");
+  const [teacherFilter, setTeacherFilter] = useState("ALL");
 
   const orgId = staffActor?.orgId?.trim() || "";
   const currentTerm = staffActor?.currentTerm ?? null;
@@ -280,6 +296,7 @@ export default function StaffCentralMeasurementSummaryPage() {
     if (!orgId || !currentTerm?.academicYearId || !currentTerm.id) return;
     if (visibleClasses.length === 0) {
       setBatches([]);
+      setCompensationBatches([]);
       setTeacherNameByAssignmentId(new Map());
       setTemplateMaxScoreById(new Map());
       setStatus("success");
@@ -300,7 +317,7 @@ export default function StaffCentralMeasurementSummaryPage() {
         ),
       );
 
-      const visibleBatches = schoolSnapshots
+      const scopedCentralBatches = schoolSnapshots
         .flatMap((snapshot) => snapshot.docs)
         .map((snapshot) => ({ id: snapshot.id, ...(snapshot.data() as Omit<CentralBatch, "id">) }))
         .filter((batch) => batch.status === "SUBMITTED")
@@ -312,16 +329,30 @@ export default function StaffCentralMeasurementSummaryPage() {
         )
         .filter((batch) => {
           const classInfo = visibleClassByKey.get(getClassKey(batch));
+          return Boolean(classInfo);
+        });
+
+      const visibleBatches = scopedCentralBatches
+        .filter((batch) => batch.isCompensationBatch !== true)
+        .filter((batch) => {
+          const classInfo = visibleClassByKey.get(getClassKey(batch));
           if (!classInfo) return false;
           if (!teacherOnly) return true;
           if (!teacherPersonId || batch.createdByPersonId !== teacherPersonId) return false;
           return getTeacherSubjectKeysForClass(teacherAssignments, teacherPersonId, classInfo).has(batch.subjectKey);
         });
+      const originalBatchIds = new Set(visibleBatches.map((batch) => batch.id));
+      const attachedCompensationBatches = scopedCentralBatches.filter(
+        (batch) =>
+          batch.isCompensationBatch === true &&
+          typeof batch.originalBatchId === "string" &&
+          originalBatchIds.has(batch.originalBatchId),
+      );
 
       const teacherAssignmentIds = uniqueStrings(visibleBatches.map((batch) => batch.teacherAssignmentId));
       const templateIdsNeedingFallback = uniqueStrings(
         visibleBatches
-          .filter((batch) => getSavedMaxScore(batch) === undefined)
+          .filter((batch) => getSavedMaxScore(batch.studentRows ?? []) === undefined)
           .map((batch) => batch.templateId),
       );
       const [nextTeacherNames, nextTemplateMaxScores] = await Promise.all([
@@ -330,11 +361,13 @@ export default function StaffCentralMeasurementSummaryPage() {
       ]);
 
       setBatches(visibleBatches);
+      setCompensationBatches(attachedCompensationBatches);
       setTeacherNameByAssignmentId(nextTeacherNames);
       setTemplateMaxScoreById(nextTemplateMaxScores);
       setStatus("success");
     } catch (nextError: unknown) {
       setBatches([]);
+      setCompensationBatches([]);
       setTeacherNameByAssignmentId(new Map());
       setTemplateMaxScoreById(new Map());
       setError(getErrorMessage(nextError));
@@ -354,6 +387,19 @@ export default function StaffCentralMeasurementSummaryPage() {
   useEffect(() => {
     void loadSummary();
   }, [loadSummary]);
+
+  const compensationBatchesByOriginalBatchId = useMemo(() => {
+    const batchesByOriginalBatchId = new Map<string, CentralBatch[]>();
+
+    for (const batch of compensationBatches) {
+      if (!batch.originalBatchId) continue;
+      const linkedBatches = batchesByOriginalBatchId.get(batch.originalBatchId) ?? [];
+      linkedBatches.push(batch);
+      batchesByOriginalBatchId.set(batch.originalBatchId, linkedBatches);
+    }
+
+    return batchesByOriginalBatchId;
+  }, [compensationBatches]);
 
   const rows = useMemo(() => {
     const grouped = new Map<string, Omit<SummaryRow, "teacherName">>();
@@ -420,7 +466,7 @@ export default function StaffCentralMeasurementSummaryPage() {
     [rows],
   );
 
-  const filteredRows = useMemo(
+  const rowsMatchingContextFilters = useMemo(
     () =>
       rows.filter(
         (row) =>
@@ -429,6 +475,39 @@ export default function StaffCentralMeasurementSummaryPage() {
           (classFilter === "ALL" || row.classKey === classFilter),
       ),
     [classFilter, rows, schoolFilter, subjectFilter],
+  );
+
+  const teacherOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          rowsMatchingContextFilters
+            .filter((row) => Boolean(row.teacherAssignmentId))
+            .map((row) => [row.teacherAssignmentId, row.teacherName]),
+        ).entries(),
+      ).sort(([, leftName], [, rightName]) =>
+        leftName.localeCompare(rightName, "ar"),
+      ),
+    [rowsMatchingContextFilters],
+  );
+
+  useEffect(() => {
+    if (
+      teacherFilter !== "ALL" &&
+      !teacherOptions.some(([teacherAssignmentId]) => teacherAssignmentId === teacherFilter)
+    ) {
+      setTeacherFilter("ALL");
+    }
+  }, [teacherFilter, teacherOptions]);
+
+  const filteredRows = useMemo(
+    () =>
+      teacherFilter === "ALL"
+        ? rowsMatchingContextFilters
+        : rowsMatchingContextFilters.filter(
+            (row) => row.teacherAssignmentId === teacherFilter,
+          ),
+    [rowsMatchingContextFilters, teacherFilter],
   );
 
   const filteredSummary = useMemo(
@@ -440,7 +519,11 @@ export default function StaffCentralMeasurementSummaryPage() {
     [filteredRows],
   );
 
-  const hasActiveFilters = schoolFilter !== "ALL" || subjectFilter !== "ALL" || classFilter !== "ALL";
+  const hasActiveFilters =
+    schoolFilter !== "ALL" ||
+    subjectFilter !== "ALL" ||
+    classFilter !== "ALL" ||
+    teacherFilter !== "ALL";
   const selectedSchoolName = schoolFilter === "ALL" ? "" : schoolOptions.find(([id]) => id === schoolFilter)?.[1] || "";
   const selectedSubjectTitle = subjectFilter === "ALL" ? "" : subjectOptions.find(([key]) => key === subjectFilter)?.[1] || "";
   const organizationName = staffActor?.org?.nameAr || staffActor?.org?.name || staffActor?.org?.shortName || "المنشأة التعليمية";
@@ -535,8 +618,15 @@ export default function StaffCentralMeasurementSummaryPage() {
                 {classOptions.map(([key, title]) => <option key={key} value={key}>{title}</option>)}
               </select>
             </label>
+            <label className="grid gap-1.5 text-sm font-medium lg:min-w-48">
+              المعلم
+              <select value={teacherFilter} onChange={(event) => setTeacherFilter(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm font-normal outline-none focus:ring-2 focus:ring-ring">
+                <option value="ALL">الكل</option>
+                {teacherOptions.map(([id, name]) => <option key={id} value={id}>{name}</option>)}
+              </select>
+            </label>
             {hasActiveFilters ? (
-              <Button type="button" variant="ghost" className="w-fit" onClick={() => { setSchoolFilter("ALL"); setSubjectFilter("ALL"); setClassFilter("ALL"); }}>
+              <Button type="button" variant="ghost" className="w-fit" onClick={() => { setSchoolFilter("ALL"); setSubjectFilter("ALL"); setClassFilter("ALL"); setTeacherFilter("ALL"); }}>
                 <RotateCcw className="size-4" />
                 مسح الفلاتر
               </Button>
@@ -577,8 +667,8 @@ export default function StaffCentralMeasurementSummaryPage() {
                       <td className="px-4 py-4 font-medium">{row.subjectTitle}</td>
                       <td className="px-4 py-4">{row.teacherName}</td>
                       <td className="px-4 py-4">{row.classTitle}</td>
-                      <td className="px-4 py-4"><MeasurementPercentage batch={row.centralMeasurement1} templateMaxScoreById={templateMaxScoreById} /></td>
-                      <td className="px-4 py-4"><MeasurementPercentage batch={row.centralMeasurement2} templateMaxScoreById={templateMaxScoreById} /></td>
+                      <td className="px-4 py-4"><MeasurementPercentage batch={row.centralMeasurement1} compensationBatches={row.centralMeasurement1 ? compensationBatchesByOriginalBatchId.get(row.centralMeasurement1.id) ?? [] : []} templateMaxScoreById={templateMaxScoreById} /></td>
+                      <td className="px-4 py-4"><MeasurementPercentage batch={row.centralMeasurement2} compensationBatches={row.centralMeasurement2 ? compensationBatchesByOriginalBatchId.get(row.centralMeasurement2.id) ?? [] : []} templateMaxScoreById={templateMaxScoreById} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -600,9 +690,13 @@ function SummaryCard({ label, value }: { label: string; value: number }) {
   );
 }
 
-function MeasurementPercentage({ batch, templateMaxScoreById }: { batch?: CentralBatch; templateMaxScoreById: Map<string, number> }) {
+function MeasurementPercentage({ batch, compensationBatches, templateMaxScoreById }: { batch?: CentralBatch; compensationBatches: CentralBatch[]; templateMaxScoreById: Map<string, number> }) {
   if (!batch) return <span className="text-muted-foreground">لم يُرصد</span>;
-  const percentage = getBatchPercentage(batch, templateMaxScoreById);
+  const percentage = getBatchPercentage({
+    batch,
+    compensationBatches,
+    templateMaxScoreById,
+  });
   const label = formatPercentage(percentage);
 
   return (

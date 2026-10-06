@@ -5789,6 +5789,7 @@ export const ImportTemplatesSchema = z.object({
 export type ImportTemplates = z.infer<typeof ImportTemplatesSchema>;
 
 export * from "./staff-evaluations";
+export * from "./evaluation-reports";
 export * from "./performance-improvement";
 export * from "./student-cases";
 export * from "./transport";
