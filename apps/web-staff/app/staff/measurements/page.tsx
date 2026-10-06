@@ -164,6 +164,13 @@ function getStudentCount(item: StaffVisibleClass) {
   );
 }
 
+function isKgVisibleClass(item: StaffVisibleClass) {
+  const gradeId = String(item.gradeId ?? "").trim().toLowerCase();
+  const schoolId = String(item.schoolId ?? "").toLowerCase();
+
+  return ["kg1", "kg2", "kg3"].includes(gradeId) || schoolId.startsWith("kg-");
+}
+
 function getClassKey(item: {
   id?: string;
   classId?: string;
@@ -434,6 +441,10 @@ export default function StaffMeasurementsPage() {
   const visibleClasses = useMemo(() => {
     return dedupeVisibleClasses(staffActor?.visibleClasses ?? []);
   }, [staffActor?.visibleClasses]);
+  const hasVisibleKgClass = useMemo(
+    () => visibleClasses.some(isKgVisibleClass),
+    [visibleClasses],
+  );
 
   const classMap = useMemo(() => {
     return new Map(visibleClasses.map((item) => [getClassKey(item), item]));
@@ -636,6 +647,16 @@ export default function StaffMeasurementsPage() {
                   <ChartNoAxesCombined className="h-4 w-4" />
                   خلاصة القياسات المركزية
                 </Link>
+
+                {hasVisibleKgClass ? (
+                  <Link
+                    href="/staff/measurements/kg-summary"
+                    className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border bg-background px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    <ChartNoAxesCombined className="h-4 w-4" />
+                    خلاصة قياسات الروضة
+                  </Link>
+                ) : null}
 
                 <Link
                   href="/staff/classes"

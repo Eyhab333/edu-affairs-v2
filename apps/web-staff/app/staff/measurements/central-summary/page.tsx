@@ -93,9 +93,15 @@ type SummaryRow = {
   classKey: string;
   classTitle: string;
   teacherAssignmentId: string;
+  teacherPersonId: string;
   teacherName: string;
   centralMeasurement1?: CentralBatch;
   centralMeasurement2?: CentralBatch;
+};
+
+type TeacherDirectoryEntry = {
+  teacherPersonId: string;
+  teacherName: string;
 };
 
 type LoadingState = "idle" | "loading" | "success" | "error";
@@ -184,7 +190,10 @@ function formatPercentage(value: number | null) {
   return `${new Intl.NumberFormat("ar-SA", { maximumFractionDigits: 1 }).format(value)}%`;
 }
 
-async function loadTeacherNames(orgId: string, teacherAssignmentIds: string[]) {
+async function loadTeacherDirectory(
+  orgId: string,
+  teacherAssignmentIds: string[],
+) {
   const assignmentById = new Map<string, { teacherPersonId: string }>();
   const assignmentsRef = collection(db, "orgs", orgId, "teacherAssignments");
 
@@ -216,11 +225,15 @@ async function loadTeacherNames(orgId: string, teacherAssignmentIds: string[]) {
     if (displayName) personNameById.set(snapshot.id, displayName);
   });
 
-  return new Map(
-    Array.from(assignmentById.entries()).flatMap(([assignmentId, assignment]) => {
-      const displayName = personNameById.get(assignment.teacherPersonId);
-      return displayName ? [[assignmentId, displayName] as const] : [];
-    }),
+  return new Map<string, TeacherDirectoryEntry>(
+    Array.from(assignmentById.entries()).map(([assignmentId, assignment]) => [
+      assignmentId,
+      {
+        teacherPersonId: assignment.teacherPersonId,
+        teacherName:
+          personNameById.get(assignment.teacherPersonId) || "غير محدد",
+      },
+    ] as const),
   );
 }
 
@@ -273,7 +286,9 @@ export default function StaffCentralMeasurementSummaryPage() {
   const [error, setError] = useState("");
   const [batches, setBatches] = useState<CentralBatch[]>([]);
   const [compensationBatches, setCompensationBatches] = useState<CentralBatch[]>([]);
-  const [teacherNameByAssignmentId, setTeacherNameByAssignmentId] = useState<Map<string, string>>(new Map());
+  const [teacherDirectoryByAssignmentId, setTeacherDirectoryByAssignmentId] = useState<
+    Map<string, TeacherDirectoryEntry>
+  >(new Map());
   const [templateMaxScoreById, setTemplateMaxScoreById] = useState<Map<string, number>>(new Map());
   const [schoolFilter, setSchoolFilter] = useState("ALL");
   const [subjectFilter, setSubjectFilter] = useState("ALL");
@@ -297,7 +312,7 @@ export default function StaffCentralMeasurementSummaryPage() {
     if (visibleClasses.length === 0) {
       setBatches([]);
       setCompensationBatches([]);
-      setTeacherNameByAssignmentId(new Map());
+      setTeacherDirectoryByAssignmentId(new Map());
       setTemplateMaxScoreById(new Map());
       setStatus("success");
       return;
@@ -355,20 +370,20 @@ export default function StaffCentralMeasurementSummaryPage() {
           .filter((batch) => getSavedMaxScore(batch.studentRows ?? []) === undefined)
           .map((batch) => batch.templateId),
       );
-      const [nextTeacherNames, nextTemplateMaxScores] = await Promise.all([
-        loadTeacherNames(orgId, teacherAssignmentIds),
+      const [nextTeacherDirectory, nextTemplateMaxScores] = await Promise.all([
+        loadTeacherDirectory(orgId, teacherAssignmentIds),
         loadTemplateMaxScores(orgId, templateIdsNeedingFallback),
       ]);
 
       setBatches(visibleBatches);
       setCompensationBatches(attachedCompensationBatches);
-      setTeacherNameByAssignmentId(nextTeacherNames);
+      setTeacherDirectoryByAssignmentId(nextTeacherDirectory);
       setTemplateMaxScoreById(nextTemplateMaxScores);
       setStatus("success");
     } catch (nextError: unknown) {
       setBatches([]);
       setCompensationBatches([]);
-      setTeacherNameByAssignmentId(new Map());
+      setTeacherDirectoryByAssignmentId(new Map());
       setTemplateMaxScoreById(new Map());
       setError(getErrorMessage(nextError));
       setStatus("error");
@@ -402,7 +417,10 @@ export default function StaffCentralMeasurementSummaryPage() {
   }, [compensationBatches]);
 
   const rows = useMemo(() => {
-    const grouped = new Map<string, Omit<SummaryRow, "teacherName">>();
+    const grouped = new Map<
+      string,
+      Omit<SummaryRow, "teacherPersonId" | "teacherName">
+    >();
 
     batches.forEach((batch) => {
       const classKey = getClassKey(batch);
@@ -442,7 +460,12 @@ export default function StaffCentralMeasurementSummaryPage() {
     return Array.from(grouped.values())
       .map((row) => ({
         ...row,
-        teacherName: teacherNameByAssignmentId.get(row.teacherAssignmentId) || "غير محدد",
+        teacherPersonId:
+          teacherDirectoryByAssignmentId.get(row.teacherAssignmentId)
+            ?.teacherPersonId || "",
+        teacherName:
+          teacherDirectoryByAssignmentId.get(row.teacherAssignmentId)
+            ?.teacherName || "غير محدد",
       }))
       .sort((left, right) => {
         const subjectOrder = left.subjectTitle.localeCompare(right.subjectTitle, "ar");
@@ -451,63 +474,127 @@ export default function StaffCentralMeasurementSummaryPage() {
         if (classOrder !== 0) return classOrder;
         return left.teacherName.localeCompare(right.teacherName, "ar");
       });
-  }, [batches, offerings, staffActor?.schools, teacherNameByAssignmentId, visibleClassByKey, visibleClasses]);
+  }, [
+    batches,
+    offerings,
+    staffActor?.schools,
+    teacherDirectoryByAssignmentId,
+    visibleClassByKey,
+    visibleClasses,
+  ]);
 
   const schoolOptions = useMemo(
     () => Array.from(new Map(rows.map((row) => [row.schoolId, row.schoolName])).entries()),
     [rows],
   );
-  const subjectOptions = useMemo(
-    () => Array.from(new Map(rows.map((row) => [row.subjectKey, row.subjectTitle])).entries()),
-    [rows],
-  );
-  const classOptions = useMemo(
-    () => Array.from(new Map(rows.map((row) => [row.classKey, row.classTitle])).entries()),
-    [rows],
-  );
-
-  const rowsMatchingContextFilters = useMemo(
+  const rowsMatchingSchool = useMemo(
     () =>
       rows.filter(
-        (row) =>
-          (schoolFilter === "ALL" || row.schoolId === schoolFilter) &&
-          (subjectFilter === "ALL" || row.subjectKey === subjectFilter) &&
-          (classFilter === "ALL" || row.classKey === classFilter),
+        (row) => schoolFilter === "ALL" || row.schoolId === schoolFilter,
       ),
-    [classFilter, rows, schoolFilter, subjectFilter],
+    [rows, schoolFilter],
   );
 
-  const teacherOptions = useMemo(
+  const teacherOptions = useMemo(() => {
+    const teacherNameByPersonId = new Map<string, string>();
+
+    for (const row of rowsMatchingSchool) {
+      if (!row.teacherPersonId || teacherNameByPersonId.has(row.teacherPersonId)) {
+        continue;
+      }
+
+      teacherNameByPersonId.set(row.teacherPersonId, row.teacherName);
+    }
+
+    return Array.from(teacherNameByPersonId.entries()).sort(
+      ([, leftName], [, rightName]) => leftName.localeCompare(rightName, "ar"),
+    );
+  }, [rowsMatchingSchool]);
+  const effectiveTeacherFilter =
+    teacherFilter !== "ALL" &&
+    teacherOptions.some(([teacherPersonId]) => teacherPersonId === teacherFilter)
+      ? teacherFilter
+      : "ALL";
+  const rowsMatchingSchoolAndTeacher = useMemo(
+    () =>
+      rowsMatchingSchool.filter(
+        (row) =>
+          effectiveTeacherFilter === "ALL" ||
+          row.teacherPersonId === effectiveTeacherFilter,
+      ),
+    [effectiveTeacherFilter, rowsMatchingSchool],
+  );
+  const subjectOptions = useMemo(
     () =>
       Array.from(
         new Map(
-          rowsMatchingContextFilters
-            .filter((row) => Boolean(row.teacherAssignmentId))
-            .map((row) => [row.teacherAssignmentId, row.teacherName]),
+          rowsMatchingSchoolAndTeacher.map((row) => [
+            row.subjectKey,
+            row.subjectTitle,
+          ]),
         ).entries(),
-      ).sort(([, leftName], [, rightName]) =>
-        leftName.localeCompare(rightName, "ar"),
       ),
-    [rowsMatchingContextFilters],
+    [rowsMatchingSchoolAndTeacher],
   );
+  const effectiveSubjectFilter =
+    subjectFilter !== "ALL" &&
+    subjectOptions.some(([subjectKey]) => subjectKey === subjectFilter)
+      ? subjectFilter
+      : "ALL";
+  const rowsMatchingSchoolTeacherAndSubject = useMemo(
+    () =>
+      rowsMatchingSchoolAndTeacher.filter(
+        (row) =>
+          effectiveSubjectFilter === "ALL" ||
+          row.subjectKey === effectiveSubjectFilter,
+      ),
+    [effectiveSubjectFilter, rowsMatchingSchoolAndTeacher],
+  );
+  const classOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          rowsMatchingSchoolTeacherAndSubject.map((row) => [
+            row.classKey,
+            row.classTitle,
+          ]),
+        ).entries(),
+      ),
+    [rowsMatchingSchoolTeacherAndSubject],
+  );
+  const effectiveClassFilter =
+    classFilter !== "ALL" &&
+    classOptions.some(([classKey]) => classKey === classFilter)
+      ? classFilter
+      : "ALL";
 
   useEffect(() => {
-    if (
-      teacherFilter !== "ALL" &&
-      !teacherOptions.some(([teacherAssignmentId]) => teacherAssignmentId === teacherFilter)
-    ) {
-      setTeacherFilter("ALL");
+    if (teacherFilter !== effectiveTeacherFilter) {
+      setTeacherFilter(effectiveTeacherFilter);
     }
-  }, [teacherFilter, teacherOptions]);
+    if (subjectFilter !== effectiveSubjectFilter) {
+      setSubjectFilter(effectiveSubjectFilter);
+    }
+    if (classFilter !== effectiveClassFilter) {
+      setClassFilter(effectiveClassFilter);
+    }
+  }, [
+    classFilter,
+    effectiveClassFilter,
+    effectiveSubjectFilter,
+    effectiveTeacherFilter,
+    subjectFilter,
+    teacherFilter,
+  ]);
 
   const filteredRows = useMemo(
     () =>
-      teacherFilter === "ALL"
-        ? rowsMatchingContextFilters
-        : rowsMatchingContextFilters.filter(
-            (row) => row.teacherAssignmentId === teacherFilter,
-          ),
-    [rowsMatchingContextFilters, teacherFilter],
+      rowsMatchingSchoolTeacherAndSubject.filter(
+        (row) =>
+          effectiveClassFilter === "ALL" ||
+          row.classKey === effectiveClassFilter,
+      ),
+    [effectiveClassFilter, rowsMatchingSchoolTeacherAndSubject],
   );
 
   const filteredSummary = useMemo(
@@ -605,6 +692,13 @@ export default function StaffCentralMeasurementSummaryPage() {
               </select>
             </label>
             <label className="grid gap-1.5 text-sm font-medium lg:min-w-48">
+              المعلم
+              <select value={teacherFilter} onChange={(event) => setTeacherFilter(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm font-normal outline-none focus:ring-2 focus:ring-ring">
+                <option value="ALL">الكل</option>
+                {teacherOptions.map(([id, name]) => <option key={id} value={id}>{name}</option>)}
+              </select>
+            </label>
+            <label className="grid gap-1.5 text-sm font-medium lg:min-w-48">
               المادة
               <select value={subjectFilter} onChange={(event) => setSubjectFilter(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm font-normal outline-none focus:ring-2 focus:ring-ring">
                 <option value="ALL">الكل</option>
@@ -616,13 +710,6 @@ export default function StaffCentralMeasurementSummaryPage() {
               <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm font-normal outline-none focus:ring-2 focus:ring-ring">
                 <option value="ALL">الكل</option>
                 {classOptions.map(([key, title]) => <option key={key} value={key}>{title}</option>)}
-              </select>
-            </label>
-            <label className="grid gap-1.5 text-sm font-medium lg:min-w-48">
-              المعلم
-              <select value={teacherFilter} onChange={(event) => setTeacherFilter(event.target.value)} className="h-10 rounded-xl border bg-background px-3 text-sm font-normal outline-none focus:ring-2 focus:ring-ring">
-                <option value="ALL">الكل</option>
-                {teacherOptions.map(([id, name]) => <option key={id} value={id}>{name}</option>)}
               </select>
             </label>
             {hasActiveFilters ? (
