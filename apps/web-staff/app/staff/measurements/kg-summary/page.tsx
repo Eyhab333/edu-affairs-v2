@@ -9,16 +9,14 @@ import {
   RotateCcw,
   TableProperties,
 } from "lucide-react";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import type {
-  StudentMeasurementBatch,
-  StudentMeasurementBatchStudentRow,
-} from "@takween/contracts";
+import { collection, documentId, getDocs, query, where } from "firebase/firestore";
+import type { StudentMeasurementBatch } from "@takween/contracts";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { db } from "@/lib/firebase";
 import { getFriendlyClassTitle } from "@/lib/class-presentation";
 import { getEffectiveMeasurementRows } from "@/lib/measurement-compensation";
+import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 import {
   calculateKgWeightedMeasurementSummary,
   getKgEvaluatorRoleLabel,
@@ -79,7 +77,7 @@ type KgMeasurementBatch = StudentMeasurementBatch & {
   originalBatchId?: string;
 };
 
-type StudentTemplateMeasurement = {
+type TemplateClassMeasurement = {
   templateId: string;
   templateTitle: string;
   percentage: number | null;
@@ -93,13 +91,19 @@ type KgSummaryRow = {
   classTitle: string;
   subjectKey: KgMeasurementSubject;
   subjectTitle: string;
-  studentId: string;
-  studentDisplayName: string;
+  teacherAssignmentId: string;
+  teacherPersonId: string;
+  teacherName: string;
   summary: KgWeightedMeasurementSummary;
   measurementsByRole: Partial<
-    Record<KgEvaluatorRole, StudentTemplateMeasurement[]>
+    Record<KgEvaluatorRole, TemplateClassMeasurement[]>
   >;
   missingText: string[];
+};
+
+type TeacherDirectoryEntry = {
+  teacherPersonId: string;
+  teacherName: string;
 };
 
 type ConfigurationWarning = {
@@ -110,6 +114,16 @@ type ConfigurationWarning = {
 };
 
 type LoadingState = "idle" | "loading" | "success" | "error";
+
+const FIRESTORE_IN_QUERY_LIMIT = 30;
+
+function chunkValues<T>(values: T[], size: number) {
+  const chunks: T[][] = [];
+  for (let index = 0; index < values.length; index += size) {
+    chunks.push(values.slice(index, index + size));
+  }
+  return chunks;
+}
 
 function uniqueStrings(values: Array<string | undefined | null>) {
   return Array.from(
@@ -185,23 +199,63 @@ function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
 }
 
-function getMeasurementPercentage(params: {
-  row: StudentMeasurementBatchStudentRow | undefined;
-  template: KgAssessmentTemplate;
-}) {
-  const { row, template } = params;
+function getSavedMaxScore(rows: KgMeasurementBatch["studentRows"]) {
+  return rows?.find((row) => isFiniteNumber(row.maxScore))?.maxScore;
+}
 
-  if (!row || row.status !== "COMPLETED" || !isFiniteNumber(row.score)) {
-    return null;
+async function loadTeacherDirectory(
+  orgId: string,
+  teacherAssignmentIds: string[],
+) {
+  if (teacherAssignmentIds.length === 0) {
+    return new Map<string, TeacherDirectoryEntry>();
   }
 
-  const maxScore = isFiniteNumber(row.maxScore)
-    ? row.maxScore
-    : template.maxScore;
+  const assignmentsRef = collection(db, "orgs", orgId, "teacherAssignments");
+  const assignmentSnapshots = await Promise.all(
+    chunkValues(teacherAssignmentIds, FIRESTORE_IN_QUERY_LIMIT).map((ids) =>
+      getDocs(query(assignmentsRef, where(documentId(), "in", ids))),
+    ),
+  );
+  const assignmentById = new Map<string, { teacherPersonId: string }>();
 
-  if (!isFiniteNumber(maxScore) || maxScore <= 0) return null;
+  assignmentSnapshots.flatMap((snapshot) => snapshot.docs).forEach((snapshot) => {
+    const data = snapshot.data() as { teacherPersonId?: string };
+    const teacherPersonId = data.teacherPersonId?.trim() || "";
+    if (teacherPersonId) {
+      assignmentById.set(snapshot.id, { teacherPersonId });
+    }
+  });
 
-  return (row.score / maxScore) * 100;
+  const personIds = uniqueStrings(
+    Array.from(assignmentById.values()).map(
+      (assignment) => assignment.teacherPersonId,
+    ),
+  );
+  const peopleRef = collection(db, "orgs", orgId, "people");
+  const personSnapshots = await Promise.all(
+    chunkValues(personIds, FIRESTORE_IN_QUERY_LIMIT).map((ids) =>
+      getDocs(query(peopleRef, where(documentId(), "in", ids))),
+    ),
+  );
+  const personNameById = new Map<string, string>();
+
+  personSnapshots.flatMap((snapshot) => snapshot.docs).forEach((snapshot) => {
+    const data = snapshot.data() as { displayName?: string };
+    const displayName = data.displayName?.trim() || "";
+    if (displayName) personNameById.set(snapshot.id, displayName);
+  });
+
+  return new Map<string, TeacherDirectoryEntry>(
+    Array.from(assignmentById.entries()).map(([assignmentId, assignment]) => [
+      assignmentId,
+      {
+        teacherPersonId: assignment.teacherPersonId,
+        teacherName:
+          personNameById.get(assignment.teacherPersonId) || "غير محدد",
+      },
+    ] as const),
+  );
 }
 
 function formatPercentage(value: number | null) {
@@ -241,7 +295,11 @@ export default function StaffKgMeasurementSummaryPage() {
   const [error, setError] = useState("");
   const [templates, setTemplates] = useState<KgAssessmentTemplate[]>([]);
   const [batches, setBatches] = useState<KgMeasurementBatch[]>([]);
+  const [teacherDirectoryByAssignmentId, setTeacherDirectoryByAssignmentId] = useState<
+    Map<string, TeacherDirectoryEntry>
+  >(new Map());
   const [schoolFilter, setSchoolFilter] = useState("ALL");
+  const [teacherFilter, setTeacherFilter] = useState("ALL");
   const [subjectFilter, setSubjectFilter] = useState("ALL");
   const [classFilter, setClassFilter] = useState("ALL");
 
@@ -276,6 +334,7 @@ export default function StaffKgMeasurementSummaryPage() {
     if (currentKgClasses.length === 0) {
       setTemplates([]);
       setBatches([]);
+      setTeacherDirectoryByAssignmentId(new Map());
       setStatus("success");
       return;
     }
@@ -307,28 +366,54 @@ export default function StaffKgMeasurementSummaryPage() {
         ),
       ]);
 
+      const loadedBatches = batchSnapshots.flatMap((snapshot) =>
+        snapshot.docs.map((item) => ({
+          id: item.id,
+          ...(item.data() as Omit<KgMeasurementBatch, "id">),
+        })),
+      );
+      const teacherAssignmentIds = uniqueStrings(
+        loadedBatches
+          .filter((batch) => {
+            const classInfo = visibleClassByKey.get(getClassKey(batch));
+            return (
+              batch.status === "SUBMITTED" &&
+              batch.academicYearId === currentTerm.academicYearId &&
+              batch.termId === currentTerm.id &&
+              Boolean(classInfo) &&
+              isKgMeasurementSubject(batch.subjectKey)
+            );
+          })
+          .map((batch) => batch.teacherAssignmentId),
+      );
+      const nextTeacherDirectory = await loadTeacherDirectory(
+        orgId,
+        teacherAssignmentIds,
+      );
+
       setTemplates(
         templateSnapshot.docs.map((item) => ({
           id: item.id,
           ...(item.data() as Omit<KgAssessmentTemplate, "id">),
         })),
       );
-      setBatches(
-        batchSnapshots.flatMap((snapshot) =>
-          snapshot.docs.map((item) => ({
-            id: item.id,
-            ...(item.data() as Omit<KgMeasurementBatch, "id">),
-          })),
-        ),
-      );
+      setBatches(loadedBatches);
+      setTeacherDirectoryByAssignmentId(nextTeacherDirectory);
       setStatus("success");
     } catch (nextError: unknown) {
       setTemplates([]);
       setBatches([]);
+      setTeacherDirectoryByAssignmentId(new Map());
       setError(getErrorMessage(nextError));
       setStatus("error");
     }
-  }, [currentKgClasses, currentTerm?.academicYearId, currentTerm?.id, orgId]);
+  }, [
+    currentKgClasses,
+    currentTerm?.academicYearId,
+    currentTerm?.id,
+    orgId,
+    visibleClassByKey,
+  ]);
 
   useEffect(() => {
     void loadSummary();
@@ -431,11 +516,7 @@ export default function StaffKgMeasurementSummaryPage() {
       }
     }
 
-    const effectiveRowsByBatchId = new Map<
-      string,
-      Map<string, StudentMeasurementBatchStudentRow>
-    >();
-    const studentsByContext = new Map<string, Map<string, string>>();
+    const classPercentageByBatchId = new Map<string, number | null>();
 
     for (const batch of latestOriginalBatchByTemplate.values()) {
       if (!isKgMeasurementSubject(batch.subjectKey)) continue;
@@ -444,28 +525,23 @@ export default function StaffKgMeasurementSummaryPage() {
         getClassKey(batch),
         batch.subjectKey,
       );
+      const template = (expectedTemplatesByContext.get(contextKey) ?? []).find(
+        (candidate) => candidate.id === batch.templateId,
+      );
+      if (!template) continue;
+
       const effectiveRows = getEffectiveMeasurementRows({
         originalBatchId: batch.id,
         originalRows: batch.studentRows ?? [],
         compensationBatches:
           compensationByOriginalBatchId.get(batch.id) ?? [],
       });
+      const classSummary = calculateMeasurementClassSummary({
+        rows: effectiveRows,
+        maxScore: getSavedMaxScore(effectiveRows) ?? template.maxScore,
+      });
 
-      effectiveRowsByBatchId.set(
-        batch.id,
-        new Map(effectiveRows.map((row) => [row.studentId, row])),
-      );
-
-      const students = studentsByContext.get(contextKey) ?? new Map<string, string>();
-      for (const row of effectiveRows) {
-        if (!students.has(row.studentId)) {
-          students.set(
-            row.studentId,
-            row.studentDisplayName?.trim() || row.studentId,
-          );
-        }
-      }
-      studentsByContext.set(contextKey, students);
+      classPercentageByBatchId.set(batch.id, classSummary.percentage);
     }
 
     const configurationWarnings: ConfigurationWarning[] = [];
@@ -521,49 +597,106 @@ export default function StaffKgMeasurementSummaryPage() {
         });
       }
 
-      const students = studentsByContext.get(contextKey) ?? new Map<string, string>();
-      for (const [studentId, studentDisplayName] of students) {
-        const measurementsByRole: Partial<
-          Record<KgEvaluatorRole, StudentTemplateMeasurement[]>
-        > = {};
-        const roleInputs: Partial<
-          Record<
-            KgEvaluatorRole,
-            { expectedMeasurementCount: number; measurementPercentages: Array<number | null> }
-          >
-        > = {};
+      const measurementsByRole: Partial<
+        Record<KgEvaluatorRole, TemplateClassMeasurement[]>
+      > = {};
+      const roleInputs: Partial<
+        Record<
+          KgEvaluatorRole,
+          { expectedMeasurementCount: number; measurementPercentages: Array<number | null> }
+        >
+      > = {};
 
-        for (const [roleKey, roleTemplates] of expectedTemplatesByRole) {
-          const measurements = roleTemplates.map((template) => {
-            const measurementKey = `${contextKey}|${template.id}`;
-            const batch = latestOriginalBatchByTemplate.get(measurementKey);
-            const row = batch
-              ? effectiveRowsByBatchId.get(batch.id)?.get(studentId)
-              : undefined;
+      for (const [roleKey, roleTemplates] of expectedTemplatesByRole) {
+        const measurements = roleTemplates.map((template) => {
+          const batch = latestOriginalBatchByTemplate.get(
+            `${contextKey}|${template.id}`,
+          );
 
-            return {
-              templateId: template.id,
-              templateTitle: template.title || template.id,
-              percentage: getMeasurementPercentage({ row, template }),
-            };
-          });
-
-          measurementsByRole[roleKey] = measurements;
-          roleInputs[roleKey] = {
-            expectedMeasurementCount: roleTemplates.length,
-            measurementPercentages: measurements.map(
-              (measurement) => measurement.percentage,
-            ),
+          return {
+            templateId: template.id,
+            templateTitle: template.title || template.id,
+            percentage: batch
+              ? classPercentageByBatchId.get(batch.id) ?? null
+              : null,
           };
-        }
-
-        const summary = calculateKgWeightedMeasurementSummary({
-          subjectKey: context.subjectKey,
-          roleInputs,
         });
 
+        measurementsByRole[roleKey] = measurements;
+        roleInputs[roleKey] = {
+          expectedMeasurementCount: roleTemplates.length,
+          measurementPercentages: measurements.map(
+            (measurement) => measurement.percentage,
+          ),
+        };
+      }
+
+      if (
+        !expectedTemplates.some((template) =>
+          latestOriginalBatchByTemplate.has(`${contextKey}|${template.id}`),
+        )
+      ) {
+        continue;
+      }
+
+      const summary = calculateKgWeightedMeasurementSummary({
+        subjectKey: context.subjectKey,
+        roleInputs,
+      });
+      const teacherTemplateAssignmentIds = uniqueStrings(
+        (expectedTemplatesByRole.get("KG_TEACHER") ?? []).map((template) =>
+          latestOriginalBatchByTemplate
+            .get(`${contextKey}|${template.id}`)
+            ?.teacherAssignmentId,
+        ),
+      );
+      const teacherAssignmentIds =
+        teacherTemplateAssignmentIds.length > 0
+          ? teacherTemplateAssignmentIds
+          : uniqueStrings(
+              expectedTemplates.map((template) =>
+                latestOriginalBatchByTemplate
+                  .get(`${contextKey}|${template.id}`)
+                  ?.teacherAssignmentId,
+              ),
+            );
+      const teacherIdentityByKey = new Map<
+        string,
+        Pick<
+          KgSummaryRow,
+          "teacherAssignmentId" | "teacherPersonId" | "teacherName"
+        >
+      >();
+
+      for (const teacherAssignmentId of teacherAssignmentIds) {
+        const teacher = teacherDirectoryByAssignmentId.get(teacherAssignmentId);
+        const teacherPersonId = teacher?.teacherPersonId || "";
+        const identityKey = teacherPersonId
+          ? `PERSON:${teacherPersonId}`
+          : `ASSIGNMENT:${teacherAssignmentId}`;
+
+        if (!teacherIdentityByKey.has(identityKey)) {
+          teacherIdentityByKey.set(identityKey, {
+            teacherAssignmentId,
+            teacherPersonId,
+            teacherName: teacher?.teacherName || "غير محدد",
+          });
+        }
+      }
+
+      if (teacherIdentityByKey.size === 0) {
+        teacherIdentityByKey.set("UNRESOLVED", {
+          teacherAssignmentId: "",
+          teacherPersonId: "",
+          teacherName: "غير محدد",
+        });
+      }
+
+      for (const teacher of teacherIdentityByKey.values()) {
         rows.push({
-          key: `${contextKey}|${studentId}`,
+          key: `${contextKey}|${
+            teacher.teacherPersonId || teacher.teacherAssignmentId || "UNRESOLVED"
+          }`,
           schoolId: context.classInfo.schoolId ?? "",
           schoolName:
             staffActor?.schools
@@ -580,8 +713,7 @@ export default function StaffKgMeasurementSummaryPage() {
             "فصل روضة",
           subjectKey: context.subjectKey,
           subjectTitle: getKgSubjectLabel(context.subjectKey),
-          studentId,
-          studentDisplayName,
+          ...teacher,
           summary,
           measurementsByRole,
           missingText: getMissingText(summary),
@@ -597,7 +729,7 @@ export default function StaffKgMeasurementSummaryPage() {
         if (classCompare !== 0) return classCompare;
         const subjectCompare = left.subjectTitle.localeCompare(right.subjectTitle, "ar");
         if (subjectCompare !== 0) return subjectCompare;
-        return left.studentDisplayName.localeCompare(right.studentDisplayName, "ar");
+        return left.teacherName.localeCompare(right.teacherName, "ar");
       }),
       configurationWarnings,
       matchingTemplateCount: Array.from(expectedTemplatesByContext.values()).reduce(
@@ -610,6 +742,7 @@ export default function StaffKgMeasurementSummaryPage() {
     currentKgClasses,
     currentTerm,
     staffActor?.schools,
+    teacherDirectoryByAssignmentId,
     templates,
     visibleClassByKey,
   ]);
@@ -628,44 +761,76 @@ export default function StaffKgMeasurementSummaryPage() {
       ),
     [rows, schoolFilter],
   );
+  const teacherOptions = useMemo(() => {
+    const teacherNameByPersonId = new Map<string, string>();
+
+    for (const row of rowsMatchingSchool) {
+      if (!row.teacherPersonId || teacherNameByPersonId.has(row.teacherPersonId)) {
+        continue;
+      }
+
+      teacherNameByPersonId.set(row.teacherPersonId, row.teacherName);
+    }
+
+    return Array.from(teacherNameByPersonId.entries()).sort(
+      ([, leftName], [, rightName]) => leftName.localeCompare(rightName, "ar"),
+    );
+  }, [rowsMatchingSchool]);
+  const effectiveTeacherFilter =
+    teacherFilter !== "ALL" &&
+    teacherOptions.some(([teacherPersonId]) => teacherPersonId === teacherFilter)
+      ? teacherFilter
+      : "ALL";
+  const rowsMatchingSchoolAndTeacher = useMemo(
+    () =>
+      rowsMatchingSchool.filter(
+        (row) =>
+          effectiveTeacherFilter === "ALL" ||
+          row.teacherPersonId === effectiveTeacherFilter,
+      ),
+    [effectiveTeacherFilter, rowsMatchingSchool],
+  );
   const classOptions = useMemo(
     () =>
       Array.from(
         new Map(
-          rowsMatchingSchool.map((row) => [row.classKey, row.classTitle]),
+          rowsMatchingSchoolAndTeacher.map((row) => [
+            row.classKey,
+            row.classTitle,
+          ]),
         ).entries(),
       ).sort(
         ([leftKey, leftTitle], [rightKey, rightTitle]) =>
           leftTitle.localeCompare(rightTitle, "ar") ||
           leftKey.localeCompare(rightKey, "ar"),
       ),
-    [rowsMatchingSchool],
+    [rowsMatchingSchoolAndTeacher],
   );
   const effectiveClassFilter =
     classFilter !== "ALL" &&
     classOptions.some(([classKey]) => classKey === classFilter)
       ? classFilter
       : "ALL";
-  const rowsMatchingSchoolAndClass = useMemo(
+  const rowsMatchingSchoolTeacherAndClass = useMemo(
     () =>
-      rowsMatchingSchool.filter(
+      rowsMatchingSchoolAndTeacher.filter(
         (row) =>
           effectiveClassFilter === "ALL" ||
           row.classKey === effectiveClassFilter,
       ),
-    [effectiveClassFilter, rowsMatchingSchool],
+    [effectiveClassFilter, rowsMatchingSchoolAndTeacher],
   );
   const subjectOptions = useMemo(
     () =>
       Array.from(
         new Map(
-          rowsMatchingSchoolAndClass.map((row) => [
+          rowsMatchingSchoolTeacherAndClass.map((row) => [
             row.subjectKey,
             row.subjectTitle,
           ]),
         ).entries(),
       ),
-    [rowsMatchingSchoolAndClass],
+    [rowsMatchingSchoolTeacherAndClass],
   );
   const effectiveSubjectFilter =
     subjectFilter !== "ALL" &&
@@ -674,6 +839,9 @@ export default function StaffKgMeasurementSummaryPage() {
       : "ALL";
 
   useEffect(() => {
+    if (teacherFilter !== effectiveTeacherFilter) {
+      setTeacherFilter(effectiveTeacherFilter);
+    }
     if (classFilter !== effectiveClassFilter) {
       setClassFilter(effectiveClassFilter);
     }
@@ -684,21 +852,26 @@ export default function StaffKgMeasurementSummaryPage() {
     classFilter,
     effectiveClassFilter,
     effectiveSubjectFilter,
+    effectiveTeacherFilter,
     subjectFilter,
+    teacherFilter,
   ]);
 
   const filteredRows = useMemo(
     () =>
-      rowsMatchingSchoolAndClass.filter(
+      rowsMatchingSchoolTeacherAndClass.filter(
         (row) =>
           effectiveSubjectFilter === "ALL" ||
           row.subjectKey === effectiveSubjectFilter,
       ),
-    [effectiveSubjectFilter, rowsMatchingSchoolAndClass],
+    [effectiveSubjectFilter, rowsMatchingSchoolTeacherAndClass],
   );
   const completeCount = filteredRows.filter((row) => row.summary.isComplete).length;
   const hasActiveFilters =
-    schoolFilter !== "ALL" || subjectFilter !== "ALL" || classFilter !== "ALL";
+    schoolFilter !== "ALL" ||
+    teacherFilter !== "ALL" ||
+    subjectFilter !== "ALL" ||
+    classFilter !== "ALL";
 
   if (!staffActor) {
     return (
@@ -764,7 +937,7 @@ export default function StaffKgMeasurementSummaryPage() {
               خلاصة قياسات الروضة
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              نتائج الطلاب الموزونة في بساتين المعرفة والقرآن الكريم ونعد ونحسب.
+              خلاصة موزونة للمعلمات والصفوف في بساتين المعرفة والقرآن الكريم ونعد ونحسب.
             </p>
           </div>
         </div>
@@ -800,6 +973,12 @@ export default function StaffKgMeasurementSummaryPage() {
             options={schoolOptions}
           />
           <FilterSelect
+            label="المعلم"
+            value={teacherFilter}
+            onChange={setTeacherFilter}
+            options={teacherOptions}
+          />
+          <FilterSelect
             label="الصف والفصل"
             value={classFilter}
             onChange={setClassFilter}
@@ -816,6 +995,7 @@ export default function StaffKgMeasurementSummaryPage() {
               type="button"
               onClick={() => {
                 setSchoolFilter("ALL");
+                setTeacherFilter("ALL");
                 setSubjectFilter("ALL");
                 setClassFilter("ALL");
               }}
@@ -829,7 +1009,7 @@ export default function StaffKgMeasurementSummaryPage() {
       </section>
 
       <section className="grid gap-3 sm:grid-cols-3">
-        <SummaryCard label="عدد الطلاب" value={filteredRows.length} />
+        <SummaryCard label="عدد الصفوف/المواد" value={filteredRows.length} />
         <SummaryCard label="مكتملة" value={completeCount} />
         <SummaryCard
           label="غير مكتملة"
@@ -850,7 +1030,7 @@ export default function StaffKgMeasurementSummaryPage() {
           </div>
         ) : rows.length === 0 ? (
           <div className="p-8 text-center text-sm leading-7 text-muted-foreground">
-            لا توجد دفعات قياس مرسلة لطلاب الروضة ضمن القوالب المطابقة حتى الآن.
+            لا توجد دفعات قياس مرسلة ضمن القوالب المطابقة حتى الآن.
           </div>
         ) : filteredRows.length === 0 ? (
           <div className="p-8 text-center text-sm leading-7 text-muted-foreground">
@@ -861,11 +1041,12 @@ export default function StaffKgMeasurementSummaryPage() {
             <table className="w-full min-w-[1240px] text-right text-sm">
               <thead className="bg-muted/50 text-xs text-muted-foreground">
                 <tr>
-                  <th className="px-4 py-3 font-semibold">الطالب</th>
                   <th className="px-4 py-3 font-semibold">المادة</th>
-                  <th className="px-4 py-3 font-semibold">المعلمة</th>
-                  <th className="px-4 py-3 font-semibold">الوكيلة</th>
-                  <th className="px-4 py-3 font-semibold">المشرفة</th>
+                  <th className="px-4 py-3 font-semibold">اسم المعلمة</th>
+                  <th className="px-4 py-3 font-semibold">الصف والفصل</th>
+                  <th className="px-4 py-3 font-semibold">قياس المعلمة</th>
+                  <th className="px-4 py-3 font-semibold">قياس الوكيلة</th>
+                  <th className="px-4 py-3 font-semibold">قياس المشرفة</th>
                   <th className="px-4 py-3 font-semibold">النتيجة النهائية</th>
                   <th className="px-4 py-3 font-semibold">النتيجة المؤقتة</th>
                   <th className="px-4 py-3 font-semibold">الحالة</th>
@@ -893,13 +1074,12 @@ function KgSummaryTableRows({ row }: { row: KgSummaryRow }) {
   return (
     <>
       <tr className="border-t align-top">
-        <td className="px-4 py-4">
-          <p className="font-medium">{row.studentDisplayName}</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {row.classTitle} · {row.schoolName}
-          </p>
-        </td>
         <td className="px-4 py-4 font-medium">{row.subjectTitle}</td>
+        <td className="px-4 py-4">
+          <p className="font-medium">{row.teacherName}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{row.schoolName}</p>
+        </td>
+        <td className="px-4 py-4 font-medium">{row.classTitle}</td>
         <td className="px-4 py-4">
           <RoleCell component={teacher} />
         </td>
@@ -941,7 +1121,7 @@ function KgSummaryTableRows({ row }: { row: KgSummaryRow }) {
         </td>
       </tr>
       <tr className="border-t bg-muted/20">
-        <td colSpan={8} className="px-4 py-3">
+        <td colSpan={9} className="px-4 py-3">
           <details>
             <summary className="cursor-pointer text-sm font-medium text-primary">
               تفاصيل القياسات
@@ -1009,7 +1189,7 @@ function MeasurementTrace({
   measurements,
 }: {
   label: string;
-  measurements: StudentTemplateMeasurement[];
+  measurements: TemplateClassMeasurement[];
 }) {
   return (
     <div className="rounded-xl border bg-card p-3">

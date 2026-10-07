@@ -1,0 +1,856 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-r-albatel",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-f-alhamaad",
+    "supervisorEmail": "",
+    "schoolArg": "kg-02",
+    "planIdArg": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation"
+  },
+  "teacher": {
+    "uid": "RWyxo00bfrX2jPcCRGUfxASoT4o2",
+    "personId": "p-r-albatel",
+    "email": "r.albatel@qz.org.sa",
+    "displayName": "رهام سويد محمد الباتل",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "H9nDRWMOqsfOUE27cJBbJn2RESE3",
+    "personId": "p-f-alhamaad",
+    "email": "f-alhamaad@qz.org.sa",
+    "displayName": "فاطمة حماد الحماد",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "kg-02",
+    "schoolTitle": "روضة واحة الرياحين الثانية"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 6,
+    "teacherSchools": [
+      "kg-02"
+    ],
+    "supervisorPatternAssignments": 176,
+    "supervisorPatternSchools": [
+      "kg-01",
+      "kg-02",
+      "kg-03",
+      "kg-04"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 1,
+    "plans": [
+      {
+        "id": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+        "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الثانية - الفصل الأول",
+        "frameworkId": "kg-educational-supervisor-class-teacher-diagnostic-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 1,
+    "createOrUpdateEvaluatorAssignments": 2,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 3
+  },
+  "planReports": [
+    {
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "title": "الزيارة التشخيصية لمعلمات الصف بواسطة المشرفة التعليمية - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-class-teacher-diagnostic-evaluation-v1",
+      "cyclesCount": 2,
+      "newTargetId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-target-p-r-albatel",
+      "cycleReports": [
+        {
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01",
+          "cycleTitle": "الزيارة التشخيصية الأولى",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01-p-r-albatel-p-f-alhamaad",
+              "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01",
+              "evaluatorPersonId": "p-f-alhamaad",
+              "evaluatorEmail": "f-alhamaad@qz.org.sa",
+              "evaluatorDisplayName": "فاطمة حماد الحماد",
+              "patternId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01-p-l-alatalla-p-f-alhamaad",
+              "patternPlanId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+              "patternCycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01",
+              "patternTargetPersonId": "p-l-alatalla",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02",
+          "cycleTitle": "الزيارة التشخيصية الثانية",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02-p-r-albatel-p-f-alhamaad",
+              "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02",
+              "evaluatorPersonId": "p-f-alhamaad",
+              "evaluatorEmail": "f-alhamaad@qz.org.sa",
+              "evaluatorDisplayName": "فاطمة حماد الحماد",
+              "patternId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02-p-l-alatalla-p-f-alhamaad",
+              "patternPlanId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+              "patternCycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02",
+              "patternTargetPersonId": "p-l-alatalla",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-01-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-diagnostic-evaluation-evaluation-02-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-01__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-01",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-01-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-02__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-02",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-02-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-03__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-03",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-03-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-04__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-04",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-04-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-05__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-05",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-05-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-06__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-06",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-06-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-07__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-07",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-07-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-08__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-08",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-08-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-09__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-09",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-09-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-10__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-10",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-10-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-11__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-11",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-11-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-12__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-12",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-12-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-13__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-13",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-13-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-14__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-14",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-14-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-15__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-15",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-15-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-16__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-16",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-16-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-17__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-17",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-17-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-18__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-18",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-18-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-19__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-19",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-class-teacher-weekly-evaluation-week-19-p-r-albatel-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01-p-r-albatel-p-f-alhamaad",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02-p-r-albatel-p-f-alhamaad",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan__kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-01__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-01",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-01-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan__kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-02__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-02",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-02-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit__kg-02-ay-1448-term-1-kg-vp-supervisory-visit-visit-01__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit-visit-01",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit-kg-02-ay-1448-term-1-kg-vp-supervisory-visit-visit-01-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit__kg-02-ay-1448-term-1-kg-vp-supervisory-visit-visit-02__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit",
+      "cycleId": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit-visit-02",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-kg-vp-supervisory-visit-kg-02-ay-1448-term-1-kg-vp-supervisory-visit-visit-02-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09-p-r-albatel-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-01-p-r-albatel-p-f-alhamaad",
+          "source": "NEW",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "فاطمة حماد الحماد",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02__p-r-albatel",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02",
+      "targetPersonId": "p-r-albatel",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-class-teacher-diagnostic-evaluation-visit-02-p-r-albatel-p-f-alhamaad",
+          "source": "NEW",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "فاطمة حماد الحماد",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  }
+}

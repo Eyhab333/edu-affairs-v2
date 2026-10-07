@@ -1,0 +1,1682 @@
+{
+  "decision": "READY_TO_APPLY",
+  "mode": "APPLY",
+  "input": {
+    "orgId": "takween",
+    "academicYearId": "ay-1448",
+    "termId": "term-1",
+    "teacherPersonId": "p-alanoodf",
+    "teacherEmail": "",
+    "supervisorPersonId": "p-f-alhamaad",
+    "supervisorEmail": "",
+    "schoolArg": "kg-02",
+    "planIdArg": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation"
+  },
+  "teacher": {
+    "uid": "7h6mGmwWevSW0meBvDbjel80gUX2",
+    "personId": "p-alanoodf",
+    "email": "alanoodf@qz.org.sa",
+    "displayName": "العنود دخيل عبدالله الفهيد",
+    "roleKey": "TEACHER",
+    "source": "users/personId"
+  },
+  "supervisor": {
+    "uid": "H9nDRWMOqsfOUE27cJBbJn2RESE3",
+    "personId": "p-f-alhamaad",
+    "email": "f-alhamaad@qz.org.sa",
+    "displayName": "فاطمة حماد الحماد",
+    "roleKey": "EDU_SUPERVISOR",
+    "source": "users/personId"
+  },
+  "selectedSchool": {
+    "schoolId": "kg-02",
+    "schoolTitle": "روضة واحة الرياحين الثانية"
+  },
+  "currentState": {
+    "teacherActiveTargetAssignments": 10,
+    "teacherSchools": [
+      "kg-02"
+    ],
+    "supervisorPatternAssignments": 180,
+    "supervisorPatternSchools": [
+      "kg-01",
+      "kg-02",
+      "kg-03",
+      "kg-04"
+    ],
+    "existingTeacherSupervisorSubmissions": {
+      "total": 0,
+      "byStatus": {}
+    }
+  },
+  "targetPlans": {
+    "count": 1,
+    "plans": [
+      {
+        "id": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+        "title": "تقييم المشرفة التعليمية لمعلمة القيم - روضة واحة الرياحين الثانية - الفصل الأول",
+        "frameworkId": "kg-educational-supervisor-values-teacher-periodic-evaluation-v1"
+      }
+    ]
+  },
+  "plannedChanges": {
+    "createOrUpdateTargetAssignments": 1,
+    "createOrUpdateEvaluatorAssignments": 2,
+    "rebalanceExistingEvaluatorWeights": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "totalWrites": 3
+  },
+  "planReports": [
+    {
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+      "title": "تقييم المشرفة التعليمية لمعلمة القيم - روضة واحة الرياحين الثانية - الفصل الأول",
+      "frameworkId": "kg-educational-supervisor-values-teacher-periodic-evaluation-v1",
+      "cyclesCount": 2,
+      "newTargetId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-target-p-alanoodf",
+      "cycleReports": [
+        {
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01",
+          "cycleTitle": "التقييم الأول",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01-p-alanoodf-p-f-alhamaad",
+              "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01",
+              "evaluatorPersonId": "p-f-alhamaad",
+              "evaluatorEmail": "f-alhamaad@qz.org.sa",
+              "evaluatorDisplayName": "فاطمة حماد الحماد",
+              "patternId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01-p-r-albatel-p-f-alhamaad",
+              "patternPlanId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+              "patternCycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01",
+              "patternTargetPersonId": "p-r-albatel",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        },
+        {
+          "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02",
+          "cycleTitle": "التقييم الثاني",
+          "patternSource": "SAME_PLAN_SAME_CYCLE",
+          "evaluatorReports": [
+            {
+              "action": "CREATE_OR_UPDATE",
+              "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02-p-alanoodf-p-f-alhamaad",
+              "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02",
+              "evaluatorPersonId": "p-f-alhamaad",
+              "evaluatorEmail": "f-alhamaad@qz.org.sa",
+              "evaluatorDisplayName": "فاطمة حماد الحماد",
+              "patternId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02-p-r-albatel-p-f-alhamaad",
+              "patternPlanId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+              "patternCycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02",
+              "patternTargetPersonId": "p-r-albatel",
+              "patternTargetDisplayName": "",
+              "patternSource": "SAME_PLAN_SAME_CYCLE"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "weightRebalanceReports": [
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-01-p-alanoodf-p-f-alhamaad",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "فاطمة حماد الحماد",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-values-teacher-diagnostic-evaluation-visit-02-p-alanoodf-p-f-alhamaad",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "فاطمة حماد الحماد",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan__kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-01-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan__kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan",
+      "cycleId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-kg-vp-supervisory-plan-kg-02-ay-1448-term-1-kg-vp-supervisory-plan-visit-02-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-01-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-02-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-03__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-03",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-periodic-evaluation-evaluation-03-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-01-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-02-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-03__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-03",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-03-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-04__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-04",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-04-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-05__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-05",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-05-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-06__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-06",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-06-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-07__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-07",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-07-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-08__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-08",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-08-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-09__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-09",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-09-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-10__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-10",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-10-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-11__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-11",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-11-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-12__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-12",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-12-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-13__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-13",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-13-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-14__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-14",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-14-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-15__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-15",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-15-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-16__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-16",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-16-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-17__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-17",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-17-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-18__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-18",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-18-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-19__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-19",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-kg-02-ay-1448-term-1-values-coordinator-values-teacher-weekly-evaluation-week-19-p-alanoodf-p-t-altwala",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-t-altwala",
+          "evaluatorEmail": "t.altwala@qz.org.sa",
+          "evaluatorDisplayName": "طيبة سليمان الطوالة",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-01-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-periodic-evaluation-evaluation-02-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-01-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-02-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-03__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-03",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-03-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-04__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-04",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-04-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-05__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-05",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-05-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-06__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-06",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-06-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-07__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-07",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-07-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-08__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-08",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-08-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-09__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-09",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-09-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-10__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-10",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-10-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-11__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-11",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-11-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-12__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-12",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-12-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-13__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-13",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-13-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-14__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-14",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-14-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-15__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-15",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-15-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-16__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-16",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-16-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-17__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-17",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-17-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-18__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-18",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-18-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation__kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-19__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-19",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-values-teacher-weekly-evaluation-week-19-p-alanoodf-p-s-alturiqe",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-s-alturiqe",
+          "evaluatorEmail": "s.alturiqe@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation-visit-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation-visit-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation-visit-01-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation-visit-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation-visit-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-diagnostic-evaluation-visit-02-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-01-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-02-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-03__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-03",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-03-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-04__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-04",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-04-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-05__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-05",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-05-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-06__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-06",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-06-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-07__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-07",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-07-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-08__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-08",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-08-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-09__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-09",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-09-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-10__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-10",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-10-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-11__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-11",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-11-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-12__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-12",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-12-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-13__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-13",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-13-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-14__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-14",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-14-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-15__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-15",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-15-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-16__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-16",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-16-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-17__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-17",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-17-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-18__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-18",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-18-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation__kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-19__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-19",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vice-principal-class-teacher-weekly-evaluation-week-19-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-01-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-02-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-03-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-04-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-05-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-06-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-07-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-08-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation__kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-kg-02-ay-1448-term-1-vp-class-teacher-biweekly-evaluation-period-09-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation__kg-02-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation-kg-02-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-01-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation__kg-02-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-vp-values-teacher-evaluation-kg-02-ay-1448-term-1-vp-values-teacher-evaluation-evaluation-02-p-alanoodf-p-h-aljower",
+          "source": "EXISTING",
+          "evaluatorPersonId": "p-h-aljower",
+          "evaluatorEmail": "h.aljower@qz.org.sa",
+          "evaluatorDisplayName": "هاجر أحمد فهد الجوير",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-01-p-alanoodf-p-f-alhamaad",
+          "source": "NEW",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "فاطمة حماد الحماد",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    },
+    {
+      "groupKey": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation__kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02__p-alanoodf",
+      "planId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation",
+      "cycleId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02",
+      "targetPersonId": "p-alanoodf",
+      "evaluatorCount": 1,
+      "targetWeightTotal": 100,
+      "evaluators": [
+        {
+          "assignmentId": "kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-kg-02-ay-1448-term-1-educational-supervisor-values-teacher-periodic-evaluation-evaluation-02-p-alanoodf-p-f-alhamaad",
+          "source": "NEW",
+          "evaluatorPersonId": "p-f-alhamaad",
+          "evaluatorEmail": "f-alhamaad@qz.org.sa",
+          "evaluatorDisplayName": "فاطمة حماد الحماد",
+          "oldWeight": 100,
+          "newWeight": 100
+        }
+      ]
+    }
+  ],
+  "skippedExistingEvaluatorAssignments": [],
+  "warnings": [],
+  "conflicts": [],
+  "safety": {
+    "deletes": 0,
+    "submissionsTouched": 0,
+    "otherSupervisorsTouched": 0,
+    "existingEvaluatorAssignmentsOnlyTouchedForWeightRebalance": 0,
+    "requiresApplyFlag": true
+  },
+  "applyResult": {
+    "decision": "APPLIED",
+    "committedWrites": 3,
+    "createdOrUpdatedTargetAssignments": 1,
+    "createdOrUpdatedEvaluatorAssignments": 2,
+    "existingEvaluatorWeightsRebalanced": 0,
+    "skippedExistingEvaluatorAssignments": 0,
+    "submissionsTouched": 0
+  }
+}
