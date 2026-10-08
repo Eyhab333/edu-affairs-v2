@@ -1,0 +1,704 @@
+{
+  "generatedAt": "2026-10-08T09:19:02.668Z",
+  "readOnly": true,
+  "orgId": "takween",
+  "academicYearId": "ay-1448",
+  "termId": "term-1",
+  "currentUiQueryParamSource": {
+    "file": "apps/web-staff/app/staff/classes/[classId]/measurements/page.tsx",
+    "function": "buildBatchNewHref -> buildClassQuery",
+    "sent": [
+      "schoolId",
+      "academicYearId"
+    ],
+    "omitted": [
+      "classSubjectOfferingId",
+      "teacherAssignmentId",
+      "subjectKey"
+    ]
+  },
+  "teachers": [
+    {
+      "person": {
+        "personId": "p-a-s-alfrhood",
+        "displayName": "الهنوف سليمان عبدالله الفرهود",
+        "linkedUids": [
+          "rvnb1rhuAIbB1kuBtNmm1CpHfVQ2"
+        ]
+      },
+      "currentAssignments": [
+        {
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-adhkar-identity-anthems",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+          "subjectId": "subject-adhkar-identity-anthems",
+          "classId": "",
+          "classSubjectOfferingId": "kg-04-kg2-a-adhkar-identity-anthems",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-count-and-calculate",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "COUNT_AND_CALCULATE",
+          "subjectId": "subject-count-and-calculate",
+          "classId": "",
+          "classSubjectOfferingId": "kg-04-kg2-a-count-and-calculate",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-class",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "CLASS",
+          "subjectId": "subject-class",
+          "classId": "",
+          "classSubjectOfferingId": "kg2-a-class",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-learning-gardens",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "LEARNING_GARDENS",
+          "subjectId": "subject-learning-gardens",
+          "classId": "",
+          "classSubjectOfferingId": "kg2-a-learning-gardens",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-numbers",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "NUMBERS",
+          "subjectId": "numbers",
+          "classId": "",
+          "classSubjectOfferingId": "kg2-a-numbers",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-quran",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "QURAN",
+          "subjectId": "subject-quran",
+          "classId": "",
+          "classSubjectOfferingId": "kg2-a-quran",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        }
+      ],
+      "currentLinks": [
+        {
+          "linkId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-adhkar-identity-anthems__class-link__kg2-a",
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-adhkar-identity-anthems",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "classSubjectOfferingId": "kg-04-kg2-a-adhkar-identity-anthems",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-count-and-calculate__class-link__kg2-a",
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-count-and-calculate",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "classSubjectOfferingId": "kg-04-kg2-a-count-and-calculate",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-class__class-link__kg2-a",
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-class",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "classSubjectOfferingId": "kg2-a-class",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-learning-gardens__class-link__kg2-a",
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-learning-gardens",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "classSubjectOfferingId": "kg2-a-learning-gardens",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-numbers__class-link__kg2-a",
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-numbers",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "classSubjectOfferingId": "kg2-a-numbers",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-quran__class-link__kg2-a",
+          "assignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-quran",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "classSubjectOfferingId": "kg2-a-quran",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        }
+      ],
+      "currentOfferings": [
+        {
+          "offeringId": "kg-04-kg2-a-adhkar-identity-anthems",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+          "subjectId": "subject-adhkar-identity-anthems",
+          "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg-04-kg2-a-count-and-calculate",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "COUNT_AND_CALCULATE",
+          "subjectId": "subject-count-and-calculate",
+          "subjectTitle": "نعد ونحسب",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg2-a-class",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "CLASS",
+          "subjectId": "subject-class",
+          "subjectTitle": "معلمة الصف",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg2-a-corners",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "CORNERS",
+          "subjectId": "subject-corners",
+          "subjectTitle": "الأركان",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg2-a-learning-gardens",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "LEARNING_GARDENS",
+          "subjectId": "subject-learning-gardens",
+          "subjectTitle": "بساتين المعرفة",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg2-a-numbers",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "NUMBERS",
+          "subjectId": "numbers",
+          "subjectTitle": "الأرقام",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg2-a-quran",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "QURAN",
+          "subjectId": "subject-quran",
+          "subjectTitle": "القرآن الكريم",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg2-a-values",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg2-a",
+          "subjectKey": "VALUES",
+          "subjectId": "subject-values",
+          "subjectTitle": "القيم",
+          "status": "ACTIVE",
+          "isArchived": false
+        }
+      ],
+      "draftBatches": [
+        {
+          "batchId": "PB9TMZv35LXr7TNmGDGP",
+          "status": "DRAFT",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "termId": "term-1",
+          "classId": "kg2-a",
+          "subjectKey": "COUNT_AND_CALCULATE",
+          "templateId": "kg2-count-and-calculate-ay1448-term1-tracker",
+          "templateTitle": "نعد ونحسب — المستوى الثاني — متابعة الفصل الدراسي الأول",
+          "classSubjectOfferingId": "kg-04-kg2-a-count-and-calculate",
+          "teacherAssignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-count-and-calculate",
+          "createdByPersonId": "p-a-s-alfrhood",
+          "recordedByPersonId": "",
+          "createdAt": "2026-10-07T15:55:34.541Z",
+          "updatedAt": "2026-10-07T15:55:34.541Z",
+          "matchedSignals": "teacherAssignmentId, createdByPersonId"
+        },
+        {
+          "batchId": "RszsqpvWCIydsx9qSZPn",
+          "status": "DRAFT",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "termId": "term-1",
+          "classId": "kg2-a",
+          "subjectKey": "QURAN",
+          "templateId": "kg2-quran-ay1448-term1-tracker",
+          "templateTitle": "القرآن الكريم — المستوى الثاني — متابعة الفصل الدراسي الأول",
+          "classSubjectOfferingId": "kg2-a-quran",
+          "teacherAssignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-quran",
+          "createdByPersonId": "p-a-s-alfrhood",
+          "recordedByPersonId": "",
+          "createdAt": "2026-10-07T15:40:38.384Z",
+          "updatedAt": "2026-10-07T15:40:38.384Z",
+          "matchedSignals": "teacherAssignmentId, createdByPersonId"
+        }
+      ],
+      "comparisons": [
+        {
+          "personId": "p-a-s-alfrhood",
+          "batchId": "PB9TMZv35LXr7TNmGDGP",
+          "classId": "kg2-a",
+          "templateId": "kg2-count-and-calculate-ay1448-term1-tracker",
+          "storedTeacherAssignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-count-and-calculate",
+          "currentTeacherAssignmentIds": [
+            "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg-04-kg2-a-count-and-calculate"
+          ],
+          "teacherAssignmentMatch": "YES",
+          "storedClassSubjectOfferingId": "kg-04-kg2-a-count-and-calculate",
+          "currentClassSubjectOfferingIds": [
+            "kg-04-kg2-a-count-and-calculate"
+          ],
+          "classSubjectOfferingMatch": "YES",
+          "storedSchoolId": "kg-04",
+          "currentSchoolIds": [
+            "kg-04"
+          ],
+          "schoolMatch": "YES",
+          "storedAcademicYearId": "ay-1448",
+          "expectedAcademicYearId": "ay-1448",
+          "academicYearMatch": "YES",
+          "storedTermId": "term-1",
+          "expectedTermId": "term-1",
+          "termMatch": "YES",
+          "currentUiTeacherAssignmentId": "(omitted)",
+          "currentUiClassSubjectOfferingId": "(omitted)",
+          "currentUiSubjectKey": "(omitted)",
+          "currentUiTeacherAssignmentMatch": "NO",
+          "currentUiClassSubjectOfferingMatch": "NO",
+          "likelyAutoReopenFailureReason": "CURRENT_UI_OMITS_REQUIRED_CONTEXT_IDS"
+        },
+        {
+          "personId": "p-a-s-alfrhood",
+          "batchId": "RszsqpvWCIydsx9qSZPn",
+          "classId": "kg2-a",
+          "templateId": "kg2-quran-ay1448-term1-tracker",
+          "storedTeacherAssignmentId": "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-quran",
+          "currentTeacherAssignmentIds": [
+            "teacher-provisioning__p-a-s-alfrhood__kg-04__ay-1448__term-1__kg2-a-quran"
+          ],
+          "teacherAssignmentMatch": "YES",
+          "storedClassSubjectOfferingId": "kg2-a-quran",
+          "currentClassSubjectOfferingIds": [
+            "kg2-a-quran"
+          ],
+          "classSubjectOfferingMatch": "YES",
+          "storedSchoolId": "kg-04",
+          "currentSchoolIds": [
+            "kg-04"
+          ],
+          "schoolMatch": "YES",
+          "storedAcademicYearId": "ay-1448",
+          "expectedAcademicYearId": "ay-1448",
+          "academicYearMatch": "YES",
+          "storedTermId": "term-1",
+          "expectedTermId": "term-1",
+          "termMatch": "YES",
+          "currentUiTeacherAssignmentId": "(omitted)",
+          "currentUiClassSubjectOfferingId": "(omitted)",
+          "currentUiSubjectKey": "(omitted)",
+          "currentUiTeacherAssignmentMatch": "NO",
+          "currentUiClassSubjectOfferingMatch": "NO",
+          "likelyAutoReopenFailureReason": "CURRENT_UI_OMITS_REQUIRED_CONTEXT_IDS"
+        }
+      ],
+      "likelyRootCause": [
+        "CURRENT_UI_OMITS_REQUIRED_CONTEXT_IDS"
+      ]
+    },
+    {
+      "person": {
+        "personId": "p-n-alkhunini",
+        "displayName": "نوره سليمان صالح الخنيني",
+        "linkedUids": [
+          "MxbFiC4pOCgz4CTUqANyt1ySPSW2"
+        ]
+      },
+      "currentAssignments": [
+        {
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-adhkar-identity-anthems",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+          "subjectId": "subject-adhkar-identity-anthems",
+          "classId": "",
+          "classSubjectOfferingId": "kg-04-kg3-b-adhkar-identity-anthems",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "COUNT_AND_CALCULATE",
+          "subjectId": "subject-count-and-calculate",
+          "classId": "",
+          "classSubjectOfferingId": "kg-04-kg3-b-count-and-calculate",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-learning-gardens",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "LEARNING_GARDENS",
+          "subjectId": "subject-learning-gardens",
+          "classId": "",
+          "classSubjectOfferingId": "kg-04-kg3-b-learning-gardens",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        },
+        {
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-quran",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "subjectKey": "QURAN",
+          "subjectId": "subject-quran",
+          "classId": "",
+          "classSubjectOfferingId": "kg-04-kg3-b-quran",
+          "status": "ACTIVE",
+          "isActive": null,
+          "startAt": "2026-08-28T21:09:18.114Z",
+          "endAt": null,
+          "currentActive": "YES"
+        }
+      ],
+      "currentLinks": [
+        {
+          "linkId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-adhkar-identity-anthems__class-link__kg3-b",
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-adhkar-identity-anthems",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "classSubjectOfferingId": "kg-04-kg3-b-adhkar-identity-anthems",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate__class-link__kg3-b",
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "classSubjectOfferingId": "kg-04-kg3-b-count-and-calculate",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-learning-gardens__class-link__kg3-b",
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-learning-gardens",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "classSubjectOfferingId": "kg-04-kg3-b-learning-gardens",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        },
+        {
+          "linkId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-quran__class-link__kg3-b",
+          "assignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-quran",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "classSubjectOfferingId": "kg-04-kg3-b-quran",
+          "subjectKey": "",
+          "subjectId": "",
+          "status": "",
+          "isActive": null,
+          "startAt": null,
+          "endAt": null
+        }
+      ],
+      "currentOfferings": [
+        {
+          "offeringId": "kg-04-kg3-b-adhkar-identity-anthems",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "subjectKey": "ADHKAR_IDENTITY_ANTHEMS",
+          "subjectId": "subject-adhkar-identity-anthems",
+          "subjectTitle": "الأذكار والهوية الوطنية والأناشيد",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg-04-kg3-b-corners",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "subjectKey": "CORNERS",
+          "subjectId": "subject-corners",
+          "subjectTitle": "الأركان",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg-04-kg3-b-count-and-calculate",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "subjectKey": "COUNT_AND_CALCULATE",
+          "subjectId": "subject-count-and-calculate",
+          "subjectTitle": "نعد ونحسب",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg-04-kg3-b-learning-gardens",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "subjectKey": "LEARNING_GARDENS",
+          "subjectId": "subject-learning-gardens",
+          "subjectTitle": "بساتين المعرفة",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg-04-kg3-b-quran",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "subjectKey": "QURAN",
+          "subjectId": "subject-quran",
+          "subjectTitle": "القرآن الكريم",
+          "status": "ACTIVE",
+          "isArchived": false
+        },
+        {
+          "offeringId": "kg-04-kg3-b-values",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "classId": "kg3-b",
+          "subjectKey": "VALUES",
+          "subjectId": "subject-values",
+          "subjectTitle": "القيم",
+          "status": "ACTIVE",
+          "isArchived": false
+        }
+      ],
+      "draftBatches": [
+        {
+          "batchId": "m1wuG6qfkCKkMBmbSIph",
+          "status": "DRAFT",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "termId": "term-1",
+          "classId": "kg3-b",
+          "subjectKey": "COUNT_AND_CALCULATE",
+          "templateId": "kg3-count-and-calculate-ay1448-term1-tracker",
+          "templateTitle": "نعد ونحسب — المستوى الثالث — متابعة الفصل الدراسي الأول",
+          "classSubjectOfferingId": "kg-04-kg3-b-count-and-calculate",
+          "teacherAssignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate",
+          "createdByPersonId": "p-n-alkhunini",
+          "recordedByPersonId": "",
+          "createdAt": "2026-09-26T17:04:39.786Z",
+          "updatedAt": "2026-09-26T17:04:39.786Z",
+          "matchedSignals": "teacherAssignmentId, createdByPersonId"
+        },
+        {
+          "batchId": "o2Q8bWXINF4BvVNGBks1",
+          "status": "DRAFT",
+          "schoolId": "kg-04",
+          "academicYearId": "ay-1448",
+          "termId": "term-1",
+          "classId": "kg3-b",
+          "subjectKey": "COUNT_AND_CALCULATE",
+          "templateId": "kg3-count-and-calculate-ay1448-term1-tracker",
+          "templateTitle": "نعد ونحسب — المستوى الثالث — متابعة الفصل الدراسي الأول",
+          "classSubjectOfferingId": "kg-04-kg3-b-count-and-calculate",
+          "teacherAssignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate",
+          "createdByPersonId": "p-n-alkhunini",
+          "recordedByPersonId": "",
+          "createdAt": "2026-09-30T23:13:44.059Z",
+          "updatedAt": "2026-09-30T23:13:44.059Z",
+          "matchedSignals": "teacherAssignmentId, createdByPersonId"
+        }
+      ],
+      "comparisons": [
+        {
+          "personId": "p-n-alkhunini",
+          "batchId": "m1wuG6qfkCKkMBmbSIph",
+          "classId": "kg3-b",
+          "templateId": "kg3-count-and-calculate-ay1448-term1-tracker",
+          "storedTeacherAssignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate",
+          "currentTeacherAssignmentIds": [
+            "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate"
+          ],
+          "teacherAssignmentMatch": "YES",
+          "storedClassSubjectOfferingId": "kg-04-kg3-b-count-and-calculate",
+          "currentClassSubjectOfferingIds": [
+            "kg-04-kg3-b-count-and-calculate"
+          ],
+          "classSubjectOfferingMatch": "YES",
+          "storedSchoolId": "kg-04",
+          "currentSchoolIds": [
+            "kg-04"
+          ],
+          "schoolMatch": "YES",
+          "storedAcademicYearId": "ay-1448",
+          "expectedAcademicYearId": "ay-1448",
+          "academicYearMatch": "YES",
+          "storedTermId": "term-1",
+          "expectedTermId": "term-1",
+          "termMatch": "YES",
+          "currentUiTeacherAssignmentId": "(omitted)",
+          "currentUiClassSubjectOfferingId": "(omitted)",
+          "currentUiSubjectKey": "(omitted)",
+          "currentUiTeacherAssignmentMatch": "NO",
+          "currentUiClassSubjectOfferingMatch": "NO",
+          "likelyAutoReopenFailureReason": "CURRENT_UI_OMITS_REQUIRED_CONTEXT_IDS"
+        },
+        {
+          "personId": "p-n-alkhunini",
+          "batchId": "o2Q8bWXINF4BvVNGBks1",
+          "classId": "kg3-b",
+          "templateId": "kg3-count-and-calculate-ay1448-term1-tracker",
+          "storedTeacherAssignmentId": "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate",
+          "currentTeacherAssignmentIds": [
+            "teacher-provisioning__p-n-alkhunini__kg-04__ay-1448__term-1__kg-04-kg3-b-count-and-calculate"
+          ],
+          "teacherAssignmentMatch": "YES",
+          "storedClassSubjectOfferingId": "kg-04-kg3-b-count-and-calculate",
+          "currentClassSubjectOfferingIds": [
+            "kg-04-kg3-b-count-and-calculate"
+          ],
+          "classSubjectOfferingMatch": "YES",
+          "storedSchoolId": "kg-04",
+          "currentSchoolIds": [
+            "kg-04"
+          ],
+          "schoolMatch": "YES",
+          "storedAcademicYearId": "ay-1448",
+          "expectedAcademicYearId": "ay-1448",
+          "academicYearMatch": "YES",
+          "storedTermId": "term-1",
+          "expectedTermId": "term-1",
+          "termMatch": "YES",
+          "currentUiTeacherAssignmentId": "(omitted)",
+          "currentUiClassSubjectOfferingId": "(omitted)",
+          "currentUiSubjectKey": "(omitted)",
+          "currentUiTeacherAssignmentMatch": "NO",
+          "currentUiClassSubjectOfferingMatch": "NO",
+          "likelyAutoReopenFailureReason": "CURRENT_UI_OMITS_REQUIRED_CONTEXT_IDS"
+        }
+      ],
+      "likelyRootCause": [
+        "CURRENT_UI_OMITS_REQUIRED_CONTEXT_IDS"
+      ]
+    }
+  ]
+}
