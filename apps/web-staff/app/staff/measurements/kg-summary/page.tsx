@@ -985,7 +985,23 @@ export default function StaffKgMeasurementSummaryPage() {
     );
   }
 
-  if (currentKgClasses.length === 0) {
+  if (
+    specialReportingAccess &&
+    (status === "idle" || status === "loading")
+  ) {
+    return (
+      <PageShell>
+        <section className="rounded-2xl border bg-card p-6 text-center text-sm text-muted-foreground shadow-sm">
+          جارٍ تحميل خلاصة قياسات الروضة...
+        </section>
+      </PageShell>
+    );
+  }
+
+  if (
+    currentKgClasses.length === 0 &&
+    (!specialReportingAccess || status === "success")
+  ) {
     return (
       <PageShell>
         <EmptyState
