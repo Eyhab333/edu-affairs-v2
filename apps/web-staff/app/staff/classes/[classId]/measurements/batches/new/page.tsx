@@ -74,6 +74,48 @@ type StaffClassSubjectOffering = {
   displayName?: string;
   shortLabel?: string;
   status?: string;
+  isArchived?: boolean;
+  isActive?: boolean;
+  active?: boolean;
+  startAt?: unknown;
+  endAt?: unknown;
+};
+
+type StaffTeacherAssignment = {
+  id: string;
+  teacherPersonId?: string;
+  orgId?: string;
+  schoolId?: string;
+  academicYearId?: string;
+  termId?: string;
+  classId?: string;
+  classSubjectOfferingId?: string;
+  subjectId?: string;
+  subjectKey?: string;
+  status?: string;
+  isActive?: boolean;
+  active?: boolean;
+  startAt?: unknown;
+  endAt?: unknown;
+};
+
+type StaffTeacherAssignmentClassLink = {
+  id: string;
+  assignmentId?: string;
+  teacherAssignmentId?: string;
+  orgId?: string;
+  schoolId?: string;
+  academicYearId?: string;
+  termId?: string;
+  classId?: string;
+  classSubjectOfferingId?: string;
+  subjectId?: string;
+  subjectKey?: string;
+  status?: string;
+  isActive?: boolean;
+  active?: boolean;
+  startAt?: unknown;
+  endAt?: unknown;
 };
 
 type StaffActorLike = {
@@ -85,8 +127,9 @@ type StaffActorLike = {
   roles?: string[];
   visibleClasses?: StaffVisibleClass[];
   classSubjectOfferings?: StaffClassSubjectOffering[];
+  teacherAssignments?: StaffTeacherAssignment[];
+  teacherAssignmentClassLinks?: StaffTeacherAssignmentClassLink[];
 };
-
 type BatchStudentStatus =
   | "PENDING"
   | "COMPLETED"
@@ -392,6 +435,221 @@ function matchesExistingDraft(
   );
 }
 
+type ResolvedMeasurementContext = {
+  classSubjectOfferingId: string;
+  teacherAssignmentId: string;
+  subjectKey: string;
+};
+
+type MeasurementContextResolution =
+  | { kind: "RESOLVED"; context: ResolvedMeasurementContext }
+  | { kind: "UNRESOLVED"; message: string }
+  | { kind: "AMBIGUOUS"; message: string };
+
+type ResolveMeasurementContextInput = {
+  actor: StaffActorLike | null;
+  orgId: string;
+  schoolId: string;
+  academicYearId: string;
+  termId: string;
+  classId: string;
+  subjectKey: string;
+  preferredClassSubjectOfferingId: string;
+  preferredTeacherAssignmentId: string;
+};
+
+const AMBIGUOUS_MEASUREMENT_CONTEXT_MESSAGE =
+  "\u062A\u0639\u0630\u0631 \u062A\u062D\u062F\u064A\u062F \u0627\u0644\u0625\u0633\u0646\u0627\u062F \u0627\u0644\u062D\u0627\u0644\u064A \u0644\u0647\u0630\u0627 \u0627\u0644\u0641\u0635\u0644 \u0648\u0627\u0644\u0645\u0627\u062F\u0629 \u0628\u0634\u0643\u0644 \u0641\u0631\u064A\u062F.";
+
+const UNRESOLVED_MEASUREMENT_CONTEXT_MESSAGE =
+  "\u062A\u0639\u0630\u0631 \u062A\u062D\u062F\u064A\u062F \u0627\u0644\u0625\u0633\u0646\u0627\u062F \u0627\u0644\u062D\u0627\u0644\u064A \u0644\u0647\u0630\u0627 \u0627\u0644\u0641\u0635\u0644 \u0648\u0627\u0644\u0645\u0627\u062F\u0629.";
+
+function hasInactiveContextStatus(item: {
+  status?: string;
+  isArchived?: boolean;
+  isActive?: boolean;
+  active?: boolean;
+  startAt?: unknown;
+  endAt?: unknown;
+}) {
+  const status = normalizeKey(item.status);
+
+  if (
+    item.isArchived === true ||
+    item.isActive === false ||
+    item.active === false ||
+    status === "INACTIVE" ||
+    status === "ARCHIVED" ||
+    status === "CANCELLED" ||
+    status === "PAUSED" ||
+    status === "PENDING" ||
+    status === "ENDED"
+  ) {
+    return true;
+  }
+
+  const now = Date.now();
+  const startAt = getTimestampMs(item.startAt);
+  const endAt = getTimestampMs(item.endAt);
+
+  return (startAt > 0 && startAt > now) || (endAt > 0 && endAt < now);
+}
+
+function matchesContextScope(
+  item: {
+    orgId?: string;
+    schoolId?: string;
+    academicYearId?: string;
+    termId?: string;
+  },
+  input: ResolveMeasurementContextInput,
+) {
+  return (
+    (!item.orgId || item.orgId === input.orgId) &&
+    item.schoolId === input.schoolId &&
+    item.academicYearId === input.academicYearId &&
+    (!item.termId || item.termId === input.termId)
+  );
+}
+
+function getRawSubjectKey(item: { subjectId?: string; subjectKey?: string }) {
+  return normalizeKey(item.subjectKey || item.subjectId);
+}
+
+function matchesCanonicalSubject(
+  item: { subjectId?: string; subjectKey?: string },
+  subjectKey: string,
+) {
+  const itemSubjectKey = canonicalKgSubjectKey(getRawSubjectKey(item));
+
+  return !itemSubjectKey || itemSubjectKey === subjectKey;
+}
+
+function preferExactSubjectMatches<
+  T extends { subjectId?: string; subjectKey?: string },
+>(items: readonly T[], subjectKey: string) {
+  const exactSubjectKey = normalizeKey(subjectKey);
+  const exactMatches = items.filter(
+    (item) => getRawSubjectKey(item) === exactSubjectKey,
+  );
+
+  if (exactMatches.length > 0) return exactMatches;
+
+  const canonicalSubjectKey = canonicalKgSubjectKey(exactSubjectKey);
+
+  return items.filter(
+    (item) =>
+      canonicalKgSubjectKey(getRawSubjectKey(item)) === canonicalSubjectKey,
+  );
+}
+
+function resolveMeasurementContext(
+  input: ResolveMeasurementContextInput,
+): MeasurementContextResolution {
+  const actor = input.actor;
+  const actorPersonId = actor?.personId?.trim() ?? "";
+  const requestedSubjectKey = normalizeKey(input.subjectKey);
+  const canonicalSubjectKey = canonicalKgSubjectKey(requestedSubjectKey);
+
+  if (
+    !actor ||
+    !actorPersonId ||
+    !input.orgId ||
+    !input.schoolId ||
+    !input.academicYearId ||
+    !input.termId ||
+    !input.classId ||
+    !canonicalSubjectKey
+  ) {
+    return { kind: "UNRESOLVED", message: UNRESOLVED_MEASUREMENT_CONTEXT_MESSAGE };
+  }
+
+  const offeringCandidates = preferExactSubjectMatches(
+    (actor.classSubjectOfferings ?? []).filter(
+      (offering) =>
+        !hasInactiveContextStatus(offering) &&
+        matchesContextScope(offering, input) &&
+        offering.classId === input.classId,
+    ),
+    requestedSubjectKey,
+  );
+
+  const preferredOffering = input.preferredClassSubjectOfferingId
+    ? offeringCandidates.find(
+        (offering) => offering.id === input.preferredClassSubjectOfferingId,
+      )
+    : null;
+  const eligibleOfferings = preferredOffering
+    ? [preferredOffering]
+    : offeringCandidates;
+
+  const assignmentCandidates = preferExactSubjectMatches(
+    (actor.teacherAssignments ?? []).filter(
+      (assignment) =>
+        !hasInactiveContextStatus(assignment) &&
+        assignment.teacherPersonId === actorPersonId &&
+        matchesContextScope(assignment, input),
+    ),
+    requestedSubjectKey,
+  );
+  const preferredAssignment = input.preferredTeacherAssignmentId
+    ? assignmentCandidates.find(
+        (assignment) => assignment.id === input.preferredTeacherAssignmentId,
+      )
+    : null;
+  const eligibleAssignments = preferredAssignment
+    ? [preferredAssignment]
+    : assignmentCandidates;
+  const activeLinks = (actor.teacherAssignmentClassLinks ?? []).filter(
+    (link) =>
+      !hasInactiveContextStatus(link) &&
+      matchesContextScope(link, input) &&
+      link.classId === input.classId &&
+      matchesCanonicalSubject(link, canonicalSubjectKey),
+  );
+
+  const pairMap = new Map<string, ResolvedMeasurementContext>();
+
+  for (const offering of eligibleOfferings) {
+    for (const assignment of eligibleAssignments) {
+      const assignmentDirectlyMatches =
+        (!assignment.classId || assignment.classId === input.classId) &&
+        (!assignment.classSubjectOfferingId ||
+          assignment.classSubjectOfferingId === offering.id) &&
+        Boolean(assignment.classId || assignment.classSubjectOfferingId);
+      const assignmentLinkMatches = activeLinks.some(
+        (link) =>
+          (link.assignmentId || link.teacherAssignmentId) === assignment.id &&
+          (!link.classSubjectOfferingId ||
+            link.classSubjectOfferingId === offering.id),
+      );
+
+      if (!assignmentDirectlyMatches && !assignmentLinkMatches) continue;
+
+      const context: ResolvedMeasurementContext = {
+        classSubjectOfferingId: offering.id,
+        teacherAssignmentId: assignment.id,
+        subjectKey: getRawSubjectKey(offering) || canonicalSubjectKey,
+      };
+      pairMap.set(
+        `${context.classSubjectOfferingId}:${context.teacherAssignmentId}`,
+        context,
+      );
+    }
+  }
+
+  const contexts = [...pairMap.values()];
+
+  if (contexts.length === 1) {
+    return { kind: "RESOLVED", context: contexts[0] };
+  }
+
+  if (contexts.length > 1) {
+    return { kind: "AMBIGUOUS", message: AMBIGUOUS_MEASUREMENT_CONTEXT_MESSAGE };
+  }
+
+  return { kind: "UNRESOLVED", message: UNRESOLVED_MEASUREMENT_CONTEXT_MESSAGE };
+}
 function getActorPersonId(actor: StaffActorLike) {
   return actor.personId || actor.uid || "unknown-actor";
 }
@@ -1139,9 +1397,25 @@ export default function StaffNewMeasurementBatchPage() {
 
   const currentClassIsKg = isKgClass(classInfo);
   const subjectKeyIsBlocked = isBlockedSubjectKey(effectiveSubjectKey);
+  const canResolveMissingKgSubjectAfterTemplateSelection =
+    currentClassIsKg &&
+    Boolean(staffActor?.personId?.trim()) &&
+    (staffActor?.teacherAssignments?.length ?? 0) > 0 &&
+    Boolean(
+      staffActor?.classSubjectOfferings?.some(
+        (offering) =>
+          !hasInactiveContextStatus(offering) &&
+          offering.classId === classInfo?.id &&
+          offering.schoolId === resolvedSchoolId &&
+          offering.academicYearId === resolvedAcademicYearId,
+      ),
+    );
 
   const missingKgDomainContext =
-    currentClassIsKg && !effectiveSubjectKey && !subjectKeyIsBlocked;
+    currentClassIsKg &&
+    !effectiveSubjectKey &&
+    !subjectKeyIsBlocked &&
+    !canResolveMissingKgSubjectAfterTemplateSelection;
 
   const unknownKgDomainContext =
     currentClassIsKg &&
@@ -1172,8 +1446,53 @@ export default function StaffNewMeasurementBatchPage() {
     );
   }, [templateOptions, selectedTemplateOptionId]);
 
+  const contextSubjectKey = normalizeKey(
+    effectiveSubjectKey || selectedTemplate?.subjectKey,
+  );
+  const requiresTeacherAssignedContext =
+    currentClassIsKg &&
+    Boolean(staffActor?.personId?.trim()) &&
+    ((staffActor?.teacherAssignments?.length ?? 0) > 0 ||
+      Boolean(teacherAssignmentIdFromQuery));
+  const measurementContextResolution = useMemo(() => {
+    if (!requiresTeacherAssignedContext || !selectedTemplate) return null;
+
+    return resolveMeasurementContext({
+      actor: staffActor,
+      orgId: resolvedOrgId,
+      schoolId: resolvedSchoolId,
+      academicYearId: resolvedAcademicYearId,
+      termId: termContext.termId,
+      classId: classInfo?.id ?? "",
+      subjectKey: contextSubjectKey,
+      preferredClassSubjectOfferingId: classSubjectOfferingId,
+      preferredTeacherAssignmentId: teacherAssignmentIdFromQuery,
+    });
+  }, [
+    classInfo?.id,
+    classSubjectOfferingId,
+    contextSubjectKey,
+    requiresTeacherAssignedContext,
+    resolvedAcademicYearId,
+    resolvedOrgId,
+    resolvedSchoolId,
+    staffActor,
+    teacherAssignmentIdFromQuery,
+    termContext.termId,
+    selectedTemplate,
+  ]);
+  const resolvedMeasurementContext =
+    measurementContextResolution?.kind === "RESOLVED"
+      ? measurementContextResolution.context
+      : null;
+  const measurementContextError =
+    measurementContextResolution &&
+    measurementContextResolution.kind !== "RESOLVED"
+      ? measurementContextResolution.message
+      : null;
+
   const resolvedSubjectKey =
-    effectiveSubjectKey || normalizeKey(selectedTemplate?.subjectKey);
+    resolvedMeasurementContext?.subjectKey || contextSubjectKey;
 
   const unitSelectionRequired = requiresUnitSelection(resolvedSubjectKey);
 
@@ -1186,9 +1505,16 @@ export default function StaffNewMeasurementBatchPage() {
   const hasRequiredUnitSelection = !unitSelectionRequired || !!selectedUnit;
 
   const resolvedClassSubjectOfferingId =
-    selectedClassSubjectOffering?.id || classSubjectOfferingId || "";
+    resolvedMeasurementContext?.classSubjectOfferingId ??
+    (requiresTeacherAssignedContext
+      ? ""
+      : selectedClassSubjectOffering?.id || classSubjectOfferingId || "");
 
-  const resolvedTeacherAssignmentId = teacherAssignmentIdFromQuery;
+  const resolvedTeacherAssignmentId =
+    resolvedMeasurementContext?.teacherAssignmentId ??
+    (requiresTeacherAssignedContext ? "" : teacherAssignmentIdFromQuery);
+  const hasResolvedTeacherAssignedContext =
+    !requiresTeacherAssignedContext || !!resolvedMeasurementContext;
 
   const batchStudentRows = classStudents.data?.rows ?? [];
 
@@ -1218,6 +1544,7 @@ export default function StaffNewMeasurementBatchPage() {
     canUseCurrentContext &&
     hasCurrentTerm &&
     hasRequiredUnitSelection &&
+    hasResolvedTeacherAssignedContext &&
     batchStudentRows.length > 0 &&
     !checkingExistingDraft &&
     !savingDraft &&
@@ -1232,6 +1559,7 @@ export default function StaffNewMeasurementBatchPage() {
     canUseCurrentContext &&
     hasCurrentTerm &&
     hasRequiredUnitSelection &&
+    hasResolvedTeacherAssignedContext &&
     batchStudentRows.length > 0 &&
     !checkingExistingDraft &&
     !savingDraft &&
@@ -1318,15 +1646,47 @@ export default function StaffNewMeasurementBatchPage() {
       return;
     }
 
+    const contextForTemplate = requiresTeacherAssignedContext
+      ? resolveMeasurementContext({
+          actor: staffActor,
+          orgId: resolvedOrgId,
+          schoolId: resolvedSchoolId,
+          academicYearId: resolvedAcademicYearId,
+          termId: termContext.termId,
+          classId: classInfo.id,
+          subjectKey: normalizeKey(effectiveSubjectKey || template.subjectKey),
+          preferredClassSubjectOfferingId: classSubjectOfferingId,
+          preferredTeacherAssignmentId: teacherAssignmentIdFromQuery,
+        })
+      : null;
+
+    if (
+      requiresTeacherAssignedContext &&
+      contextForTemplate?.kind !== "RESOLVED"
+    ) {
+      setDraftSaveError(
+        contextForTemplate?.message ?? UNRESOLVED_MEASUREMENT_CONTEXT_MESSAGE,
+      );
+      setCheckingExistingDraft(false);
+      return;
+    }
+
+    const lookupContext =
+      contextForTemplate?.kind === "RESOLVED"
+        ? contextForTemplate.context
+        : null;
     const lookup: ExistingDraftLookup = {
       orgId: resolvedOrgId,
       schoolId: resolvedSchoolId,
       academicYearId: resolvedAcademicYearId,
       termId: termContext.termId,
       classId: classInfo.id,
-      classSubjectOfferingId: resolvedClassSubjectOfferingId,
+      classSubjectOfferingId:
+        lookupContext?.classSubjectOfferingId ??
+        resolvedClassSubjectOfferingId,
       templateId: template.id,
-      teacherAssignmentId: resolvedTeacherAssignmentId,
+      teacherAssignmentId:
+        lookupContext?.teacherAssignmentId ?? resolvedTeacherAssignmentId,
     };
 
     const batchesRef = collection(
@@ -1388,6 +1748,12 @@ export default function StaffNewMeasurementBatchPage() {
       return;
     }
 
+    if (!hasResolvedTeacherAssignedContext) {
+      setDraftSaveError(
+        measurementContextError ?? UNRESOLVED_MEASUREMENT_CONTEXT_MESSAGE,
+      );
+      return;
+    }
     if (!currentTerm) {
       setDraftSaveError(
         "لا يمكن حفظ المسودة قبل تحديد الفصل الدراسي الحالي لهذه السنة.",
@@ -1542,6 +1908,12 @@ export default function StaffNewMeasurementBatchPage() {
       return;
     }
 
+    if (!hasResolvedTeacherAssignedContext) {
+      setSubmitError(
+        measurementContextError ?? UNRESOLVED_MEASUREMENT_CONTEXT_MESSAGE,
+      );
+      return;
+    }
     if (!currentTerm) {
       setSubmitError(
         "لا يمكن إرسال النتائج قبل تحديد الفصل الدراسي الحالي لهذه السنة.",
