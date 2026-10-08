@@ -7,7 +7,7 @@ import {
   type MembershipRole as MembershipRoleType,
   type PersonSupervisionScope,
 } from "@takween/contracts";
-import { getAdminWorkRoleInfo, getPersonSupervisionSchoolIds, hasOrgWideAccess, isAdminWorkPrincipal } from "@takween/domain";
+import { getAdminWorkRoleInfo, getPersonSupervisionSchoolIds, getSpecialStaffReportingAccess, hasOrgWideAccess, isAdminWorkPrincipal } from "@takween/domain";
 
 const REGION = "me-central2";
 type Row = Record<string, unknown>;
@@ -53,12 +53,15 @@ async function resolveActor(uid: string, orgId: string): Promise<Actor> {
   const membership = row(snap.data());
   const viewerRole = parseRole(membership.roleKey ?? membership.role);
   const isOrgWideAdministrator = viewerRole !== null && hasOrgWideAccess([viewerRole]);
-  if (!snap.exists || !active(membership, Date.now()) || !text(membership.personId) || (!isOrgWideAdministrator && !isAdminWorkPrincipal(viewerRole))) throw new HttpsError("permission-denied", "Principal or organization-wide administrative access is required.");
   const personId = text(membership.personId);
+  if (!snap.exists || !active(membership, Date.now()) || !personId) throw new HttpsError("permission-denied", "An active staff membership is required.");
+  const specialReportingAccess = getSpecialStaffReportingAccess({ orgId, personId, uid });
+  if (!isOrgWideAdministrator && !specialReportingAccess && !isAdminWorkPrincipal(viewerRole)) throw new HttpsError("permission-denied", "Principal or organization-wide administrative access is required.");
   const scopeSnapshot = await db.collection(`orgs/${orgId}/personSupervisionScopes`).where("personId", "==", personId).get();
   const scopes: PersonSupervisionScope[] = scopeSnapshot.docs.flatMap((document) => { const parsed = PersonSupervisionScopeSchema.safeParse({ id: document.id, ...document.data() }); return parsed.success ? [parsed.data] : []; });
-  const scopedIds = getPersonSupervisionSchoolIds({ scopes, orgId, personId, capability: "ADMIN_WORK_VIEW" });
-  if (!isOrgWideAdministrator && !scopedIds.length) throw new HttpsError("permission-denied", "Admin work monitoring access is required.");
+  const normalScopedIds = getPersonSupervisionSchoolIds({ scopes, orgId, personId, capability: "ADMIN_WORK_VIEW" });
+  const scopedIds = specialReportingAccess ? [...specialReportingAccess.schoolIds] : normalScopedIds;
+  if (!isOrgWideAdministrator && !specialReportingAccess && !scopedIds.length) throw new HttpsError("permission-denied", "Admin work monitoring access is required.");
   const schoolSnapshots = isOrgWideAdministrator
     ? (await db.collection(`orgs/${orgId}/schools`).get()).docs
     : await db.getAll(...scopedIds.map((schoolId) => db.doc(`orgs/${orgId}/schools/${schoolId}`)));

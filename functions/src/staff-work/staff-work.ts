@@ -6,7 +6,7 @@ import {
   type MembershipRole as MembershipRoleType,
   type PersonSupervisionScope,
 } from "@takween/contracts";
-import { getPersonSupervisionSchoolIds, hasOrgWideAccess } from "@takween/domain";
+import { getPersonSupervisionSchoolIds, getSpecialStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
 
 const REGION = "me-central2";
 const STAFF_ROLE_KEYS = new Set<MembershipRoleType>([
@@ -177,6 +177,7 @@ type StaffRecord = Omit<
 type Actor = {
   personId: string;
   isOrgWideAdministrator: boolean;
+  hasSpecialReportingAccess: boolean;
   schoolIds: string[];
   schools: Array<{ id: string; name: string }>;
 };
@@ -387,7 +388,12 @@ async function resolveActor(params: {
   const viewerRole = role(member.roleKey ?? member.role);
   const isOrgWideAdministrator =
     viewerRole !== null && hasOrgWideAccess([viewerRole]);
-  const scopeSnapshot = isOrgWideAdministrator
+  const specialReportingAccess = getSpecialStaffReportingAccess({
+    orgId: params.orgId,
+    personId,
+    uid: params.uid,
+  });
+  const scopeSnapshot = isOrgWideAdministrator || specialReportingAccess
     ? null
     : await db
         .collection(`orgs/${params.orgId}/personSupervisionScopes`)
@@ -402,15 +408,17 @@ async function resolveActor(params: {
       return parsed.success ? [parsed.data] : [];
     },
   ) ?? [];
-  const schoolIds = isOrgWideAdministrator
-    ? []
-    : getPersonSupervisionSchoolIds({
-        scopes,
-        orgId: params.orgId,
-        personId,
-        capability: "STAFF_WORK_VIEW",
-      });
-  if (!isOrgWideAdministrator && !schoolIds.length)
+  const schoolIds = specialReportingAccess
+    ? [...specialReportingAccess.schoolIds]
+    : isOrgWideAdministrator
+      ? []
+      : getPersonSupervisionSchoolIds({
+          scopes,
+          orgId: params.orgId,
+          personId,
+          capability: "STAFF_WORK_VIEW",
+        });
+  if (!isOrgWideAdministrator && !specialReportingAccess && !schoolIds.length)
     throw new HttpsError(
       "permission-denied",
       "Staff work monitoring access is required.",
@@ -439,6 +447,7 @@ async function resolveActor(params: {
   return {
     personId,
     isOrgWideAdministrator,
+    hasSpecialReportingAccess: specialReportingAccess !== null,
     schoolIds: schools.map((item) => item.id),
     schools,
   };
@@ -1162,7 +1171,7 @@ async function staffWork(params: { uid: string; input: Row }) {
     orgId,
   });
 
-  const viewerConfig = actor.isOrgWideAdministrator
+  const viewerConfig = actor.isOrgWideAdministrator || actor.hasSpecialReportingAccess
     ? { includedPersonIds: [], excludedPersonIds: [] }
     : await loadStaffWorkViewerConfig({
         orgId,
@@ -1271,7 +1280,7 @@ export const getStaffWorkDocumentationRecord = onCall(
     const staffPersonId = id(input.staffPersonId, "staffPersonId");
     const sourceEntityId = id(input.sourceEntityId, "sourceEntityId");
     const actor = await resolveActor({ uid: request.auth.uid, orgId });
-    const viewerConfig = actor.isOrgWideAdministrator
+    const viewerConfig = actor.isOrgWideAdministrator || actor.hasSpecialReportingAccess
       ? { includedPersonIds: [], excludedPersonIds: [] }
       : await loadStaffWorkViewerConfig({
           orgId,

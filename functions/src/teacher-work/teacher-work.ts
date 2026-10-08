@@ -10,6 +10,7 @@ import {
   canReviewStaffPortfolio,
   hasOrgWideAccess,
   hasPersonSupervisionSubjectAccess,
+  getSpecialStaffReportingAccess,
 } from "@takween/domain";
 import {
   loadMeasurementStudentNames,
@@ -293,6 +294,7 @@ type TeacherWorkActor = {
   schools: Array<{ id: string; name: string }>;
   supervisionScopes: PersonSupervisionScope[];
   hasOrgWideAccess: boolean;
+  hasSpecialReportingAccess: boolean;
 };
 
 function text(value: unknown) {
@@ -583,19 +585,32 @@ async function resolveActor(params: {
     throw new HttpsError("permission-denied", "An active staff membership is required.");
   }
 
-  if (!canReviewStaffPortfolio([role])) {
+  const specialReportingAccess = getSpecialStaffReportingAccess({
+    orgId: params.orgId,
+    personId,
+    uid: params.uid,
+  });
+  if (!canReviewStaffPortfolio([role]) && !specialReportingAccess) {
     throw new HttpsError("permission-denied", "Teacher work monitoring access is required.");
   }
 
-  const scopedSchoolIds = schoolIdsOf(membership);
+  const scopedSchoolIds = specialReportingAccess
+    ? [...specialReportingAccess.schoolIds]
+    : schoolIdsOf(membership);
   const actorHasOrgWideAccess = hasOrgWideAccess([role]);
-  const schoolSnapshots = hasAllSchoolsAccess(membership, role)
-    ? (await db.collection(`orgs/${params.orgId}/schools`).get()).docs
-    : await Promise.all(
+  const schoolSnapshots = specialReportingAccess
+    ? await Promise.all(
         scopedSchoolIds.map((schoolId) =>
           db.doc(`orgs/${params.orgId}/schools/${schoolId}`).get(),
         ),
-      );
+      )
+    : hasAllSchoolsAccess(membership, role)
+      ? (await db.collection(`orgs/${params.orgId}/schools`).get()).docs
+      : await Promise.all(
+          scopedSchoolIds.map((schoolId) =>
+            db.doc(`orgs/${params.orgId}/schools/${schoolId}`).get(),
+          ),
+        );
 
   const schools = schoolSnapshots
     .filter(
@@ -632,6 +647,7 @@ async function resolveActor(params: {
     schools,
     supervisionScopes,
     hasOrgWideAccess: actorHasOrgWideAccess,
+    hasSpecialReportingAccess: specialReportingAccess !== null,
   };
 }
 
@@ -707,7 +723,7 @@ function canViewTeacherWorkSubject(params: {
   schoolId: string;
   subjectKey: string;
 }) {
-  if (params.actor.hasOrgWideAccess) return true;
+  if (params.actor.hasOrgWideAccess || params.actor.hasSpecialReportingAccess) return true;
   return hasPersonSupervisionSubjectAccess({
     scopes: params.actor.supervisionScopes,
     request: {

@@ -16,7 +16,7 @@ import {
   type EvaluationReportStatusFilter,
   type MembershipRole as MembershipRoleType,
 } from "@takween/contracts";
-import { hasOrgWideAccess } from "@takween/domain";
+import { getSpecialStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
 
 import { normalizeEvaluatorWeights } from "../evaluations/evaluator-weighting";
 
@@ -283,27 +283,40 @@ async function resolveActor(params: {
     throw new HttpsError("permission-denied", "An active staff membership is required.");
   }
 
-  // The reports center currently exposes these reports only to organization-wide
-  // roles. Keep that policy on the server as well; a client-side card guard is
-  // never an authorization boundary.
-  if (!hasOrgWideAccess([role])) {
+  const specialReportingAccess = getSpecialStaffReportingAccess({
+    orgId: params.orgId,
+    personId,
+    uid: params.uid,
+  });
+  const isOrgWideAdministrator = hasOrgWideAccess([role]);
+  if (!isOrgWideAdministrator && !specialReportingAccess) {
     throw new HttpsError("permission-denied", "Organization-wide reports access is required.");
   }
 
-  const schoolSnapshot = await db.collection(`orgs/${params.orgId}/schools`).get();
-  const schools = schoolSnapshot.docs
+  const schoolDocuments = isOrgWideAdministrator
+    ? (await db.collection(`orgs/${params.orgId}/schools`).get()).docs
+    : await db.getAll(
+        ...specialReportingAccess!.schoolIds.map((schoolId) =>
+          db.doc(`orgs/${params.orgId}/schools/${schoolId}`),
+        ),
+      );
+  const schools = schoolDocuments
     .filter((document) => {
-      const school = document.data();
+      const school: Row = document.data() ?? {};
       return (
+        document.exists &&
         school.isArchived !== true &&
         school.archived !== true &&
         statusOf(school) !== "ARCHIVED"
       );
     })
-    .map((document) => ({
-      id: document.id,
-      name: text(document.data().name) || text(document.data().nameAr) || document.id,
-    }))
+    .map((document) => {
+      const school: Row = document.data() ?? {};
+      return {
+        id: document.id,
+        name: text(school.name) || text(school.nameAr) || document.id,
+      };
+    })
     .sort((left, right) => left.name.localeCompare(right.name, "ar"));
 
   if (!schools.length) {

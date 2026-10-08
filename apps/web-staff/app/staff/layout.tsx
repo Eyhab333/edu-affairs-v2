@@ -33,7 +33,7 @@ import {
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
 import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
 import type { PersonSupervisionScope } from "@takween/contracts";
-import { hasOrgWideAccess } from "@takween/domain";
+import { getSpecialStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
 
 function isActiveHref(pathname: string, href: string) {
   if (href === "/staff") return pathname === "/staff";
@@ -168,6 +168,17 @@ function StaffShell({ children }: { children: ReactNode }) {
     ],
   );
 
+  const specialReportingAccess = getSpecialStaffReportingAccess({
+    orgId: actor.orgId,
+    personId: actor.personId,
+    uid: actor.uid,
+  });
+  const canAccessCentralMeasurementSummary =
+    visibleModuleSet.has("MEASUREMENTS") ||
+    specialReportingAccess?.canAccessCentralMeasurementSummary === true;
+  const canAccessKgMeasurementSummary =
+    visibleModuleSet.has("MEASUREMENTS") ||
+    specialReportingAccess?.canAccessKgMeasurementSummary === true;
   const requiredModule = getRequiredModuleForStaffPath(pathname);
   const isWorkDocumentationRoute =
     pathname === "/staff/work-documentation" ||
@@ -198,10 +209,18 @@ function StaffShell({ children }: { children: ReactNode }) {
     pathname.startsWith("/staff/admin-work/");
   const isReportsRoute =
     pathname === "/staff/reports" || pathname.startsWith("/staff/reports/");
+  const isCentralMeasurementSummaryRoute =
+    pathname === "/staff/measurements/central-summary";
+  const isKgMeasurementSummaryRoute =
+    pathname === "/staff/measurements/kg-summary";
   const isLessonPrepApprovalsRoute =
     pathname === "/staff/lesson-prep/approvals" ||
     pathname.startsWith("/staff/lesson-prep/approvals/");
-  const canAccessCurrentRoute = isTeacherWorkRoute
+  const canAccessCurrentRoute = isCentralMeasurementSummaryRoute
+    ? canAccessCentralMeasurementSummary
+    : isKgMeasurementSummaryRoute
+      ? canAccessKgMeasurementSummary
+      : isTeacherWorkRoute
     ? canAccessTeacherWorkRoute
     : isStaffWorkRoute
       ? scopesLoading || canAccessStaffWorkRoute

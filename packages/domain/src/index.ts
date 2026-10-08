@@ -26,3 +26,4 @@ export * from "./pdf-resources";
 export * from "./staff-portfolio";
 export * from "./staff-pdf-files";
 export * from "./staff-authority";
+export * from "./special-staff-reporting-access";

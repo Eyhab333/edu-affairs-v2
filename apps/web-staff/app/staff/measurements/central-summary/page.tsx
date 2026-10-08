@@ -13,6 +13,7 @@ import { Printer, RefreshCw, RotateCcw, TableProperties } from "lucide-react";
 import type {
   StudentMeasurementBatch,
 } from "@takween/contracts";
+import { getSpecialStaffReportingAccess } from "@takween/domain";
 
 import { Button } from "@/components/ui/button";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
@@ -21,6 +22,7 @@ import { getFriendlyClassTitle } from "@/lib/class-presentation";
 import { getEffectiveMeasurementRows } from "@/lib/measurement-compensation";
 import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 import { getFriendlySubjectLabel } from "@/lib/measurement-presentation";
+import { loadSpecialMeasurementSummarySource } from "@/lib/special-measurement-summary-report";
 
 const CENTRAL_MEASUREMENT_1 = "PRIMARY_CENTRAL_MEASUREMENT_1";
 const CENTRAL_MEASUREMENT_2 = "PRIMARY_CENTRAL_MEASUREMENT_2";
@@ -37,6 +39,7 @@ type VisibleClass = {
   title?: string;
   code?: string;
   sectionLabel?: string;
+  schoolName?: string;
 };
 
 type ClassSubjectOffering = {
@@ -54,6 +57,7 @@ type ClassSubjectOffering = {
 type StaffActorLike = {
   orgId?: string;
   personId?: string;
+  uid?: string;
   roles?: string[];
   roleKeys?: string[];
   visibleClasses?: VisibleClass[];
@@ -290,26 +294,147 @@ export default function StaffCentralMeasurementSummaryPage() {
     Map<string, TeacherDirectoryEntry>
   >(new Map());
   const [templateMaxScoreById, setTemplateMaxScoreById] = useState<Map<string, number>>(new Map());
+  const [specialReportClasses, setSpecialReportClasses] = useState<VisibleClass[]>([]);
   const [schoolFilter, setSchoolFilter] = useState("ALL");
   const [subjectFilter, setSubjectFilter] = useState("ALL");
   const [classFilter, setClassFilter] = useState("ALL");
   const [teacherFilter, setTeacherFilter] = useState("ALL");
 
   const orgId = staffActor?.orgId?.trim() || "";
+  const actorPersonId = staffActor?.personId?.trim() || "";
+  const actorUid = staffActor?.uid?.trim() || "";
   const currentTerm = staffActor?.currentTerm ?? null;
-  const visibleClasses = useMemo(() => staffActor?.visibleClasses ?? [], [staffActor?.visibleClasses]);
+  const specialReportingAccess = useMemo(
+    () =>
+      getSpecialStaffReportingAccess({
+        orgId,
+        personId: actorPersonId,
+        uid: actorUid,
+      }),
+    [actorPersonId, actorUid, orgId],
+  );
+  const normalVisibleClasses = useMemo(
+    () => staffActor?.visibleClasses ?? [],
+    [staffActor?.visibleClasses],
+  );
+  const visibleClasses = useMemo(
+    () =>
+      specialReportingAccess
+        ? specialReportClasses
+        : normalVisibleClasses,
+    [normalVisibleClasses, specialReportClasses, specialReportingAccess],
+  );
   const offerings = useMemo(() => staffActor?.classSubjectOfferings ?? [], [staffActor?.classSubjectOfferings]);
+  const normalVisibleClassByKey = useMemo(
+    () => new Map(normalVisibleClasses.map((item) => [getClassKey({ ...item, classId: item.id }), item])),
+    [normalVisibleClasses],
+  );
   const visibleClassByKey = useMemo(
     () => new Map(visibleClasses.map((item) => [getClassKey({ ...item, classId: item.id }), item])),
     [visibleClasses],
   );
-  const teacherOnly = isTeacherOnlyActor(staffActor);
-  const teacherPersonId = staffActor?.personId?.trim() || "";
+  const teacherOnly = isTeacherOnlyActor(staffActor) && !specialReportingAccess;
+  const teacherPersonId = actorPersonId;
   const teacherAssignments = staffActor?.teacherAssignments ?? [];
 
   const loadSummary = useCallback(async () => {
     if (!orgId || !currentTerm?.academicYearId || !currentTerm.id) return;
-    if (visibleClasses.length === 0) {
+
+    if (specialReportingAccess) {
+      setStatus("loading");
+      setError("");
+      setSpecialReportClasses([]);
+      setBatches([]);
+      setCompensationBatches([]);
+      setTeacherDirectoryByAssignmentId(new Map());
+      setTemplateMaxScoreById(new Map());
+
+      try {
+        const source = await loadSpecialMeasurementSummarySource({
+          orgId,
+          academicYearId: currentTerm.academicYearId,
+          termId: currentTerm.id,
+        });
+        const schoolNameById = new Map(
+          source.schools.map((school) => [school.id, school.name]),
+        );
+        const nextClasses = (source.classes as unknown as VisibleClass[]).map(
+          (classInfo) => ({
+            ...classInfo,
+            schoolName:
+              classInfo.schoolName ||
+              schoolNameById.get(classInfo.schoolId ?? ""),
+          }),
+        );
+        const reportClassByKey = new Map(
+          nextClasses.map((item) => [
+            getClassKey({ ...item, classId: item.id }),
+            item,
+          ]),
+        );
+        const scopedCentralBatches = (source.batches as unknown as CentralBatch[])
+          .filter((batch) => batch.status === "SUBMITTED")
+          .filter(
+            (batch) =>
+              batch.academicYearId === currentTerm.academicYearId &&
+              batch.termId === currentTerm.id,
+          )
+          .filter(
+            (batch) =>
+              batch.assessmentKind === CENTRAL_MEASUREMENT_1 ||
+              batch.assessmentKind === CENTRAL_MEASUREMENT_2,
+          )
+          .filter((batch) => reportClassByKey.has(getClassKey(batch)));
+        const visibleBatches = scopedCentralBatches.filter(
+          (batch) => batch.isCompensationBatch !== true,
+        );
+        const originalBatchIds = new Set(visibleBatches.map((batch) => batch.id));
+        const attachedCompensationBatches = scopedCentralBatches.filter(
+          (batch) =>
+            batch.isCompensationBatch === true &&
+            typeof batch.originalBatchId === "string" &&
+            originalBatchIds.has(batch.originalBatchId),
+        );
+        const templateIdsNeedingFallback = new Set(
+          visibleBatches
+            .filter((batch) => getSavedMaxScore(batch.studentRows ?? []) === undefined)
+            .map((batch) => batch.templateId),
+        );
+        const nextTemplateMaxScores = new Map<string, number>();
+        source.templates.forEach((template) => {
+          if (
+            templateIdsNeedingFallback.has(template.id) &&
+            typeof template.maxScore === "number" &&
+            Number.isFinite(template.maxScore)
+          ) {
+            nextTemplateMaxScores.set(template.id, template.maxScore);
+          }
+        });
+        const nextTeacherDirectory = new Map<string, TeacherDirectoryEntry>(
+          source.teacherDirectory.map((entry) => [
+            entry.assignmentId,
+            {
+              teacherPersonId: entry.teacherPersonId,
+              teacherName: entry.teacherName,
+            },
+          ]),
+        );
+
+        setSpecialReportClasses(nextClasses);
+        setBatches(visibleBatches);
+        setCompensationBatches(attachedCompensationBatches);
+        setTeacherDirectoryByAssignmentId(nextTeacherDirectory);
+        setTemplateMaxScoreById(nextTemplateMaxScores);
+        setStatus("success");
+      } catch (nextError: unknown) {
+        setSpecialReportClasses([]);
+        setError(getErrorMessage(nextError));
+        setStatus("error");
+      }
+      return;
+    }
+
+    if (normalVisibleClasses.length === 0) {
       setBatches([]);
       setCompensationBatches([]);
       setTeacherDirectoryByAssignmentId(new Map());
@@ -324,7 +449,7 @@ export default function StaffCentralMeasurementSummaryPage() {
     try {
       const batchesRef = collection(db, "orgs", orgId, "studentMeasurementBatches");
       const visibleSchoolIds = uniqueStrings(
-        visibleClasses.map((classInfo) => classInfo.schoolId),
+        normalVisibleClasses.map((classInfo) => classInfo.schoolId),
       );
       const schoolSnapshots = await Promise.all(
         visibleSchoolIds.map((schoolId) =>
@@ -342,15 +467,12 @@ export default function StaffCentralMeasurementSummaryPage() {
             batch.assessmentKind === CENTRAL_MEASUREMENT_1 ||
             batch.assessmentKind === CENTRAL_MEASUREMENT_2,
         )
-        .filter((batch) => {
-          const classInfo = visibleClassByKey.get(getClassKey(batch));
-          return Boolean(classInfo);
-        });
+        .filter((batch) => normalVisibleClassByKey.has(getClassKey(batch)));
 
       const visibleBatches = scopedCentralBatches
         .filter((batch) => batch.isCompensationBatch !== true)
         .filter((batch) => {
-          const classInfo = visibleClassByKey.get(getClassKey(batch));
+          const classInfo = normalVisibleClassByKey.get(getClassKey(batch));
           if (!classInfo) return false;
           if (!teacherOnly) return true;
           if (!teacherPersonId || batch.createdByPersonId !== teacherPersonId) return false;
@@ -391,12 +513,13 @@ export default function StaffCentralMeasurementSummaryPage() {
   }, [
     currentTerm?.academicYearId,
     currentTerm?.id,
+    normalVisibleClassByKey,
+    normalVisibleClasses,
     orgId,
+    specialReportingAccess,
     teacherAssignments,
     teacherOnly,
     teacherPersonId,
-    visibleClassByKey,
-    visibleClasses.length,
   ]);
 
   useEffect(() => {
@@ -439,7 +562,9 @@ export default function StaffCentralMeasurementSummaryPage() {
         key,
         schoolId: batch.schoolId,
         schoolName:
-          staffActor?.schools?.find((school) => school.id === batch.schoolId)?.name?.trim() || "مدرسة غير محددة",
+          staffActor?.schools?.find((school) => school.id === batch.schoolId)?.name?.trim() ||
+          classInfo.schoolName?.trim() ||
+          "مدرسة غير محددة",
         academicYearId: batch.academicYearId,
         termId: batch.termId,
         subjectKey: batch.subjectKey,

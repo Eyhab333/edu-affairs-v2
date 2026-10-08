@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { collection, documentId, getDocs, query, where } from "firebase/firestore";
 import type { StudentMeasurementBatch } from "@takween/contracts";
+import { getSpecialStaffReportingAccess } from "@takween/domain";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { db } from "@/lib/firebase";
@@ -29,6 +30,7 @@ import {
   type KgRoleComponent,
   type KgWeightedMeasurementSummary,
 } from "@/lib/kg-measurement-summary";
+import { loadSpecialMeasurementSummarySource } from "@/lib/special-measurement-summary-report";
 
 type VisibleKgClass = {
   id: string;
@@ -46,6 +48,8 @@ type VisibleKgClass = {
 
 type StaffActorLike = {
   orgId?: string;
+  personId?: string;
+  uid?: string;
   visibleClasses?: VisibleKgClass[];
   schools?: Array<{ id: string; name?: string }>;
   currentTerm?: {
@@ -295,6 +299,7 @@ export default function StaffKgMeasurementSummaryPage() {
   const [error, setError] = useState("");
   const [templates, setTemplates] = useState<KgAssessmentTemplate[]>([]);
   const [batches, setBatches] = useState<KgMeasurementBatch[]>([]);
+  const [specialReportClasses, setSpecialReportClasses] = useState<VisibleKgClass[]>([]);
   const [teacherDirectoryByAssignmentId, setTeacherDirectoryByAssignmentId] = useState<
     Map<string, TeacherDirectoryEntry>
   >(new Map());
@@ -304,18 +309,55 @@ export default function StaffKgMeasurementSummaryPage() {
   const [classFilter, setClassFilter] = useState("ALL");
 
   const orgId = staffActor?.orgId?.trim() || "";
+  const actorPersonId = staffActor?.personId?.trim() || "";
+  const actorUid = staffActor?.uid?.trim() || "";
   const currentTerm = staffActor?.currentTerm ?? null;
-  const visibleKgClasses = useMemo(
+  const specialReportingAccess = useMemo(
+    () =>
+      getSpecialStaffReportingAccess({
+        orgId,
+        personId: actorPersonId,
+        uid: actorUid,
+      }),
+    [actorPersonId, actorUid, orgId],
+  );
+  const normalVisibleKgClasses = useMemo(
     () => (staffActor?.visibleClasses ?? []).filter(isKgClass),
     [staffActor?.visibleClasses],
   );
-  const currentKgClasses = useMemo(
+  const normalCurrentKgClasses = useMemo(
     () =>
-      visibleKgClasses.filter(
+      normalVisibleKgClasses.filter(
         (classInfo) =>
           classInfo.academicYearId === currentTerm?.academicYearId,
       ),
-    [currentTerm?.academicYearId, visibleKgClasses],
+    [currentTerm?.academicYearId, normalVisibleKgClasses],
+  );
+  const currentKgClasses = useMemo(
+    () =>
+      specialReportingAccess
+        ? specialReportClasses.filter(
+            (classInfo) =>
+              isKgClass(classInfo) &&
+              classInfo.academicYearId === currentTerm?.academicYearId,
+          )
+        : normalCurrentKgClasses,
+    [
+      currentTerm?.academicYearId,
+      normalCurrentKgClasses,
+      specialReportClasses,
+      specialReportingAccess,
+    ],
+  );
+  const normalClassByKey = useMemo(
+    () =>
+      new Map(
+        normalCurrentKgClasses.map((classInfo) => [
+          getClassKey(classInfo),
+          classInfo,
+        ]),
+      ),
+    [normalCurrentKgClasses],
   );
   const visibleClassByKey = useMemo(
     () =>
@@ -331,7 +373,55 @@ export default function StaffKgMeasurementSummaryPage() {
   const loadSummary = useCallback(async () => {
     if (!orgId || !currentTerm?.academicYearId || !currentTerm.id) return;
 
-    if (currentKgClasses.length === 0) {
+    if (specialReportingAccess) {
+      setStatus("loading");
+      setError("");
+      setSpecialReportClasses([]);
+      setTemplates([]);
+      setBatches([]);
+      setTeacherDirectoryByAssignmentId(new Map());
+
+      try {
+        const source = await loadSpecialMeasurementSummarySource({
+          orgId,
+          academicYearId: currentTerm.academicYearId,
+          termId: currentTerm.id,
+        });
+        const schoolNameById = new Map(
+          source.schools.map((school) => [school.id, school.name]),
+        );
+        const nextClasses = (source.classes as unknown as VisibleKgClass[]).map(
+          (classInfo) => ({
+            ...classInfo,
+            schoolName:
+              classInfo.schoolName ||
+              schoolNameById.get(classInfo.schoolId ?? ""),
+          }),
+        );
+        const nextTeacherDirectory = new Map<string, TeacherDirectoryEntry>(
+          source.teacherDirectory.map((entry) => [
+            entry.assignmentId,
+            {
+              teacherPersonId: entry.teacherPersonId,
+              teacherName: entry.teacherName,
+            },
+          ]),
+        );
+
+        setSpecialReportClasses(nextClasses);
+        setTemplates(source.templates as unknown as KgAssessmentTemplate[]);
+        setBatches(source.batches as unknown as KgMeasurementBatch[]);
+        setTeacherDirectoryByAssignmentId(nextTeacherDirectory);
+        setStatus("success");
+      } catch (nextError: unknown) {
+        setSpecialReportClasses([]);
+        setError(getErrorMessage(nextError));
+        setStatus("error");
+      }
+      return;
+    }
+
+    if (normalCurrentKgClasses.length === 0) {
       setTemplates([]);
       setBatches([]);
       setTeacherDirectoryByAssignmentId(new Map());
@@ -356,7 +446,7 @@ export default function StaffKgMeasurementSummaryPage() {
         "studentMeasurementBatches",
       );
       const schoolIds = uniqueStrings(
-        currentKgClasses.map((classInfo) => classInfo.schoolId),
+        normalCurrentKgClasses.map((classInfo) => classInfo.schoolId),
       );
 
       const [templateSnapshot, ...batchSnapshots] = await Promise.all([
@@ -375,7 +465,7 @@ export default function StaffKgMeasurementSummaryPage() {
       const teacherAssignmentIds = uniqueStrings(
         loadedBatches
           .filter((batch) => {
-            const classInfo = visibleClassByKey.get(getClassKey(batch));
+            const classInfo = normalClassByKey.get(getClassKey(batch));
             return (
               batch.status === "SUBMITTED" &&
               batch.academicYearId === currentTerm.academicYearId &&
@@ -408,11 +498,12 @@ export default function StaffKgMeasurementSummaryPage() {
       setStatus("error");
     }
   }, [
-    currentKgClasses,
     currentTerm?.academicYearId,
     currentTerm?.id,
+    normalClassByKey,
+    normalCurrentKgClasses,
     orgId,
-    visibleClassByKey,
+    specialReportingAccess,
   ]);
 
   useEffect(() => {
@@ -894,7 +985,7 @@ export default function StaffKgMeasurementSummaryPage() {
     );
   }
 
-  if (visibleKgClasses.length === 0) {
+  if (currentKgClasses.length === 0) {
     return (
       <PageShell>
         <EmptyState

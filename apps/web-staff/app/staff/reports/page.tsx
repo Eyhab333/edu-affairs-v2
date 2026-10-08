@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, BarChart3, ClipboardCheck, ListChecks, UsersRound } from "lucide-react";
+import { ArrowLeft, BarChart3, ClipboardCheck, ListChecks, Ruler, UsersRound } from "lucide-react";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
-import { hasOrgWideAccess } from "@takween/domain";
+import { getSpecialStaffReportingAccess } from "@takween/domain";
+import { getStaffNavigationAccess } from "@/lib/staff-navigation";
 
 const reportAreas = [
   {
@@ -39,18 +40,45 @@ const reportAreas = [
 
 export default function ReportsPage() {
   const { actor } = useStaffActor();
-  const canAccessReports =
-    hasOrgWideAccess(actor.roles)
-    //  ||
-    // actor.roles.includes("ORG_SUPERVISION_HEAD") ||
-    // actor.roles.includes("BOYS_EDU_SUPERVISOR") ||
-    // actor.roles.includes("EDU_SUPERVISOR") ||
-    // actor.roles.includes("BOYS_PRINCIPAL") ||
-    // actor.roles.includes("GIRLS_PRINCIPAL") ||
-    // actor.roles.includes("KG_PRINCIPAL")
-    ;
+  const navigationAccess = getStaffNavigationAccess(actor);
+  const specialReportingAccess = getSpecialStaffReportingAccess({
+    orgId: actor.orgId,
+    personId: actor.personId,
+    uid: actor.uid,
+  });
+  const canAccessCentralMeasurementSummary =
+    actor.visibleModules.includes("MEASUREMENTS") ||
+    specialReportingAccess?.canAccessCentralMeasurementSummary === true;
+  const canAccessKgMeasurementSummary =
+    actor.visibleModules.includes("MEASUREMENTS") ||
+    specialReportingAccess?.canAccessKgMeasurementSummary === true;
+  const visibleReportAreas = [
+    ...reportAreas,
+    ...(canAccessCentralMeasurementSummary
+      ? [
+          {
+            href: "/staff/measurements/central-summary",
+            title: "خلاصة القياسات المركزية",
+            description: "ملخص نتائج القياسات المركزية حسب الصف والمادة والمعلم.",
+            icon: Ruler,
+            tone: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
+          },
+        ]
+      : []),
+    ...(canAccessKgMeasurementSummary
+      ? [
+          {
+            href: "/staff/measurements/kg-summary",
+            title: "خلاصة قياسات الروضة",
+            description: "ملخص القياسات الموزونة للمعلمات والصفوف في الروضة.",
+            icon: Ruler,
+            tone: "bg-rose-500/10 text-rose-700 dark:text-rose-300",
+          },
+        ]
+      : []),
+  ];
 
-  if (!canAccessReports) return null;
+  if (!navigationAccess.canAccessReports) return null;
 
   return (
     <main dir="rtl" className="mx-auto max-w-6xl space-y-6 p-4 sm:p-6">
@@ -63,7 +91,7 @@ export default function ReportsPage() {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {reportAreas.map((area) => {
+        {visibleReportAreas.map((area) => {
           const Icon = area.icon;
           return (
             <Link

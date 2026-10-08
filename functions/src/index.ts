@@ -53,6 +53,7 @@ export {
 export { getClassRoster } from "./class-roster/get-class-roster";
 export { getVisibleStudents } from "./visible-students/get-visible-students";
 export { getLearningLossSummary } from "./learning-loss/learning-loss-summary";
+export { getSpecialStaffMeasurementSummarySource } from "./measurement-summaries/get-special-staff-measurement-summary-source";
 export {
   getStudentWorkDetail,
   getStudentWorkOverview,

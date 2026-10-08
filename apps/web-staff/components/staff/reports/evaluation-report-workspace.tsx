@@ -22,7 +22,7 @@ import type {
   EvaluationReportRequest,
   EvaluationReportStatusFilter,
 } from "@takween/contracts";
-import { hasOrgWideAccess } from "@takween/domain";
+import { getSpecialStaffReportingAccess } from "@takween/domain";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import EvaluationPersonDetailDrawer from "@/components/staff/reports/evaluation-person-detail-drawer";
@@ -34,6 +34,7 @@ import {
   loadEvaluationReportPersonDetail,
 } from "@/lib/evaluation-reports";
 import { getArabicRoleLabel } from "@/lib/role-labels";
+import { getStaffNavigationAccess } from "@/lib/staff-navigation";
 
 type Filters = {
   schoolId: string;
@@ -199,8 +200,19 @@ export default function EvaluationReportWorkspace() {
   >(new Map());
   const detailRequestId = useRef(0);
 
-  const canAccessReports = hasOrgWideAccess(actor.roles);
-  const fallbackSchools = actor.schools.map((school) => ({ id: school.id, label: school.name }));
+  const canAccessReports = getStaffNavigationAccess(actor).canAccessReports;
+  const specialReportingAccess = getSpecialStaffReportingAccess({
+    orgId: actor.orgId,
+    personId: actor.personId,
+    uid: actor.uid,
+  });
+  const specialSchoolIds = new Set(specialReportingAccess?.schoolIds ?? []);
+  const fallbackSchools = actor.schools
+    .filter(
+      (school) =>
+        !specialReportingAccess || specialSchoolIds.has(school.id),
+    )
+    .map((school) => ({ id: school.id, label: school.name }));
   const availablePeople = useMemo(() => {
     const people = filterOptions?.people ?? [];
     const needle = personSearch.trim().toLocaleLowerCase("ar");

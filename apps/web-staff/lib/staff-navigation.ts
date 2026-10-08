@@ -33,7 +33,7 @@ import {
 } from "@/lib/staff-portfolio";
 import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
-import { hasOrgWideAccess } from "@takween/domain";
+import { getSpecialStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import { canAccessStaffWork } from "@/lib/staff-work-access";
 import { canAccessAdminWork } from "@/lib/admin-work-access";
@@ -289,7 +289,12 @@ export function getStaffNavigationAccess(
     }),
     canAccessReports:
       hasOrgWideAccess(actor.roles) ||
-      actor.roles.includes("ORG_SUPERVISION_HEAD"),
+      actor.roles.includes("ORG_SUPERVISION_HEAD") ||
+      getSpecialStaffReportingAccess({
+        orgId: actor.orgId,
+        personId: actor.personId,
+        uid: actor.uid,
+      })?.canAccessReports === true,
     // ||
     // actor.roles.includes("BOYS_EDU_SUPERVISOR"),
     //  ||
