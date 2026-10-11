@@ -371,6 +371,21 @@ function getBatchDate(batch: MeasurementBatchDoc) {
   return batch.updatedAt ?? batch.createdAt ?? batch.measuredAt ?? 0;
 }
 
+function getLogicalSubjectKey(subjectKey?: string) {
+  const normalizedSubjectKey =
+    subjectKey?.trim().toUpperCase() || "UNSPECIFIED";
+
+  if (
+    normalizedSubjectKey === "COUNT_AND_CALCULATE" ||
+    normalizedSubjectKey === "NUMBERS" ||
+    normalizedSubjectKey === "KG_NUMBERS"
+  ) {
+    return "COUNT_AND_CALCULATE";
+  }
+
+  return normalizedSubjectKey;
+}
+
 function getBatchSearchText(item: BatchWithClass) {
   const { batch, classInfo } = item;
 
@@ -605,10 +620,7 @@ export default function StaffMeasurementsPage() {
 
         return getBatchSearchText(item).includes(normalizedSearch);
       });
-    const latestBatchByCollapsedStatus = new Map<
-      "DRAFT" | "IN_PROGRESS",
-      BatchWithClass
-    >();
+    const latestBatchByCollapseBucket = new Map<string, BatchWithClass>();
 
     for (const item of activeAndSearchFilteredBatches) {
       if (
@@ -618,7 +630,10 @@ export default function StaffMeasurementsPage() {
         continue;
       }
 
-      const currentLatest = latestBatchByCollapsedStatus.get(item.batch.status);
+      const collapseBucketKey = `${item.batch.status}:${getLogicalSubjectKey(
+        item.batch.subjectKey,
+      )}`;
+      const currentLatest = latestBatchByCollapseBucket.get(collapseBucketKey);
       const timestamp = getBatchDate(item.batch);
       const currentLatestTimestamp = currentLatest
         ? getBatchDate(currentLatest.batch)
@@ -630,7 +645,7 @@ export default function StaffMeasurementsPage() {
           item.batch.id > currentLatest.batch.id);
 
       if (isNewerBatch) {
-        latestBatchByCollapsedStatus.set(item.batch.status, item);
+        latestBatchByCollapseBucket.set(collapseBucketKey, item);
       }
     }
 
@@ -642,8 +657,12 @@ export default function StaffMeasurementsPage() {
         return true;
       }
 
+      const collapseBucketKey = `${item.batch.status}:${getLogicalSubjectKey(
+        item.batch.subjectKey,
+      )}`;
+
       return (
-        latestBatchByCollapsedStatus.get(item.batch.status)?.batch.id ===
+        latestBatchByCollapseBucket.get(collapseBucketKey)?.batch.id ===
         item.batch.id
       );
     });
