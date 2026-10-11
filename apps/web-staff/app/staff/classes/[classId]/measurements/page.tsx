@@ -22,7 +22,10 @@ import {
 import type { StudentMeasurementBatch } from "@takween/contracts";
 
 import { db } from "@/lib/firebase";
-import { getFriendlyMeasurementLabel } from "@/lib/measurement-presentation";
+import {
+  getFriendlyMeasurementLabel,
+  getFriendlySubjectLabel,
+} from "@/lib/measurement-presentation";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 type StaffVisibleClass = {
@@ -239,6 +242,7 @@ export default function StaffClassMeasurementsPage() {
   const [batchesStatus, setBatchesStatus] = useState<LoadingState>("idle");
   const [batchesError, setBatchesError] = useState<string | null>(null);
   const [batches, setBatches] = useState<MeasurementBatchDoc[]>([]);
+  const [subjectFilter, setSubjectFilter] = useState("ALL");
 
   const classes = useMemo(() => {
     return staffActor?.visibleClasses ?? [];
@@ -304,6 +308,76 @@ export default function StaffClassMeasurementsPage() {
   useEffect(() => {
     void loadBatches();
   }, [loadBatches]);
+
+  const subjectOptions = useMemo(() => {
+    const labelsBySubjectKey = new Map<string, string>();
+
+    for (const batch of batches) {
+      const subjectKey = batch.subjectKey?.trim();
+
+      if (!subjectKey || labelsBySubjectKey.has(subjectKey)) continue;
+
+      labelsBySubjectKey.set(
+        subjectKey,
+        getFriendlySubjectLabel(subjectKey) ||
+          getFriendlyMeasurementLabel(subjectKey) ||
+          subjectKey,
+      );
+    }
+
+    return [...labelsBySubjectKey.entries()].sort(
+      ([leftKey, leftLabel], [rightKey, rightLabel]) =>
+        leftLabel.localeCompare(rightLabel, "ar") ||
+        leftKey.localeCompare(rightKey, "ar"),
+    );
+  }, [batches]);
+
+  const subjectFilteredBatches = useMemo(
+    () =>
+      subjectFilter === "ALL"
+        ? batches
+        : batches.filter((batch) => batch.subjectKey === subjectFilter),
+    [batches, subjectFilter],
+  );
+
+  const batchesForDisplay = useMemo(() => {
+    const latestBatchByCollapsedStatus = new Map<
+      "DRAFT" | "IN_PROGRESS",
+      MeasurementBatchDoc
+    >();
+
+    for (const batch of subjectFilteredBatches) {
+      if (batch.status !== "DRAFT" && batch.status !== "IN_PROGRESS") {
+        continue;
+      }
+
+      const currentLatest = latestBatchByCollapsedStatus.get(batch.status);
+      const timestamp =
+        batch.updatedAt ?? batch.createdAt ?? batch.measuredAt ?? 0;
+      const currentLatestTimestamp = currentLatest
+        ? currentLatest.updatedAt ??
+          currentLatest.createdAt ??
+          currentLatest.measuredAt ??
+          0
+        : 0;
+      const isNewerBatch =
+        !currentLatest ||
+        timestamp > currentLatestTimestamp ||
+        (timestamp === currentLatestTimestamp && batch.id > currentLatest.id);
+
+      if (isNewerBatch) {
+        latestBatchByCollapsedStatus.set(batch.status, batch);
+      }
+    }
+
+    return subjectFilteredBatches.filter((batch) => {
+      if (batch.status !== "DRAFT" && batch.status !== "IN_PROGRESS") {
+        return true;
+      }
+
+      return latestBatchByCollapsedStatus.get(batch.status)?.id === batch.id;
+    });
+  }, [subjectFilteredBatches]);
 
   if (!staffActor) {
     return (
@@ -452,6 +526,23 @@ export default function StaffClassMeasurementsPage() {
             </div>
           ) : null}
 
+          <div className="border-b bg-muted/20 px-5 py-4">
+            <label className="flex max-w-sm flex-col gap-1.5 text-sm font-medium text-foreground">
+              <span>المادة</span>
+              <select
+                value={subjectFilter}
+                onChange={(event) => setSubjectFilter(event.target.value)}
+                className="h-10 rounded-xl border bg-background px-3 text-sm font-normal text-foreground outline-none transition focus:ring-2 focus:ring-ring"
+              >
+                <option value="ALL">كل المواد</option>
+                {subjectOptions.map(([subjectKey, subjectLabel]) => (
+                  <option key={subjectKey} value={subjectKey}>
+                    {subjectLabel}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
           {batchesStatus === "loading" ? (
             <div className="grid gap-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, index) => (
@@ -484,9 +575,15 @@ export default function StaffClassMeasurementsPage() {
                 </Link>
               </div>
             </div>
+          ) : batchesForDisplay.length === 0 ? (
+            <div className="p-5">
+              <div className="rounded-2xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+                لا توجد دفعات مطابقة للمادة المحددة.
+              </div>
+            </div>
           ) : (
             <div className="grid gap-4 p-5 lg:grid-cols-2">
-              {batches.map((batch) => (
+              {batchesForDisplay.map((batch) => (
                 <BatchCard key={batch.id} batch={batch} />
               ))}
             </div>

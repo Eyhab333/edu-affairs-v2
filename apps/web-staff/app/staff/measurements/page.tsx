@@ -432,6 +432,7 @@ export default function StaffMeasurementsPage() {
   const [batches, setBatches] = useState<BatchWithClass[]>([]);
   const [activeFilter, setActiveFilter] = useState<BatchFilter>("ALL");
   const [searchText, setSearchText] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("ALL");
 
   const orgId = staffActor?.orgId || "";
   const teacherPersonId = staffActor?.personId?.trim() || "";
@@ -566,17 +567,87 @@ export default function StaffMeasurementsPage() {
     void loadBatches();
   }, [loadBatches]);
 
+  const subjectOptions = useMemo(() => {
+    const labelsBySubjectKey = new Map<string, string>();
+
+    for (const { batch } of batches) {
+      const subjectKey = batch.subjectKey?.trim();
+
+      if (!subjectKey || labelsBySubjectKey.has(subjectKey)) continue;
+
+      labelsBySubjectKey.set(
+        subjectKey,
+        getFriendlySubjectLabel(subjectKey) ||
+          getFriendlyMeasurementLabel(subjectKey) ||
+          subjectKey,
+      );
+    }
+
+    return [...labelsBySubjectKey.entries()].sort(
+      ([leftKey, leftLabel], [rightKey, rightLabel]) =>
+        leftLabel.localeCompare(rightLabel, "ar") ||
+        leftKey.localeCompare(rightKey, "ar"),
+    );
+  }, [batches]);
+
   const filteredBatches = useMemo(() => {
     const normalizedSearch = searchText.trim().toLowerCase();
-
-    return batches
+    const subjectFilteredBatches =
+      subjectFilter === "ALL"
+        ? batches
+        : batches.filter(
+            ({ batch }) => batch.subjectKey?.trim() === subjectFilter,
+          );
+    const activeAndSearchFilteredBatches = subjectFilteredBatches
       .filter((item) => filterBatch(item, activeFilter))
       .filter((item) => {
         if (!normalizedSearch) return true;
 
         return getBatchSearchText(item).includes(normalizedSearch);
       });
-  }, [activeFilter, batches, searchText]);
+    const latestBatchByCollapsedStatus = new Map<
+      "DRAFT" | "IN_PROGRESS",
+      BatchWithClass
+    >();
+
+    for (const item of activeAndSearchFilteredBatches) {
+      if (
+        item.batch.status !== "DRAFT" &&
+        item.batch.status !== "IN_PROGRESS"
+      ) {
+        continue;
+      }
+
+      const currentLatest = latestBatchByCollapsedStatus.get(item.batch.status);
+      const timestamp = getBatchDate(item.batch);
+      const currentLatestTimestamp = currentLatest
+        ? getBatchDate(currentLatest.batch)
+        : 0;
+      const isNewerBatch =
+        !currentLatest ||
+        timestamp > currentLatestTimestamp ||
+        (timestamp === currentLatestTimestamp &&
+          item.batch.id > currentLatest.batch.id);
+
+      if (isNewerBatch) {
+        latestBatchByCollapsedStatus.set(item.batch.status, item);
+      }
+    }
+
+    return activeAndSearchFilteredBatches.filter((item) => {
+      if (
+        item.batch.status !== "DRAFT" &&
+        item.batch.status !== "IN_PROGRESS"
+      ) {
+        return true;
+      }
+
+      return (
+        latestBatchByCollapsedStatus.get(item.batch.status)?.batch.id ===
+        item.batch.id
+      );
+    });
+  }, [activeFilter, batches, searchText, subjectFilter]);
 
   if (!staffActor) {
     return (
@@ -714,6 +785,21 @@ export default function StaffMeasurementsPage() {
                 />
               </div>
 
+              <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span>المادة</span>
+                <select
+                  value={subjectFilter}
+                  onChange={(event) => setSubjectFilter(event.target.value)}
+                  className="h-10 rounded-xl border bg-background px-3 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring sm:w-44"
+                >
+                  <option value="ALL">كل المواد</option>
+                  {subjectOptions.map(([subjectKey, subjectLabel]) => (
+                    <option key={subjectKey} value={subjectKey}>
+                      {subjectLabel}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <select
                 value={activeFilter}
                 onChange={(event) =>

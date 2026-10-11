@@ -141,6 +141,7 @@ export const reopenEvaluationSubmission = onCall(
     region: REGION,
     cors: CORS_ORIGINS,
     invoker: "public",
+    memory: "512MiB",
   },
   async (request): Promise<ReopenEvaluationSubmissionResult> => {
     const uid = request.auth?.uid;
