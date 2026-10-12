@@ -1,45 +1,58 @@
-import type { MembershipRole } from "@takween/contracts";
-import { canReviewStaffPortfolio } from "@takween/domain";
-
 type SubmittedMeasurementBatchForCorrection = {
   status?: string;
   schoolId?: string;
+  academicYearId?: string;
   classId?: string;
-  createdByPersonId?: string;
+};
+
+type VisibleMeasurementClass = {
+  id: string;
+  schoolId?: string;
+  academicYearId?: string;
 };
 
 /**
- * Submitted measurement batches remain immutable for ordinary teachers.
- * The original owner may correct their own batch. Established review roles may
- * correct a batch only when its class is within their visible scope.
+ * Resolves whether a batch belongs to the actor's existing class scope.
+ * Current batches require the full school/year/class identity. Older batches
+ * that lack both school and academic-year context may use classId only, but
+ * only when that classId identifies one visible class context unambiguously.
+ */
+export function isMeasurementBatchInVisibleClassScope(params: {
+  batch: SubmittedMeasurementBatchForCorrection;
+  visibleClasses: readonly VisibleMeasurementClass[];
+}): boolean {
+  const { batch, visibleClasses } = params;
+
+  if (!batch.classId) return false;
+
+  const hasExactVisibleClass = visibleClasses.some(
+    (classInfo) =>
+      classInfo.id === batch.classId &&
+      classInfo.schoolId === batch.schoolId &&
+      classInfo.academicYearId === batch.academicYearId,
+  );
+
+  if (hasExactVisibleClass) return true;
+
+  const isLegacyBatchWithoutClassContext =
+    !batch.schoolId && !batch.academicYearId;
+
+  return (
+    isLegacyBatchWithoutClassContext &&
+    visibleClasses.filter((classInfo) => classInfo.id === batch.classId)
+      .length === 1
+  );
+}
+
+/**
+ * Submitted correction follows the same class scope as measurement visibility.
  */
 export function canCorrectSubmittedMeasurementBatch(params: {
   batch: SubmittedMeasurementBatchForCorrection;
-  actorPersonId?: string;
-  actorUid?: string;
-  actorRoles?: readonly string[];
-  hasVisibleClassAccess: boolean;
+  visibleClasses: readonly VisibleMeasurementClass[];
 }): boolean {
-  const { batch } = params;
-
-  if (batch.status !== "SUBMITTED") return false;
-
-  // Batches are normally owned by a person. Older/current creation flows use
-  // the authenticated uid only when a person record is unavailable, so retain
-  // that same canonical fallback without mixing the two identities otherwise.
-  const actorOwnerId =
-    params.actorPersonId?.trim() || params.actorUid?.trim();
-  const isOriginalOwner = Boolean(
-    actorOwnerId && batch.createdByPersonId === actorOwnerId,
-  );
-
-  if (isOriginalOwner) return true;
-
-  if (!batch.schoolId || !batch.classId || !params.hasVisibleClassAccess) {
-    return false;
-  }
-
-  return canReviewStaffPortfolio(
-    (params.actorRoles ?? []) as MembershipRole[],
+  return (
+    params.batch.status === "SUBMITTED" &&
+    isMeasurementBatchInVisibleClassScope(params)
   );
 }

@@ -46,91 +46,10 @@ type StaffVisibleClass = {
   academicYearTitle?: string;
 };
 
-type TeacherAssignmentScope = {
-  personId?: string;
-  schoolId?: string;
-  academicYearId?: string;
-  classId?: string;
-  subjectKey?: string;
-};
-
 type StaffActorLike = {
-  uid?: string;
   orgId?: string;
-  personId?: string;
-  roleKeys?: string[];
-  roles?: string[];
-  teacherAssignments?: TeacherAssignmentScope[];
   visibleClasses?: StaffVisibleClass[];
 };
-
-function isTeacherOnlyActor(actor: StaffActorLike | null) {
-  const roleKeys = [...(actor?.roleKeys ?? []), ...(actor?.roles ?? [])].map(
-    (role) => role.trim().toUpperCase(),
-  );
-  const hasTeacherRole = roleKeys.includes("TEACHER");
-  const hasSupervisorOrAdminRole = roleKeys.some(
-    (role) =>
-      role.includes("SUPERVIS") ||
-      role.includes("ADMIN") ||
-      role === "OWNER" ||
-      role === "ORG_OWNER",
-  );
-
-  return hasTeacherRole && !hasSupervisorOrAdminRole;
-}
-
-function getTeacherSubjectKeysForClass(
-  teacherAssignments: TeacherAssignmentScope[],
-  teacherPersonId: string,
-  classInfo: StaffVisibleClass,
-) {
-  return Array.from(
-    new Set(
-      teacherAssignments
-        .filter((assignment) => {
-          if (
-            assignment.personId &&
-            assignment.personId !== teacherPersonId
-          ) {
-            return false;
-          }
-
-          if (assignment.classId && assignment.classId !== classInfo.id) {
-            return false;
-          }
-
-          if (
-            assignment.schoolId &&
-            assignment.schoolId !== classInfo.schoolId
-          ) {
-            return false;
-          }
-
-          if (
-            assignment.academicYearId &&
-            assignment.academicYearId !== classInfo.academicYearId
-          ) {
-            return false;
-          }
-
-          return Boolean(assignment.subjectKey);
-        })
-        .map((assignment) => assignment.subjectKey!.trim())
-        .filter(Boolean),
-    ),
-  );
-}
-
-function chunkValues<T>(values: T[], chunkSize: number) {
-  const chunks: T[][] = [];
-
-  for (let index = 0; index < values.length; index += chunkSize) {
-    chunks.push(values.slice(index, index + chunkSize));
-  }
-
-  return chunks;
-}
 
 type MeasurementBatchDoc = StudentMeasurementBatch & {
   id: string;
@@ -452,17 +371,6 @@ export default function StaffMeasurementsPage() {
   const [subjectFilter, setSubjectFilter] = useState("ALL");
 
   const orgId = staffActor?.orgId || "";
-  const teacherPersonId = staffActor?.personId?.trim() || "";
-  const shouldScopeToTeacher = isTeacherOnlyActor(staffActor);
-  const teacherAssignments = staffActor?.teacherAssignments ?? [];
-  const correctionRoleKeys = useMemo(
-    () => [
-      ...(staffActor?.roles ?? []),
-      ...(staffActor?.roleKeys ?? []),
-    ],
-    [staffActor?.roleKeys, staffActor?.roles],
-  );
-
   const visibleClasses = useMemo(() => {
     return dedupeVisibleClasses(staffActor?.visibleClasses ?? []);
   }, [staffActor?.visibleClasses]);
@@ -477,12 +385,6 @@ export default function StaffMeasurementsPage() {
 
   const loadBatches = useCallback(async () => {
     if (!orgId) return;
-
-    if (shouldScopeToTeacher && !teacherPersonId) {
-      setBatches([]);
-      setStatus("success");
-      return;
-    }
 
     if (visibleClasses.length === 0) {
       setBatches([]);
@@ -503,44 +405,18 @@ export default function StaffMeasurementsPage() {
 
       const snapGroups = await Promise.all(
         visibleClasses.map(async (classInfo) => {
-          const subjectKeyChunks = shouldScopeToTeacher
-            ? chunkValues(
-                getTeacherSubjectKeysForClass(
-                  teacherAssignments,
-                  teacherPersonId,
-                  classInfo,
-                ),
-                30,
-              )
-            : [[]];
-
-          if (subjectKeyChunks.length === 0) return [];
-
-          const snaps = await Promise.all(
-            subjectKeyChunks.map((subjectKeys) => {
-              const batchesQuery = query(
-                batchesRef,
-                where("schoolId", "==", classInfo.schoolId),
-                where("academicYearId", "==", classInfo.academicYearId),
-                where("classId", "==", classInfo.id),
-                ...(shouldScopeToTeacher
-                  ? [
-                      where("createdByPersonId", "==", teacherPersonId),
-                      where("subjectKey", "in", subjectKeys),
-                    ]
-                  : []),
-              );
-
-              return getDocs(batchesQuery);
-            }),
+          const batchesQuery = query(
+            batchesRef,
+            where("schoolId", "==", classInfo.schoolId),
+            where("academicYearId", "==", classInfo.academicYearId),
+            where("classId", "==", classInfo.id),
           );
+          const snap = await getDocs(batchesQuery);
 
-          return snaps.flatMap((snap) =>
-            snap.docs.map((item) => ({
-              id: item.id,
-              ...(item.data() as Omit<MeasurementBatchDoc, "id">),
-            })),
-          );
+          return snap.docs.map((item) => ({
+            id: item.id,
+            ...(item.data() as Omit<MeasurementBatchDoc, "id">),
+          }));
         }),
       );
 
@@ -582,9 +458,6 @@ export default function StaffMeasurementsPage() {
     orgId,
     visibleClasses,
     classMap,
-    shouldScopeToTeacher,
-    teacherAssignments,
-    teacherPersonId,
   ]);
 
   useEffect(() => {
@@ -883,13 +756,7 @@ export default function StaffMeasurementsPage() {
                   item={item}
                   canCorrectSubmittedBatch={canCorrectSubmittedMeasurementBatch({
                     batch: item.batch,
-                    actorPersonId: staffActor.personId,
-                    actorUid: staffActor.uid,
-                    actorRoles: correctionRoleKeys,
-                    hasVisibleClassAccess: Boolean(
-                      item.classInfo &&
-                        isSameClassContext(item.batch, item.classInfo),
-                    ),
+                    visibleClasses,
                   })}
                 />
               ))}

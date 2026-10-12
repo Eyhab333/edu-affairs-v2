@@ -692,7 +692,7 @@ export function buildStaffHome(params: {
   ];
 
   if (visibleClasses.length > 0) {
-    rawVisibleModules.push("CLASSES", "STUDENTS");
+    rawVisibleModules.push("CLASSES", "STUDENTS", "MEASUREMENTS");
   }
 
   const normalizedVisibleModules = uniqueStrings(

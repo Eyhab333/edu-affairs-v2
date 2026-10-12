@@ -40,7 +40,10 @@ import { getVisibleStudents } from "@/lib/visible-students";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
 import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
-import { canCorrectSubmittedMeasurementBatch } from "@/lib/measurement-submitted-correction";
+import {
+  canCorrectSubmittedMeasurementBatch,
+  isMeasurementBatchInVisibleClassScope,
+} from "@/lib/measurement-submitted-correction";
 
 type VisibleClass = {
   id: string;
@@ -1061,10 +1064,6 @@ export default function StaffMeasurementBatchEditPage() {
     );
   }, [visibleClasses]);
 
-  const visibleClassIds = useMemo(() => {
-    return new Set(visibleClasses.map((item) => item.id));
-  }, [visibleClasses]);
-
   const classInfo = useMemo(() => {
     if (!batch?.classId) return null;
 
@@ -1079,16 +1078,8 @@ export default function StaffMeasurementBatchEditPage() {
 
   const hasAccessToBatch = useMemo(() => {
     if (!batch) return true;
-    if (!batch.classId) return true;
-
-    const exactClass = visibleClassMap.get(getBatchClassKey(batch));
-    if (exactClass) return true;
-
-    const hasOnlyClassId = !batch.schoolId && !batch.academicYearId;
-    if (hasOnlyClassId) return visibleClassIds.has(batch.classId);
-
-    return false;
-  }, [batch, visibleClassIds, visibleClassMap]);
+    return isMeasurementBatchInVisibleClassScope({ batch, visibleClasses });
+  }, [batch, visibleClasses]);
 
   const itemDefinitions = useMemo(() => {
     return resolveItemDefinitions(rows);
@@ -1103,15 +1094,9 @@ export default function StaffMeasurementBatchEditPage() {
 
     return canCorrectSubmittedMeasurementBatch({
       batch,
-      actorPersonId: currentActor.personId,
-      actorUid: currentActor.uid,
-      actorRoles: [
-        ...(currentActor.roles ?? []),
-        ...(currentActor.roleKeys ?? []),
-      ],
-      hasVisibleClassAccess: hasAccessToBatch,
+      visibleClasses,
     });
-  }, [batch, currentActor, hasAccessToBatch]);
+  }, [batch, currentActor, visibleClasses]);
 
   const summary = useMemo(() => {
     const total = rows.length;
