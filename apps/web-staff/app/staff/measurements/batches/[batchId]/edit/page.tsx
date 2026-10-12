@@ -40,6 +40,7 @@ import { getVisibleStudents } from "@/lib/visible-students";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
 import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
+import { canCorrectSubmittedMeasurementBatch } from "@/lib/measurement-submitted-correction";
 
 type VisibleClass = {
   id: string;
@@ -415,6 +416,43 @@ function buildItemScoresForDraft(params: {
   });
 }
 
+function buildItemScoresForCorrection(params: {
+  draft: DraftRow;
+  itemDefinitions: BatchItemDefinition[];
+  sourceRow: EditableBatchRow;
+}): OperationItemScore[] {
+  const existingByItemKey = new Map(
+    (params.sourceRow.itemScores ?? []).map((item) => [
+      item.itemKey,
+      item,
+    ]),
+  );
+
+  return params.itemDefinitions.map((item) => {
+    const existing = existingByItemKey.get(item.itemKey);
+    const parsedScore = parseOptionalNumber(
+      params.draft.itemScores[item.itemKey] ?? "",
+    );
+
+    return {
+      ...(existing ?? {
+        itemKey: item.itemKey,
+        itemId: item.itemId || "",
+        itemTitle: item.itemTitle,
+        category: item.category || "",
+        valueType: "NUMERIC",
+        maxScore: item.maxScore,
+        weight: item.weight ?? 1,
+        level: "",
+        valueText: "",
+        note: "",
+        order: item.order ?? 0,
+      }),
+      score: parsedScore,
+    } as OperationItemScore;
+  });
+}
+
 function calculateDraftScore(params: {
   draft: DraftRow;
   itemDefinitions: BatchItemDefinition[];
@@ -543,6 +581,167 @@ function validateRowsForSubmit(params: {
           row.studentDisplayName || row.studentId
         }`;
       }
+    }
+  }
+
+  return null;
+}
+
+function buildStudentRowsForCorrection(params: {
+  rows: EditableBatchRow[];
+  sourceRows: StudentMeasurementBatchStudentRow[];
+  draftRows: DraftRows;
+  itemDefinitions: BatchItemDefinition[];
+}): EditableBatchRow[] {
+  const sourceRowsByStudentId = new Map(
+    params.sourceRows.map((row) => [row.studentId, row]),
+  );
+
+  return params.rows.map((row) => {
+    const sourceRow = sourceRowsByStudentId.get(row.studentId) ?? row;
+
+    if (sourceRow.status !== "COMPLETED") return sourceRow;
+
+    const draft = getDraftRow(params.draftRows, row.studentId);
+    const itemScores = params.itemDefinitions.length
+      ? buildItemScoresForCorrection({
+          draft,
+          itemDefinitions: params.itemDefinitions,
+          sourceRow,
+        })
+      : sourceRow.itemScores ?? [];
+
+    return {
+      ...sourceRow,
+      score: calculateDraftScore({
+        draft,
+        itemDefinitions: params.itemDefinitions,
+      }),
+      itemScores,
+    };
+  });
+}
+
+function haveSameItemScoreValues(
+  left: OperationItemScore[] | undefined,
+  right: OperationItemScore[] | undefined,
+) {
+  const toComparableValues = (items: OperationItemScore[] | undefined) =>
+    (items ?? [])
+      .map((item, index) => ({
+        itemKey: item.itemKey || `__index_${index}`,
+        score:
+          typeof item.score === "number" && Number.isFinite(item.score)
+            ? item.score
+            : undefined,
+      }))
+      .sort((a, b) => a.itemKey.localeCompare(b.itemKey));
+
+  const leftValues = toComparableValues(left);
+  const rightValues = toComparableValues(right);
+
+  return (
+    leftValues.length === rightValues.length &&
+    leftValues.every(
+      (item, index) =>
+        item.itemKey === rightValues[index].itemKey &&
+        item.score === rightValues[index].score,
+    )
+  );
+}
+
+function hasCorrectedScoreChanged(
+  original: EditableBatchRow,
+  corrected: EditableBatchRow,
+) {
+  const originalScore =
+    typeof original.score === "number" && Number.isFinite(original.score)
+      ? original.score
+      : undefined;
+  const correctedScore =
+    typeof corrected.score === "number" && Number.isFinite(corrected.score)
+      ? corrected.score
+      : undefined;
+
+  return (
+    originalScore !== correctedScore ||
+    !haveSameItemScoreValues(original.itemScores, corrected.itemScores)
+  );
+}
+
+function validateRowsForCorrection(params: {
+  rows: EditableBatchRow[];
+  draftRows: DraftRows;
+  itemDefinitions: BatchItemDefinition[];
+  batch: MeasurementBatchDoc;
+}) {
+  for (const row of params.rows) {
+    if (row.status !== "COMPLETED") continue;
+
+    const draft = getDraftRow(params.draftRows, row.studentId);
+    const studentLabel = row.studentDisplayName || row.studentId;
+
+    if (params.itemDefinitions.length === 0) {
+      const score = parseOptionalNumber(draft.score);
+      const maxScore = calculateMaxScore({
+        batch: params.batch,
+        itemDefinitions: params.itemDefinitions,
+        sourceRow: row,
+      });
+
+      if (score === undefined || !Number.isFinite(score)) {
+        return `يجب إدخال درجة رقمية صحيحة للطالب: ${studentLabel}`;
+      }
+
+      if (score < 0) {
+        return `لا يمكن أن تكون درجة الطالب سالبة: ${studentLabel}`;
+      }
+
+      if (typeof maxScore === "number" && score > maxScore) {
+        return `درجة الطالب تتجاوز الدرجة العظمى (${maxScore}): ${studentLabel}`;
+      }
+
+      continue;
+    }
+
+    for (const item of params.itemDefinitions) {
+      const score = parseOptionalNumber(
+        draft.itemScores[item.itemKey] ?? "",
+      );
+
+      if (score === undefined || !Number.isFinite(score)) {
+        return `يجب إدخال درجة رقمية صحيحة في بند "${item.itemTitle}" للطالب: ${studentLabel}`;
+      }
+
+      if (score < 0) {
+        return `لا يمكن أن تكون درجة بند "${item.itemTitle}" سالبة للطالب: ${studentLabel}`;
+      }
+
+      if (typeof item.maxScore === "number" && score > item.maxScore) {
+        return `درجة بند "${item.itemTitle}" تتجاوز الدرجة العظمى (${item.maxScore}) للطالب: ${studentLabel}`;
+      }
+    }
+
+    const totalScore = calculateDraftScore({
+      draft,
+      itemDefinitions: params.itemDefinitions,
+    });
+    const maxScore = calculateMaxScore({
+      batch: params.batch,
+      itemDefinitions: params.itemDefinitions,
+      sourceRow: row,
+    });
+
+    if (typeof totalScore !== "number" || !Number.isFinite(totalScore)) {
+      return `تعذر احتساب الدرجة الإجمالية للطالب: ${studentLabel}`;
+    }
+
+    if (totalScore < 0) {
+      return `لا يمكن أن تكون الدرجة الإجمالية سالبة للطالب: ${studentLabel}`;
+    }
+
+    if (typeof maxScore === "number" && totalScore > maxScore) {
+      return `الدرجة الإجمالية تتجاوز الدرجة العظمى (${maxScore}) للطالب: ${studentLabel}`;
     }
   }
 
@@ -847,6 +1046,11 @@ export default function StaffMeasurementBatchEditPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
+  const [savingCorrection, setSavingCorrection] = useState(false);
+  const [correctionError, setCorrectionError] = useState<string | null>(null);
+  const [correctionSaved, setCorrectionSaved] = useState(false);
+  const [correctionNoChanges, setCorrectionNoChanges] = useState(false);
+
   const visibleClasses = useMemo(() => {
     return currentActor?.visibleClasses ?? [];
   }, [currentActor]);
@@ -893,6 +1097,21 @@ export default function StaffMeasurementBatchEditPage() {
   const editable = useMemo(() => {
     return batch ? isBatchEditable(batch) : false;
   }, [batch]);
+
+  const isSubmittedCorrectionMode = useMemo(() => {
+    if (!batch || !currentActor) return false;
+
+    return canCorrectSubmittedMeasurementBatch({
+      batch,
+      actorPersonId: currentActor.personId,
+      actorUid: currentActor.uid,
+      actorRoles: [
+        ...(currentActor.roles ?? []),
+        ...(currentActor.roleKeys ?? []),
+      ],
+      hasVisibleClassAccess: hasAccessToBatch,
+    });
+  }, [batch, currentActor, hasAccessToBatch]);
 
   const summary = useMemo(() => {
     const total = rows.length;
@@ -959,6 +1178,9 @@ export default function StaffMeasurementBatchEditPage() {
     setSubmitError(null);
     setDraftSaved(false);
     setSubmitted(false);
+    setCorrectionError(null);
+    setCorrectionSaved(false);
+    setCorrectionNoChanges(false);
 
     try {
       const batchRef = doc(
@@ -1040,7 +1262,11 @@ export default function StaffMeasurementBatchEditPage() {
         ...prev,
         [studentId]: {
           ...current,
-          status: value ? "COMPLETED" : current.status,
+          status: isSubmittedCorrectionMode
+            ? current.status
+            : value
+              ? "COMPLETED"
+              : current.status,
           itemScores: {
             ...current.itemScores,
             [itemKey]: value,
@@ -1328,6 +1554,145 @@ export default function StaffMeasurementBatchEditPage() {
     }
   }
 
+  async function saveSubmittedCorrection() {
+    if (!currentActor?.orgId || !batch) return;
+
+    if (!isSubmittedCorrectionMode) {
+      setCorrectionError(
+        "لا تملك صلاحية تصحيح درجات هذه الدفعة المرسلة.",
+      );
+      return;
+    }
+
+    const validationError = validateRowsForCorrection({
+      rows,
+      draftRows,
+      itemDefinitions,
+      batch,
+    });
+
+    if (validationError) {
+      setCorrectionError(validationError);
+      return;
+    }
+
+    const updatedStudentRows = buildStudentRowsForCorrection({
+      rows,
+      sourceRows: batch.studentRows ?? [],
+      draftRows,
+      itemDefinitions,
+    });
+
+    const changedRows = updatedStudentRows.filter((updatedRow) => {
+      const originalRow = rows.find(
+        (row) => row.studentId === updatedRow.studentId,
+      );
+
+      return !!originalRow && hasCorrectedScoreChanged(originalRow, updatedRow);
+    });
+
+    setCorrectionError(null);
+    setCorrectionSaved(false);
+    setCorrectionNoChanges(false);
+
+    if (changedRows.length === 0) {
+      setCorrectionNoChanges(true);
+      return;
+    }
+
+    const missingRecordRow = changedRows.find(
+      (row) => !row.recordId?.trim(),
+    );
+
+    if (missingRecordRow) {
+      setCorrectionError(
+        `تعذر حفظ التصحيح لأن سجل الطالب المكتمل غير مرتبط بمعرّف سجل صالح: ${
+          missingRecordRow.studentDisplayName || missingRecordRow.studentId
+        }`,
+      );
+      return;
+    }
+
+    setSavingCorrection(true);
+
+    try {
+      const correctedAt = nowMs();
+      const firestoreBatch = writeBatch(db);
+
+      for (const correctedRow of changedRows) {
+        const recordId = correctedRow.recordId.trim();
+        const recordType =
+          correctedRow.recordType || getBatchRecordType(batch);
+        const maxScore = calculateMaxScore({
+          batch,
+          itemDefinitions,
+          sourceRow: correctedRow,
+        });
+        const learningLossDecision = calculateLearningLossDecisionForRecord({
+          template: sourceTemplate,
+          score: correctedRow.score,
+          maxScore,
+        });
+        const collectionName =
+          recordType === "ASSESSMENT_RECORD"
+            ? "studentAssessmentRecords"
+            : "studentTrackerEntries";
+        const recordRef = doc(
+          db,
+          "orgs",
+          currentActor.orgId,
+          collectionName,
+          recordId,
+        );
+
+        firestoreBatch.update(
+          recordRef,
+          stripUndefined({
+            score: correctedRow.score,
+            itemScores: correctedRow.itemScores ?? [],
+            needsLearningLossFollowUp:
+              learningLossDecision.needsLearningLossFollowUp,
+            learningLossTriggerReason: learningLossDecision.reason,
+            updatedAt: correctedAt,
+          }) as Record<string, unknown>,
+        );
+      }
+
+      const batchRef = doc(
+        db,
+        "orgs",
+        currentActor.orgId,
+        "studentMeasurementBatches",
+        batch.id,
+      );
+      const batchCorrectionPayload = stripUndefined({
+        studentRows: updatedStudentRows,
+        updatedAt: correctedAt,
+        lastCorrectedAt: correctedAt,
+        lastCorrectedByPersonId: resolveActorPersonId(currentActor),
+        lastCorrectedByRoleKey: resolveActorRoleKey(currentActor),
+      }) as Record<string, unknown>;
+
+      firestoreBatch.update(batchRef, batchCorrectionPayload);
+      await firestoreBatch.commit();
+
+      setBatch((previous) =>
+        previous
+          ? ({
+              ...previous,
+              ...batchCorrectionPayload,
+            } as MeasurementBatchDoc)
+          : previous,
+      );
+      setRows(updatedStudentRows);
+      setDraftRows(buildDraftRowsFromRows(updatedStudentRows));
+      setCorrectionSaved(true);
+    } catch (error: unknown) {
+      setCorrectionError(getErrorMessage(error));
+    } finally {
+      setSavingCorrection(false);
+    }
+  }
   if (!currentActor) {
     return (
       <PageShell>
@@ -1395,6 +1760,32 @@ export default function StaffMeasurementBatchEditPage() {
     );
   }
 
+
+  if (batch.status === "SUBMITTED" && !isSubmittedCorrectionMode) {
+    return (
+      <PageShell>
+        <div className="rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center shadow-sm dark:border-amber-900/60 dark:bg-amber-950/30">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+            <AlertTriangle className="h-6 w-6" />
+          </div>
+
+          <h1 className="mt-4 text-xl font-bold">غير مصرح بتصحيح الدفعة</h1>
+
+          <p className="mx-auto mt-2 max-w-2xl text-sm leading-7 text-amber-900 dark:text-amber-100">
+            تصحيح الدرجات متاح لمالك الدفعة أو لأدوار الإدارة والإشراف المصرح لها ضمن نطاق الفصل الحالي.
+          </p>
+
+          <Link
+            href={`/staff/measurements/batches/${batch.id}`}
+            className="mt-5 inline-flex h-10 items-center justify-center rounded-2xl border border-amber-200 bg-white px-4 text-sm font-semibold text-amber-700 transition hover:bg-amber-50 dark:border-amber-900 dark:bg-slate-900 dark:text-amber-300"
+          >
+            الرجوع لتفاصيل الدفعة
+          </Link>
+        </div>
+      </PageShell>
+    );
+  }
+
   return (
     <PageShell>
       <div className="flex flex-wrap gap-2">
@@ -1428,36 +1819,53 @@ export default function StaffMeasurementBatchEditPage() {
 
               <div className="space-y-2">
                 <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
-                  تعديل نتائج الدفعة
+                  {isSubmittedCorrectionMode
+                    ? "تصحيح درجات الدفعة المرسلة"
+                    : "تعديل نتائج الدفعة"}
                 </h1>
 
                 <p className="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400">
-                  هذه الصفحة تحفظ سياق المادة عند تعديل الدفعة، ثم تنقله إلى
-                  السجلات الفردية عند الإرسال.
+                  {isSubmittedCorrectionMode
+                    ? "سيتم تحديث الدرجات الحالية دون إنشاء سجلات قياس جديدة."
+                    : "هذه الصفحة تحفظ سياق المادة عند تعديل الدفعة، ثم تنقله إلى السجلات الفردية عند الإرسال."}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                disabled={!editable || savingDraft || submittingBatch}
-                onClick={saveDraftBatch}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300"
-              >
-                <Save className="h-4 w-4" />
-                {savingDraft ? "جاري الحفظ..." : "حفظ التعديل كمسودة"}
-              </button>
+              {isSubmittedCorrectionMode ? (
+                <button
+                  type="button"
+                  disabled={savingCorrection}
+                  onClick={saveSubmittedCorrection}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-700 dark:hover:bg-emerald-600"
+                >
+                  <Save className="h-4 w-4" />
+                  {savingCorrection ? "جارٍ حفظ التصحيح..." : "حفظ التصحيح"}
+                </button>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    disabled={!editable || savingDraft || submittingBatch}
+                    onClick={saveDraftBatch}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300"
+                  >
+                    <Save className="h-4 w-4" />
+                    {savingDraft ? "جاري الحفظ..." : "حفظ التعديل كمسودة"}
+                  </button>
 
-              <button
-                type="button"
-                disabled={!editable || savingDraft || submittingBatch}
-                onClick={submitBatch}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-700 dark:hover:bg-emerald-600"
-              >
-                <Send className="h-4 w-4" />
-                {submittingBatch ? "جاري الإرسال..." : "إرسال الدفعة"}
-              </button>
+                  <button
+                    type="button"
+                    disabled={!editable || savingDraft || submittingBatch}
+                    onClick={submitBatch}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-700 dark:hover:bg-emerald-600"
+                  >
+                    <Send className="h-4 w-4" />
+                    {submittingBatch ? "جاري الإرسال..." : "إرسال الدفعة"}
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -1489,7 +1897,11 @@ export default function StaffMeasurementBatchEditPage() {
         </div>
       </div>
 
-      {!editable ? (
+      {isSubmittedCorrectionMode ? (
+        <div className="rounded-3xl border border-sky-200 bg-sky-50 p-5 text-sm leading-7 text-sky-900 shadow-sm dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100">
+          سيتم تحديث الدرجات الحالية فقط دون تغيير حالة الطلاب أو ملاحظاتهم أو إنشاء سجلات قياس جديدة.
+        </div>
+      ) : !editable ? (
         <div className="rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-900 shadow-sm dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
           هذه الدفعة حالتها الحالية:{" "}
           <span className="font-bold">{getBatchStatusLabel(batch.status)}</span>
@@ -1521,6 +1933,24 @@ export default function StaffMeasurementBatchEditPage() {
         </div>
       ) : null}
 
+      {correctionError ? (
+        <div className="rounded-3xl border border-red-200 bg-red-50 p-5 text-sm leading-7 text-red-800 shadow-sm dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-100">
+          {correctionError}
+        </div>
+      ) : null}
+
+      {correctionNoChanges ? (
+        <div className="rounded-3xl border border-sky-200 bg-sky-50 p-5 text-sm leading-7 text-sky-900 shadow-sm dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100">
+          لم يتم إجراء أي تعديل على الدرجات.
+        </div>
+      ) : null}
+
+      {correctionSaved ? (
+        <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-sm leading-7 text-emerald-900 shadow-sm dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100">
+          تم حفظ تصحيح الدرجات وتحديث السجلات القائمة بنجاح.
+        </div>
+      ) : null}
+
       <BatchContextSection batch={batch} />
 
       <div className="grid gap-4 md:grid-cols-6">
@@ -1543,7 +1973,9 @@ export default function StaffMeasurementBatchEditPage() {
           <div>
             <h2 className="font-bold">نتائج الطلاب</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              عدّل حالة كل طالب ودرجته أو درجات البنود، ثم احفظ أو أرسل الدفعة.
+              {isSubmittedCorrectionMode
+                ? "يمكن تعديل درجات الطلاب المكتملين فقط؛ تبقى الحالة والملاحظة وبقية سياق الدفعة ثابتة."
+                : "عدّل حالة كل طالب ودرجته أو درجات البنود، ثم احفظ أو أرسل الدفعة."}
             </p>
           </div>
         </div>
@@ -1591,7 +2023,11 @@ export default function StaffMeasurementBatchEditPage() {
               <tbody>
                 {rows.map((row) => {
                   const draft = getDraftRow(draftRows, row.studentId);
-                  const scoreDisabled = isScoreDisabled(draft.status);
+                  const scoreDisabled = isSubmittedCorrectionMode
+                    ? row.status !== "COMPLETED"
+                    : isScoreDisabled(draft.status);
+                  const scoreEditable =
+                    (editable || isSubmittedCorrectionMode) && !scoreDisabled;
 
                   return (
                     <tr
@@ -1612,7 +2048,7 @@ export default function StaffMeasurementBatchEditPage() {
                       <td className="whitespace-nowrap px-4 py-3">
                         <select
                           value={draft.status}
-                          disabled={!editable}
+                          disabled={!editable || isSubmittedCorrectionMode}
                           onChange={(event) =>
                             updateDraftRow(row.studentId, {
                               status: event.target.value as BatchStudentStatus,
@@ -1644,12 +2080,14 @@ export default function StaffMeasurementBatchEditPage() {
                             type="number"
                             inputMode="decimal"
                             value={draft.score}
-                            disabled={!editable || scoreDisabled}
+                            disabled={!scoreEditable}
                             onChange={(event) =>
                               updateDraftRow(row.studentId, {
-                                status: event.target.value
-                                  ? "COMPLETED"
-                                  : draft.status,
+                                status: isSubmittedCorrectionMode
+                                  ? row.status
+                                  : event.target.value
+                                    ? "COMPLETED"
+                                    : draft.status,
                                 score: event.target.value,
                               })
                             }
@@ -1666,7 +2104,7 @@ export default function StaffMeasurementBatchEditPage() {
                               type="number"
                               inputMode="decimal"
                               value={draft.itemScores[item.itemKey] ?? ""}
-                              disabled={!editable || scoreDisabled}
+                              disabled={!scoreEditable}
                               onChange={(event) =>
                                 updateDraftItemScore(
                                   row.studentId,
@@ -1683,7 +2121,7 @@ export default function StaffMeasurementBatchEditPage() {
                       <td className="min-w-[220px] px-4 py-3">
                         <input
                           value={draft.note}
-                          disabled={!editable}
+                          disabled={!editable || isSubmittedCorrectionMode}
                           onChange={(event) =>
                             updateDraftRow(row.studentId, {
                               note: event.target.value,

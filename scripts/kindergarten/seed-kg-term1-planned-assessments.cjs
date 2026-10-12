@@ -151,6 +151,27 @@ function scoreItems(titles) {
   }));
 }
 
+function learningGardensLeadershipItems(gradeId) {
+  if (gradeId === "kg1") {
+    return [
+      { title: "حروف", maxScore: 15 },
+    ];
+  }
+
+  return [
+    { title: "حروف", maxScore: 4 },
+    { title: "كلمات", maxScore: 8 },
+    { title: "كتابة", maxScore: 3 },
+  ];
+}
+
+function isLearningGardensLeadershipTemplate(template) {
+  return (
+    template.subjectKey === "LEARNING_GARDENS" &&
+    ["KG_VP", "EDU_SUPERVISOR"].includes(template.evaluatorRoleKey)
+  );
+}
+
 function numberItems(from, to) {
   const items = [];
 
@@ -279,9 +300,15 @@ function buildTemplate({
  * - Supervisor: week 17
  *
  * Each assessment:
- * حروف 3
- * كلمات 3
- * Total = 6
+ * KG1:
+ * - حروف 15
+ * - Total = 15
+ *
+ * KG2 / KG3:
+ * - حروف 4
+ * - كلمات 8
+ * - كتابة 3
+ * - Total = 15
  */
 
 function buildLearningGardensTemplates() {
@@ -314,10 +341,7 @@ function buildLearningGardensTemplates() {
 
         scheduledWeek: 10,
 
-        itemDefinitions: scoreItems([
-          "حروف",
-          "كلمات",
-        ]),
+        itemDefinitions: learningGardensLeadershipItems(gradeId),
 
         order: 301 + levelIndex * 2,
       }),
@@ -339,10 +363,7 @@ function buildLearningGardensTemplates() {
 
         scheduledWeek: 17,
 
-        itemDefinitions: scoreItems([
-          "حروف",
-          "كلمات",
-        ]),
+        itemDefinitions: learningGardensLeadershipItems(gradeId),
 
         order: 302 + levelIndex * 2,
       }),
@@ -903,12 +924,28 @@ function validateTemplates(templates) {
       `${template.id}: must contain items`,
     );
 
-    assert(
-      template.templateItems.every(
-        (item) => item.maxScore === 3,
-      ),
-      `${template.id}: every item must have maxScore 3`,
-    );
+    if (isLearningGardensLeadershipTemplate(template)) {
+      const expectedItems = learningGardensLeadershipItems(
+        template.gradeId,
+      );
+
+      assert(
+        template.templateItems.length === expectedItems.length &&
+          template.templateItems.every(
+            (item, index) =>
+              item.itemTitle === expectedItems[index].title &&
+              item.maxScore === expectedItems[index].maxScore,
+          ),
+        `${template.id}: Learning Gardens leadership item structure`,
+      );
+    } else {
+      assert(
+        template.templateItems.every(
+          (item) => item.maxScore === 3,
+        ),
+        `${template.id}: every item must have maxScore 3`,
+      );
+    }
 
     assert(
       calculatedMaxScore === template.maxScore,

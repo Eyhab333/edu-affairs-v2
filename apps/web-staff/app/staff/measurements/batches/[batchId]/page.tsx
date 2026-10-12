@@ -28,6 +28,7 @@ import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { ClassAverageSummary } from "@/components/measurements/class-average-summary";
 import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summary";
 import { getEffectiveMeasurementRows } from "@/lib/measurement-compensation";
+import { canCorrectSubmittedMeasurementBatch } from "@/lib/measurement-submitted-correction";
 
 type VisibleClass = {
   id: string;
@@ -631,6 +632,30 @@ export default function StaffMeasurementBatchPage() {
     return false;
   }, [batch, visibleClassIds, visibleClassMap]);
 
+  const canCorrectSubmittedBatch = useMemo(() => {
+    if (!batch || !currentActor) return false;
+
+    return canCorrectSubmittedMeasurementBatch({
+      batch,
+      actorPersonId: currentActor.personId,
+      actorUid: currentActor.uid,
+      actorRoles: [
+        ...(currentActor.roles ?? []),
+        ...(currentActor.roleKeys ?? []),
+      ],
+      hasVisibleClassAccess: hasAccessToBatch,
+    });
+  }, [batch, currentActor, hasAccessToBatch]);
+
+  const canOpenBatchEditor = useMemo(() => {
+    if (!batch) return false;
+
+    return (
+      ["DRAFT", "IN_PROGRESS"].includes(String(batch.status || "")) ||
+      canCorrectSubmittedBatch
+    );
+  }, [batch, canCorrectSubmittedBatch]);
+
   const loadBatch = useCallback(async () => {
     if (!currentActor?.orgId || !batchId) return;
 
@@ -1167,13 +1192,17 @@ export default function StaffMeasurementBatchPage() {
             </button>
           ) : null}
 
-          <button
-            type="button"
-            onClick={() => router.push(buildEditBatchHref(batch))}
-            className="mt-3 inline-flex h-10 w-full items-center justify-center rounded-xl border px-4 text-sm font-medium transition hover:bg-muted"
-          >
-            إدخال / تعديل نتائج الدفعة
-          </button>
+          {canOpenBatchEditor ? (
+            <button
+              type="button"
+              onClick={() => router.push(buildEditBatchHref(batch))}
+              className="mt-3 inline-flex h-10 w-full items-center justify-center rounded-xl border px-4 text-sm font-medium transition hover:bg-muted"
+            >
+              {canCorrectSubmittedBatch
+                ? "تصحيح الدرجات"
+                : "إدخال / تعديل نتائج الدفعة"}
+            </button>
+          ) : null}
         </section>
       </section>
 

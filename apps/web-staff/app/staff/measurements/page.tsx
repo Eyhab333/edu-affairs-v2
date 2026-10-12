@@ -23,6 +23,7 @@ import {
   getFriendlyMeasurementLabel,
   getFriendlySubjectLabel,
 } from "@/lib/measurement-presentation";
+import { canCorrectSubmittedMeasurementBatch } from "@/lib/measurement-submitted-correction";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 type StaffVisibleClass = {
@@ -54,6 +55,7 @@ type TeacherAssignmentScope = {
 };
 
 type StaffActorLike = {
+  uid?: string;
   orgId?: string;
   personId?: string;
   roleKeys?: string[];
@@ -453,6 +455,13 @@ export default function StaffMeasurementsPage() {
   const teacherPersonId = staffActor?.personId?.trim() || "";
   const shouldScopeToTeacher = isTeacherOnlyActor(staffActor);
   const teacherAssignments = staffActor?.teacherAssignments ?? [];
+  const correctionRoleKeys = useMemo(
+    () => [
+      ...(staffActor?.roles ?? []),
+      ...(staffActor?.roleKeys ?? []),
+    ],
+    [staffActor?.roleKeys, staffActor?.roles],
+  );
 
   const visibleClasses = useMemo(() => {
     return dedupeVisibleClasses(staffActor?.visibleClasses ?? []);
@@ -869,7 +878,20 @@ export default function StaffMeasurementsPage() {
           ) : (
             <div className="grid gap-4 p-5 lg:grid-cols-2">
               {filteredBatches.map((item) => (
-                <BatchCard key={item.batch.id} item={item} />
+                <BatchCard
+                  key={item.batch.id}
+                  item={item}
+                  canCorrectSubmittedBatch={canCorrectSubmittedMeasurementBatch({
+                    batch: item.batch,
+                    actorPersonId: staffActor.personId,
+                    actorUid: staffActor.uid,
+                    actorRoles: correctionRoleKeys,
+                    hasVisibleClassAccess: Boolean(
+                      item.classInfo &&
+                        isSameClassContext(item.batch, item.classInfo),
+                    ),
+                  })}
+                />
               ))}
             </div>
           )}
@@ -908,7 +930,13 @@ export default function StaffMeasurementsPage() {
   );
 }
 
-function BatchCard({ item }: { item: BatchWithClass }) {
+function BatchCard({
+  item,
+  canCorrectSubmittedBatch,
+}: {
+  item: BatchWithClass;
+  canCorrectSubmittedBatch: boolean;
+}) {
   const { batch, classInfo } = item;
   const editable = isEditableBatch(batch);
   const latestDate = getBatchDate(batch);
@@ -984,6 +1012,15 @@ function BatchCard({ item }: { item: BatchWithClass }) {
             className="inline-flex h-10 items-center justify-center rounded-xl border bg-background px-4 text-sm font-semibold text-foreground transition hover:bg-muted"
           >
             تعديل / إرسال
+          </Link>
+        ) : null}
+
+        {canCorrectSubmittedBatch ? (
+          <Link
+            href={buildBatchEditHref(batch)}
+            className="inline-flex h-10 items-center justify-center rounded-xl border bg-background px-4 text-sm font-semibold text-foreground transition hover:bg-muted"
+          >
+            تصحيح الدرجات
           </Link>
         ) : null}
 
