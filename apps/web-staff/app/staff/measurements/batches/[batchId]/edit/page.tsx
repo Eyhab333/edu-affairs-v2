@@ -595,6 +595,8 @@ function buildStudentRowsForCorrection(params: {
   sourceRows: StudentMeasurementBatchStudentRow[];
   draftRows: DraftRows;
   itemDefinitions: BatchItemDefinition[];
+  batch: MeasurementBatchDoc;
+  repairablePendingStudentIds: ReadonlySet<string>;
 }): EditableBatchRow[] {
   const sourceRowsByStudentId = new Map(
     params.sourceRows.map((row) => [row.studentId, row]),
@@ -602,10 +604,48 @@ function buildStudentRowsForCorrection(params: {
 
   return params.rows.map((row) => {
     const sourceRow = sourceRowsByStudentId.get(row.studentId) ?? row;
+    const draft = getDraftRow(params.draftRows, row.studentId);
+
+    // Submitted correction ordinarily changes scores only. The one exception
+    // is a row that was still pending when this submitted batch was loaded.
+    // Its repaired state is kept in the same batch-row shape used at submit.
+    if (
+      sourceRow.status === "PENDING" &&
+      params.repairablePendingStudentIds.has(row.studentId)
+    ) {
+      if (draft.status === "PENDING") return sourceRow;
+
+      const scoreDisabled = draft.status !== "COMPLETED";
+      const itemScores = scoreDisabled
+        ? []
+        : buildItemScoresForDraft({
+            draft,
+            itemDefinitions: params.itemDefinitions,
+          });
+      const score = scoreDisabled
+        ? undefined
+        : calculateDraftScore({
+            draft,
+            itemDefinitions: params.itemDefinitions,
+          });
+
+      return {
+        ...sourceRow,
+        status: draft.status,
+        score,
+        maxScore: calculateMaxScore({
+          batch: params.batch,
+          itemDefinitions: params.itemDefinitions,
+          sourceRow: row,
+        }),
+        itemScores,
+        recordId: sourceRow.recordId || "",
+        recordType: sourceRow.recordType || getBatchRecordType(params.batch),
+      };
+    }
 
     if (sourceRow.status !== "COMPLETED") return sourceRow;
 
-    const draft = getDraftRow(params.draftRows, row.studentId);
     const itemScores = params.itemDefinitions.length
       ? buildItemScoresForCorrection({
           draft,
@@ -672,6 +712,16 @@ function hasCorrectedScoreChanged(
   );
 }
 
+function hasSubmittedCorrectionChanged(
+  original: EditableBatchRow,
+  corrected: EditableBatchRow,
+) {
+  return (
+    original.status !== corrected.status ||
+    hasCorrectedScoreChanged(original, corrected)
+  );
+}
+
 function validateRowsForCorrection(params: {
   rows: EditableBatchRow[];
   draftRows: DraftRows;
@@ -679,9 +729,12 @@ function validateRowsForCorrection(params: {
   batch: MeasurementBatchDoc;
 }) {
   for (const row of params.rows) {
-    if (row.status !== "COMPLETED") continue;
-
     const draft = getDraftRow(params.draftRows, row.studentId);
+    const correctionStatus =
+      row.status === "PENDING" ? draft.status : row.status;
+
+    if (correctionStatus !== "COMPLETED") continue;
+
     const studentLabel = row.studentDisplayName || row.studentId;
 
     if (params.itemDefinitions.length === 0) {
@@ -1053,6 +1106,8 @@ export default function StaffMeasurementBatchEditPage() {
   const [correctionError, setCorrectionError] = useState<string | null>(null);
   const [correctionSaved, setCorrectionSaved] = useState(false);
   const [correctionNoChanges, setCorrectionNoChanges] = useState(false);
+  const [originallyPendingStudentIds, setOriginallyPendingStudentIds] =
+    useState<string[]>([]);
 
   const visibleClasses = useMemo(() => {
     return currentActor?.visibleClasses ?? [];
@@ -1097,6 +1152,11 @@ export default function StaffMeasurementBatchEditPage() {
       visibleClasses,
     });
   }, [batch, currentActor, visibleClasses]);
+
+  const repairablePendingStudentIdSet = useMemo(
+    () => new Set(originallyPendingStudentIds),
+    [originallyPendingStudentIds],
+  );
 
   const summary = useMemo(() => {
     const total = rows.length;
@@ -1166,6 +1226,7 @@ export default function StaffMeasurementBatchEditPage() {
     setCorrectionError(null);
     setCorrectionSaved(false);
     setCorrectionNoChanges(false);
+    setOriginallyPendingStudentIds([]);
 
     try {
       const batchRef = doc(
@@ -1205,12 +1266,20 @@ export default function StaffMeasurementBatchEditPage() {
       setBatch(loadedBatch);
       setRows(loadedRows);
       setDraftRows(buildDraftRowsFromRows(loadedRows));
+      setOriginallyPendingStudentIds(
+        loadedBatch.status === "SUBMITTED"
+          ? loadedRows
+              .filter((row) => row.status === "PENDING")
+              .map((row) => row.studentId)
+          : [],
+      );
       setSourceTemplate(loadedSourceTemplate);
       setStatus("success");
     } catch (error: unknown) {
       setBatch(null);
       setRows([]);
       setDraftRows({});
+      setOriginallyPendingStudentIds([]);
       setSourceTemplate(null);
       setError(getErrorMessage(error));
       setStatus("error");
@@ -1230,6 +1299,30 @@ export default function StaffMeasurementBatchEditPage() {
         [studentId]: {
           ...current,
           ...patch,
+        },
+      };
+    });
+  }
+
+  function updateOriginallyPendingCorrectionStatus(
+    studentId: string,
+    status: Exclude<BatchStudentStatus, "SKIPPED">,
+  ) {
+    setDraftRows((prev) => {
+      const current = getDraftRow(prev, studentId);
+      const clearsTemporaryScores = status !== "COMPLETED";
+
+      return {
+        ...prev,
+        [studentId]: {
+          ...current,
+          status,
+          ...(clearsTemporaryScores
+            ? {
+                score: "",
+                itemScores: {},
+              }
+            : {}),
         },
       };
     });
@@ -1566,14 +1659,49 @@ export default function StaffMeasurementBatchEditPage() {
       sourceRows: batch.studentRows ?? [],
       draftRows,
       itemDefinitions,
+      batch,
+      repairablePendingStudentIds: repairablePendingStudentIdSet,
     });
 
-    const changedRows = updatedStudentRows.filter((updatedRow) => {
-      const originalRow = rows.find(
-        (row) => row.studentId === updatedRow.studentId,
+    const originalRowsByStudentId = new Map(
+      rows.map((row) => [row.studentId, row]),
+    );
+    const existingRecordRefsByStudentId = new Map(
+      (batch.recordRefs ?? []).map((recordRef) => [
+        recordRef.studentId,
+        recordRef,
+      ]),
+    );
+
+    // A pending row normally has no record. If an older inconsistent snapshot
+    // has a record reference, keep using it rather than creating a duplicate.
+    for (const updatedRow of updatedStudentRows) {
+      const originalRow = originalRowsByStudentId.get(updatedRow.studentId);
+      const existingRecordRef = existingRecordRefsByStudentId.get(
+        updatedRow.studentId,
       );
 
-      return !!originalRow && hasCorrectedScoreChanged(originalRow, updatedRow);
+      if (
+        originalRow?.status === "PENDING" &&
+        updatedRow.status === "COMPLETED" &&
+        !updatedRow.recordId?.trim() &&
+        existingRecordRef?.recordId?.trim()
+      ) {
+        updatedRow.recordId = existingRecordRef.recordId;
+        updatedRow.recordType =
+          updatedRow.recordType ||
+          existingRecordRef.recordType ||
+          getBatchRecordType(batch);
+      }
+    }
+
+    const changedRows = updatedStudentRows.filter((updatedRow) => {
+      const originalRow = originalRowsByStudentId.get(updatedRow.studentId);
+
+      return (
+        !!originalRow &&
+        hasSubmittedCorrectionChanged(originalRow, updatedRow)
+      );
     });
 
     setCorrectionError(null);
@@ -1585,7 +1713,25 @@ export default function StaffMeasurementBatchEditPage() {
       return;
     }
 
-    const missingRecordRow = changedRows.find(
+    const rowsCreatingRecords = changedRows.filter((row) => {
+      const originalRow = originalRowsByStudentId.get(row.studentId);
+
+      return (
+        originalRow?.status === "PENDING" &&
+        row.status === "COMPLETED" &&
+        !row.recordId?.trim()
+      );
+    });
+    const newRecordStudentIds = new Set(
+      rowsCreatingRecords.map((row) => row.studentId),
+    );
+    const rowsUpdatingExistingRecords = changedRows.filter(
+      (row) =>
+        row.status === "COMPLETED" &&
+        !newRecordStudentIds.has(row.studentId),
+    );
+
+    const missingRecordRow = rowsUpdatingExistingRecords.find(
       (row) => !row.recordId?.trim(),
     );
 
@@ -1603,8 +1749,107 @@ export default function StaffMeasurementBatchEditPage() {
     try {
       const correctedAt = nowMs();
       const firestoreBatch = writeBatch(db);
+      const batchKind = getBatchKind(batch);
+      const defaultRecordType = getBatchRecordType(batch);
+      const recordRefs = (batch.recordRefs ?? []).map((recordRef) => ({
+        ...recordRef,
+      }));
 
-      for (const correctedRow of changedRows) {
+      function upsertCompletedRecordRef(params: {
+        studentId: string;
+        recordType: "ASSESSMENT_RECORD" | "TRACKER_ENTRY";
+        recordId: string;
+      }) {
+        const nextRecordRef = {
+          studentId: params.studentId,
+          recordType: params.recordType,
+          recordId: params.recordId,
+          status: "COMPLETED" as const,
+        };
+        const existingIndex = recordRefs.findIndex(
+          (recordRef) => recordRef.studentId === params.studentId,
+        );
+
+        if (existingIndex >= 0) {
+          recordRefs[existingIndex] = nextRecordRef;
+        } else {
+          recordRefs.push(nextRecordRef);
+        }
+      }
+
+      for (const correctedRow of rowsCreatingRecords) {
+        const recordType =
+          correctedRow.recordType || defaultRecordType;
+        const maxScore = calculateMaxScore({
+          batch,
+          itemDefinitions,
+          sourceRow: correctedRow,
+        });
+        const recordRef =
+          recordType === "ASSESSMENT_RECORD"
+            ? doc(
+                collection(
+                  db,
+                  "orgs",
+                  currentActor.orgId,
+                  "studentAssessmentRecords",
+                ),
+              )
+            : doc(
+                collection(
+                  db,
+                  "orgs",
+                  currentActor.orgId,
+                  "studentTrackerEntries",
+                ),
+              );
+        const recordId = recordRef.id;
+        const recordPayload =
+          recordType === "ASSESSMENT_RECORD"
+            ? buildAssessmentRecordPayload({
+                recordId,
+                batchId: batch.id,
+                batchKind,
+                row: correctedRow,
+                sourceTemplate,
+                score: correctedRow.score,
+                maxScore,
+                itemScores: correctedRow.itemScores ?? [],
+                note: correctedRow.note || "",
+                actor: currentActor,
+                batch,
+                now: correctedAt,
+              })
+            : buildTrackerEntryPayload({
+                recordId,
+                batchId: batch.id,
+                batchKind,
+                row: correctedRow,
+                sourceTemplate,
+                score: correctedRow.score,
+                maxScore,
+                itemScores: correctedRow.itemScores ?? [],
+                note: correctedRow.note || "",
+                actor: currentActor,
+                batch,
+                now: correctedAt,
+              });
+
+        firestoreBatch.set(
+          recordRef,
+          stripUndefined(recordPayload) as Record<string, unknown>,
+        );
+
+        correctedRow.recordId = recordId;
+        correctedRow.recordType = recordType;
+        upsertCompletedRecordRef({
+          studentId: correctedRow.studentId,
+          recordType,
+          recordId,
+        });
+      }
+
+      for (const correctedRow of rowsUpdatingExistingRecords) {
         const recordId = correctedRow.recordId.trim();
         const recordType =
           correctedRow.recordType || getBatchRecordType(batch);
@@ -1641,7 +1886,17 @@ export default function StaffMeasurementBatchEditPage() {
             updatedAt: correctedAt,
           }) as Record<string, unknown>,
         );
+
+        upsertCompletedRecordRef({
+          studentId: correctedRow.studentId,
+          recordType,
+          recordId,
+        });
       }
+
+      const completedCount = updatedStudentRows.filter(
+        (row) => row.status === "COMPLETED",
+      ).length;
 
       const batchRef = doc(
         db,
@@ -1652,6 +1907,9 @@ export default function StaffMeasurementBatchEditPage() {
       );
       const batchCorrectionPayload = stripUndefined({
         studentRows: updatedStudentRows,
+        recordRefs,
+        completedCount,
+        missingCount: updatedStudentRows.length - completedCount,
         updatedAt: correctedAt,
         lastCorrectedAt: correctedAt,
         lastCorrectedByPersonId: resolveActorPersonId(currentActor),
@@ -1671,6 +1929,14 @@ export default function StaffMeasurementBatchEditPage() {
       );
       setRows(updatedStudentRows);
       setDraftRows(buildDraftRowsFromRows(updatedStudentRows));
+      setOriginallyPendingStudentIds((previousIds) =>
+        previousIds.filter((studentId) => {
+          return (
+            updatedStudentRows.find((row) => row.studentId === studentId)
+              ?.status === "PENDING"
+          );
+        }),
+      );
       setCorrectionSaved(true);
     } catch (error: unknown) {
       setCorrectionError(getErrorMessage(error));
@@ -1811,7 +2077,7 @@ export default function StaffMeasurementBatchEditPage() {
 
                 <p className="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400">
                   {isSubmittedCorrectionMode
-                    ? "سيتم تحديث الدرجات الحالية دون إنشاء سجلات قياس جديدة."
+                    ? "سيتم تحديث الدرجات الحالية، ويمكن إصلاح حالة الطلاب الذين كانت حالتهم لم يبدأ."
                     : "هذه الصفحة تحفظ سياق المادة عند تعديل الدفعة، ثم تنقله إلى السجلات الفردية عند الإرسال."}
                 </p>
               </div>
@@ -1884,7 +2150,7 @@ export default function StaffMeasurementBatchEditPage() {
 
       {isSubmittedCorrectionMode ? (
         <div className="rounded-3xl border border-sky-200 bg-sky-50 p-5 text-sm leading-7 text-sky-900 shadow-sm dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100">
-          سيتم تحديث الدرجات الحالية فقط دون تغيير حالة الطلاب أو ملاحظاتهم أو إنشاء سجلات قياس جديدة.
+          سيتم تحديث الدرجات الحالية، ويمكن فقط للطلاب الذين كانت حالتهم «لم يبدأ» إصلاح حالتهم إلى غائب أو معذور أو مكتمل.
         </div>
       ) : !editable ? (
         <div className="rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-900 shadow-sm dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
@@ -1926,13 +2192,13 @@ export default function StaffMeasurementBatchEditPage() {
 
       {correctionNoChanges ? (
         <div className="rounded-3xl border border-sky-200 bg-sky-50 p-5 text-sm leading-7 text-sky-900 shadow-sm dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-100">
-          لم يتم إجراء أي تعديل على الدرجات.
+          لم يتم إجراء أي تعديل.
         </div>
       ) : null}
 
       {correctionSaved ? (
         <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-sm leading-7 text-emerald-900 shadow-sm dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-100">
-          تم حفظ تصحيح الدرجات وتحديث السجلات القائمة بنجاح.
+          تم حفظ التصحيح وتحديث الدفعة والسجلات المرتبطة بنجاح.
         </div>
       ) : null}
 
@@ -1959,7 +2225,7 @@ export default function StaffMeasurementBatchEditPage() {
             <h2 className="font-bold">نتائج الطلاب</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
               {isSubmittedCorrectionMode
-                ? "يمكن تعديل درجات الطلاب المكتملين فقط؛ تبقى الحالة والملاحظة وبقية سياق الدفعة ثابتة."
+                ? "يمكن تعديل درجات الطلاب المكتملين، وإصلاح حالة الطلاب الذين كانت حالتهم لم يبدأ فقط؛ تبقى الملاحظات وبقية سياق الدفعة ثابتة."
                 : "عدّل حالة كل طالب ودرجته أو درجات البنود، ثم احفظ أو أرسل الدفعة."}
             </p>
           </div>
@@ -2008,8 +2274,11 @@ export default function StaffMeasurementBatchEditPage() {
               <tbody>
                 {rows.map((row) => {
                   const draft = getDraftRow(draftRows, row.studentId);
+                  const canRepairPendingStatus =
+                    isSubmittedCorrectionMode &&
+                    repairablePendingStudentIdSet.has(row.studentId);
                   const scoreDisabled = isSubmittedCorrectionMode
-                    ? row.status !== "COMPLETED"
+                    ? draft.status !== "COMPLETED"
                     : isScoreDisabled(draft.status);
                   const scoreEditable =
                     (editable || isSubmittedCorrectionMode) && !scoreDisabled;
@@ -2033,29 +2302,66 @@ export default function StaffMeasurementBatchEditPage() {
                       <td className="whitespace-nowrap px-4 py-3">
                         <select
                           value={draft.status}
-                          disabled={!editable || isSubmittedCorrectionMode}
-                          onChange={(event) =>
-                            updateDraftRow(row.studentId, {
-                              status: event.target.value as BatchStudentStatus,
-                            })
+                          disabled={
+                            isSubmittedCorrectionMode
+                              ? !canRepairPendingStatus
+                              : !editable
                           }
+                          onChange={(event) => {
+                            const nextStatus = event.target
+                              .value as BatchStudentStatus;
+
+                            if (canRepairPendingStatus) {
+                              updateOriginallyPendingCorrectionStatus(
+                                row.studentId,
+                                nextStatus as Exclude<
+                                  BatchStudentStatus,
+                                  "SKIPPED"
+                                >,
+                              );
+                              return;
+                            }
+
+                            updateDraftRow(row.studentId, {
+                              status: nextStatus,
+                            });
+                          }}
                           className="h-10 rounded-2xl border border-slate-200 bg-white px-3 text-sm dark:border-slate-800 dark:bg-slate-950"
                         >
-                          <option value="PENDING">
-                            {getRowStatusLabel("PENDING")}
-                          </option>
-                          <option value="COMPLETED">
-                            {getRowStatusLabel("COMPLETED")}
-                          </option>
-                          <option value="ABSENT">
-                            {getRowStatusLabel("ABSENT")}
-                          </option>
-                          <option value="EXCUSED">
-                            {getRowStatusLabel("EXCUSED")}
-                          </option>
-                          <option value="SKIPPED">
-                            {getRowStatusLabel("SKIPPED")}
-                          </option>
+                          {canRepairPendingStatus ? (
+                            <>
+                              <option value="PENDING">
+                                {getRowStatusLabel("PENDING")}
+                              </option>
+                              <option value="ABSENT">
+                                {getRowStatusLabel("ABSENT")}
+                              </option>
+                              <option value="EXCUSED">
+                                {getRowStatusLabel("EXCUSED")}
+                              </option>
+                              <option value="COMPLETED">
+                                {getRowStatusLabel("COMPLETED")}
+                              </option>
+                            </>
+                          ) : (
+                            <>
+                              <option value="PENDING">
+                                {getRowStatusLabel("PENDING")}
+                              </option>
+                              <option value="COMPLETED">
+                                {getRowStatusLabel("COMPLETED")}
+                              </option>
+                              <option value="ABSENT">
+                                {getRowStatusLabel("ABSENT")}
+                              </option>
+                              <option value="EXCUSED">
+                                {getRowStatusLabel("EXCUSED")}
+                              </option>
+                              <option value="SKIPPED">
+                                {getRowStatusLabel("SKIPPED")}
+                              </option>
+                            </>
+                          )}
                         </select>
                       </td>
 
@@ -2069,7 +2375,7 @@ export default function StaffMeasurementBatchEditPage() {
                             onChange={(event) =>
                               updateDraftRow(row.studentId, {
                                 status: isSubmittedCorrectionMode
-                                  ? row.status
+                                  ? draft.status
                                   : event.target.value
                                     ? "COMPLETED"
                                     : draft.status,
