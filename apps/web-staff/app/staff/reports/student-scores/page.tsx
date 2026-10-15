@@ -38,10 +38,10 @@ type ReportFilters = {
   termId: string;
   classContextKey: string;
   subjectKey: string;
-  testTypeKey: string;
+  measurementKey: string;
   studentId: string;
-  minimumPercentage: string;
-  maximumPercentage: string;
+  minimumScore: string;
+  maximumScore: string;
 };
 
 type MeasurementBatchDoc = StudentMeasurementBatch & {
@@ -81,16 +81,22 @@ type StudentScoreRow = {
 
 type LoadStatus = "idle" | "loading" | "success" | "error";
 
+type MeasurementFilterOption = {
+  id: string;
+  label: string;
+  maxScores: number[];
+};
+
 const initialFilters: ReportFilters = {
   schoolId: ALL,
   academicYearId: ALL,
   termId: ALL,
   classContextKey: ALL,
   subjectKey: ALL,
-  testTypeKey: ALL,
+  measurementKey: ALL,
   studentId: ALL,
-  minimumPercentage: "",
-  maximumPercentage: "",
+  minimumScore: "",
+  maximumScore: "",
 };
 
 function cleanText(value?: string | null) {
@@ -103,7 +109,7 @@ function finiteNumber(value: unknown) {
     : undefined;
 }
 
-function parseOptionalPercentage(value: string) {
+function parseOptionalScore(value: string) {
   if (!value.trim()) return undefined;
   return finiteNumber(Number(value));
 }
@@ -187,6 +193,20 @@ function getTemplateTitle(batch: MeasurementBatchDoc) {
     getFriendlyMeasurementLabel(batch.trackerKind) ||
     "قياس أو متابعة"
   );
+}
+
+function getMeasurementFilterKey(row: StudentScoreRow) {
+  if (row.templateId) {
+    return `template:${row.subjectKey}:${row.templateId}`;
+  }
+
+  return [
+    "measurement",
+    row.subjectKey,
+    row.measurementTypeKey || row.testTypeKey,
+    row.templateTitle,
+    row.maxScore ?? "NO_MAX_SCORE",
+  ].join(":");
 }
 
 function getRowPercentage(row: StudentMeasurementBatchStudentRow) {
@@ -401,8 +421,15 @@ export default function StudentScoresReportPage() {
     loadedRows,
   ]);
 
-  const testTypeOptions = useMemo(() => {
-    const labels = new Map<string, string>();
+  const measurementOptions = useMemo(() => {
+    const byId = new Map<
+      string,
+      {
+        baseLabel: string;
+        subjectLabels: Set<string>;
+        maxScores: Set<number>;
+      }
+    >();
 
     for (const row of loadedRows) {
       if (
@@ -416,12 +443,58 @@ export default function StudentScoresReportPage() {
         continue;
       }
 
-      labels.set(row.testTypeKey, row.testTypeLabel);
+      const id = getMeasurementFilterKey(row);
+      const current = byId.get(id) ?? {
+        baseLabel: row.templateTitle || row.measurementTypeLabel,
+        subjectLabels: new Set<string>(),
+        maxScores: new Set<number>(),
+      };
+
+      current.subjectLabels.add(row.subjectLabel);
+      if (row.maxScore !== undefined) current.maxScores.add(row.maxScore);
+      byId.set(id, current);
     }
 
-    return Array.from(labels.entries()).sort(([, left], [, right]) =>
-      left.localeCompare(right, "ar"),
-    );
+    const baseLabelCounts = new Map<string, number>();
+    for (const option of byId.values()) {
+      baseLabelCounts.set(
+        option.baseLabel,
+        (baseLabelCounts.get(option.baseLabel) ?? 0) + 1,
+      );
+    }
+
+    const options = Array.from(byId.entries())
+      .map(([id, option]): MeasurementFilterOption => {
+        const subjectLabels = Array.from(option.subjectLabels).sort((left, right) =>
+          left.localeCompare(right, "ar"),
+        );
+        const maxScores = Array.from(option.maxScores).sort((left, right) => left - right);
+        const needsSubjectContext = (baseLabelCounts.get(option.baseLabel) ?? 0) > 1;
+        const label = needsSubjectContext
+          ? `${option.baseLabel} — ${subjectLabels.join("، ")}`
+          : option.baseLabel;
+
+        return { id, label, maxScores };
+      });
+    const labelCounts = new Map<string, number>();
+    for (const option of options) {
+      labelCounts.set(option.label, (labelCounts.get(option.label) ?? 0) + 1);
+    }
+
+    return options
+      .map((option) => {
+        if (labelCounts.get(option.label) === 1 || option.maxScores.length !== 1) {
+          return option;
+        }
+
+        return {
+          ...option,
+          label: `${option.label} — الدرجة العظمى: ${new Intl.NumberFormat(
+            "ar-SA",
+          ).format(option.maxScores[0])}`,
+        };
+      })
+      .sort((left, right) => left.label.localeCompare(right.label, "ar"));
   }, [
     filters.academicYearId,
     filters.classContextKey,
@@ -441,7 +514,8 @@ export default function StudentScoresReportPage() {
         (filters.classContextKey !== ALL &&
           row.classContextKey !== filters.classContextKey) ||
         (filters.subjectKey !== ALL && row.subjectKey !== filters.subjectKey) ||
-        (filters.testTypeKey !== ALL && row.testTypeKey !== filters.testTypeKey)
+        (filters.measurementKey !== ALL &&
+          getMeasurementFilterKey(row) !== filters.measurementKey)
       ) {
         continue;
       }
@@ -457,7 +531,7 @@ export default function StudentScoresReportPage() {
     filters.classContextKey,
     filters.schoolId,
     filters.subjectKey,
-    filters.testTypeKey,
+    filters.measurementKey,
     loadedRows,
   ]);
 
@@ -501,12 +575,18 @@ export default function StudentScoresReportPage() {
 
   useEffect(() => {
     if (
-      filters.testTypeKey !== ALL &&
-      !testTypeOptions.some(([testTypeKey]) => testTypeKey === filters.testTypeKey)
+      filters.measurementKey !== ALL &&
+      !measurementOptions.some(
+        (measurement) => measurement.id === filters.measurementKey,
+      )
     ) {
-      setFilters((current) => ({ ...current, testTypeKey: ALL }));
+      setFilters((current) => ({
+        ...current,
+        measurementKey: ALL,
+        maximumScore: "",
+      }));
     }
-  }, [filters.testTypeKey, testTypeOptions]);
+  }, [filters.measurementKey, measurementOptions]);
 
   useEffect(() => {
     if (
@@ -519,15 +599,26 @@ export default function StudentScoresReportPage() {
 
   const activeFilterKey = getFilterKey(filters);
   const hasCurrentReport = reportedFilterKey === activeFilterKey;
-  const minimumPercentage = parseOptionalPercentage(filters.minimumPercentage);
-  const maximumPercentage = parseOptionalPercentage(filters.maximumPercentage);
-  const hasInvalidPercentage =
-    (filters.minimumPercentage.trim() !== "" &&
-      minimumPercentage === undefined) ||
-    (filters.maximumPercentage.trim() !== "" &&
-      maximumPercentage === undefined);
-  const hasPercentageRange =
-    filters.minimumPercentage.trim() !== "" || filters.maximumPercentage.trim() !== "";
+  const minimumScore = parseOptionalScore(filters.minimumScore);
+  const maximumScore = parseOptionalScore(filters.maximumScore);
+  const hasInvalidScore =
+    (filters.minimumScore.trim() !== "" && minimumScore === undefined) ||
+    (filters.maximumScore.trim() !== "" && maximumScore === undefined);
+  const hasScoreRange =
+    filters.minimumScore.trim() !== "" || filters.maximumScore.trim() !== "";
+  const selectedMeasurementOption = measurementOptions.find(
+    (measurement) => measurement.id === filters.measurementKey,
+  );
+  const maximumScoreHint =
+    filters.measurementKey === ALL || !selectedMeasurementOption
+      ? ""
+      : selectedMeasurementOption.maxScores.length === 0
+        ? ""
+        : selectedMeasurementOption.maxScores.length === 1
+        ? `الدرجة العظمى: ${new Intl.NumberFormat("ar-SA").format(
+            selectedMeasurementOption.maxScores[0],
+          )}`
+        : "الدرجة العظمى تختلف حسب الاختبار";
 
   const filteredRows = useMemo(
     () =>
@@ -546,17 +637,20 @@ export default function StudentScoresReportPage() {
           return false;
         }
         if (filters.subjectKey !== ALL && row.subjectKey !== filters.subjectKey) return false;
-        if (filters.testTypeKey !== ALL && row.testTypeKey !== filters.testTypeKey) {
+        if (
+          filters.measurementKey !== ALL &&
+          getMeasurementFilterKey(row) !== filters.measurementKey
+        ) {
           return false;
         }
         if (filters.studentId !== ALL && row.studentId !== filters.studentId) return false;
 
-        if (!hasPercentageRange) return true;
-        if (row.percentage === null) return false;
-        if (minimumPercentage !== undefined && row.percentage < minimumPercentage) {
+        if (!hasScoreRange) return true;
+        if (row.score === undefined) return false;
+        if (minimumScore !== undefined && row.score < minimumScore) {
           return false;
         }
-        if (maximumPercentage !== undefined && row.percentage > maximumPercentage) {
+        if (maximumScore !== undefined && row.score > maximumScore) {
           return false;
         }
 
@@ -568,11 +662,11 @@ export default function StudentScoresReportPage() {
       filters.schoolId,
       filters.studentId,
       filters.subjectKey,
-      filters.testTypeKey,
-      hasPercentageRange,
+      filters.measurementKey,
+      hasScoreRange,
       loadedRows,
-      maximumPercentage,
-      minimumPercentage,
+      maximumScore,
+      minimumScore,
     ],
   );
 
@@ -593,30 +687,45 @@ export default function StudentScoresReportPage() {
     setError(null);
   };
 
+  const updateMeasurementFilter = (measurementKey: string) => {
+    const selectedMeasurement = measurementOptions.find(
+      (measurement) => measurement.id === measurementKey,
+    );
+    const suggestedMaximumScore =
+      selectedMeasurement?.maxScores.length === 1
+        ? String(selectedMeasurement.maxScores[0])
+        : "";
+
+    setFilters((current) => ({
+      ...current,
+      measurementKey,
+      maximumScore: suggestedMaximumScore,
+    }));
+    setError(null);
+  };
+
   async function showReport() {
     if (!navigationAccess.canAccessReports) return;
 
-    if (hasInvalidPercentage) {
-      setError("أدخل نسبة رقمية صحيحة.");
+    if (hasInvalidScore) {
+      setError("أدخل درجة رقمية صحيحة.");
       return;
     }
 
     if (
-      minimumPercentage !== undefined &&
-      maximumPercentage !== undefined &&
-      minimumPercentage > maximumPercentage
+      minimumScore !== undefined &&
+      maximumScore !== undefined &&
+      minimumScore > maximumScore
     ) {
-      setError("الحد الأدنى للنسبة لا يمكن أن يتجاوز الحد الأعلى.");
+      setError("الدرجة من لا يمكن أن تتجاوز الدرجة إلى.");
       return;
     }
 
     if (
-      (minimumPercentage !== undefined &&
-        (minimumPercentage < 0 || minimumPercentage > 100)) ||
-      (maximumPercentage !== undefined &&
-        (maximumPercentage < 0 || maximumPercentage > 100))
+      (minimumScore !== undefined && minimumScore < 0) ||
+      (maximumScore !== undefined && maximumScore < 0)
     ) {
-      setError("يجب أن تكون النسبة بين ٠ و١٠٠.");
+      setError("لا يمكن أن تكون الدرجة سالبة.");
       return;
     }
 
@@ -848,17 +957,13 @@ export default function StudentScoresReportPage() {
   const selectedSubjectLabel =
     subjectOptions.find(([subjectKey]) => subjectKey === filters.subjectKey)?.[1] ||
     "كل المواد";
-  const selectedTestTypeLabel =
-    testTypeOptions.find(([testTypeKey]) => testTypeKey === filters.testTypeKey)?.[1] ||
-    "كل الأنواع";
+  const selectedMeasurementLabel = selectedMeasurementOption?.label || "كل القياسات";
   const selectedStudentLabel =
     studentOptions.find(([studentId]) => studentId === filters.studentId)?.[1] ||
     "كل الطلاب";
-  const percentageRangeLabel = !hasPercentageRange
-    ? "كل النسب"
-    : `من ${filters.minimumPercentage || "٠"}٪ إلى ${
-        filters.maximumPercentage || "١٠٠"
-      }٪`;
+  const scoreRangeLabel = !hasScoreRange
+    ? "كل الدرجات"
+    : `من ${filters.minimumScore || "—"} إلى ${filters.maximumScore || "—"}`;
   const organizationName =
     actor.org?.nameAr || actor.org?.shortName || actor.org?.nameEn || actor.orgId;
 
@@ -962,11 +1067,13 @@ export default function StudentScoresReportPage() {
             allLabel="كل المواد"
           />
           <FilterSelect
-            label="نوع الاختبار/المتابعة"
-            value={filters.testTypeKey}
-            onChange={(value) => updateFilter("testTypeKey", value)}
-            options={testTypeOptions}
-            allLabel="كل الأنواع"
+            label="الاختبار / القياس"
+            value={filters.measurementKey}
+            onChange={updateMeasurementFilter}
+            options={measurementOptions.map(
+              (measurement) => [measurement.id, measurement.label] as [string, string],
+            )}
+            allLabel="كل القياسات"
             disabled={loadStatus === "loading"}
           />
           <FilterSelect
@@ -978,14 +1085,15 @@ export default function StudentScoresReportPage() {
             disabled={loadStatus === "loading"}
           />
           <NumberFilter
-            label="النسبة من"
-            value={filters.minimumPercentage}
-            onChange={(value) => updateFilter("minimumPercentage", value)}
+            label="الدرجة من"
+            value={filters.minimumScore}
+            onChange={(value) => updateFilter("minimumScore", value)}
           />
           <NumberFilter
-            label="النسبة إلى"
-            value={filters.maximumPercentage}
-            onChange={(value) => updateFilter("maximumPercentage", value)}
+            label="الدرجة إلى"
+            value={filters.maximumScore}
+            onChange={(value) => updateFilter("maximumScore", value)}
+            hint={maximumScoreHint}
           />
 
           <div className="flex items-end gap-2 xl:col-span-1">
@@ -1058,7 +1166,7 @@ export default function StudentScoresReportPage() {
           <ReportEmptyState
             icon={AlertTriangle}
             title="لا توجد نتائج مطابقة للفلاتر المحددة"
-            description="غيّر المادة أو النوع أو الطالب أو نطاق النسبة ثم اعرض التقرير مجددًا."
+            description="غيّر المادة أو القياس أو الطالب أو نطاق الدرجة ثم اعرض التقرير مجددًا."
           />
         ) : (
           <div id="student-scores-report" className="space-y-5 p-5">
@@ -1069,7 +1177,7 @@ export default function StudentScoresReportPage() {
                 طُبع في {reportedAt ? formatDate(reportedAt) : "غير محدد"}
               </p>
               <p className="mt-2 text-xs leading-6 text-muted-foreground">
-                المدرسة: {selectedSchoolLabel} · العام: {selectedYearLabel} · الفصل: {selectedTermLabel} · الصف والفصل: {selectedClassLabel} · المادة: {selectedSubjectLabel} · النوع: {selectedTestTypeLabel} · الطالب: {selectedStudentLabel} · النسبة: {percentageRangeLabel}
+                المدرسة: {selectedSchoolLabel} · العام: {selectedYearLabel} · الفصل: {selectedTermLabel} · الصف والفصل: {selectedClassLabel} · المادة: {selectedSubjectLabel} · الاختبار / القياس: {selectedMeasurementLabel} · الطالب: {selectedStudentLabel} · الدرجة: {scoreRangeLabel}{maximumScoreHint ? ` · ${maximumScoreHint}` : ""}
               </p>
             </div>
 
@@ -1090,8 +1198,7 @@ export default function StudentScoresReportPage() {
                     <th className="px-3 py-3 font-semibold">المدرسة</th>
                     <th className="px-3 py-3 font-semibold">الصف والفصل</th>
                     <th className="px-3 py-3 font-semibold">المادة</th>
-                    <th className="px-3 py-3 font-semibold">النوع</th>
-                    <th className="px-3 py-3 font-semibold">عنوان القياس</th>
+                    <th className="px-3 py-3 font-semibold">الاختبار / القياس</th>
                     <th className="px-3 py-3 font-semibold">التاريخ</th>
                     <th className="px-3 py-3 font-semibold">الدرجة</th>
                     <th className="px-3 py-3 font-semibold">من</th>
@@ -1107,7 +1214,6 @@ export default function StudentScoresReportPage() {
                       <td className="px-3 py-3">{row.schoolName}</td>
                       <td className="px-3 py-3">{row.classTitle}</td>
                       <td className="px-3 py-3">{row.subjectLabel}</td>
-                      <td className="px-3 py-3">{row.testTypeLabel}</td>
                       <td className="px-3 py-3">{row.templateTitle}</td>
                       <td className="px-3 py-3 whitespace-nowrap">{formatDate(row.measuredAt)}</td>
                       <td className="px-3 py-3 whitespace-nowrap">
@@ -1174,10 +1280,12 @@ function NumberFilter({
   label,
   value,
   onChange,
+  hint = "",
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  hint?: string;
 }) {
   return (
     <label className="grid gap-1.5 text-sm">
@@ -1185,13 +1293,13 @@ function NumberFilter({
       <input
         type="number"
         min="0"
-        max="100"
         inputMode="decimal"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="٪"
+        placeholder="الدرجة"
         className="h-10 rounded-xl border bg-background px-3 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring"
       />
+      {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
     </label>
   );
 }
