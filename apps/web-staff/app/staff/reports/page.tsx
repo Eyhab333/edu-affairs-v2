@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, BarChart3, ClipboardCheck, ListChecks, Ruler, UsersRound } from "lucide-react";
+import {
+  ArrowLeft,
+  BarChart3,
+  ClipboardCheck,
+  ListChecks,
+  Ruler,
+  School,
+  UsersRound,
+} from "lucide-react";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { getSpecialStaffReportingAccess } from "@takween/domain";
@@ -35,6 +43,14 @@ const reportAreas = [
     description: "تحليل نتائج تقييمات المعلمين والقيادات والإداريين على مستوى الموظف والمدرسة.",
     icon: ListChecks,
     tone: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
+  },
+  {
+    href: "/staff/reports/student-scores",
+    title: "درجات الطلاب",
+    description:
+      "تقرير تفصيلي لدرجات الطلاب مع فلاتر المدرسة والفصل والمادة ونوع الاختبار.",
+    icon: School,
+    tone: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300",
   },
 ] as const;
 

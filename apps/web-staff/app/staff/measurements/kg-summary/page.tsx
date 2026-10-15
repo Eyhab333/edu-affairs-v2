@@ -270,6 +270,39 @@ function formatPercentage(value: number | null) {
   }).format(value)}%`;
 }
 
+type PercentageAverage = {
+  count: number;
+  value: number | null;
+};
+
+type CurrentResultsAverage = PercentageAverage & {
+  completeCount: number;
+};
+
+function averageFinitePercentages(
+  values: Array<number | null | undefined>,
+): PercentageAverage {
+  const validValues = values.filter(isFiniteNumber);
+
+  return {
+    count: validValues.length,
+    value:
+      validValues.length > 0
+        ? validValues.reduce((sum, value) => sum + value, 0) /
+          validValues.length
+        : null,
+  };
+}
+
+function formatAveragePercentage(value: number | null) {
+  if (value === null) return "—";
+
+  return `${new Intl.NumberFormat("ar-SA", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(value)}%`;
+}
+
 function getRoleComponent(
   summary: KgWeightedMeasurementSummary,
   roleKey: KgEvaluatorRole,
@@ -958,6 +991,44 @@ export default function StaffKgMeasurementSummaryPage() {
     [effectiveSubjectFilter, rowsMatchingSchoolTeacherAndClass],
   );
   const completeCount = filteredRows.filter((row) => row.summary.isComplete).length;
+  const currentResultsAverage = useMemo<CurrentResultsAverage>(
+    () => {
+      const currentResults = filteredRows.flatMap((row) => {
+        if (
+          row.summary.isComplete &&
+          isFiniteNumber(row.summary.finalPercentage)
+        ) {
+          return [
+            {
+              value: row.summary.finalPercentage,
+              isComplete: true,
+            },
+          ];
+        }
+
+        if (isFiniteNumber(row.summary.provisionalPercentage)) {
+          return [
+            {
+              value: row.summary.provisionalPercentage,
+              isComplete: false,
+            },
+          ];
+        }
+
+        return [];
+      });
+      const average = averageFinitePercentages(
+        currentResults.map((result) => result.value),
+      );
+
+      return {
+        ...average,
+        completeCount: currentResults.filter((result) => result.isComplete)
+          .length,
+      };
+    },
+    [filteredRows],
+  );
   const hasActiveFilters =
     schoolFilter !== "ALL" ||
     teacherFilter !== "ALL" ||
@@ -1121,6 +1192,13 @@ export default function StaffKgMeasurementSummaryPage() {
         <SummaryCard
           label="غير مكتملة"
           value={filteredRows.length - completeCount}
+        />
+      </section>
+
+      <section className="grid gap-3 sm:max-w-sm">
+        <PercentageAverageCard
+          label="متوسط النتائج الحالية"
+          average={currentResultsAverage}
         />
       </section>
 
@@ -1354,6 +1432,28 @@ function SummaryCard({ label, value }: { label: string; value: number }) {
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className="mt-2 text-2xl font-bold">
         {value.toLocaleString("ar-SA")}
+      </p>
+    </div>
+  );
+}
+
+function PercentageAverageCard({
+  label,
+  average,
+}: {
+  label: string;
+  average: CurrentResultsAverage;
+}) {
+  return (
+    <div className="rounded-2xl border bg-card p-4 shadow-sm">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="mt-2 text-2xl font-bold">
+        {formatAveragePercentage(average.value)}
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        {average.count > 0
+          ? `من ${average.count.toLocaleString("ar-SA")} نتيجة بها بيانات · ${average.completeCount.toLocaleString("ar-SA")} مكتملة`
+          : "لا توجد نتائج مرصودة"}
       </p>
     </div>
   );

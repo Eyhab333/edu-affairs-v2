@@ -194,6 +194,38 @@ function formatPercentage(value: number | null) {
   return `${new Intl.NumberFormat("ar-SA", { maximumFractionDigits: 1 }).format(value)}%`;
 }
 
+type PercentageAverage = {
+  count: number;
+  value: number | null;
+};
+
+function averageFinitePercentages(
+  values: Array<number | null | undefined>,
+): PercentageAverage {
+  const validValues = values.filter(
+    (value): value is number =>
+      typeof value === "number" && Number.isFinite(value),
+  );
+
+  return {
+    count: validValues.length,
+    value:
+      validValues.length > 0
+        ? validValues.reduce((sum, value) => sum + value, 0) /
+          validValues.length
+        : null,
+  };
+}
+
+function formatAveragePercentage(value: number | null) {
+  if (value === null) return "—";
+
+  return `${new Intl.NumberFormat("ar-SA", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(value)}%`;
+}
+
 async function loadTeacherDirectory(
   orgId: string,
   teacherAssignmentIds: string[],
@@ -731,6 +763,56 @@ export default function StaffCentralMeasurementSummaryPage() {
     [filteredRows],
   );
 
+  const filteredPercentageAverages = useMemo(() => {
+    const percentagePairs = filteredRows.map((row) => {
+      const firstPercentage = row.centralMeasurement1
+        ? getBatchPercentage({
+            batch: row.centralMeasurement1,
+            compensationBatches:
+              compensationBatchesByOriginalBatchId.get(
+                row.centralMeasurement1.id,
+              ) ?? [],
+            templateMaxScoreById,
+          })
+        : null;
+      const secondPercentage = row.centralMeasurement2
+        ? getBatchPercentage({
+            batch: row.centralMeasurement2,
+            compensationBatches:
+              compensationBatchesByOriginalBatchId.get(
+                row.centralMeasurement2.id,
+              ) ?? [],
+            templateMaxScoreById,
+          })
+        : null;
+
+      return { firstPercentage, secondPercentage };
+    });
+
+    const first = averageFinitePercentages(
+      percentagePairs.map((pair) => pair.firstPercentage),
+    );
+    const second = averageFinitePercentages(
+      percentagePairs.map((pair) => pair.secondPercentage),
+    );
+    const overall = averageFinitePercentages(
+      percentagePairs.flatMap((pair) =>
+        typeof pair.firstPercentage === "number" &&
+        Number.isFinite(pair.firstPercentage) &&
+        typeof pair.secondPercentage === "number" &&
+        Number.isFinite(pair.secondPercentage)
+          ? [(pair.firstPercentage + pair.secondPercentage) / 2]
+          : [],
+      ),
+    );
+
+    return { first, second, overall };
+  }, [
+    compensationBatchesByOriginalBatchId,
+    filteredRows,
+    templateMaxScoreById,
+  ]);
+
   const hasActiveFilters =
     schoolFilter !== "ALL" ||
     subjectFilter !== "ALL" ||
@@ -846,6 +928,21 @@ export default function StaffCentralMeasurementSummaryPage() {
           </div>
         </section>
 
+        <section className="grid gap-3 md:grid-cols-3">
+          <PercentageAverageCard
+            label="متوسط القياس المركزي الأول"
+            average={filteredPercentageAverages.first}
+          />
+          <PercentageAverageCard
+            label="متوسط القياس المركزي الثاني"
+            average={filteredPercentageAverages.second}
+          />
+          <PercentageAverageCard
+            label="متوسط المجموع الكلي"
+            average={filteredPercentageAverages.overall}
+          />
+        </section>
+
         <section className="grid gap-3 sm:grid-cols-3">
           <SummaryCard label="الفصول/المواد" value={filteredSummary.rowCount} />
           <SummaryCard label="القياس الأول المرصود" value={filteredSummary.firstCount} />
@@ -898,6 +995,28 @@ function SummaryCard({ label, value }: { label: string; value: number }) {
     <div className="rounded-2xl border bg-card p-4 shadow-sm">
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className="mt-2 text-2xl font-bold">{value.toLocaleString("ar-SA")}</p>
+    </div>
+  );
+}
+
+function PercentageAverageCard({
+  label,
+  average,
+}: {
+  label: string;
+  average: PercentageAverage;
+}) {
+  return (
+    <div className="rounded-2xl border bg-card p-4 shadow-sm">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="mt-2 text-2xl font-bold">
+        {formatAveragePercentage(average.value)}
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        {average.count > 0
+          ? `من ${average.count.toLocaleString("ar-SA")} نتيجة مكتملة`
+          : "لا توجد نتائج مكتملة"}
+      </p>
     </div>
   );
 }
