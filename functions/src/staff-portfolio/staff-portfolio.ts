@@ -350,6 +350,13 @@ function assertId(value: unknown, field: string) {
   return result;
 }
 
+function isStorageObjectNotFound(error: unknown) {
+  if (!error || typeof error !== "object") return false;
+
+  const { code } = error as { code?: unknown };
+  return code === 404 || code === "404" || code === "storage/object-not-found";
+}
+
 async function caller(orgId: string, uid: string) {
   const snapshot = await getFirestore()
     .doc(`users/${uid}/orgMemberships/${orgId}`)
@@ -1189,6 +1196,89 @@ export const archiveStaffPortfolioItem = onCall(
       archivedByPersonId: actor.personId,
       updatedAt: now,
     });
+  },
+);
+
+export const deleteStaffPortfolioItem = onCall(
+  {
+    region: REGION,
+    cors: true,
+    invoker: "public",
+    memory: "512MiB",
+  },
+  async (request): Promise<void> => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    const orgId = assertId(request.data?.orgId, "orgId");
+    const itemId = assertId(request.data?.itemId, "itemId");
+    const actor = await caller(orgId, request.auth.uid);
+
+    if (!isStaffPortfolioTeacherRole(actor.role)) {
+      throw new HttpsError(
+        "permission-denied",
+        "A teacher membership is required.",
+      );
+    }
+
+    const itemRef = getFirestore().doc(
+      `orgs/${orgId}/staffPortfolioItems/${itemId}`,
+    );
+    const snapshot = await itemRef.get();
+
+    if (!snapshot.exists) {
+      throw new HttpsError("not-found", "Portfolio item was not found.");
+    }
+
+    const parsed = StaffPortfolioItemSchema.safeParse({
+      id: itemId,
+      orgId,
+      ...snapshot.data(),
+    });
+
+    if (!parsed.success) {
+      throw new HttpsError(
+        "failed-precondition",
+        "Portfolio item data is invalid.",
+      );
+    }
+
+    const item = parsed.data;
+
+    if (
+      item.ownerUid !== request.auth.uid ||
+      item.ownerPersonId !== actor.personId
+    ) {
+      throw new HttpsError(
+        "permission-denied",
+        "Only the owner may delete this portfolio item.",
+      );
+    }
+
+    try {
+      await getStorage().bucket().file(item.file.storagePath).delete();
+    } catch (error) {
+      if (!isStorageObjectNotFound(error)) {
+        console.error("deleteStaffPortfolioItem Storage deletion failed", {
+          orgId,
+          itemId,
+          error: error instanceof Error ? error.message : error,
+        });
+        throw new HttpsError("internal", "Unable to delete the portfolio PDF.");
+      }
+    }
+
+    try {
+      await itemRef.delete();
+    } catch (error) {
+      console.error("deleteStaffPortfolioItem Firestore deletion failed", {
+        orgId,
+        itemId,
+        error: error instanceof Error ? error.message : error,
+      });
+      throw new HttpsError("internal", "Unable to delete the portfolio item.");
+    }
   },
 );
 

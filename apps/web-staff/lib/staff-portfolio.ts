@@ -91,6 +91,11 @@ export async function archiveStaffPortfolioItem(actor: StaffActorData, itemId: s
   await callable({ orgId: actor.orgId, itemId });
 }
 
+export async function deleteStaffPortfolioItem(actor: StaffActorData, itemId: string) {
+  const callable = httpsCallable<{ orgId: string; itemId: string }, void>(functions, "deleteStaffPortfolioItem");
+  await callable({ orgId: actor.orgId, itemId });
+}
+
 export async function getStaffPortfolioFileUrl(actor: StaffActorData, itemId: string) {
   const callable = httpsCallable<{ orgId: string; itemId: string }, { url: string; originalName: string }>(functions, "getStaffPortfolioFileUrl");
   return (await callable({ orgId: actor.orgId, itemId })).data;

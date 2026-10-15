@@ -93,6 +93,7 @@ export {
   archiveStaffPortfolioItem,
   beginStaffPortfolioItem,
   completeStaffPortfolioUpload,
+  deleteStaffPortfolioItem,
   getStaffPortfolioFileUrl,
   listMyStaffPortfolioItems,
   listTeacherPortfolioItems,

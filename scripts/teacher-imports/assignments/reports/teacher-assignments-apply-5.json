@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-10-03T18:09:51.313Z",
+  "generatedAt": "2026-10-14T12:59:52.271Z",
   "orgId": "takween",
   "reconcileMode": "TEACHER_SCOPE",
   "mode": "APPLY",
   "summary": {
-    "desiredRows": 5,
+    "desiredRows": 7,
     "distinctTeachers": 1,
-    "createCount": 2,
-    "keepExistingCount": 3,
+    "createCount": 1,
+    "keepExistingCount": 6,
     "updateCount": 0,
-    "endObsoleteCount": 2,
+    "endObsoleteCount": 0,
     "blockedCount": 0,
-    "documentsCreatedOrUpdated": 36,
+    "documentsCreatedOrUpdated": 12,
     "failedTeachers": 0
   },
   "plannedWriteCounts": {
-    "create": 16,
+    "create": 8,
     "update": 0,
-    "endObsolete": 16,
+    "endObsolete": 0,
     "membershipProfile": 4
   },
   "scopeRemovalPolicy": "PRESERVE_EXISTING_BROADER_SCOPES",
@@ -25,27 +25,27 @@
   "desiredRows": [
     {
       "rowNumber": 2,
-      "email": "k-m-ahmd@qz.org.sa",
+      "email": "a.h.aljaser@qz.org.sa",
       "schoolId": "mrb-boys-sayh",
       "academicYearId": "ay-1448",
       "termId": "term-1",
-      "classId": "g2-general-1",
-      "classTitle": "ثاني ابتدائي / عام",
-      "classSubjectOfferingId": "mrb-boys-sayh-g2-general-1-english",
-      "subjectKey": "ENGLISH",
-      "subjectTitle": "إنجليزي",
+      "classId": "g1-general-1",
+      "classTitle": "أول ابتدائي / عام / أ",
+      "classSubjectOfferingId": "mrb-boys-sayh-g1-general-1-quran",
+      "subjectKey": "QURAN",
+      "subjectTitle": "قرآن",
       "assignmentStatus": "ACTIVE",
-      "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-      "personId": "p-k-m-ahmd",
+      "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+      "personId": "p-a-h-aljaser",
       "roleKey": "BOYS_TEACHER",
-      "gradeId": "g2",
+      "gradeId": "g1",
       "streamId": "stream-general",
-      "resolvedClassTitle": "ثاني ابتدائي / العام / أ",
-      "resolvedSubjectTitle": "إنجليزي",
+      "resolvedClassTitle": "أول ابتدائي / العام / أ",
+      "resolvedSubjectTitle": "قرآن",
       "userMembershipData": {
         "id": "takween",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -76,7 +76,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -86,26 +86,30 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "orgMembershipData": {
-        "id": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "id": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -136,7 +140,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -146,50 +150,52 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "errors": [],
-      "action": "KEEP_EXISTING",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-english",
-      "assignmentIdentity": "p-k-m-ahmd\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g2-general-1-english",
-      "existingAssignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-english",
-      "existingAssignmentIds": [
-        "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-english"
-      ],
+      "action": "CREATE",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran",
+      "assignmentIdentity": "p-a-h-aljaser\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g1-general-1-quran",
+      "existingAssignmentId": "",
+      "existingAssignmentIds": [],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
       "desiredAssignment": {
-        "id": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-1-english",
+        "id": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran",
         "orgId": "takween",
         "schoolId": "mrb-boys-sayh",
         "academicYearId": "ay-1448",
         "termId": "term-1",
-        "teacherPersonId": "p-k-m-ahmd",
-        "teacherEmail": "k-m-ahmd@qz.org.sa",
+        "teacherPersonId": "p-a-h-aljaser",
+        "teacherEmail": "a.h.aljaser@qz.org.sa",
         "assignmentKind": "SUBJECT_TEACHER",
         "targetScopeType": "CLASS",
-        "targetScopeId": "g2-general-1",
+        "targetScopeId": "g1-general-1",
         "coverageMode": "EXPLICIT_CLASSES",
         "subjectId": "",
-        "subjectKey": "ENGLISH",
-        "classId": "g2-general-1",
-        "classSubjectOfferingId": "mrb-boys-sayh-g2-general-1-english",
-        "gradeId": "g2",
+        "subjectKey": "QURAN",
+        "classId": "g1-general-1",
+        "classSubjectOfferingId": "mrb-boys-sayh-g1-general-1-quran",
+        "gradeId": "g1",
         "streamId": "stream-general",
         "isHomeroom": false,
         "roleInAssignment": "MAIN",
@@ -210,27 +216,27 @@
     },
     {
       "rowNumber": 3,
-      "email": "k-m-ahmd@qz.org.sa",
+      "email": "a.h.aljaser@qz.org.sa",
       "schoolId": "mrb-boys-sayh",
       "academicYearId": "ay-1448",
       "termId": "term-1",
-      "classId": "g2-quran-1",
-      "classTitle": "ثاني ابتدائي / تحفيظ",
-      "classSubjectOfferingId": "mrb-boys-sayh-g2-quran-1-english",
-      "subjectKey": "ENGLISH",
-      "subjectTitle": "إنجليزي",
+      "classId": "g3-general-1",
+      "classTitle": "ثالث ابتدائي / عام",
+      "classSubjectOfferingId": "mrb-boys-sayh-g3-general-1-life-skills",
+      "subjectKey": "LIFE_SKILLS",
+      "subjectTitle": "حياتية",
       "assignmentStatus": "ACTIVE",
-      "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-      "personId": "p-k-m-ahmd",
+      "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+      "personId": "p-a-h-aljaser",
       "roleKey": "BOYS_TEACHER",
-      "gradeId": "g2",
-      "streamId": "stream-quran",
-      "resolvedClassTitle": "ثاني ابتدائي / التحفيظ / أ",
-      "resolvedSubjectTitle": "إنجليزي",
+      "gradeId": "g3",
+      "streamId": "stream-general",
+      "resolvedClassTitle": "ثالث ابتدائي / العام / أ",
+      "resolvedSubjectTitle": "حياتية",
       "userMembershipData": {
         "id": "takween",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -261,7 +267,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -271,26 +277,30 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "orgMembershipData": {
-        "id": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "id": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -321,7 +331,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -331,51 +341,55 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "errors": [],
       "action": "KEEP_EXISTING",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-english",
-      "assignmentIdentity": "p-k-m-ahmd\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g2-quran-1-english",
-      "existingAssignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-english",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-life-skills",
+      "assignmentIdentity": "p-a-h-aljaser\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g3-general-1-life-skills",
+      "existingAssignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-life-skills",
       "existingAssignmentIds": [
-        "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-english"
+        "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-life-skills"
       ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
       "desiredAssignment": {
-        "id": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-quran-1-english",
+        "id": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-life-skills",
         "orgId": "takween",
         "schoolId": "mrb-boys-sayh",
         "academicYearId": "ay-1448",
         "termId": "term-1",
-        "teacherPersonId": "p-k-m-ahmd",
-        "teacherEmail": "k-m-ahmd@qz.org.sa",
+        "teacherPersonId": "p-a-h-aljaser",
+        "teacherEmail": "a.h.aljaser@qz.org.sa",
         "assignmentKind": "SUBJECT_TEACHER",
         "targetScopeType": "CLASS",
-        "targetScopeId": "g2-quran-1",
+        "targetScopeId": "g3-general-1",
         "coverageMode": "EXPLICIT_CLASSES",
         "subjectId": "",
-        "subjectKey": "ENGLISH",
-        "classId": "g2-quran-1",
-        "classSubjectOfferingId": "mrb-boys-sayh-g2-quran-1-english",
-        "gradeId": "g2",
-        "streamId": "stream-quran",
+        "subjectKey": "LIFE_SKILLS",
+        "classId": "g3-general-1",
+        "classSubjectOfferingId": "mrb-boys-sayh-g3-general-1-life-skills",
+        "gradeId": "g3",
+        "streamId": "stream-general",
         "isHomeroom": false,
         "roleInAssignment": "MAIN",
         "status": "ACTIVE",
@@ -395,27 +409,27 @@
     },
     {
       "rowNumber": 4,
-      "email": "k-m-ahmd@qz.org.sa",
+      "email": "a.h.aljaser@qz.org.sa",
       "schoolId": "mrb-boys-sayh",
       "academicYearId": "ay-1448",
       "termId": "term-1",
       "classId": "g3-general-1",
       "classTitle": "ثالث ابتدائي / عام",
-      "classSubjectOfferingId": "mrb-boys-sayh-g3-general-1-english",
-      "subjectKey": "ENGLISH",
-      "subjectTitle": "إنجليزي",
+      "classSubjectOfferingId": "mrb-boys-sayh-g3-general-1-quran",
+      "subjectKey": "QURAN",
+      "subjectTitle": "قرآن",
       "assignmentStatus": "ACTIVE",
-      "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-      "personId": "p-k-m-ahmd",
+      "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+      "personId": "p-a-h-aljaser",
       "roleKey": "BOYS_TEACHER",
       "gradeId": "g3",
       "streamId": "stream-general",
       "resolvedClassTitle": "ثالث ابتدائي / العام / أ",
-      "resolvedSubjectTitle": "إنجليزي",
+      "resolvedSubjectTitle": "قرآن",
       "userMembershipData": {
         "id": "takween",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -446,7 +460,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -456,26 +470,30 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "orgMembershipData": {
-        "id": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "id": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -506,7 +524,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -516,47 +534,53 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "errors": [],
-      "action": "CREATE",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english",
-      "assignmentIdentity": "p-k-m-ahmd\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g3-general-1-english",
-      "existingAssignmentId": "",
-      "existingAssignmentIds": [],
+      "action": "KEEP_EXISTING",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-quran",
+      "assignmentIdentity": "p-a-h-aljaser\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g3-general-1-quran",
+      "existingAssignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-quran",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-quran"
+      ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
       "desiredAssignment": {
-        "id": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english",
+        "id": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-quran",
         "orgId": "takween",
         "schoolId": "mrb-boys-sayh",
         "academicYearId": "ay-1448",
         "termId": "term-1",
-        "teacherPersonId": "p-k-m-ahmd",
-        "teacherEmail": "k-m-ahmd@qz.org.sa",
+        "teacherPersonId": "p-a-h-aljaser",
+        "teacherEmail": "a.h.aljaser@qz.org.sa",
         "assignmentKind": "SUBJECT_TEACHER",
         "targetScopeType": "CLASS",
         "targetScopeId": "g3-general-1",
         "coverageMode": "EXPLICIT_CLASSES",
         "subjectId": "",
-        "subjectKey": "ENGLISH",
+        "subjectKey": "QURAN",
         "classId": "g3-general-1",
-        "classSubjectOfferingId": "mrb-boys-sayh-g3-general-1-english",
+        "classSubjectOfferingId": "mrb-boys-sayh-g3-general-1-quran",
         "gradeId": "g3",
         "streamId": "stream-general",
         "isHomeroom": false,
@@ -578,27 +602,27 @@
     },
     {
       "rowNumber": 5,
-      "email": "k-m-ahmd@qz.org.sa",
+      "email": "a.h.aljaser@qz.org.sa",
       "schoolId": "mrb-boys-sayh",
       "academicYearId": "ay-1448",
       "termId": "term-1",
       "classId": "g3-quran-1",
       "classTitle": "ثالث ابتدائي / تحفيظ",
-      "classSubjectOfferingId": "mrb-boys-sayh-g3-quran-1-english",
-      "subjectKey": "ENGLISH",
-      "subjectTitle": "إنجليزي",
+      "classSubjectOfferingId": "mrb-boys-sayh-g3-quran-1-quran",
+      "subjectKey": "QURAN",
+      "subjectTitle": "قرآن",
       "assignmentStatus": "ACTIVE",
-      "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-      "personId": "p-k-m-ahmd",
+      "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+      "personId": "p-a-h-aljaser",
       "roleKey": "BOYS_TEACHER",
       "gradeId": "g3",
       "streamId": "stream-quran",
       "resolvedClassTitle": "ثالث ابتدائي / التحفيظ / أ",
-      "resolvedSubjectTitle": "إنجليزي",
+      "resolvedSubjectTitle": "قرآن",
       "userMembershipData": {
         "id": "takween",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -629,7 +653,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -639,26 +663,30 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "orgMembershipData": {
-        "id": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "id": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -689,7 +717,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -699,49 +727,53 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "errors": [],
       "action": "KEEP_EXISTING",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-english",
-      "assignmentIdentity": "p-k-m-ahmd\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g3-quran-1-english",
-      "existingAssignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-english",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-quran",
+      "assignmentIdentity": "p-a-h-aljaser\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g3-quran-1-quran",
+      "existingAssignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-quran",
       "existingAssignmentIds": [
-        "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-english"
+        "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-quran"
       ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
       "desiredAssignment": {
-        "id": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-english",
+        "id": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-quran",
         "orgId": "takween",
         "schoolId": "mrb-boys-sayh",
         "academicYearId": "ay-1448",
         "termId": "term-1",
-        "teacherPersonId": "p-k-m-ahmd",
-        "teacherEmail": "k-m-ahmd@qz.org.sa",
+        "teacherPersonId": "p-a-h-aljaser",
+        "teacherEmail": "a.h.aljaser@qz.org.sa",
         "assignmentKind": "SUBJECT_TEACHER",
         "targetScopeType": "CLASS",
         "targetScopeId": "g3-quran-1",
         "coverageMode": "EXPLICIT_CLASSES",
         "subjectId": "",
-        "subjectKey": "ENGLISH",
+        "subjectKey": "QURAN",
         "classId": "g3-quran-1",
-        "classSubjectOfferingId": "mrb-boys-sayh-g3-quran-1-english",
+        "classSubjectOfferingId": "mrb-boys-sayh-g3-quran-1-quran",
         "gradeId": "g3",
         "streamId": "stream-quran",
         "isHomeroom": false,
@@ -763,27 +795,27 @@
     },
     {
       "rowNumber": 6,
-      "email": "k-m-ahmd@qz.org.sa",
+      "email": "a.h.aljaser@qz.org.sa",
       "schoolId": "mrb-boys-sayh",
       "academicYearId": "ay-1448",
       "termId": "term-1",
-      "classId": "g6-general-1",
-      "classTitle": "سادس ابتدائي",
-      "classSubjectOfferingId": "mrb-boys-sayh-g6-general-1-art",
-      "subjectKey": "ART",
-      "subjectTitle": "فنية",
+      "classId": "g4-quran-1",
+      "classTitle": "رابع تحفيظ",
+      "classSubjectOfferingId": "mrb-boys-sayh-g4-quran-1-life-skills",
+      "subjectKey": "LIFE_SKILLS",
+      "subjectTitle": "حياتية",
       "assignmentStatus": "ACTIVE",
-      "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-      "personId": "p-k-m-ahmd",
+      "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+      "personId": "p-a-h-aljaser",
       "roleKey": "BOYS_TEACHER",
-      "gradeId": "g6",
-      "streamId": "stream-general",
-      "resolvedClassTitle": "سادس ابتدائي / العام / أ",
-      "resolvedSubjectTitle": "فنية",
+      "gradeId": "g4",
+      "streamId": "stream-quran",
+      "resolvedClassTitle": "رابع ابتدائي / التحفيظ / أ",
+      "resolvedSubjectTitle": "حياتية",
       "userMembershipData": {
         "id": "takween",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -814,7 +846,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -824,26 +856,30 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "orgMembershipData": {
-        "id": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "uid": "zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "personId": "p-k-m-ahmd",
+        "id": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
         "orgId": "takween",
         "role": "teacher",
         "roleKey": "BOYS_TEACHER",
@@ -874,7 +910,7 @@
           "manageGuardianFinanceSettings": false
         },
         "isActive": true,
-        "createdAt": 1785394334970,
+        "createdAt": 1785394333827,
         "assignmentStatus": "ACTIVE",
         "provisioningStatus": "ASSIGNED",
         "scopes": {
@@ -884,47 +920,439 @@
           "routeIds": [],
           "canAccessAllSchools": false,
           "gradeIds": [
-            "g2",
-            "g3"
+            "g3",
+            "g4",
+            "g5",
+            "g6"
           ],
           "classIds": [
-            "g2-general-1",
-            "g2-general-2",
-            "g2-quran-1",
-            "g3-quran-1"
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
           ],
           "subjectKeys": [
-            "ENGLISH",
-            "LIFE_SKILLS"
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
           ]
         },
-        "updatedAt": 1787325892026
+        "updatedAt": 1787325896874
       },
       "errors": [],
-      "action": "CREATE",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art",
-      "assignmentIdentity": "p-k-m-ahmd\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g6-general-1-art",
-      "existingAssignmentId": "",
-      "existingAssignmentIds": [],
+      "action": "KEEP_EXISTING",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-quran-1-life-skills",
+      "assignmentIdentity": "p-a-h-aljaser\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g4-quran-1-life-skills",
+      "existingAssignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-quran-1-life-skills",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-quran-1-life-skills"
+      ],
       "changedFields": [],
       "currentValues": {},
       "desiredValues": {},
       "desiredAssignment": {
-        "id": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art",
+        "id": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g4-quran-1-life-skills",
         "orgId": "takween",
         "schoolId": "mrb-boys-sayh",
         "academicYearId": "ay-1448",
         "termId": "term-1",
-        "teacherPersonId": "p-k-m-ahmd",
-        "teacherEmail": "k-m-ahmd@qz.org.sa",
+        "teacherPersonId": "p-a-h-aljaser",
+        "teacherEmail": "a.h.aljaser@qz.org.sa",
+        "assignmentKind": "SUBJECT_TEACHER",
+        "targetScopeType": "CLASS",
+        "targetScopeId": "g4-quran-1",
+        "coverageMode": "EXPLICIT_CLASSES",
+        "subjectId": "",
+        "subjectKey": "LIFE_SKILLS",
+        "classId": "g4-quran-1",
+        "classSubjectOfferingId": "mrb-boys-sayh-g4-quran-1-life-skills",
+        "gradeId": "g4",
+        "streamId": "stream-quran",
+        "isHomeroom": false,
+        "roleInAssignment": "MAIN",
+        "status": "ACTIVE",
+        "note": "تم إنشاؤه بواسطة استيراد توزيع المعلمين",
+        "operationKinds": [
+          "STUDENT_MEASUREMENT",
+          "LEARNING_LOSS_FOLLOWUP",
+          "LESSON_PREP",
+          "STUDENT_GAMIFICATION",
+          "STUDENT_NOTES",
+          "VIRTUAL_CLASS"
+        ],
+        "active": true,
+        "managedBy": "TEACHER_PROVISIONING",
+        "assignmentSource": "OFFICIAL_IMPORT"
+      }
+    },
+    {
+      "rowNumber": 7,
+      "email": "a.h.aljaser@qz.org.sa",
+      "schoolId": "mrb-boys-sayh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "classId": "g5-general-1",
+      "classTitle": "خامس",
+      "classSubjectOfferingId": "mrb-boys-sayh-g5-general-1-social-studies",
+      "subjectKey": "SOCIAL_STUDIES",
+      "subjectTitle": "اجتماعيات",
+      "assignmentStatus": "ACTIVE",
+      "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+      "personId": "p-a-h-aljaser",
+      "roleKey": "BOYS_TEACHER",
+      "gradeId": "g5",
+      "streamId": "stream-general",
+      "resolvedClassTitle": "خامس ابتدائي / العام / أ",
+      "resolvedSubjectTitle": "اجتماعيات",
+      "userMembershipData": {
+        "id": "takween",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
+        "orgId": "takween",
+        "role": "teacher",
+        "roleKey": "BOYS_TEACHER",
+        "title": "معلم",
+        "department": "التعليم",
+        "scopeType": "SCHOOL",
+        "scopeId": "mrb-boys-sayh",
+        "permissions": {
+          "manageOrg": false,
+          "manageSchools": false,
+          "manageAcademicYears": false,
+          "manageGrades": false,
+          "manageClasses": false,
+          "manageSubjects": false,
+          "manageUsers": false,
+          "manageDirectory": false,
+          "manageAssignments": false,
+          "manageCases": false,
+          "manageEvaluations": false,
+          "manageDisplay": false,
+          "sendNotifications": false,
+          "viewGuardianFinance": false,
+          "manageGuardianFinance": false,
+          "recordGuardianPayments": false,
+          "applyGuardianFinanceAdjustments": false,
+          "voidGuardianPayments": false,
+          "viewGuardianFinanceReports": false,
+          "manageGuardianFinanceSettings": false
+        },
+        "isActive": true,
+        "createdAt": 1785394333827,
+        "assignmentStatus": "ACTIVE",
+        "provisioningStatus": "ASSIGNED",
+        "scopes": {
+          "schoolIds": [
+            "mrb-boys-sayh"
+          ],
+          "routeIds": [],
+          "canAccessAllSchools": false,
+          "gradeIds": [
+            "g3",
+            "g4",
+            "g5",
+            "g6"
+          ],
+          "classIds": [
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
+          ],
+          "subjectKeys": [
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
+          ]
+        },
+        "updatedAt": 1787325896874
+      },
+      "orgMembershipData": {
+        "id": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
+        "orgId": "takween",
+        "role": "teacher",
+        "roleKey": "BOYS_TEACHER",
+        "title": "معلم",
+        "department": "التعليم",
+        "scopeType": "SCHOOL",
+        "scopeId": "mrb-boys-sayh",
+        "permissions": {
+          "manageOrg": false,
+          "manageSchools": false,
+          "manageAcademicYears": false,
+          "manageGrades": false,
+          "manageClasses": false,
+          "manageSubjects": false,
+          "manageUsers": false,
+          "manageDirectory": false,
+          "manageAssignments": false,
+          "manageCases": false,
+          "manageEvaluations": false,
+          "manageDisplay": false,
+          "sendNotifications": false,
+          "viewGuardianFinance": false,
+          "manageGuardianFinance": false,
+          "recordGuardianPayments": false,
+          "applyGuardianFinanceAdjustments": false,
+          "voidGuardianPayments": false,
+          "viewGuardianFinanceReports": false,
+          "manageGuardianFinanceSettings": false
+        },
+        "isActive": true,
+        "createdAt": 1785394333827,
+        "assignmentStatus": "ACTIVE",
+        "provisioningStatus": "ASSIGNED",
+        "scopes": {
+          "schoolIds": [
+            "mrb-boys-sayh"
+          ],
+          "routeIds": [],
+          "canAccessAllSchools": false,
+          "gradeIds": [
+            "g3",
+            "g4",
+            "g5",
+            "g6"
+          ],
+          "classIds": [
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
+          ],
+          "subjectKeys": [
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
+          ]
+        },
+        "updatedAt": 1787325896874
+      },
+      "errors": [],
+      "action": "KEEP_EXISTING",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g5-general-1-social-studies",
+      "assignmentIdentity": "p-a-h-aljaser\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g5-general-1-social-studies",
+      "existingAssignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g5-general-1-social-studies",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g5-general-1-social-studies"
+      ],
+      "changedFields": [],
+      "currentValues": {},
+      "desiredValues": {},
+      "desiredAssignment": {
+        "id": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g5-general-1-social-studies",
+        "orgId": "takween",
+        "schoolId": "mrb-boys-sayh",
+        "academicYearId": "ay-1448",
+        "termId": "term-1",
+        "teacherPersonId": "p-a-h-aljaser",
+        "teacherEmail": "a.h.aljaser@qz.org.sa",
+        "assignmentKind": "SUBJECT_TEACHER",
+        "targetScopeType": "CLASS",
+        "targetScopeId": "g5-general-1",
+        "coverageMode": "EXPLICIT_CLASSES",
+        "subjectId": "",
+        "subjectKey": "SOCIAL_STUDIES",
+        "classId": "g5-general-1",
+        "classSubjectOfferingId": "mrb-boys-sayh-g5-general-1-social-studies",
+        "gradeId": "g5",
+        "streamId": "stream-general",
+        "isHomeroom": false,
+        "roleInAssignment": "MAIN",
+        "status": "ACTIVE",
+        "note": "تم إنشاؤه بواسطة استيراد توزيع المعلمين",
+        "operationKinds": [
+          "STUDENT_MEASUREMENT",
+          "LEARNING_LOSS_FOLLOWUP",
+          "LESSON_PREP",
+          "STUDENT_GAMIFICATION",
+          "STUDENT_NOTES",
+          "VIRTUAL_CLASS"
+        ],
+        "active": true,
+        "managedBy": "TEACHER_PROVISIONING",
+        "assignmentSource": "OFFICIAL_IMPORT"
+      }
+    },
+    {
+      "rowNumber": 8,
+      "email": "a.h.aljaser@qz.org.sa",
+      "schoolId": "mrb-boys-sayh",
+      "academicYearId": "ay-1448",
+      "termId": "term-1",
+      "classId": "g6-general-1",
+      "classTitle": "سادس",
+      "classSubjectOfferingId": "mrb-boys-sayh-g6-general-1-social-studies",
+      "subjectKey": "SOCIAL_STUDIES",
+      "subjectTitle": "اجتماعيات",
+      "assignmentStatus": "ACTIVE",
+      "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+      "personId": "p-a-h-aljaser",
+      "roleKey": "BOYS_TEACHER",
+      "gradeId": "g6",
+      "streamId": "stream-general",
+      "resolvedClassTitle": "سادس ابتدائي / العام / أ",
+      "resolvedSubjectTitle": "اجتماعيات",
+      "userMembershipData": {
+        "id": "takween",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
+        "orgId": "takween",
+        "role": "teacher",
+        "roleKey": "BOYS_TEACHER",
+        "title": "معلم",
+        "department": "التعليم",
+        "scopeType": "SCHOOL",
+        "scopeId": "mrb-boys-sayh",
+        "permissions": {
+          "manageOrg": false,
+          "manageSchools": false,
+          "manageAcademicYears": false,
+          "manageGrades": false,
+          "manageClasses": false,
+          "manageSubjects": false,
+          "manageUsers": false,
+          "manageDirectory": false,
+          "manageAssignments": false,
+          "manageCases": false,
+          "manageEvaluations": false,
+          "manageDisplay": false,
+          "sendNotifications": false,
+          "viewGuardianFinance": false,
+          "manageGuardianFinance": false,
+          "recordGuardianPayments": false,
+          "applyGuardianFinanceAdjustments": false,
+          "voidGuardianPayments": false,
+          "viewGuardianFinanceReports": false,
+          "manageGuardianFinanceSettings": false
+        },
+        "isActive": true,
+        "createdAt": 1785394333827,
+        "assignmentStatus": "ACTIVE",
+        "provisioningStatus": "ASSIGNED",
+        "scopes": {
+          "schoolIds": [
+            "mrb-boys-sayh"
+          ],
+          "routeIds": [],
+          "canAccessAllSchools": false,
+          "gradeIds": [
+            "g3",
+            "g4",
+            "g5",
+            "g6"
+          ],
+          "classIds": [
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
+          ],
+          "subjectKeys": [
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
+          ]
+        },
+        "updatedAt": 1787325896874
+      },
+      "orgMembershipData": {
+        "id": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "uid": "lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "personId": "p-a-h-aljaser",
+        "orgId": "takween",
+        "role": "teacher",
+        "roleKey": "BOYS_TEACHER",
+        "title": "معلم",
+        "department": "التعليم",
+        "scopeType": "SCHOOL",
+        "scopeId": "mrb-boys-sayh",
+        "permissions": {
+          "manageOrg": false,
+          "manageSchools": false,
+          "manageAcademicYears": false,
+          "manageGrades": false,
+          "manageClasses": false,
+          "manageSubjects": false,
+          "manageUsers": false,
+          "manageDirectory": false,
+          "manageAssignments": false,
+          "manageCases": false,
+          "manageEvaluations": false,
+          "manageDisplay": false,
+          "sendNotifications": false,
+          "viewGuardianFinance": false,
+          "manageGuardianFinance": false,
+          "recordGuardianPayments": false,
+          "applyGuardianFinanceAdjustments": false,
+          "voidGuardianPayments": false,
+          "viewGuardianFinanceReports": false,
+          "manageGuardianFinanceSettings": false
+        },
+        "isActive": true,
+        "createdAt": 1785394333827,
+        "assignmentStatus": "ACTIVE",
+        "provisioningStatus": "ASSIGNED",
+        "scopes": {
+          "schoolIds": [
+            "mrb-boys-sayh"
+          ],
+          "routeIds": [],
+          "canAccessAllSchools": false,
+          "gradeIds": [
+            "g3",
+            "g4",
+            "g5",
+            "g6"
+          ],
+          "classIds": [
+            "g3-general-1",
+            "g3-quran-1",
+            "g4-quran-1",
+            "g5-general-1",
+            "g6-general-1"
+          ],
+          "subjectKeys": [
+            "QURAN",
+            "LIFE_SKILLS",
+            "SOCIAL_STUDIES"
+          ]
+        },
+        "updatedAt": 1787325896874
+      },
+      "errors": [],
+      "action": "KEEP_EXISTING",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-social-studies",
+      "assignmentIdentity": "p-a-h-aljaser\u001fmrb-boys-sayh\u001fay-1448\u001fterm-1\u001fmrb-boys-sayh-g6-general-1-social-studies",
+      "existingAssignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-social-studies",
+      "existingAssignmentIds": [
+        "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-social-studies"
+      ],
+      "changedFields": [],
+      "currentValues": {},
+      "desiredValues": {},
+      "desiredAssignment": {
+        "id": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-social-studies",
+        "orgId": "takween",
+        "schoolId": "mrb-boys-sayh",
+        "academicYearId": "ay-1448",
+        "termId": "term-1",
+        "teacherPersonId": "p-a-h-aljaser",
+        "teacherEmail": "a.h.aljaser@qz.org.sa",
         "assignmentKind": "SUBJECT_TEACHER",
         "targetScopeType": "CLASS",
         "targetScopeId": "g6-general-1",
         "coverageMode": "EXPLICIT_CLASSES",
         "subjectId": "",
-        "subjectKey": "ART",
+        "subjectKey": "SOCIAL_STUDIES",
         "classId": "g6-general-1",
-        "classSubjectOfferingId": "mrb-boys-sayh-g6-general-1-art",
+        "classSubjectOfferingId": "mrb-boys-sayh-g6-general-1-social-studies",
         "gradeId": "g6",
         "streamId": "stream-general",
         "isHomeroom": false,
@@ -945,161 +1373,52 @@
       }
     }
   ],
-  "obsoleteAssignments": [
-    {
-      "action": "END_OBSOLETE",
-      "email": "k-m-ahmd@qz.org.sa",
-      "personId": "p-k-m-ahmd",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english",
-      "existingAssignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english",
-      "schoolId": "mrb-boys-sayh",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g2-general-2",
-      "classSubjectOfferingId": "mrb-boys-sayh-g2-general-2-english",
-      "subjectKey": "ENGLISH",
-      "pathsWritten": []
-    },
-    {
-      "action": "END_OBSOLETE",
-      "email": "k-m-ahmd@qz.org.sa",
-      "personId": "p-k-m-ahmd",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills",
-      "existingAssignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills",
-      "schoolId": "mrb-boys-sayh",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g3-quran-1",
-      "classSubjectOfferingId": "mrb-boys-sayh-g3-quran-1-life-skills",
-      "subjectKey": "LIFE_SKILLS",
-      "pathsWritten": []
-    }
-  ],
+  "obsoleteAssignments": [],
   "suppressedReconcileScopes": [],
   "executedActions": [
     {
       "action": "CREATE",
-      "email": "k-m-ahmd@qz.org.sa",
-      "personId": "p-k-m-ahmd",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english",
+      "email": "a.h.aljaser@qz.org.sa",
+      "personId": "p-a-h-aljaser",
+      "assignmentId": "teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran",
       "schoolId": "mrb-boys-sayh",
       "academicYearId": "ay-1448",
       "termId": "term-1",
-      "classId": "g3-general-1",
-      "classSubjectOfferingId": "mrb-boys-sayh-g3-general-1-english",
-      "subjectKey": "ENGLISH",
+      "classId": "g1-general-1",
+      "classSubjectOfferingId": "mrb-boys-sayh-g1-general-1-quran",
+      "subjectKey": "QURAN",
       "existingAssignmentId": "",
       "changedFields": [],
       "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english__class-link__g3-general-1",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-general-1-english__VIRTUAL_CLASS"
-      ]
-    },
-    {
-      "action": "CREATE",
-      "email": "k-m-ahmd@qz.org.sa",
-      "personId": "p-k-m-ahmd",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art",
-      "schoolId": "mrb-boys-sayh",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g6-general-1",
-      "classSubjectOfferingId": "mrb-boys-sayh-g6-general-1-art",
-      "subjectKey": "ART",
-      "existingAssignmentId": "",
-      "changedFields": [],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__class-link__g6-general-1",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g6-general-1-art__VIRTUAL_CLASS"
-      ]
-    },
-    {
-      "action": "END_OBSOLETE",
-      "email": "k-m-ahmd@qz.org.sa",
-      "personId": "p-k-m-ahmd",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english",
-      "existingAssignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english",
-      "schoolId": "mrb-boys-sayh",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g2-general-2",
-      "classSubjectOfferingId": "mrb-boys-sayh-g2-general-2-english",
-      "subjectKey": "ENGLISH",
-      "changedFields": [
-        "status",
-        "active",
-        "endedAt"
-      ],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english__class-link__g2-general-2",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g2-general-2-english__VIRTUAL_CLASS"
-      ]
-    },
-    {
-      "action": "END_OBSOLETE",
-      "email": "k-m-ahmd@qz.org.sa",
-      "personId": "p-k-m-ahmd",
-      "assignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills",
-      "existingAssignmentId": "teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills",
-      "schoolId": "mrb-boys-sayh",
-      "academicYearId": "ay-1448",
-      "termId": "term-1",
-      "classId": "g3-quran-1",
-      "classSubjectOfferingId": "mrb-boys-sayh-g3-quran-1-life-skills",
-      "subjectKey": "LIFE_SKILLS",
-      "changedFields": [
-        "status",
-        "active",
-        "endedAt"
-      ],
-      "pathsWritten": [
-        "orgs/takween/teacherAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills",
-        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills__class-link__g3-quran-1",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills__STUDENT_MEASUREMENT",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills__LEARNING_LOSS_FOLLOWUP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills__LESSON_PREP",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills__STUDENT_GAMIFICATION",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills__STUDENT_NOTES",
-        "orgs/takween/operationalAssignments/teacher-provisioning__p-k-m-ahmd__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g3-quran-1-life-skills__VIRTUAL_CLASS"
+        "orgs/takween/teacherAssignments/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran",
+        "orgs/takween/teacherAssignmentClassLinks/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran__class-link__g1-general-1",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran__STUDENT_MEASUREMENT",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran__LEARNING_LOSS_FOLLOWUP",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran__LESSON_PREP",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran__STUDENT_GAMIFICATION",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran__STUDENT_NOTES",
+        "orgs/takween/operationalAssignments/teacher-provisioning__p-a-h-aljaser__mrb-boys-sayh__ay-1448__term-1__mrb-boys-sayh-g1-general-1-quran__VIRTUAL_CLASS"
       ]
     }
   ],
   "membershipProfileChanges": [
     {
-      "email": "k-m-ahmd@qz.org.sa",
-      "personId": "p-k-m-ahmd",
+      "email": "a.h.aljaser@qz.org.sa",
+      "personId": "p-a-h-aljaser",
       "pathsWritten": [
-        "users/zfCIsLVT3gdkhdEvORyNJ2K45rd2",
-        "orgs/takween/people/p-k-m-ahmd",
-        "users/zfCIsLVT3gdkhdEvORyNJ2K45rd2/orgMemberships/takween",
-        "orgs/takween/memberships/zfCIsLVT3gdkhdEvORyNJ2K45rd2"
+        "users/lAwPAMnLfnfDm7jEGayKlu3Rd2D2",
+        "orgs/takween/people/p-a-h-aljaser",
+        "users/lAwPAMnLfnfDm7jEGayKlu3Rd2D2/orgMemberships/takween",
+        "orgs/takween/memberships/lAwPAMnLfnfDm7jEGayKlu3Rd2D2"
       ],
       "scopeRemovalPolicy": "PRESERVE_EXISTING_BROADER_SCOPES"
     }
   ],
   "failures": [],
   "actualWriteCounts": {
-    "create": 16,
+    "create": 8,
     "update": 0,
-    "endObsolete": 16,
+    "endObsolete": 0,
     "membershipProfile": 4
   }
 }
