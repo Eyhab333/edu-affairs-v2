@@ -326,15 +326,17 @@ function buildStudentRankings(rows: StudentScoreRow[]): StudentRankingRow[] {
       percentages: [],
       incompleteCounts: {},
     };
-    const isCompletedNumeric =
-      row.status === "COMPLETED" && row.percentage !== null;
+    const completedPercentage =
+      row.status === "COMPLETED" && row.percentage !== null
+        ? row.percentage
+        : null;
 
     current.contexts.add(`${row.schoolName} / ${row.classTitle}`);
     current.expectedBatchIds.add(row.batchId);
 
-    if (isCompletedNumeric) {
+    if (completedPercentage !== null) {
       current.completedBatchIds.add(row.batchId);
-      current.percentages.push(row.percentage);
+      current.percentages.push(completedPercentage);
     } else {
       current.incompleteCounts[row.status] =
         (current.incompleteCounts[row.status] ?? 0) + 1;
