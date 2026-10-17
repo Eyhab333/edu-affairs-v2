@@ -16,6 +16,7 @@ import {
   getDocs,
   query,
   setDoc,
+  where,
 } from "firebase/firestore";
 import {
   GuardianLinkSchema,
@@ -154,7 +155,25 @@ export default function NewStudentGuardianLinkPage() {
 
     try {
       const nowMs = Date.now();
-      const id = generateId("guardian-link");
+      if (!guardianId) {
+        throw new Error("يجب اختيار ولي الأمر.");
+      }
+
+      const existingLinksSnapshot = await getDocs(
+        query(
+          collection(db, `orgs/${orgId}/guardianLinks`),
+          where("guardianId", "==", guardianId),
+        ),
+      );
+      const matchingLinks = existingLinksSnapshot.docs.filter(
+        (item) => item.data().studentId === studentId,
+      );
+
+      if (matchingLinks.length > 1) {
+        throw new Error("يوجد أكثر من رابط لهذا الطالب وولي الأمر.");
+      }
+
+      const id = matchingLinks[0]?.id ?? `gl-${guardianId}-${studentId}`;
 
       const payload = {
         id,
@@ -174,7 +193,9 @@ export default function NewStudentGuardianLinkPage() {
         throw new Error(parsed.error.issues.map((i) => i.message).join("\n"));
       }
 
-      await setDoc(doc(db, `orgs/${orgId}/guardianLinks/${id}`), parsed.data);
+      await setDoc(doc(db, `orgs/${orgId}/guardianLinks/${id}`), parsed.data, {
+        merge: true,
+      });
 
       toast.success("تم إنشاء الرابط بنجاح");
       router.push(`/orgs/${orgId}/students/${studentId}`);

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Loader2, Save, UserPlus } from "lucide-react";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { GuardianSchema, PersonSchema } from "@takween/contracts";
 import { toast } from "sonner";
 
@@ -47,8 +47,59 @@ export default function NewGuardianPage() {
 
     try {
       const nowMs = Date.now();
-      const personId = generateId("person");
-      const guardianId = generateId("guardian");
+      const peopleRef = collection(db, `orgs/${orgId}/people`);
+      const personMatches = [];
+
+      if (nationalId.trim()) {
+        const snapshot = await getDocs(
+          query(peopleRef, where("nationalId", "==", nationalId.trim())),
+        );
+        personMatches.push(...snapshot.docs);
+      }
+
+      if (personMatches.length === 0 && email.trim()) {
+        const snapshot = await getDocs(
+          query(peopleRef, where("email", "==", email.trim().toLowerCase())),
+        );
+        if (
+          nationalId.trim() &&
+          snapshot.docs.some(
+            (item) =>
+              typeof item.data().nationalId === "string" &&
+              item.data().nationalId.trim() &&
+              item.data().nationalId.trim() !== nationalId.trim(),
+          )
+        ) {
+          throw new Error("البريد الإلكتروني مرتبط بشخص له سجل مدني مختلف.");
+        }
+        personMatches.push(...snapshot.docs);
+      }
+
+      if (personMatches.length > 1) {
+        throw new Error("يوجد أكثر من شخص مطابق؛ راجع السجل المدني أو البريد الإلكتروني.");
+      }
+
+      const existingPerson = personMatches[0];
+      const personId = existingPerson?.id ?? generateId("person");
+      const guardiansRef = collection(db, `orgs/${orgId}/guardians`);
+      const guardianSnapshot = await getDocs(
+        query(guardiansRef, where("personId", "==", personId)),
+      );
+      const activeGuardians = guardianSnapshot.docs.filter(
+        (item) => item.data().isArchived !== true,
+      );
+      const existingGuardian =
+        activeGuardians[0] ??
+        (guardianSnapshot.docs.length === 1 ? guardianSnapshot.docs[0] : undefined);
+
+      if (activeGuardians.length > 1) {
+        throw new Error("يوجد أكثر من سجل ولي أمر نشط لهذا الشخص.");
+      }
+      if (!existingGuardian && guardianSnapshot.docs.length > 1) {
+        throw new Error("يوجد أكثر من سجل ولي أمر مؤرشف لهذا الشخص.");
+      }
+
+      const guardianId = existingGuardian?.id ?? `g-parent-${personId}`;
 
       const personPayload = {
         id: personId,
@@ -79,8 +130,14 @@ export default function NewGuardianPage() {
         throw new Error(parsedGuardian.error.issues.map((i) => i.message).join("\n"));
       }
 
-      await setDoc(doc(db, `orgs/${orgId}/people/${personId}`), parsedPerson.data);
-      await setDoc(doc(db, `orgs/${orgId}/guardians/${guardianId}`), parsedGuardian.data);
+      if (!existingPerson) {
+        await setDoc(doc(db, `orgs/${orgId}/people/${personId}`), parsedPerson.data);
+      }
+      await setDoc(
+        doc(db, `orgs/${orgId}/guardians/${guardianId}`),
+        parsedGuardian.data,
+        { merge: true },
+      );
 
       toast.success("تم إنشاء ولي الأمر بنجاح");
       router.push(`/orgs/${orgId}/guardians/${guardianId}`);
