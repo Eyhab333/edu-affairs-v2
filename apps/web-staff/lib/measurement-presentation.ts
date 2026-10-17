@@ -43,7 +43,7 @@ const measurementLabels: Record<string, string> = {
   PRIMARY_CENTRAL_2: "قياس مركزي ثانٍ",
   CUSTOM_ASSESSMENT: "قياس مخصص",
   KG_QURAN_TRACKER: "متابعة القرآن لرياض الأطفال",
-  KG_LEARNING_GARDENS_TRACKER: "متابعة حدائق التعلم",
+  KG_LEARNING_GARDENS_TRACKER: "متابعة بساتين المعرفة",
   KG_NUMBERS_TRACKER: "متابعة الأرقام",
   KG_VALUES_TRACKER: "متابعة القيم",
   KG_CORNERS_TRACKER: "متابعة الأركان",
