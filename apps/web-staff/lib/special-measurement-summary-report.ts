@@ -15,7 +15,12 @@ export type SpecialMeasurementSummarySource = {
 };
 
 const getSummarySource = httpsCallable<
-  { orgId: string; academicYearId: string; termId: string },
+  {
+    orgId: string;
+    academicYearId: string;
+    termId: string;
+    summaryKind?: "KG";
+  },
   SpecialMeasurementSummarySource
 >(functions, "getSpecialStaffMeasurementSummarySource");
 
@@ -23,6 +28,7 @@ export async function loadSpecialMeasurementSummarySource(params: {
   orgId: string;
   academicYearId: string;
   termId: string;
+  summaryKind?: "KG";
 }): Promise<SpecialMeasurementSummarySource> {
   return (await getSummarySource(params)).data;
 }

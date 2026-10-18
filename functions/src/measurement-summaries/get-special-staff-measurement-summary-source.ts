@@ -1,9 +1,19 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import type { MembershipRole } from "@takween/contracts";
 import { getSpecialStaffReportingAccess } from "@takween/domain";
 
 const REGION = "me-central2";
 const GET_ALL_CHUNK_SIZE = 100;
+const KG_SUBJECT_KEYS = new Set([
+  "LEARNING_GARDENS",
+  "QURAN",
+  "COUNT_AND_CALCULATE",
+]);
+const KG_LEADERSHIP_ROLE_KEYS = new Set<MembershipRole>([
+  "KG_PRINCIPAL",
+  "KG_VP",
+]);
 
 type Row = Record<string, unknown>;
 
@@ -43,6 +53,25 @@ function unique(values: Array<string | undefined | null>) {
   );
 }
 
+function stringArray(value: unknown) {
+  return Array.isArray(value)
+    ? value.flatMap((item) => {
+        const result = text(item);
+        return result ? [result] : [];
+      })
+    : [];
+}
+
+function resolveMembershipSchoolIds(membership: Row) {
+  const scopes = row(membership.scopes);
+  return unique([
+    ...stringArray(scopes.schoolIds),
+    text(membership.scopeType).toUpperCase() === "SCHOOL"
+      ? text(membership.scopeId)
+      : "",
+  ]);
+}
+
 function isActiveMembership(value: Row, now: number) {
   if (value.isActive === false || value.active === false) return false;
   if (text(value.status).toUpperCase() === "INACTIVE") return false;
@@ -65,6 +94,24 @@ function isActiveClass(value: Row) {
     value.archived !== true &&
     text(value.status).toUpperCase() !== "ARCHIVED"
   );
+}
+
+function isKgSchool(value: Row) {
+  return text(value.schoolType).toUpperCase() === "KG";
+}
+
+function isKgClass(value: Row) {
+  return ["KG1", "KG2", "KG3"].includes(
+    text(value.gradeId).toUpperCase(),
+  );
+}
+
+function classKey(value: Row) {
+  return [
+    text(value.schoolId),
+    text(value.academicYearId),
+    text(value.classId) || text(value.id),
+  ].join("::");
 }
 
 function chunks<T>(values: T[], size: number) {
@@ -106,6 +153,7 @@ export const getSpecialStaffMeasurementSummarySource = onCall(
     const orgId = requiredId(input.orgId, "orgId");
     const academicYearId = requiredId(input.academicYearId, "academicYearId");
     const termId = requiredId(input.termId, "termId");
+    const summaryKind = text(input.summaryKind).toUpperCase();
     const db = getFirestore();
     const membershipSnapshot = await db
       .doc(`users/${request.auth.uid}/orgMemberships/${orgId}`)
@@ -129,21 +177,34 @@ export const getSpecialStaffMeasurementSummarySource = onCall(
       personId,
       uid: request.auth.uid,
     });
-    if (!specialReportingAccess) {
+    const membershipRole = text(
+      membership.roleKey || membership.role,
+    ).toUpperCase();
+    const hasKgLeadershipAccess =
+      summaryKind === "KG" &&
+      KG_LEADERSHIP_ROLE_KEYS.has(membershipRole as MembershipRole);
+    if (!specialReportingAccess && !hasKgLeadershipAccess) {
       throw new HttpsError(
         "permission-denied",
-        "Special reporting access is required.",
+        "Measurement summary reporting access is required.",
       );
     }
 
+    const allowedSchoolIds = specialReportingAccess
+      ? specialReportingAccess.schoolIds
+      : resolveMembershipSchoolIds(membership);
+    if (!allowedSchoolIds.length) return emptySource();
+
     const schoolSnapshots = await getDocumentsByPath(
-      specialReportingAccess.schoolIds.map(
+      allowedSchoolIds.map(
         (schoolId) => `orgs/${orgId}/schools/${schoolId}`,
       ),
     );
     const schools = schoolSnapshots.flatMap((snapshot) => {
       const school = row(snapshot.data());
-      return snapshot.exists && isActiveSchool(school)
+      return snapshot.exists &&
+        isActiveSchool(school) &&
+        (summaryKind !== "KG" || isKgSchool(school))
         ? [
             {
               id: snapshot.id,
@@ -177,7 +238,8 @@ export const getSpecialStaffMeasurementSummarySource = onCall(
     const classes = classSnapshots.flatMap((snapshot, index) =>
       snapshot.docs.flatMap((document) => {
         const classData = row(document.data());
-        return isActiveClass(classData)
+        return isActiveClass(classData) &&
+          (summaryKind !== "KG" || isKgClass(classData))
           ? [
               {
                 ...classData,
@@ -190,12 +252,18 @@ export const getSpecialStaffMeasurementSummarySource = onCall(
           : [];
       }),
     );
+    const allowedClassKeys = new Set(
+      classes.map((classItem) => classKey(classItem)),
+    );
     const batches: Array<Row & { id: string }> = batchSnapshots.flatMap((snapshot) =>
       snapshot.docs.flatMap((document) => {
         const batch = row(document.data());
         return text(batch.academicYearId) === academicYearId &&
           text(batch.termId) === termId &&
-          text(batch.status).toUpperCase() === "SUBMITTED"
+          text(batch.status).toUpperCase() === "SUBMITTED" &&
+          allowedClassKeys.has(classKey(batch)) &&
+          (summaryKind !== "KG" ||
+            KG_SUBJECT_KEYS.has(text(batch.subjectKey).toUpperCase()))
           ? [{ ...batch, id: document.id }]
           : [];
       }),
@@ -209,12 +277,15 @@ export const getSpecialStaffMeasurementSummarySource = onCall(
         ),
       ),
     ]);
-    const allowedSchoolIds = new Set(schools.map((school) => school.id));
+    const returnedSchoolIds = new Set(schools.map((school) => school.id));
     const templates = templateSnapshot.docs.flatMap((snapshot) => {
       const template = row(snapshot.data());
       const templateSchoolId = text(template.schoolId);
       return text(template.academicYearId) === academicYearId &&
-        (!templateSchoolId || allowedSchoolIds.has(templateSchoolId))
+        (!templateSchoolId || returnedSchoolIds.has(templateSchoolId)) &&
+        (summaryKind !== "KG" ||
+          (text(template.schoolType).toUpperCase() === "KG" &&
+            KG_SUBJECT_KEYS.has(text(template.subjectKey).toUpperCase())))
         ? [{ ...template, id: snapshot.id }]
         : [];
     });

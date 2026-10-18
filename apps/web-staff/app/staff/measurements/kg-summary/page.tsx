@@ -10,7 +10,10 @@ import {
   TableProperties,
 } from "lucide-react";
 import { collection, documentId, getDocs, query, where } from "firebase/firestore";
-import type { StudentMeasurementBatch } from "@takween/contracts";
+import type {
+  MembershipRole,
+  StudentMeasurementBatch,
+} from "@takween/contracts";
 import { getSpecialStaffReportingAccess } from "@takween/domain";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
@@ -32,6 +35,11 @@ import {
 } from "@/lib/kg-measurement-summary";
 import { loadSpecialMeasurementSummarySource } from "@/lib/special-measurement-summary-report";
 
+const KG_LEADERSHIP_ROLE_KEYS = new Set<MembershipRole>([
+  "KG_PRINCIPAL",
+  "KG_VP",
+]);
+
 type VisibleKgClass = {
   id: string;
   schoolId?: string;
@@ -50,6 +58,7 @@ type StaffActorLike = {
   orgId?: string;
   personId?: string;
   uid?: string;
+  roles?: MembershipRole[];
   visibleClasses?: VisibleKgClass[];
   schools?: Array<{ id: string; name?: string }>;
   currentTerm?: {
@@ -332,7 +341,9 @@ export default function StaffKgMeasurementSummaryPage() {
   const [error, setError] = useState("");
   const [templates, setTemplates] = useState<KgAssessmentTemplate[]>([]);
   const [batches, setBatches] = useState<KgMeasurementBatch[]>([]);
-  const [specialReportClasses, setSpecialReportClasses] = useState<VisibleKgClass[]>([]);
+  const [serverReportClasses, setServerReportClasses] = useState<
+    VisibleKgClass[]
+  >([]);
   const [teacherDirectoryByAssignmentId, setTeacherDirectoryByAssignmentId] = useState<
     Map<string, TeacherDirectoryEntry>
   >(new Map());
@@ -354,6 +365,11 @@ export default function StaffKgMeasurementSummaryPage() {
       }),
     [actorPersonId, actorUid, orgId],
   );
+  const usesSecureSummarySource =
+    Boolean(specialReportingAccess) ||
+    (staffActor?.roles ?? []).some((role) =>
+      KG_LEADERSHIP_ROLE_KEYS.has(role),
+    );
   const normalVisibleKgClasses = useMemo(
     () => (staffActor?.visibleClasses ?? []).filter(isKgClass),
     [staffActor?.visibleClasses],
@@ -368,8 +384,8 @@ export default function StaffKgMeasurementSummaryPage() {
   );
   const currentKgClasses = useMemo(
     () =>
-      specialReportingAccess
-        ? specialReportClasses.filter(
+      usesSecureSummarySource
+        ? serverReportClasses.filter(
             (classInfo) =>
               isKgClass(classInfo) &&
               classInfo.academicYearId === currentTerm?.academicYearId,
@@ -378,8 +394,8 @@ export default function StaffKgMeasurementSummaryPage() {
     [
       currentTerm?.academicYearId,
       normalCurrentKgClasses,
-      specialReportClasses,
-      specialReportingAccess,
+      serverReportClasses,
+      usesSecureSummarySource,
     ],
   );
   const normalClassByKey = useMemo(
@@ -406,10 +422,10 @@ export default function StaffKgMeasurementSummaryPage() {
   const loadSummary = useCallback(async () => {
     if (!orgId || !currentTerm?.academicYearId || !currentTerm.id) return;
 
-    if (specialReportingAccess) {
+    if (usesSecureSummarySource) {
       setStatus("loading");
       setError("");
-      setSpecialReportClasses([]);
+      setServerReportClasses([]);
       setTemplates([]);
       setBatches([]);
       setTeacherDirectoryByAssignmentId(new Map());
@@ -419,6 +435,7 @@ export default function StaffKgMeasurementSummaryPage() {
           orgId,
           academicYearId: currentTerm.academicYearId,
           termId: currentTerm.id,
+          summaryKind: "KG",
         });
         const schoolNameById = new Map(
           source.schools.map((school) => [school.id, school.name]),
@@ -441,13 +458,13 @@ export default function StaffKgMeasurementSummaryPage() {
           ]),
         );
 
-        setSpecialReportClasses(nextClasses);
+        setServerReportClasses(nextClasses);
         setTemplates(source.templates as unknown as KgAssessmentTemplate[]);
         setBatches(source.batches as unknown as KgMeasurementBatch[]);
         setTeacherDirectoryByAssignmentId(nextTeacherDirectory);
         setStatus("success");
       } catch (nextError: unknown) {
-        setSpecialReportClasses([]);
+        setServerReportClasses([]);
         setError(getErrorMessage(nextError));
         setStatus("error");
       }
@@ -536,7 +553,7 @@ export default function StaffKgMeasurementSummaryPage() {
     normalClassByKey,
     normalCurrentKgClasses,
     orgId,
-    specialReportingAccess,
+    usesSecureSummarySource,
   ]);
 
   useEffect(() => {
@@ -1057,7 +1074,7 @@ export default function StaffKgMeasurementSummaryPage() {
   }
 
   if (
-    specialReportingAccess &&
+    usesSecureSummarySource &&
     (status === "idle" || status === "loading")
   ) {
     return (
@@ -1071,7 +1088,7 @@ export default function StaffKgMeasurementSummaryPage() {
 
   if (
     currentKgClasses.length === 0 &&
-    (!specialReportingAccess || status === "success")
+    (!usesSecureSummarySource || status === "success")
   ) {
     return (
       <PageShell>
