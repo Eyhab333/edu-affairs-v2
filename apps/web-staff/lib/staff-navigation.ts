@@ -41,7 +41,17 @@ import {
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import { canAccessStaffWork } from "@/lib/staff-work-access";
 import { canAccessAdminWork } from "@/lib/admin-work-access";
-import type { PersonSupervisionScope } from "@takween/contracts";
+import type {
+  MembershipRole,
+  PersonSupervisionScope,
+} from "@takween/contracts";
+
+const REPORTS_CENTER_VICE_PRINCIPAL_ROLE_KEYS = new Set<MembershipRole>([
+  "BOYS_VP",
+  "BOYS_EDU_VP",
+  "GIRLS_VP",
+  "KG_VP",
+]);
 
 export type StaffNavItem = {
   href: string;
@@ -305,11 +315,11 @@ export function getStaffNavigationAccess(
     }),
     canAccessReports:
       canAccessEvaluationReports(actor) ||
-      actor.roles.some((role) => isAdminWorkPrincipal(role)),
-    // ||
-    // actor.roles.includes("BOYS_EDU_SUPERVISOR"),
-    //  ||
-    // actor.roles.includes("EDU_SUPERVISOR"),
+      actor.roles.some(
+        (role) =>
+          isAdminWorkPrincipal(role) ||
+          REPORTS_CENTER_VICE_PRINCIPAL_ROLE_KEYS.has(role),
+      ),
   };
 }
 
