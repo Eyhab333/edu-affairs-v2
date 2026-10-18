@@ -33,7 +33,11 @@ import {
 } from "@/lib/staff-portfolio";
 import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
-import { getSpecialStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
+import {
+  getSpecialStaffReportingAccess,
+  hasOrgWideAccess,
+  isAdminWorkPrincipal,
+} from "@takween/domain";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import { canAccessStaffWork } from "@/lib/staff-work-access";
 import { canAccessAdminWork } from "@/lib/admin-work-access";
@@ -254,6 +258,18 @@ export type StaffNavigationAccess = {
   canAccessReports: boolean;
 };
 
+export function canAccessEvaluationReports(actor: StaffActorData) {
+  return (
+    hasOrgWideAccess(actor.roles) ||
+    actor.roles.includes("ORG_SUPERVISION_HEAD") ||
+    getSpecialStaffReportingAccess({
+      orgId: actor.orgId,
+      personId: actor.personId,
+      uid: actor.uid,
+    })?.canAccessReports === true
+  );
+}
+
 export function getStaffNavigationAccess(
   actor: StaffActorData,
   supervisionScopes: readonly PersonSupervisionScope[] = [],
@@ -288,13 +304,8 @@ export function getStaffNavigationAccess(
       scopes: supervisionScopes,
     }),
     canAccessReports:
-      hasOrgWideAccess(actor.roles) ||
-      actor.roles.includes("ORG_SUPERVISION_HEAD") ||
-      getSpecialStaffReportingAccess({
-        orgId: actor.orgId,
-        personId: actor.personId,
-        uid: actor.uid,
-      })?.canAccessReports === true,
+      canAccessEvaluationReports(actor) ||
+      actor.roles.some((role) => isAdminWorkPrincipal(role)),
     // ||
     // actor.roles.includes("BOYS_EDU_SUPERVISOR"),
     //  ||

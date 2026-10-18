@@ -26,6 +26,7 @@ import {
 import { WebStaffNotificationBootstrap } from "@/components/notifications/web-staff-notification-bootstrap";
 import { WebStaffNotificationButton } from "@/components/notifications/web-staff-notification-button";
 import {
+  canAccessEvaluationReports,
   getRequiredModuleForStaffPath,
   getStaffNavigationAccess,
   getVisibleStaffNavItems,
@@ -148,6 +149,7 @@ function StaffShell({ children }: { children: ReactNode }) {
     canAccessAdminWork: canAccessAdminWorkRoute,
     canAccessReports: canAccessReportsRoute,
   } = navigationAccess;
+  const canAccessEvaluationReportsRoute = canAccessEvaluationReports(actor);
   const canAccessLessonPrepApprovals = useMemo(
     () =>
       canAccessLegacyLessonPrepApprovals ||
@@ -173,6 +175,8 @@ function StaffShell({ children }: { children: ReactNode }) {
     personId: actor.personId,
     uid: actor.uid,
   });
+  const hasSpecialReportingAccess =
+    specialReportingAccess?.canAccessReports === true;
   const canAccessCentralMeasurementSummary =
     visibleModuleSet.has("MEASUREMENTS") ||
     specialReportingAccess?.canAccessCentralMeasurementSummary === true;
@@ -200,13 +204,17 @@ function StaffShell({ children }: { children: ReactNode }) {
     pathname.startsWith("/staff/performance-improvement/");
   const isTeacherWorkRoute =
     pathname === "/staff/teacher-work" ||
-    pathname.startsWith("/staff/teacher-work/");
+    pathname.startsWith("/staff/teacher-work/") ||
+    pathname === "/staff/reports/teacher-work";
   const isStaffWorkRoute =
     pathname === "/staff/staff-work" ||
-    pathname.startsWith("/staff/staff-work/");
+    pathname.startsWith("/staff/staff-work/") ||
+    pathname === "/staff/reports/staff-work";
   const isAdminWorkRoute =
     pathname === "/staff/admin-work" ||
-    pathname.startsWith("/staff/admin-work/");
+    pathname.startsWith("/staff/admin-work/") ||
+    pathname === "/staff/reports/admin-work";
+  const isEvaluationReportRoute = pathname === "/staff/reports/evaluations";
   const isReportsRoute =
     pathname === "/staff/reports" || pathname.startsWith("/staff/reports/");
   const isCentralMeasurementSummaryRoute =
@@ -221,28 +229,31 @@ function StaffShell({ children }: { children: ReactNode }) {
     : isKgMeasurementSummaryRoute
       ? canAccessKgMeasurementSummary
       : isTeacherWorkRoute
-    ? canAccessTeacherWorkRoute
-    : isStaffWorkRoute
-      ? scopesLoading || canAccessStaffWorkRoute
-      : isAdminWorkRoute
-        ? scopesLoading || canAccessAdminWorkRoute
-      : isReportsRoute
-        ? canAccessReportsRoute
-      : isLessonPrepApprovalsRoute
-        ? scopesLoading || canAccessLessonPrepApprovals
-        : isPerformanceImprovementRoute
-          ? canAccessPerformanceImprovementRoute
-          : isWorkDocumentationRoute
-            ? canAccessDocumentation
-            : isPdfManagementRoute
-              ? canManageDocuments
-              : isTeachingResourcesRoute
-                ? canAccessTeachingResources
-                : isMyPortfolioRoute
-                  ? canAccessMyPortfolio
-                  : isTeacherPortfolioRoute
-                    ? canAccessTeacherPortfolio
-                    : !requiredModule || visibleModuleSet.has(requiredModule);
+        ? canAccessTeacherWorkRoute || hasSpecialReportingAccess
+        : isStaffWorkRoute
+          ? scopesLoading || canAccessStaffWorkRoute || hasSpecialReportingAccess
+          : isAdminWorkRoute
+            ? scopesLoading || canAccessAdminWorkRoute || hasSpecialReportingAccess
+            : isEvaluationReportRoute
+              ? canAccessEvaluationReportsRoute
+              : isReportsRoute
+                ? canAccessReportsRoute
+                : isLessonPrepApprovalsRoute
+                  ? scopesLoading || canAccessLessonPrepApprovals
+                  : isPerformanceImprovementRoute
+                    ? canAccessPerformanceImprovementRoute
+                    : isWorkDocumentationRoute
+                      ? canAccessDocumentation
+                      : isPdfManagementRoute
+                        ? canManageDocuments
+                        : isTeachingResourcesRoute
+                          ? canAccessTeachingResources
+                          : isMyPortfolioRoute
+                            ? canAccessMyPortfolio
+                            : isTeacherPortfolioRoute
+                              ? canAccessTeacherPortfolio
+                              : !requiredModule ||
+                                visibleModuleSet.has(requiredModule);
 
   useEffect(() => {
     if (!canAccessCurrentRoute) {

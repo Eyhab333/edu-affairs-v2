@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -13,10 +14,16 @@ import {
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import { getSpecialStaffReportingAccess } from "@takween/domain";
-import { getStaffNavigationAccess } from "@/lib/staff-navigation";
+import {
+  canAccessEvaluationReports,
+  getStaffNavigationAccess,
+} from "@/lib/staff-navigation";
+import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
+import type { PersonSupervisionScope } from "@takween/contracts";
 
 const reportAreas = [
   {
+    access: "TEACHER_WORK",
     href: "/staff/reports/teacher-work",
     title: "متابعة أعمال المعلمين",
     description: "متابعة القياسات والتحاضير والأنشطة التعليمية المنسوبة للمعلمين.",
@@ -24,6 +31,7 @@ const reportAreas = [
     tone: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
   },
   {
+    access: "STAFF_WORK",
     href: "/staff/reports/staff-work",
     title: "متابعة أعمال القيادات",
     description: "عرض أعمال القيادات والإداريين المسجلة فعلياً في المدرسة.",
@@ -31,6 +39,7 @@ const reportAreas = [
     tone: "bg-violet-500/10 text-violet-700 dark:text-violet-300",
   },
   {
+    access: "ADMIN_WORK",
     href: "/staff/reports/admin-work",
     title: "متابعة أعمال الإداريين",
     description: "متابعة الحضور والحالات والأنشطة ووثائق العمل حسب الدور والمدرسة.",
@@ -38,6 +47,7 @@ const reportAreas = [
     tone: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
   },
   {
+    access: "EVALUATIONS",
     href: "/staff/reports/evaluations",
     title: "تقرير تقييمات الموظفين",
     description: "تحليل نتائج تقييمات المعلمين والقيادات والإداريين على مستوى الموظف والمدرسة.",
@@ -45,6 +55,7 @@ const reportAreas = [
     tone: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
   },
   {
+    access: "STUDENT_SCORES",
     href: "/staff/reports/student-scores",
     title: "درجات الطلاب",
     description:
@@ -56,12 +67,45 @@ const reportAreas = [
 
 export default function ReportsPage() {
   const { actor } = useStaffActor();
-  const navigationAccess = getStaffNavigationAccess(actor);
+  const [supervisionScopes, setSupervisionScopes] = useState<
+    PersonSupervisionScope[]
+  >([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadScopes() {
+      if (!actor.orgId || !actor.personId) {
+        if (!cancelled) setSupervisionScopes([]);
+        return;
+      }
+
+      try {
+        const scopes = await loadPersonSupervisionScopes({
+          orgId: actor.orgId,
+          personId: actor.personId,
+        });
+        if (!cancelled) setSupervisionScopes(scopes);
+      } catch {
+        if (!cancelled) setSupervisionScopes([]);
+      }
+    }
+
+    void loadScopes();
+    return () => {
+      cancelled = true;
+    };
+  }, [actor.orgId, actor.personId]);
+
+  const navigationAccess = getStaffNavigationAccess(actor, supervisionScopes);
   const specialReportingAccess = getSpecialStaffReportingAccess({
     orgId: actor.orgId,
     personId: actor.personId,
     uid: actor.uid,
   });
+  const hasSpecialReportingAccess =
+    specialReportingAccess?.canAccessReports === true;
+  const canAccessEvaluationReport = canAccessEvaluationReports(actor);
   const canAccessCentralMeasurementSummary =
     actor.visibleModules.includes("MEASUREMENTS") ||
     specialReportingAccess?.canAccessCentralMeasurementSummary === true;
@@ -69,7 +113,24 @@ export default function ReportsPage() {
     actor.visibleModules.includes("MEASUREMENTS") ||
     specialReportingAccess?.canAccessKgMeasurementSummary === true;
   const visibleReportAreas = [
-    ...reportAreas,
+    ...reportAreas.filter((area) => {
+      if (hasSpecialReportingAccess) return true;
+
+      switch (area.access) {
+        case "TEACHER_WORK":
+          return navigationAccess.canAccessTeacherWork;
+        case "STAFF_WORK":
+          return navigationAccess.canAccessStaffWork;
+        case "ADMIN_WORK":
+          return navigationAccess.canAccessAdminWork;
+        case "EVALUATIONS":
+          return canAccessEvaluationReport;
+        case "STUDENT_SCORES":
+          return actor.visibleClasses.length > 0;
+      }
+
+      return false;
+    }),
     ...(canAccessCentralMeasurementSummary
       ? [
           {

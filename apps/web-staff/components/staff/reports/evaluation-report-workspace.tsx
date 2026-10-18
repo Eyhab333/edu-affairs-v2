@@ -34,7 +34,7 @@ import {
   loadEvaluationReportPersonDetail,
 } from "@/lib/evaluation-reports";
 import { getArabicRoleLabel } from "@/lib/role-labels";
-import { getStaffNavigationAccess } from "@/lib/staff-navigation";
+import { canAccessEvaluationReports } from "@/lib/staff-navigation";
 
 type Filters = {
   schoolId: string;
@@ -200,7 +200,7 @@ export default function EvaluationReportWorkspace() {
   >(new Map());
   const detailRequestId = useRef(0);
 
-  const canAccessReports = getStaffNavigationAccess(actor).canAccessReports;
+  const canAccessReports = canAccessEvaluationReports(actor);
   const specialReportingAccess = getSpecialStaffReportingAccess({
     orgId: actor.orgId,
     personId: actor.personId,
