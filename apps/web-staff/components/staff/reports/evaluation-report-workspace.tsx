@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
+  ArrowDown,
+  ArrowDownUp,
+  ArrowUp,
   BarChart3,
   Building2,
   CheckCircle2,
@@ -49,6 +52,7 @@ type Filters = {
 type PersonDetail = Awaited<
   ReturnType<typeof loadEvaluationReportPersonDetail>
 >;
+type ApprovedAverageSortDirection = "asc" | "desc" | null;
 
 const statusLabels: Record<EvaluationReportStatusFilter, string> = {
   PENDING: "لم يبدأ / معلّق",
@@ -75,6 +79,36 @@ function percentage(value: number | undefined) {
         style: "percent",
         maximumFractionDigits: 1,
       }).format(value / 100);
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function sortEmployeesByApprovedAverage(
+  employees: EvaluationReportEmployee[],
+  direction: ApprovedAverageSortDirection,
+) {
+  if (!direction) return employees;
+
+  return employees
+    .map((employee, index) => ({ employee, index }))
+    .sort((left, right) => {
+      const leftScore = left.employee.approvedAverageScore;
+      const rightScore = right.employee.approvedAverageScore;
+      const leftMissing = !isFiniteNumber(leftScore);
+      const rightMissing = !isFiniteNumber(rightScore);
+
+      if (leftMissing || rightMissing) {
+        if (leftMissing && rightMissing) return left.index - right.index;
+        return leftMissing ? 1 : -1;
+      }
+
+      const difference = leftScore - rightScore;
+      if (difference === 0) return left.index - right.index;
+      return direction === "desc" ? -difference : difference;
+    })
+    .map(({ employee }) => employee);
 }
 
 function date(value: number | undefined) {
@@ -118,11 +152,15 @@ function FiltersSkeleton() {
 function EmployeeTable({
   employees,
   expandedEmployeeId,
+  approvedAverageSortDirection,
   onToggle,
+  onToggleApprovedAverageSort,
 }: {
   employees: EvaluationReportEmployee[];
   expandedEmployeeId: string;
+  approvedAverageSortDirection: ApprovedAverageSortDirection;
   onToggle: (personId: string) => void;
+  onToggleApprovedAverageSort: () => void;
 }) {
   return (
     <div className="overflow-x-auto rounded-2xl border bg-card">
@@ -135,7 +173,23 @@ function EmployeeTable({
             <th className="px-4 py-3 font-medium">الخطط</th>
             <th className="px-4 py-3 font-medium">الدورات المكتملة / الكلية</th>
             <th className="px-4 py-3 font-medium">المتبقي</th>
-            <th className="px-4 py-3 font-medium">المتوسط المعتمد</th>
+            <th className="px-4 py-3 font-medium">
+              <button
+                type="button"
+                onClick={onToggleApprovedAverageSort}
+                className="inline-flex items-center gap-1.5 hover:text-foreground"
+                aria-label="فرز حسب المتوسط المعتمد"
+              >
+                المتوسط المعتمد
+                {approvedAverageSortDirection === "desc" ? (
+                  <ArrowDown className="size-4" />
+                ) : approvedAverageSortDirection === "asc" ? (
+                  <ArrowUp className="size-4" />
+                ) : (
+                  <ArrowDownUp className="size-4" />
+                )}
+              </button>
+            </th>
             <th className="px-4 py-3 font-medium">آخر نتيجة</th>
             <th className="px-4 py-3 font-medium">الحالة</th>
             <th className="px-4 py-3 font-medium">آخر تحديث</th>
@@ -187,6 +241,8 @@ export default function EvaluationReportWorkspace() {
   const [report, setReport] = useState<EvaluationReportOverview | null>(null);
   const [filterOptions, setFilterOptions] = useState<EvaluationReportFilterOptions | null>(null);
   const [view, setView] = useState<"PEOPLE" | "SCHOOLS">("PEOPLE");
+  const [approvedAverageSortDirection, setApprovedAverageSortDirection] =
+    useState<ApprovedAverageSortDirection>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedSchoolId, setSelectedSchoolId] = useState("");
@@ -219,9 +275,29 @@ export default function EvaluationReportWorkspace() {
     return needle ? people.filter((person) => person.label.toLocaleLowerCase("ar").includes(needle)) : people;
   }, [filterOptions?.people, personSearch]);
   const selectedSchoolEmployees = useMemo(
-    () => report?.employees.filter((employee) => employee.schoolIds.includes(selectedSchoolId)) ?? [],
-    [report?.employees, selectedSchoolId],
+    () =>
+      sortEmployeesByApprovedAverage(
+        report?.employees.filter((employee) =>
+          employee.schoolIds.includes(selectedSchoolId),
+        ) ?? [],
+        approvedAverageSortDirection,
+      ),
+    [approvedAverageSortDirection, report?.employees, selectedSchoolId],
   );
+  const sortedEmployees = useMemo(
+    () =>
+      sortEmployeesByApprovedAverage(
+        report?.employees ?? [],
+        approvedAverageSortDirection,
+      ),
+    [approvedAverageSortDirection, report?.employees],
+  );
+
+  function toggleApprovedAverageSort() {
+    setApprovedAverageSortDirection((current) =>
+      current === "desc" ? "asc" : "desc",
+    );
+  }
 
   function updateFilter<Key extends keyof Filters>(key: Key, value: Filters[Key]) {
     setFilters((current) => ({ ...current, [key]: value }));
@@ -455,9 +531,11 @@ export default function EvaluationReportWorkspace() {
 
           {view === "PEOPLE" ? (
             <EmployeeTable
-              employees={report.employees}
+              employees={sortedEmployees}
               expandedEmployeeId={detailOpen ? detailTargetPersonId : ""}
               onToggle={(personId) => void togglePersonDetail(personId)}
+              approvedAverageSortDirection={approvedAverageSortDirection}
+              onToggleApprovedAverageSort={toggleApprovedAverageSort}
             />
           ) : null}
 
@@ -480,6 +558,8 @@ export default function EvaluationReportWorkspace() {
                 employees={selectedSchoolEmployees}
                 expandedEmployeeId={detailOpen ? detailTargetPersonId : ""}
                 onToggle={(personId) => void togglePersonDetail(personId)}
+                approvedAverageSortDirection={approvedAverageSortDirection}
+                onToggleApprovedAverageSort={toggleApprovedAverageSort}
               />
             </section>
           ) : null}

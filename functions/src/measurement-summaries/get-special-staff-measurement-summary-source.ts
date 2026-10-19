@@ -97,7 +97,8 @@ function isActiveClass(value: Row) {
 }
 
 function isKgSchool(value: Row) {
-  return text(value.schoolType).toUpperCase() === "KG";
+  const profile = row(value.profile);
+  return text(profile.schoolType || value.schoolType).toUpperCase() === "KG";
 }
 
 function isKgClass(value: Row) {
