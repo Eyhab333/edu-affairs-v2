@@ -23,6 +23,7 @@ import type {
   EvaluationReportFilterOptions,
   EvaluationReportOverview,
   EvaluationReportRequest,
+  EvaluationReportSchool,
   EvaluationReportStatusFilter,
 } from "@takween/contracts";
 import { getSpecialStaffReportingAccess } from "@takween/domain";
@@ -109,6 +110,32 @@ function sortEmployeesByApprovedAverage(
       return direction === "desc" ? -difference : difference;
     })
     .map(({ employee }) => employee);
+}
+
+function sortSchoolsByApprovedAverage(
+  schools: EvaluationReportSchool[],
+  direction: ApprovedAverageSortDirection,
+) {
+  if (!direction) return schools;
+
+  return schools
+    .map((school, index) => ({ school, index }))
+    .sort((left, right) => {
+      const leftScore = left.school.approvedAverageScore;
+      const rightScore = right.school.approvedAverageScore;
+      const leftMissing = !isFiniteNumber(leftScore);
+      const rightMissing = !isFiniteNumber(rightScore);
+
+      if (leftMissing || rightMissing) {
+        if (leftMissing && rightMissing) return left.index - right.index;
+        return leftMissing ? 1 : -1;
+      }
+
+      const difference = leftScore - rightScore;
+      if (difference === 0) return left.index - right.index;
+      return direction === "desc" ? -difference : difference;
+    })
+    .map(({ school }) => school);
 }
 
 function date(value: number | undefined) {
@@ -291,6 +318,14 @@ export default function EvaluationReportWorkspace() {
         approvedAverageSortDirection,
       ),
     [approvedAverageSortDirection, report?.employees],
+  );
+  const sortedSchools = useMemo(
+    () =>
+      sortSchoolsByApprovedAverage(
+        report?.schools ?? [],
+        approvedAverageSortDirection,
+      ),
+    [approvedAverageSortDirection, report?.schools],
   );
 
   function toggleApprovedAverageSort() {
@@ -542,9 +577,9 @@ export default function EvaluationReportWorkspace() {
           {view === "SCHOOLS" ? (
             <section className="overflow-x-auto rounded-2xl border bg-card">
               <table className="w-full min-w-[940px] text-right text-sm">
-                <thead className="border-b bg-muted/50 text-muted-foreground"><tr><th className="px-4 py-3 font-medium">المدرسة / الجهة</th><th className="px-4 py-3 font-medium">الموظفون المقيمون</th><th className="px-4 py-3 font-medium">الخطط</th><th className="px-4 py-3 font-medium">الدورات</th><th className="px-4 py-3 font-medium">المكتمل</th><th className="px-4 py-3 font-medium">المتبقي</th><th className="px-4 py-3 font-medium">المتوسط المعتمد</th><th className="px-4 py-3 font-medium">نسبة الإنجاز</th><th className="px-4 py-3 font-medium" /></tr></thead>
+                <thead className="border-b bg-muted/50 text-muted-foreground"><tr><th className="px-4 py-3 font-medium">المدرسة / الجهة</th><th className="px-4 py-3 font-medium">الموظفون المقيمون</th><th className="px-4 py-3 font-medium">الخطط</th><th className="px-4 py-3 font-medium">الدورات</th><th className="px-4 py-3 font-medium">المكتمل</th><th className="px-4 py-3 font-medium">المتبقي</th><th className="px-4 py-3 font-medium"><button type="button" onClick={toggleApprovedAverageSort} className="inline-flex items-center gap-1.5 hover:text-foreground" aria-label="فرز حسب المتوسط المعتمد">المتوسط المعتمد{approvedAverageSortDirection === "desc" ? <ArrowDown className="size-4" /> : approvedAverageSortDirection === "asc" ? <ArrowUp className="size-4" /> : <ArrowDownUp className="size-4" />}</button></th><th className="px-4 py-3 font-medium">نسبة الإنجاز</th><th className="px-4 py-3 font-medium" /></tr></thead>
                 <tbody>
-                  {report.schools.map((school) => <tr key={school.schoolId} className="border-b last:border-0 hover:bg-muted/30"><td className="px-4 py-3 font-semibold"><span className="inline-flex items-center gap-2"><Building2 className="size-4 text-primary" />{school.schoolName}</span></td><td className="px-4 py-3">{school.employeesCount.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.plansCount.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.totalCycles.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.completedCycles.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.remainingCycles.toLocaleString("ar-SA")}</td><td className="px-4 py-3 font-medium">{percentage(school.approvedAverageScore)}</td><td className="px-4 py-3">{percentage(school.completionPercentage)}</td><td className="px-4 py-3"><Button type="button" size="sm" variant="outline" onClick={() => setSelectedSchoolId(school.schoolId)}>عرض الموظفين</Button></td></tr>)}
+                  {sortedSchools.map((school) => <tr key={school.schoolId} className="border-b last:border-0 hover:bg-muted/30"><td className="px-4 py-3 font-semibold"><span className="inline-flex items-center gap-2"><Building2 className="size-4 text-primary" />{school.schoolName}</span></td><td className="px-4 py-3">{school.employeesCount.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.plansCount.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.totalCycles.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.completedCycles.toLocaleString("ar-SA")}</td><td className="px-4 py-3">{school.remainingCycles.toLocaleString("ar-SA")}</td><td className="px-4 py-3 font-medium">{percentage(school.approvedAverageScore)}</td><td className="px-4 py-3">{percentage(school.completionPercentage)}</td><td className="px-4 py-3"><Button type="button" size="sm" variant="outline" onClick={() => setSelectedSchoolId(school.schoolId)}>عرض الموظفين</Button></td></tr>)}
                   {!report.schools.length ? <tr><td colSpan={9} className="px-4 py-12 text-center text-muted-foreground">لا توجد بيانات تقييم ضمن الفلاتر المحددة.</td></tr> : null}
                 </tbody>
               </table>
