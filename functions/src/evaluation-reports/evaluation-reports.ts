@@ -19,6 +19,7 @@ import {
 import { getSpecialStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
 
 import { normalizeEvaluatorWeights } from "../evaluations/evaluator-weighting";
+import { CALLABLE_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
 const IN_QUERY_CHUNK_SIZE = 10;
@@ -1086,7 +1087,7 @@ async function personDetail(params: {
 }
 
 export const getEvaluationReportOverview = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "1GiB" },
+  { region: REGION, cors: CALLABLE_CORS_ORIGINS, invoker: "public", memory: "1GiB" },
   async (request): Promise<EvaluationReportOverview> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");
@@ -1096,7 +1097,7 @@ export const getEvaluationReportOverview = onCall(
 );
 
 export const getEvaluationReportPersonDetail = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "1GiB" },
+  { region: REGION, cors: CALLABLE_CORS_ORIGINS, invoker: "public", memory: "1GiB" },
   async (request): Promise<EvaluationReportPersonDetail> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");

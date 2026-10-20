@@ -7,6 +7,7 @@ import {
   requireNonEmptyString,
   resolvePerformanceImprovementActor,
 } from "./performance-improvement-access";
+import { CALLABLE_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
 
@@ -19,7 +20,7 @@ type DismissSignalInput = {
 export const dismissPerformanceImprovementSignal = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: CALLABLE_CORS_ORIGINS,
     invoker: "public",
   },
   async (request): Promise<{ ok: true; signalId: string }> => {

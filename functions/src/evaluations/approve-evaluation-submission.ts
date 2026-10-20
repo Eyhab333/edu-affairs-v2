@@ -11,13 +11,9 @@ import {
   DEFAULT_PERFORMANCE_IMPROVEMENT_THRESHOLDS,
 } from "./build-performance-improvement-signal";
 import { normalizeEvaluatorWeights } from "./evaluator-weighting";
+import { CALLABLE_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
-
-const CORS_ORIGINS = [
-  "http://localhost:3001",
-  "https://edu-affairs-v2-web-staff.vercel.app",
-];
 
 const FULL_EVALUATION_ROLES = new Set([
   "platform_owner",
@@ -176,7 +172,7 @@ function submissionMatchesAssignment(params: {
 export const approveEvaluationSubmission = onCall(
   {
     region: REGION,
-    cors: CORS_ORIGINS,
+    cors: CALLABLE_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },
