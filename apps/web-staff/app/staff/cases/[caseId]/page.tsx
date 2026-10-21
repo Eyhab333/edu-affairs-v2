@@ -24,6 +24,7 @@ import type {
 } from "@takween/contracts";
 import { buildStudentCaseTimeline } from "@takween/domain";
 
+import { StudentCaseAssigneePicker } from "@/components/staff/cases/student-case-assignee-picker";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import { db } from "@/lib/firebase";
 import { ensureSelectedOrgId } from "@/lib/org";
@@ -32,6 +33,7 @@ import {
   getStudentCase,
   getStudentCaseEvents,
   transferStudentCase,
+  type StudentCaseReferralRecipient,
 } from "@/lib/student-cases";
 
 type TimelineItem = ReturnType<typeof buildStudentCaseTimeline>[number];
@@ -376,9 +378,8 @@ export default function StaffCaseDetailsPage() {
   const [transferStatusAfter, setTransferStatusAfter] = useState<
     StudentCaseStatus | ""
   >("");
-  const [transferPersonId, setTransferPersonId] = useState("");
-  const [transferDisplayName, setTransferDisplayName] = useState("");
-  const [transferRoleKey, setTransferRoleKey] = useState("");
+  const [transferRecipient, setTransferRecipient] =
+    useState<StudentCaseReferralRecipient | null>(null);
   const [transferNote, setTransferNote] = useState("");
   const [transferInternalNote, setTransferInternalNote] = useState("");
   const [savingTransfer, setSavingTransfer] = useState(false);
@@ -499,8 +500,8 @@ export default function StaffCaseDetailsPage() {
 
     if (!orgId || !studentCase || !identity) return;
 
-    if (!transferPersonId.trim()) {
-      setError("أدخل معرف الشخص المحال إليه.");
+    if (!transferRecipient) {
+      setError("اختر الموظف المحال إليه قبل تحويل القضية.");
       return;
     }
 
@@ -517,9 +518,9 @@ export default function StaffCaseDetailsPage() {
           roleKey: identity.roleKey,
         },
         toAssignee: {
-          personId: transferPersonId.trim(),
-          displayName: transferDisplayName.trim() || transferPersonId.trim(),
-          roleKey: transferRoleKey.trim() || undefined,
+          personId: transferRecipient.personId,
+          displayName: transferRecipient.displayName,
+          roleKey: transferRecipient.roleKey,
         },
         eventType: transferEventType,
         statusAfter: transferStatusAfter || undefined,
@@ -529,9 +530,7 @@ export default function StaffCaseDetailsPage() {
 
       setTransferEventType("TRANSFERRED");
       setTransferStatusAfter("");
-      setTransferPersonId("");
-      setTransferDisplayName("");
-      setTransferRoleKey("");
+      setTransferRecipient(null);
       setTransferNote("");
       setTransferInternalNote("");
 
@@ -856,11 +855,6 @@ export default function StaffCaseDetailsPage() {
                 </h2>
               </div>
 
-              <p className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs leading-6 text-amber-100">
-                هذا تحويل يدوي مؤقت. لاحقًا سنستبدله بقائمة موظفين حسب المدرسة
-                والصلاحيات.
-              </p>
-
               <div className="space-y-3">
                 <label className="block">
                   <span className="mb-1 block text-xs text-slate-400">
@@ -905,43 +899,22 @@ export default function StaffCaseDetailsPage() {
                   </select>
                 </label>
 
-                <label className="block">
+                <div>
                   <span className="mb-1 block text-xs text-slate-400">
-                    معرف الشخص المحال إليه
+                    المحال إليه
                   </span>
-                  <input
-                    value={transferPersonId}
-                    onChange={(event) => setTransferPersonId(event.target.value)}
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-emerald-500"
-                    placeholder="personId"
+                  <StudentCaseAssigneePicker
+                    orgId={orgId ?? ""}
+                    schoolId={studentCase.schoolId}
+                    value={transferRecipient}
+                    onValueChange={setTransferRecipient}
+                    excludePersonIds={[
+                      studentCase.currentAssigneePersonId ?? "",
+                    ]}
+                    disabled={!orgId || savingTransfer}
+                    placeholder="ابحث عن موظف مخول لاستلام القضية"
                   />
-                </label>
-
-                <label className="block">
-                  <span className="mb-1 block text-xs text-slate-400">
-                    اسم الشخص المحال إليه
-                  </span>
-                  <input
-                    value={transferDisplayName}
-                    onChange={(event) =>
-                      setTransferDisplayName(event.target.value)
-                    }
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-emerald-500"
-                    placeholder="مثال: المرشد الطلابي"
-                  />
-                </label>
-
-                <label className="block">
-                  <span className="mb-1 block text-xs text-slate-400">
-                    الدور — اختياري
-                  </span>
-                  <input
-                    value={transferRoleKey}
-                    onChange={(event) => setTransferRoleKey(event.target.value)}
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-emerald-500"
-                    placeholder="COUNSELOR / VICE_PRINCIPAL"
-                  />
-                </label>
+                </div>
 
                 <label className="block">
                   <span className="mb-1 block text-xs text-slate-400">

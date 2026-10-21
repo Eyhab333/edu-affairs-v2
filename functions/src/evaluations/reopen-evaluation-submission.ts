@@ -5,7 +5,7 @@ import {
   EvaluationStaffSummarySchema,
 } from "@takween/contracts";
 import { normalizeEvaluatorWeights } from "./evaluator-weighting";
-import { CALLABLE_CORS_ORIGINS } from "../shared/cors";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
 
@@ -135,7 +135,7 @@ function submissionMatchesAssignment(params: {
 export const reopenEvaluationSubmission = onCall(
   {
     region: REGION,
-    cors: CALLABLE_CORS_ORIGINS,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },

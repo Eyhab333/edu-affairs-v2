@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import type { MembershipRole } from "@takween/contracts";
 import { getSpecialStaffReportingAccess } from "@takween/domain";
 
@@ -144,7 +145,7 @@ function emptySource(): SummarySource {
 }
 
 export const getSpecialStaffMeasurementSummarySource = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "1GiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "1GiB" },
   async (request): Promise<SummarySource> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");

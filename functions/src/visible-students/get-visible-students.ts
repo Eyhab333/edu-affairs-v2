@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import type {
   Class,
   Membership,
@@ -243,7 +244,7 @@ function resolveDisplayName(params: {
 }
 
 export const getVisibleStudents = onCall(
-  { region: REGION, cors: true },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
   async (request): Promise<GetVisibleStudentsResult> => {
     const uid = request.auth?.uid;
 

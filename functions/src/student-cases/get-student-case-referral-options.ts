@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
 
@@ -37,6 +38,7 @@ const ROLE_LABELS: Record<string, string> = {
   BOYS_STUDENT_GUIDE: "الموجه الطلابي",
   GIRLS_STUDENT_COUNSELOR: "الموجهة الطلابية",
   ADMIN_ASSISTANT: "المساعد الإداري",
+  BOYS_STUDENTS_VP: "وكيل شؤون الطلاب",
 };
 
 function requireString(value: unknown, fieldName: string): string {
@@ -94,7 +96,15 @@ function canAccessSchool(membership: Row, roleKey: string, schoolId: string) {
   return readStringArray(scopes.schoolIds).includes(schoolId);
 }
 
-async function actorCanCreateCases(params: {
+function chunk<T>(items: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+  return chunks;
+}
+
+async function actorCanAccessCases(params: {
   orgId: string;
   actorPersonId: string;
   membership: Row;
@@ -121,15 +131,60 @@ async function actorCanCreateCases(params: {
       ["STUDENT_CASE_REFERRAL", "STUDENT_CASE_HANDLING"].includes(
         readString(row.operationKind),
       ) &&
-      (!readString(row.schoolId) || readString(row.schoolId) === params.schoolId)
+      readString(row.schoolId) === params.schoolId
     );
   });
+}
+
+async function getActiveMembershipsByPersonId(params: {
+  orgId: string;
+  personIds: string[];
+  schoolId: string;
+  now: number;
+}) {
+  if (params.personIds.length === 0) {
+    return new Map<string, Row[]>();
+  }
+
+  const db = getFirestore();
+  const snapshots = await Promise.all(
+    chunk(params.personIds, 30).map((personIds) =>
+      db
+        .collectionGroup("orgMemberships")
+        .where("orgId", "==", params.orgId)
+        .where("personId", "in", personIds)
+        .get(),
+    ),
+  );
+  const membershipsByPersonId = new Map<string, Row[]>();
+
+  for (const document of snapshots.flatMap((snapshot) => snapshot.docs)) {
+    const membership = document.data();
+    const personId = readString(membership.personId);
+    const roleKey =
+      readString(membership.roleKey) || readString(membership.role);
+
+    if (
+      !personId ||
+      !roleKey ||
+      !isActive(membership, params.now) ||
+      !canAccessSchool(membership, roleKey, params.schoolId)
+    ) {
+      continue;
+    }
+
+    const existing = membershipsByPersonId.get(personId) ?? [];
+    existing.push(membership);
+    membershipsByPersonId.set(personId, existing);
+  }
+
+  return membershipsByPersonId;
 }
 
 export const getStudentCaseReferralOptions = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
   },
   async (request): Promise<{
@@ -161,7 +216,7 @@ export const getStudentCaseReferralOptions = onCall(
 
     const user = userSnapshot.data() ?? {};
     const membership = membershipSnapshot.data() ?? {};
-    if (!isActive(membership, now)) {
+    if (!isActive(membership, now) || user.isDisabled === true) {
       throw new HttpsError(
         "permission-denied",
         "Active organization membership is required.",
@@ -181,7 +236,7 @@ export const getStudentCaseReferralOptions = onCall(
     }
 
     if (
-      !(await actorCanCreateCases({
+      !(await actorCanAccessCases({
         orgId,
         actorPersonId,
         membership,
@@ -201,23 +256,80 @@ export const getStudentCaseReferralOptions = onCall(
       .where("schoolId", "==", schoolId)
       .limit(300)
       .get();
-    const recipientsByPersonId = new Map<string, ReferralRecipient>();
-
-    for (const document of assignmentSnapshot.docs) {
+    const activeHandlingAssignments = assignmentSnapshot.docs.filter((document) => {
       const row = document.data();
-      if (
-        !isActive(row, now) ||
-        readString(row.operationKind) !== "STUDENT_CASE_HANDLING"
-      ) {
-        continue;
-      }
+      return (
+        isActive(row, now) &&
+        readString(row.operationKind) === "STUDENT_CASE_HANDLING" &&
+        !!readString(row.actorPersonId) &&
+        !!readString(row.actorRoleKey)
+      );
+    });
+    const personIds = Array.from(
+      new Set(
+        activeHandlingAssignments
+          .map((document) => readString(document.data().actorPersonId))
+          .filter(Boolean),
+      ),
+    );
+    const membershipsByPersonId = await getActiveMembershipsByPersonId({
+      orgId,
+      personIds,
+      schoolId,
+      now,
+    });
+    const memberUids = Array.from(
+      new Set(
+        Array.from(membershipsByPersonId.values())
+          .flat()
+          .map((candidateMembership) => readString(candidateMembership.uid))
+          .filter(Boolean),
+      ),
+    );
+    const [peopleSnapshots, userSnapshots] = await Promise.all([
+      personIds.length
+        ? db.getAll(
+            ...personIds.map((personId) =>
+              db.doc(`orgs/${orgId}/people/${personId}`),
+            ),
+          )
+        : [],
+      memberUids.length
+        ? db.getAll(
+            ...memberUids.map((memberUid) => db.doc(`users/${memberUid}`)),
+          )
+        : [],
+    ]);
+    const peopleById = new Map(
+      peopleSnapshots.map((snapshot) => [snapshot.id, snapshot.data() ?? {}]),
+    );
+    const disabledUids = new Set(
+      userSnapshots
+        .filter((snapshot) => snapshot.data()?.isDisabled === true)
+        .map((snapshot) => snapshot.id),
+    );
+    const recipientsByPersonAndRole = new Map<string, ReferralRecipient>();
 
+    for (const document of activeHandlingAssignments) {
+      const row = document.data();
       const personId = readString(row.actorPersonId);
       if (!personId || personId === actorPersonId) continue;
 
       const recipientRoleKey = readString(row.actorRoleKey);
-      const personSnapshot = await db.doc(`orgs/${orgId}/people/${personId}`).get();
-      const person = personSnapshot.data() ?? {};
+      const hasMatchingActiveMembership = (
+        membershipsByPersonId.get(personId) ?? []
+      ).some((candidateMembership) => {
+        const membershipRoleKey =
+          readString(candidateMembership.roleKey) ||
+          readString(candidateMembership.role);
+        return (
+          membershipRoleKey === recipientRoleKey &&
+          !disabledUids.has(readString(candidateMembership.uid))
+        );
+      });
+      if (!hasMatchingActiveMembership) continue;
+
+      const person = peopleById.get(personId) ?? {};
       const displayName =
         readString(person.displayName) ||
         readString(row.actorDisplayName) ||
@@ -225,8 +337,8 @@ export const getStudentCaseReferralOptions = onCall(
         ROLE_LABELS[recipientRoleKey] ||
         "موظف المدرسة";
 
-      recipientsByPersonId.set(personId, {
-        id: personId,
+      recipientsByPersonAndRole.set(`${personId}:${recipientRoleKey}`, {
+        id: document.id,
         personId,
         displayName,
         roleKey: recipientRoleKey,
@@ -234,8 +346,11 @@ export const getStudentCaseReferralOptions = onCall(
       });
     }
 
-    const recipients = Array.from(recipientsByPersonId.values()).sort(
-      (left, right) => left.displayName.localeCompare(right.displayName, "ar"),
+    const recipients = Array.from(recipientsByPersonAndRole.values()).sort(
+      (left, right) => {
+        const nameCompare = left.displayName.localeCompare(right.displayName, "ar");
+        return nameCompare || left.roleLabel.localeCompare(right.roleLabel, "ar");
+      },
     );
 
     return { ok: true, schoolId, recipients };

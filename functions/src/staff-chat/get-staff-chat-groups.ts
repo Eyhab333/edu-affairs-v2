@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   type FirestoreRecord,
@@ -13,7 +14,7 @@ import {
 const REGION = "me-central2";
 
 export const getStaffChatGroups = onCall(
-  { region: REGION },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
   async (request) => {
     const uid = request.auth?.uid;
     if (!uid) {

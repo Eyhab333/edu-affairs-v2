@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import type {
   Class,
   ClassSubjectOffering,
@@ -603,7 +604,7 @@ async function loadLearningLossSummary(params: {
 }
 
 export const getLearningLossSummary = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request): Promise<LearningLossSummaryResponse> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");

@@ -3,6 +3,7 @@ import {
   type DocumentReference,
   type Firestore,
 } from "firebase-admin/firestore";
+import { logger } from "firebase-functions";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 
 const REGION = "me-central2";
@@ -222,104 +223,142 @@ export const getMyGuardianChildren = onCall(
   async (request) => {
     const uid = request.auth?.uid;
 
-    if (!uid) {
-      throw new HttpsError("unauthenticated", "Authentication required.");
-    }
+    logger.info("getMyGuardianChildren started", { uid: uid ?? null });
 
-    const db = getFirestore();
-    const userSnapshot = await db.doc(`users/${uid}`).get();
+    try {
 
-    if (!userSnapshot.exists) {
-      throw new HttpsError(
-        "failed-precondition",
-        "User profile is not available.",
-      );
-    }
-
-    const userPersonId = readString(
-      userSnapshot.data() as FirestoreData | undefined,
-      "personId",
-    );
-
-    if (!userPersonId) {
-      throw new HttpsError(
-        "failed-precondition",
-        "User profile is not linked to a person.",
-      );
-    }
-
-    const now = Date.now();
-    const guardianSnapshot = await db
-      .collectionGroup("guardians")
-      .where("personId", "==", userPersonId)
-      .get();
-
-    const guardians: GuardianContext[] = [];
-
-    for (const document of guardianSnapshot.docs) {
-      const orgId = resolveOrgId(document.ref);
-      const data = document.data() as FirestoreData;
-
-      if (
-        !orgId ||
-        !isGuardianOwnedByUser({
-          data,
-          orgId,
-          userPersonId,
-          uid,
-        })
-      ) {
-        continue;
+      if (!uid) {
+        throw new HttpsError("unauthenticated", "Authentication required.");
       }
 
-      guardians.push({ orgId, guardianId: document.id });
-    }
+      const db = getFirestore();
+      const userSnapshot = await db.doc(`users/${uid}`).get();
 
-    const childrenByKey = new Map<string, ChildSeed>();
+      if (!userSnapshot.exists) {
+        throw new HttpsError(
+          "failed-precondition",
+          "User profile is not available.",
+        );
+      }
 
-    for (const guardian of guardians) {
-      const linksSnapshot = await db
-        .collection(`orgs/${guardian.orgId}/guardianLinks`)
-        .where("guardianId", "==", guardian.guardianId)
+      const userPersonId = readString(
+        userSnapshot.data() as FirestoreData | undefined,
+        "personId",
+      );
+
+      logger.info("getMyGuardianChildren user resolved", {
+        uid,
+        userPersonId: userPersonId || null,
+      });
+
+      if (!userPersonId) {
+        throw new HttpsError(
+          "failed-precondition",
+          "User profile is not linked to a person.",
+        );
+      }
+
+      const now = Date.now();
+      const guardianSnapshot = await db
+        .collectionGroup("guardians")
+        .where("personId", "==", userPersonId)
         .get();
 
-      for (const document of linksSnapshot.docs) {
+      logger.info("getMyGuardianChildren guardians queried", {
+        userPersonId,
+        guardianCount: guardianSnapshot.size,
+        guardianIds: guardianSnapshot.docs.map((document) => document.id),
+      });
+
+      const guardians: GuardianContext[] = [];
+
+      for (const document of guardianSnapshot.docs) {
+        const orgId = resolveOrgId(document.ref);
         const data = document.data() as FirestoreData;
-        const studentId = readString(data, "studentId");
-        const declaredOrgId = readString(data, "orgId");
-        const guardianUid = readString(data, "guardianUid");
-
-        if (!studentId || !isActiveGuardianLink(data, now)) continue;
-        if (declaredOrgId && declaredOrgId !== guardian.orgId) continue;
-        if (guardianUid && guardianUid !== uid) continue;
-
-        const relationType = readString(data, "relationType") || "OTHER";
-        const key = `${guardian.orgId}::${studentId}`;
-        const existing = childrenByKey.get(key);
 
         if (
-          !existing ||
-          relationPriority(relationType) <
-            relationPriority(existing.relationType)
+          !orgId ||
+          !isGuardianOwnedByUser({
+            data,
+            orgId,
+            userPersonId,
+            uid,
+          })
         ) {
-          childrenByKey.set(key, {
-            orgId: guardian.orgId,
-            studentId,
-            relationType,
-          });
+          continue;
+        }
+
+        guardians.push({ orgId, guardianId: document.id });
+        logger.info("getMyGuardianChildren guardian accepted", {
+          orgId,
+          guardianId: document.id,
+        });
+      }
+
+      const childrenByKey = new Map<string, ChildSeed>();
+
+      for (const guardian of guardians) {
+        const linksSnapshot = await db
+          .collection(`orgs/${guardian.orgId}/guardianLinks`)
+          .where("guardianId", "==", guardian.guardianId)
+          .get();
+
+        logger.info("getMyGuardianChildren guardian links queried", {
+          guardianId: guardian.guardianId,
+          linkCount: linksSnapshot.size,
+          links: linksSnapshot.docs.map((document) => {
+            const data = document.data() as FirestoreData;
+            return {
+              id: document.id,
+              studentId: readString(data, "studentId") || null,
+              active: data.active ?? data.isActive ?? null,
+              startAt: data.startAt ?? null,
+              endAt: data.endAt ?? null,
+            };
+          }),
+        });
+
+        for (const document of linksSnapshot.docs) {
+          const data = document.data() as FirestoreData;
+          const studentId = readString(data, "studentId");
+          const declaredOrgId = readString(data, "orgId");
+          const guardianUid = readString(data, "guardianUid");
+
+          if (!studentId || !isActiveGuardianLink(data, now)) continue;
+          if (declaredOrgId && declaredOrgId !== guardian.orgId) continue;
+          if (guardianUid && guardianUid !== uid) continue;
+
+          const relationType = readString(data, "relationType") || "OTHER";
+          const key = `${guardian.orgId}::${studentId}`;
+          const existing = childrenByKey.get(key);
+
+          if (
+            !existing ||
+            relationPriority(relationType) <
+              relationPriority(existing.relationType)
+          ) {
+            childrenByKey.set(key, {
+              orgId: guardian.orgId,
+              studentId,
+              relationType,
+            });
+          }
         }
       }
-    }
 
-    const childSeeds = Array.from(childrenByKey.values());
-    const studentDataByPath = await loadDataByPath({
-      db,
-      refs: childSeeds.map((child) =>
-        db.doc(`orgs/${child.orgId}/students/${child.studentId}`),
-      ),
-    });
+      const childSeeds = Array.from(childrenByKey.values());
+      logger.info("getMyGuardianChildren active links resolved", {
+        childSeedsCount: childSeeds.length,
+        childSeeds,
+      });
+      const studentDataByPath = await loadDataByPath({
+        db,
+        refs: childSeeds.map((child) =>
+          db.doc(`orgs/${child.orgId}/students/${child.studentId}`),
+        ),
+      });
 
-    const childrenWithoutEnrollment = childSeeds.flatMap((seed) => {
+      const childrenWithoutEnrollment = childSeeds.flatMap((seed) => {
       const data = studentDataByPath.get(
         `orgs/${seed.orgId}/students/${seed.studentId}`,
       );
@@ -335,29 +374,34 @@ export const getMyGuardianChildren = onCall(
           personId: readString(data, "personId"),
         },
       ];
-    });
+      });
 
-    const enrollmentByChildKey = await loadActiveEnrollments({
-      db,
-      children: childrenWithoutEnrollment,
-    });
+      const enrollmentByChildKey = await loadActiveEnrollments({
+        db,
+        children: childrenWithoutEnrollment,
+      });
 
-    const children: ChildRecord[] = childrenWithoutEnrollment.map((child) => ({
-      ...child,
-      enrollment:
-        enrollmentByChildKey.get(`${child.orgId}::${child.studentId}`) ?? {},
-    }));
+      const children: ChildRecord[] = childrenWithoutEnrollment.map((child) => ({
+        ...child,
+        enrollment:
+          enrollmentByChildKey.get(`${child.orgId}::${child.studentId}`) ?? {},
+      }));
 
-    const peopleDataByPath = await loadDataByPath({
+      logger.info("getMyGuardianChildren enrollments resolved", {
+        childrenCount: children.length,
+        activeEnrollmentCount: enrollmentByChildKey.size,
+      });
+
+      const peopleDataByPath = await loadDataByPath({
       db,
       refs: children
         .filter((child) => child.personId)
         .map((child) =>
           db.doc(`orgs/${child.orgId}/people/${child.personId}`),
         ),
-    });
+      });
 
-    const schoolDataByPath = await loadDataByPath({
+      const schoolDataByPath = await loadDataByPath({
       db,
       refs: children
         .filter((child) => Boolean(readString(child.enrollment, "schoolId")))
@@ -365,13 +409,13 @@ export const getMyGuardianChildren = onCall(
           const schoolId = readString(child.enrollment, "schoolId");
           return db.doc(`orgs/${child.orgId}/schools/${schoolId}`);
         }),
-    });
+      });
 
-    const academicYearRefs: DocumentReference[] = [];
-    const gradeRefs: DocumentReference[] = [];
-    const classRefs: DocumentReference[] = [];
+      const academicYearRefs: DocumentReference[] = [];
+      const gradeRefs: DocumentReference[] = [];
+      const classRefs: DocumentReference[] = [];
 
-    for (const child of children) {
+      for (const child of children) {
       const schoolId = readString(child.enrollment, "schoolId");
       const academicYearId = readString(child.enrollment, "academicYearId");
       const gradeId = readString(child.enrollment, "gradeId");
@@ -391,16 +435,16 @@ export const getMyGuardianChildren = onCall(
       if (classId) {
         classRefs.push(db.doc(`${academicPath}/classes/${classId}`));
       }
-    }
+      }
 
-    const [academicYearDataByPath, gradeDataByPath, classDataByPath] =
-      await Promise.all([
-        loadDataByPath({ db, refs: academicYearRefs }),
-        loadDataByPath({ db, refs: gradeRefs }),
-        loadDataByPath({ db, refs: classRefs }),
-      ]);
+      const [academicYearDataByPath, gradeDataByPath, classDataByPath] =
+        await Promise.all([
+          loadDataByPath({ db, refs: academicYearRefs }),
+          loadDataByPath({ db, refs: gradeRefs }),
+          loadDataByPath({ db, refs: classRefs }),
+        ]);
 
-    const summaries: ParentStudentSummary[] = children.map((child) => {
+      const summaries: ParentStudentSummary[] = children.map((child) => {
       const schoolId = readString(child.enrollment, "schoolId");
       const academicYearId = readString(child.enrollment, "academicYearId");
       const gradeId = readString(child.enrollment, "gradeId");
@@ -451,15 +495,61 @@ export const getMyGuardianChildren = onCall(
           classId,
         ),
       };
-    });
+      });
 
-    summaries.sort((first, second) =>
-      first.studentName.localeCompare(second.studentName, "ar"),
-    );
+      summaries.sort((first, second) =>
+        first.studentName.localeCompare(second.studentName, "ar"),
+      );
 
-    return {
-      ok: true,
-      children: summaries,
-    };
+      logger.info("getMyGuardianChildren completed", {
+        uid,
+        userPersonId,
+        summaryCount: summaries.length,
+        studentIds: summaries.map((summary) => summary.studentId),
+      });
+
+      return {
+        ok: true,
+        children: summaries,
+      };
+    } catch (error) {
+      if (!(error instanceof HttpsError)) {
+        const errorRecord = error as {
+          code?: unknown;
+          message?: unknown;
+          name?: unknown;
+          stack?: unknown;
+        };
+
+        logger.error("getMyGuardianChildren unexpected error", {
+          uid: uid ?? null,
+          errorMessage:
+            error instanceof Error
+              ? error.message
+              : typeof errorRecord.message === "string"
+                ? errorRecord.message
+                : String(error),
+          errorName:
+            error instanceof Error
+              ? error.name
+              : typeof errorRecord.name === "string"
+                ? errorRecord.name
+                : null,
+          errorCode:
+            typeof errorRecord.code === "string" ||
+            typeof errorRecord.code === "number"
+              ? errorRecord.code
+              : null,
+          stack:
+            error instanceof Error
+              ? error.stack ?? null
+              : typeof errorRecord.stack === "string"
+                ? errorRecord.stack
+                : null,
+        });
+      }
+
+      throw error;
+    }
   },
 );

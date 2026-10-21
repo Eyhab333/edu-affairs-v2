@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   GOOGLE_PRIVATE_KEY,
@@ -259,7 +260,7 @@ async function loadGuardianRefsByStudentId(
 export const createVirtualClassSessionWithMeet = onCall(
   {
     region: "me-central2",
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     secrets: [GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY],
   },
   async (request) => {

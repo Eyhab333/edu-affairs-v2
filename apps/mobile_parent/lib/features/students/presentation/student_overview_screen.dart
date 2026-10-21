@@ -12,7 +12,7 @@ import '../../attendance/presentation/student_attendance_tab.dart';
 import '../../gamification/data/student_gamification_service.dart';
 import '../../guardian/data/guardian_children_service.dart';
 import '../../guardian/models/parent_student_summary.dart';
-import '../../notes/presentation/student_notes_tab.dart';
+import '../../measurements/presentation/student_measurements_tab.dart';
 import '../../virtual_classes/data/student_virtual_classes_service.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -115,7 +115,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
     }
 
     return DefaultTabController(
-      length: 6,
+      length: 5,
       child: Column(
         children: [
           _StudentHeader(
@@ -137,7 +137,6 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
             tabs: [
               Tab(text: 'الملخص'),
               Tab(text: 'الحضور'),
-              Tab(text: 'الملاحظات'),
               Tab(text: 'التحفيز'),
               Tab(text: 'القياسات'),
               Tab(text: 'الحصص الافتراضية'),
@@ -148,13 +147,8 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
               children: [
                 _SummaryTab(student: student),
                 StudentAttendanceTab(studentId: student.studentId),
-                StudentNotesTab(studentId: student.studentId),
                 StudentGamificationTab(student: student),
-                const _PlaceholderTab(
-                  icon: Icons.analytics_rounded,
-                  title: 'القياسات',
-                  message: 'سنظهر هنا نتائج القياسات والمتابعات المختصرة.',
-                ),
+                StudentMeasurementsTab(studentId: student.studentId),
                 StudentVirtualClassesTab(student: student),
               ],
             ),
@@ -525,7 +519,6 @@ class _SummaryTab extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.md),
               AppInfoRow(label: 'آخر حضور', value: 'يظهر في تبويب الحضور'),
-              AppInfoRow(label: 'آخر ملاحظة', value: 'تظهر في تبويب الملاحظات'),
               AppInfoRow(label: 'آخر تحفيز', value: 'سيظهر لاحقًا'),
               AppInfoRow(label: 'آخر قياس', value: 'سيظهر لاحقًا'),
             ],
@@ -1129,27 +1122,5 @@ String _gamificationValueKindLabel(String valueKind) {
       return 'مستوى';
     default:
       return valueKind;
-  }
-}
-
-class _PlaceholderTab extends StatelessWidget {
-  const _PlaceholderTab({
-    required this.icon,
-    required this.title,
-    required this.message,
-  });
-
-  final IconData icon;
-  final String title;
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppEmptyState(
-      icon: icon,
-      title: title,
-      message: message,
-      maxWidth: 480,
-    );
   }
 }

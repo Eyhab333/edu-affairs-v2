@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import type {
   Class,
   Membership,
@@ -654,7 +655,7 @@ async function loadStudentWork(params: { uid: string; orgId: string; period: Stu
 }
 
 export const getStudentWorkOverview = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);
     const input = row(request.data);
@@ -669,7 +670,7 @@ export const getStudentWorkOverview = onCall(
 );
 
 export const getStudentWorkDetail = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);
     const input = row(request.data);

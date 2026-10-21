@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import {
   MembershipRole,
   PersonSupervisionScopeSchema,
@@ -1466,7 +1467,7 @@ async function getTeacherWorkDirectory(params: {
 }
 
 export const getTeacherWorkOverview = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request): Promise<TeacherWorkDirectoryResponse> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");
@@ -1480,7 +1481,7 @@ export const getTeacherWorkOverview = onCall(
 );
 
 export const getTeacherWorkReport = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request): Promise<TeacherWorkResponse> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");
@@ -1494,7 +1495,7 @@ export const getTeacherWorkReport = onCall(
 );
 
 export const getTeacherWorkDetail = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request): Promise<{
     academicYearId: string;
     period: TeacherWorkPeriod;
@@ -1545,7 +1546,7 @@ export const getTeacherWorkDetail = onCall(
 );
 
 export const getTeacherWorkMeasurementDetail = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request): Promise<TeacherWorkMeasurementDetail> => {
     if (!request.auth?.uid) {
       throw new HttpsError("unauthenticated", "Authentication is required.");

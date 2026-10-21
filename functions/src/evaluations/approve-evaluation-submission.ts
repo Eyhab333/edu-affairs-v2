@@ -11,7 +11,7 @@ import {
   DEFAULT_PERFORMANCE_IMPROVEMENT_THRESHOLDS,
 } from "./build-performance-improvement-signal";
 import { normalizeEvaluatorWeights } from "./evaluator-weighting";
-import { CALLABLE_CORS_ORIGINS } from "../shared/cors";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
 
@@ -172,7 +172,7 @@ function submissionMatchesAssignment(params: {
 export const approveEvaluationSubmission = onCall(
   {
     region: REGION,
-    cors: CALLABLE_CORS_ORIGINS,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },

@@ -247,6 +247,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import {
   MembershipRole,
   PersonSupervisionScopeSchema,
@@ -685,7 +686,7 @@ async function allowedItems(params: {
 export const listMyStaffPortfolioItems = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },
@@ -705,7 +706,7 @@ export const listMyStaffPortfolioItems = onCall(
 export const listTeacherPortfolioItems = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },
@@ -725,7 +726,7 @@ export const listTeacherPortfolioItems = onCall(
 export const beginStaffPortfolioItem = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },
@@ -1074,7 +1075,7 @@ export const beginStaffPortfolioItem = onCall(
 export const completeStaffPortfolioUpload = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },
@@ -1148,7 +1149,7 @@ export const completeStaffPortfolioUpload = onCall(
 export const archiveStaffPortfolioItem = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },
@@ -1202,7 +1203,7 @@ export const archiveStaffPortfolioItem = onCall(
 export const deleteStaffPortfolioItem = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },
@@ -1285,7 +1286,7 @@ export const deleteStaffPortfolioItem = onCall(
 export const getStaffPortfolioFileUrl = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
     memory: "512MiB",
   },

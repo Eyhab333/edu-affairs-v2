@@ -46,6 +46,30 @@ export async function getStudentCaseReferralOptions(params: {
   return result.data.recipients;
 }
 
+async function assertStudentCaseAssigneeIsEligible(params: {
+  orgId: string;
+  schoolId: string;
+  assignee: StudentCaseAssigneeInput;
+}) {
+  if (!params.assignee.personId || !params.assignee.roleKey) {
+    throw new Error("اختر موظفًا مخولًا لاستلام القضية.");
+  }
+
+  const recipients = await getStudentCaseReferralOptions({
+    orgId: params.orgId,
+    schoolId: params.schoolId,
+  });
+  const isEligible = recipients.some(
+    (recipient) =>
+      recipient.personId === params.assignee.personId &&
+      recipient.roleKey === params.assignee.roleKey,
+  );
+
+  if (!isEligible) {
+    throw new Error("الموظف المحدد غير مخول لاستلام قضايا هذه المدرسة.");
+  }
+}
+
 export type StudentCaseActorInput = {
   personId: string;
   roleKey?: string;
@@ -90,7 +114,7 @@ export type CreateStudentCaseReferralInput = {
   priority?: StudentCasePriority;
 
   createdBy: StudentCaseActorInput;
-  assignee?: StudentCaseAssigneeInput;
+  assignee: StudentCaseAssigneeInput;
 
   parentVisibility?: StudentCaseParentVisibility;
   parentVisibleSummary?: string;
@@ -192,6 +216,12 @@ function parseStudentCaseEvent(id: string, data: unknown): StudentCaseEvent {
 export async function createStudentCaseReferral(
   input: CreateStudentCaseReferralInput
 ): Promise<StudentCase> {
+  await assertStudentCaseAssigneeIsEligible({
+    orgId: input.orgId,
+    schoolId: input.schoolId,
+    assignee: input.assignee,
+  });
+
   const at = nowMs();
 
   const caseRef = doc(collection(db, studentCasesCollectionPath(input.orgId)));
@@ -199,9 +229,9 @@ export async function createStudentCaseReferral(
     collection(db, studentCaseEventsCollectionPath(input.orgId, caseRef.id))
   );
 
-  const eventReferredRef = input.assignee
-    ? doc(collection(db, studentCaseEventsCollectionPath(input.orgId, caseRef.id)))
-    : null;
+  const eventReferredRef = doc(
+    collection(db, studentCaseEventsCollectionPath(input.orgId, caseRef.id)),
+  );
 
   const studentCase: StudentCase = StudentCaseSchema.parse(
     cleanForFirestore({
@@ -281,36 +311,34 @@ export async function createStudentCaseReferral(
   batch.set(caseRef, cleanForFirestore(studentCase));
   batch.set(eventCreatedRef, cleanForFirestore(createdEvent));
 
-  if (input.assignee && eventReferredRef) {
-    const referredEvent: StudentCaseEvent = StudentCaseEventSchema.parse(
-      cleanForFirestore({
-        id: eventReferredRef.id,
+  const referredEvent: StudentCaseEvent = StudentCaseEventSchema.parse(
+    cleanForFirestore({
+      id: eventReferredRef.id,
 
-        caseId: caseRef.id,
+      caseId: caseRef.id,
 
-        orgId: input.orgId,
-        schoolId: input.schoolId,
-        academicYearId: input.academicYearId,
+      orgId: input.orgId,
+      schoolId: input.schoolId,
+      academicYearId: input.academicYearId,
 
-        eventType: "REFERRED",
+      eventType: "REFERRED",
 
-        createdByPersonId: input.createdBy.personId,
-        createdByRoleKey: input.createdBy.roleKey,
-        createdByDisplayName: input.createdBy.displayName,
+      createdByPersonId: input.createdBy.personId,
+      createdByRoleKey: input.createdBy.roleKey,
+      createdByDisplayName: input.createdBy.displayName,
 
-        toAssigneePersonId: input.assignee.personId,
-        toAssigneeRoleKey: input.assignee.roleKey,
-        toAssigneeDisplayName: input.assignee.displayName,
+      toAssigneePersonId: input.assignee.personId,
+      toAssigneeRoleKey: input.assignee.roleKey,
+      toAssigneeDisplayName: input.assignee.displayName,
 
-        statusBefore: "OPEN",
-        statusAfter: "OPEN",
+      statusBefore: "OPEN",
+      statusAfter: "OPEN",
 
-        createdAt: at,
-      })
-    );
+      createdAt: at,
+    }),
+  );
 
-    batch.set(eventReferredRef, cleanForFirestore(referredEvent));
-  }
+  batch.set(eventReferredRef, cleanForFirestore(referredEvent));
 
   await batch.commit();
 
@@ -536,6 +564,16 @@ export async function transferStudentCase(
   }
 
   const studentCase = parseStudentCase(caseSnap.id, caseSnap.data());
+  if (input.toAssignee.personId === studentCase.currentAssigneePersonId) {
+    throw new Error("الموظف المحدد هو المحال إليه الحالي للقضية.");
+  }
+
+  await assertStudentCaseAssigneeIsEligible({
+    orgId: input.orgId,
+    schoolId: studentCase.schoolId,
+    assignee: input.toAssignee,
+  });
+
   const statusAfter = input.statusAfter ?? studentCase.status;
 
   const eventRef = doc(

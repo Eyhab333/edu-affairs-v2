@@ -32,12 +32,12 @@ import type {
 } from "@takween/contracts";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import { StudentCaseAssigneePicker } from "@/components/staff/cases/student-case-assignee-picker";
 import { Button } from "@/components/ui/button";
 import { useVisibleStudents } from "@/hooks/use-visible-students";
 import { db } from "@/lib/firebase";
 import {
   createStudentCaseReferral,
-  getStudentCaseReferralOptions,
   type StudentCaseReferralRecipient,
 } from "@/lib/student-cases";
 
@@ -175,11 +175,8 @@ export default function NewStudentCasePage() {
   const [caseTypeKey, setCaseTypeKey] = useState("BEHAVIOR");
   const [priority, setPriority] = useState<StudentCasePriority>("NORMAL");
 
-  const [recipients, setRecipients] = useState<
-    StudentCaseReferralRecipient[]
-  >([]);
-  const [assigneePersonId, setAssigneePersonId] = useState("");
-  const [loadingRecipients, setLoadingRecipients] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] =
+    useState<StudentCaseReferralRecipient | null>(null);
 
   const [parentVisibility, setParentVisibility] =
     useState<StudentCaseParentVisibility>("INTERNAL_ONLY");
@@ -384,77 +381,14 @@ export default function NewStudentCasePage() {
       ) ?? null,
     [academicYearId, schoolId, studentId, visibleStudents.data?.rows],
   );
-  const selectedRecipient = recipients.find(
-    (recipient) => recipient.personId === assigneePersonId,
-  );
-
   useEffect(() => {
     setStudentId("");
     setStudentSearch("");
   }, [schoolId, academicYearId]);
 
   useEffect(() => {
-    let active = true;
-
-    async function loadRecipients() {
-      if (!schoolId) {
-        setRecipients([]);
-        setAssigneePersonId("");
-        return;
-      }
-
-      setLoadingRecipients(true);
-      try {
-        const result = await getStudentCaseReferralOptions({
-          orgId: actor.orgId,
-          schoolId,
-        });
-        if (!active) return;
-        setRecipients(result);
-        setAssigneePersonId((current) =>
-          result.some((item) => item.personId === current) ? current : "",
-        );
-      } catch (error) {
-        if (!active) return;
-        setRecipients([]);
-        setAssigneePersonId("");
-        setError(
-          error instanceof Error
-            ? error.message
-            : "تعذر تحميل قائمة المحال إليهم.",
-        );
-      } finally {
-        if (active) setLoadingRecipients(false);
-      }
-    }
-
-    void loadRecipients();
-    return () => {
-      active = false;
-    };
-  }, [actor.orgId, schoolId]);
-
-  useEffect(() => {
-    if (!hasGuidedReferralRoute || !recommendedRecipientRoleKey) return;
-
-    const recommendedRecipient = recipients.find(
-      (recipient) => recipient.roleKey === recommendedRecipientRoleKey,
-    );
-    if (!recommendedRecipient) return;
-
-    setAssigneePersonId((current) => {
-      const currentRecipient = recipients.find(
-        (recipient) => recipient.personId === current,
-      );
-      return currentRecipient?.roleKey === recommendedRecipientRoleKey
-        ? current
-        : recommendedRecipient.personId;
-    });
-  }, [
-    hasGuidedReferralRoute,
-    recipients,
-    recommendedRecipientRoleKey,
-  ]);
+    setSelectedRecipient(null);
+  }, [schoolId]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -465,6 +399,10 @@ export default function NewStudentCasePage() {
     }
     if (!selectedStudent) {
       setError("اختر الطالب من القائمة.");
+      return;
+    }
+    if (!selectedRecipient) {
+      setError("اختر الموظف المحال إليه قبل إنشاء الإحالة.");
       return;
     }
     if (!title.trim() || !description.trim()) {
@@ -505,15 +443,11 @@ export default function NewStudentCasePage() {
             actor.person?.displayName ?? actor.userProfile?.displayName,
           roleKey: actor.roles[0],
         },
-        ...(selectedRecipient
-          ? {
-              assignee: {
-                personId: selectedRecipient.personId,
-                displayName: selectedRecipient.displayName,
-                roleKey: selectedRecipient.roleKey,
-              },
-            }
-          : {}),
+        assignee: {
+          personId: selectedRecipient.personId,
+          displayName: selectedRecipient.displayName,
+          roleKey: selectedRecipient.roleKey,
+        },
         parentVisibility,
         parentVisibleSummary: parentVisibleSummary.trim() || undefined,
       });
@@ -864,32 +798,21 @@ export default function NewStudentCasePage() {
                       : "تظهر فقط الجهات المخولة بمعالجة القضايا في المدرسة."
               }
             >
-              <label>
-                <FieldLabel required={hasGuidedReferralRoute}>
-                  المحال إليه
-                </FieldLabel>
-                <select
-                  value={assigneePersonId}
-                  onChange={(event) => setAssigneePersonId(event.target.value)}
-                  className={fieldClassName}
-                  disabled={loadingRecipients || !schoolId}
-                >
-                  <option value="">
-                    {loadingRecipients
-                      ? "جاري تحميل المستلمين..."
-                      : "بدون إحالة محددة"}
-                  </option>
-                  {recipients.map((recipient) => (
-                    <option key={recipient.id} value={recipient.personId}>
-                      {recipient.displayName} · {recipient.roleLabel}
-                      {hasGuidedReferralRoute &&
-                      recipient.roleKey === recommendedRecipientRoleKey
-                        ? " · مقترح"
-                        : ""}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <div>
+                <FieldLabel required>المحال إليه</FieldLabel>
+                <StudentCaseAssigneePicker
+                  orgId={actor.orgId}
+                  schoolId={schoolId}
+                  value={selectedRecipient}
+                  onValueChange={setSelectedRecipient}
+                  preferredRoleKey={
+                    hasGuidedReferralRoute
+                      ? recommendedRecipientRoleKey
+                      : undefined
+                  }
+                  placeholder="ابحث عن موظف مخول لاستلام القضية"
+                />
+              </div>
             </SectionCard>
 
             <SectionCard icon={UserCheck} title="ظهور ولي الأمر">

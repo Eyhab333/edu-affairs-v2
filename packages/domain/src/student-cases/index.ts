@@ -49,6 +49,16 @@ export type StudentCaseTimelineItem = {
 };
 
 const CASE_RECEIVER_ROLE_KEYS = new Set([
+  "BOYS_PRINCIPAL",
+  "GIRLS_PRINCIPAL",
+  "KG_PRINCIPAL",
+  "BOYS_VP",
+  "GIRLS_VP",
+  "KG_VP",
+  "BOYS_EDU_VP",
+  "BOYS_STUDENTS_VP",
+  "BOYS_STUDENT_GUIDE",
+  "GIRLS_STUDENT_COUNSELOR",
   "PRINCIPAL",
   "SCHOOL_PRINCIPAL",
   "VICE_PRINCIPAL",
@@ -187,7 +197,7 @@ export function resolveAvailableCaseAssignees(params: {
   if (!orgId || !schoolId) return [];
 
   return candidates
-    .filter((candidate) => candidate.isActive !== false)
+    .filter((candidate) => candidate.isActive === true)
     .filter((candidate) => candidate.orgId === orgId)
     .filter((candidate) => candidate.personId !== actor.personId)
     .filter((candidate) => {
@@ -197,7 +207,6 @@ export function resolveAvailableCaseAssignees(params: {
     })
     .filter((candidate) => {
       const candidateSchools = candidate.schoolIds ?? [];
-      if (!candidateSchools.length) return true;
       return candidateSchools.includes(schoolId);
     })
     .filter((candidate) => {

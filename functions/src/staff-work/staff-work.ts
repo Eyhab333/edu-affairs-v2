@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import {
   MembershipRole,
   PersonSupervisionScopeSchema,
@@ -1226,7 +1227,7 @@ async function staffWork(params: { uid: string; input: Row }) {
 }
 
 export const getStaffWorkOverview = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request) => {
     if (!request.auth?.uid)
       throw new HttpsError("unauthenticated", "Authentication is required.");
@@ -1244,7 +1245,7 @@ export const getStaffWorkOverview = onCall(
 );
 
 export const getStaffWorkDetail = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request) => {
     if (!request.auth?.uid)
       throw new HttpsError("unauthenticated", "Authentication is required.");
@@ -1270,7 +1271,7 @@ export const getStaffWorkDetail = onCall(
 
 /** Lazily returns a single non-secret work-documentation record for Staff Work. */
 export const getStaffWorkDocumentationRecord = onCall(
-  { region: REGION, cors: true, invoker: "public", memory: "512MiB" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public", memory: "512MiB" },
   async (request) => {
     if (!request.auth?.uid)
       throw new HttpsError("unauthenticated", "Authentication is required.");

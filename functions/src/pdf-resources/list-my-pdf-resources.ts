@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   MembershipRole,
@@ -70,7 +71,7 @@ function canAccessAllSchools(membership: DataRow, role: MembershipRoleType) {
  * while applying the same domain targeting rules before returning any resource.
  */
 export const listMyPdfResources = onCall(
-  { region: REGION, cors: true, invoker: "public" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public" },
   async (request): Promise<PdfResource[]> => {
     const uid = request.auth?.uid;
     const orgId = readString(request.data?.orgId);

@@ -8,7 +8,7 @@ import {
   requireNonEmptyString,
   resolvePerformanceImprovementActor,
 } from "./performance-improvement-access";
-import { CALLABLE_CORS_ORIGINS } from "../shared/cors";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
 
@@ -49,7 +49,7 @@ function parseMutation(value: unknown): PlanMutation {
 export const updatePerformanceImprovementPlan = onCall(
   {
     region: REGION,
-    cors: CALLABLE_CORS_ORIGINS,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
   },
   async (request): Promise<UpdatePlanResult> => {

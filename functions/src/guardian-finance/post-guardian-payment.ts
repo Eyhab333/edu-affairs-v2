@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   GuardianPaymentAllocationSchema,
@@ -257,7 +258,7 @@ function uniqueStrings(values: string[]): string[] {
 export const postGuardianPayment = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
   },
   async (

@@ -86,6 +86,7 @@ export {
 export { getMyGuardianChildren } from "./guardian/get-my-guardian-children";
 export { getMyGuardianAttendance } from "./guardian/get-my-guardian-attendance";
 export { getMyGuardianGamification } from "./guardian/get-my-guardian-gamification";
+export { getMyGuardianMeasurements } from "./guardian/get-my-guardian-measurements";
 export { getMyGuardianNotes } from "./guardian/get-my-guardian-notes";
 export { getMyGuardianVirtualClasses } from "./guardian/get-my-guardian-virtual-classes";
 export { markMyGuardianVirtualClassJoin } from "./guardian/mark-my-guardian-virtual-class-join";

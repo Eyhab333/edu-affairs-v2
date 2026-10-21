@@ -11,7 +11,7 @@ import {
   requireNonEmptyString,
   resolvePerformanceImprovementActor,
 } from "./performance-improvement-access";
-import { CALLABLE_CORS_ORIGINS } from "../shared/cors";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 const REGION = "me-central2";
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -68,7 +68,7 @@ function parseActions(value: unknown): string[] {
 export const createPerformanceImprovementPlan = onCall(
   {
     region: REGION,
-    cors: CALLABLE_CORS_ORIGINS,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
   },
   async (request): Promise<CreatePlanResult> => {

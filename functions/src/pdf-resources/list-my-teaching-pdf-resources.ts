@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   MembershipRole,
@@ -59,7 +60,7 @@ function chunk<T>(items: T[], size: number) {
 }
 
 export const listMyTeachingPdfResources = onCall(
-  { region: REGION, cors: true, invoker: "public" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public" },
   async (request) => {
     const uid = request.auth?.uid;
     const orgId = readString(request.data?.orgId);
@@ -143,7 +144,7 @@ export const listMyTeachingPdfResources = onCall(
 );
 
 export const listOrgTeachingPdfResources = onCall(
-  { region: REGION, cors: true, invoker: "public" },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, invoker: "public" },
   async (request) => {
     const uid = request.auth?.uid;
     const orgId = readString(request.data?.orgId);

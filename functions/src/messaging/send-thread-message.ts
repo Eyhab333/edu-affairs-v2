@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import type {
   SendThreadMessageInput,
@@ -26,6 +27,7 @@ function readNonEmptyString(value: unknown, fieldName: string): string {
 export const sendThreadMessage = onCall(
   {
     region: REGION,
+    cors: WEB_STAFF_CORS_ORIGINS,
   },
   async (request): Promise<SendThreadMessageResult> => {
     const uid = request.auth?.uid;

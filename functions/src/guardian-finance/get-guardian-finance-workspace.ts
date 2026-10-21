@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   GuardianLinkSchema,
@@ -370,7 +371,7 @@ async function searchFinanceDirectory(params: {
 export const getGuardianFinanceWorkspace = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
   },
   async (

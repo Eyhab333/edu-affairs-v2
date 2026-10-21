@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   getActiveMembership,
@@ -14,7 +15,7 @@ const REGION = "me-central2";
 const MAX_MESSAGE_LENGTH = 4_000;
 
 export const sendStaffChatMessage = onCall(
-  { region: REGION },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
   async (request) => {
     const uid = request.auth?.uid;
     if (!uid) {

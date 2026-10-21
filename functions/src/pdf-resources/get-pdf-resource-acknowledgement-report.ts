@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 
 import {
   GetPdfResourceAcknowledgementReportInputSchema,
@@ -118,7 +119,7 @@ function canAccessAllSchools(
 export const getPdfResourceAcknowledgementReport = onCall(
   {
     region: REGION,
-    cors: true,
+    cors: WEB_STAFF_CORS_ORIGINS,
     invoker: "public",
   },
   async (request): Promise<PdfResourceAcknowledgementReport> => {
