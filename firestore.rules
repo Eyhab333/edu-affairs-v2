@@ -1767,6 +1767,34 @@ match /staffPdfFiles/{fileId} {
     && resource.data.ownerUid == request.auth.uid;
 }
 
+/* School transport attendance is server-mediated for staff. Callable
+ * functions resolve the authenticated person's route scope and perform draft
+ * and submission transactions. Organization administrators retain the
+ * existing direct management access used by web-admin. */
+match /transportRoutes/{routeId} {
+  allow read, write: if canManageOrg(orgId);
+}
+
+match /transportVehicles/{vehicleId} {
+  allow read, write: if canManageOrg(orgId);
+}
+
+match /transportRouteStops/{stopId} {
+  allow read, write: if canManageOrg(orgId);
+}
+
+match /studentTransportEnrollments/{enrollmentId} {
+  allow read, write: if canManageOrg(orgId);
+}
+
+match /transportAttendanceBatches/{batchId} {
+  allow read, write: if canManageOrg(orgId);
+}
+
+match /studentTransportAttendanceRecords/{recordId} {
+  allow read, write: if canManageOrg(orgId);
+}
+
 
 
 

@@ -52,6 +52,17 @@ export {
 } from "./teacher-management/get-teacher-management-read-model";
 export { getClassRoster } from "./class-roster/get-class-roster";
 export { getVisibleStudents } from "./visible-students/get-visible-students";
+export {
+  getTransportAccessSummary,
+  getTransportWorkspace,
+  saveTransportAttendanceDraft,
+  submitTransportAttendance,
+} from "./transport/transport-attendance";
+export {
+  getTransportAdminWorkspace,
+  manageTransportAdministration,
+  searchTransportAdminStudents,
+} from "./transport/transport-administration";
 export { getLearningLossSummary } from "./learning-loss/learning-loss-summary";
 export { getSpecialStaffMeasurementSummarySource } from "./measurement-summaries/get-special-staff-measurement-summary-source";
 export {

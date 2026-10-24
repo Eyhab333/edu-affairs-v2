@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -18,10 +18,10 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useRequireAuth } from "@/hooks/use-require-auth";
-import { getOrgId } from "@/lib/org";
+import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   buildStaffTransportRouteWorkspace,
+  getRiyadhServiceDate,
   type StaffTransportRouteWorkspace,
 } from "@/lib/staff-transport";
 
@@ -74,20 +74,15 @@ export default function StaffTransportRoutePage() {
   const params = useParams();
   const routeId = getParamValue(params.routeId);
 
-  const { user, checkingAuth } = useRequireAuth();
+  const { actor } = useStaffActor();
 
   const [workspace, setWorkspace] =
     useState<StaffTransportRouteWorkspace | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const orgId = useMemo(() => {
-    if (!user) return null;
-    return getOrgId(user.uid) || "takween";
-  }, [user]);
-
   const load = useCallback(async () => {
-    if (!user || !orgId || !routeId) return;
+    if (!actor.orgId || !routeId) return;
 
     setLoading(true);
     setError(null);
@@ -95,19 +90,9 @@ export default function StaffTransportRoutePage() {
     try {
       const result = await buildStaffTransportRouteWorkspace(
         {
-          orgId,
-
-          /**
-           * مؤقتًا نستخدم uid كـ actorPersonId.
-           * لاحقًا نستبدله بـ personId الحقيقي من staff actor.
-           */
-          actorPersonId: user.uid,
-
-          /**
-           * مؤقتًا للاختبار.
-           * لاحقًا نربطها بـ OperationalAssignment / supervisorPersonIds.
-           */
-          canViewAllTransportRoutes: true,
+          orgId: actor.orgId,
+          actorPersonId: actor.personId,
+          assignments: actor.operationalAssignments,
         },
         routeId
       );
@@ -119,16 +104,13 @@ export default function StaffTransportRoutePage() {
     } finally {
       setLoading(false);
     }
-  }, [orgId, routeId, user]);
+  }, [actor.operationalAssignments, actor.orgId, actor.personId, routeId]);
 
   useEffect(() => {
-    if (checkingAuth) return;
-    if (!user || !orgId || !routeId) return;
-
     void load();
-  }, [checkingAuth, load, orgId, routeId, user]);
+  }, [load]);
 
-  if (checkingAuth || loading) {
+  if (loading) {
     return (
       <main className="flex min-h-[60vh] items-center justify-center">
         <div className="flex items-center gap-3 text-muted-foreground">
@@ -176,6 +158,7 @@ export default function StaffTransportRoutePage() {
   }
 
   const { route, enrollments, batches, tripOptions } = workspace;
+  const todayServiceDate = getRiyadhServiceDate();
 
   return (
     <main className="mx-auto max-w-6xl space-y-6 p-6">
@@ -271,21 +254,35 @@ export default function StaffTransportRoutePage() {
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {tripOptions.map((option) => (
-            <Button
-              key={option.tripKind}
-              asChild
-              variant="outline"
-              className="h-auto justify-between rounded-2xl p-4"
-            >
-              <Link
-                href={`/staff/transport/routes/${route.id}/trips/${option.tripKind}/new`}
+          {tripOptions.map((option) => {
+            const existing = batches.find(
+              (batch) =>
+                batch.serviceDate === todayServiceDate &&
+                batch.tripKind === option.tripKind,
+            );
+            return (
+              <Button
+                key={option.tripKind}
+                asChild
+                variant="outline"
+                className="h-auto justify-between rounded-2xl p-4"
               >
-                <span className="font-semibold">{option.label}</span>
-                <PlayCircle className="h-5 w-5" />
-              </Link>
-            </Button>
-          ))}
+                <Link href={`/staff/transport/routes/${route.id}/trips/${option.tripKind}/new`}>
+                  <span>
+                    <span className="block font-semibold">{option.label}</span>
+                    {existing ? (
+                      <span className="mt-1 block text-xs text-muted-foreground">
+                        {existing.status === "DRAFT" || existing.status === "IN_PROGRESS"
+                          ? "متابعة مسودة اليوم"
+                          : "عرض رحلة اليوم"}
+                      </span>
+                    ) : null}
+                  </span>
+                  <PlayCircle className="h-5 w-5" />
+                </Link>
+              </Button>
+            );
+          })}
         </div>
       </section>
 
@@ -356,8 +353,13 @@ export default function StaffTransportRoutePage() {
           {batches.length ? (
             <div className="space-y-3">
               {batches.slice(0, 8).map((batch) => (
-                <div
+                <Link
                   key={batch.id}
+                  href={
+                    batch.status === "DRAFT" || batch.status === "IN_PROGRESS"
+                      ? `/staff/transport/routes/${route.id}/trips/${batch.tripKind}/new?date=${batch.serviceDate}`
+                      : `/staff/transport/batches/${batch.id}`
+                  }
                   className="rounded-2xl border border-border bg-background p-4"
                 >
                   <div className="flex items-center justify-between gap-3">
@@ -391,7 +393,7 @@ export default function StaffTransportRoutePage() {
                       <div className="font-bold">{batch.missingCount}</div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (

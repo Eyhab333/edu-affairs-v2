@@ -10,7 +10,7 @@ yarn-debug.log*
 yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
-
+.pnpm-store
 # Firebase cache
 .firebase/
 

@@ -491,6 +491,7 @@
 
 
 import type {
+  OperationalAssignment,
   StudentTransportAttendanceRecord,
   StudentTransportAttendanceStatus,
   StudentTransportEnrollment,
@@ -501,18 +502,8 @@ import type {
   TransportTripKind,
 } from "@takween/contracts";
 
-export type TransportOperationalAssignmentLike = {
-  id: string;
-  orgId: string;
-  actorPersonId?: string;
-  operationKind?: string;
-  scopeType?: string;
-  scopeId?: string;
-  targetKind?: string;
-  isActive?: boolean;
-  startAt?: number;
-  endAt?: number;
-};
+/** @deprecated Use the canonical OperationalAssignment contract directly. */
+export type TransportOperationalAssignmentLike = OperationalAssignment;
 
 export type TransportTermContext = {
   termId?: string;
@@ -524,7 +515,7 @@ export type GetVisibleRoutesForTransportSupervisorParams = {
   orgId: string;
   actorPersonId: string;
   routes: TransportRoute[];
-  assignments?: TransportOperationalAssignmentLike[];
+  assignments?: OperationalAssignment[];
   now?: number;
 };
 
@@ -534,6 +525,8 @@ export type GetRouteTransportEnrollmentsParams = {
   academicYearId?: string;
   routeId: string;
   enrollments: StudentTransportEnrollment[];
+  serviceDate?: string;
+  now?: number;
 };
 
 export type BuildTransportAttendanceBatchDraftParams = {
@@ -613,6 +606,57 @@ export const TRANSPORT_TRIP_KIND_LABEL_AR: Record<TransportTripKind, string> = {
   AFTERNOON_DROPOFF: "نزول عند المنزل",
 };
 
+const TRANSPORT_TRIP_STATUS_OPTIONS: Record<
+  TransportTripKind,
+  readonly StudentTransportAttendanceStatus[]
+> = {
+  MORNING_PICKUP: [
+    "BOARDED",
+    "NOT_BOARDED",
+    "ABSENT",
+    "EXCUSED",
+    "LATE",
+    "ISSUE",
+  ],
+  MORNING_ARRIVAL: ["ARRIVED", "ABSENT", "EXCUSED", "LATE", "ISSUE"],
+  AFTERNOON_BOARDING: [
+    "BOARDED",
+    "NOT_BOARDED",
+    "ABSENT",
+    "EXCUSED",
+    "LATE",
+    "ISSUE",
+  ],
+  AFTERNOON_DROPOFF: [
+    "DROPPED_OFF",
+    "ABSENT",
+    "EXCUSED",
+    "LATE",
+    "ISSUE",
+  ],
+};
+
+export function getAllowedStatusesForTransportTrip(
+  tripKind: TransportTripKind,
+  includePending = true
+): StudentTransportAttendanceStatus[] {
+  return [
+    ...(includePending ? (["PENDING"] as const) : []),
+    ...TRANSPORT_TRIP_STATUS_OPTIONS[tripKind],
+  ];
+}
+
+export function isStatusAllowedForTransportTrip(params: {
+  tripKind: TransportTripKind;
+  status: StudentTransportAttendanceStatus;
+  includePending?: boolean;
+}) {
+  return getAllowedStatusesForTransportTrip(
+    params.tripKind,
+    params.includePending
+  ).includes(params.status);
+}
+
 export function getDefaultStatusForTrip(
   tripKind: TransportTripKind
 ): StudentTransportAttendanceStatus {
@@ -650,16 +694,32 @@ export function isActiveTransportRoute(route: TransportRoute) {
 }
 
 export function isActiveStudentTransportEnrollment(
-  enrollment: StudentTransportEnrollment
+  enrollment: StudentTransportEnrollment,
+  activeRange?: { startsAt: number; endsAt: number }
 ) {
-  return enrollment.status === "ACTIVE";
+  if (enrollment.status !== "ACTIVE") return false;
+  if (!activeRange) return true;
+  if (
+    typeof enrollment.startsAt === "number" &&
+    enrollment.startsAt > activeRange.endsAt
+  ) {
+    return false;
+  }
+  if (
+    typeof enrollment.endsAt === "number" &&
+    enrollment.endsAt < activeRange.startsAt
+  ) {
+    return false;
+  }
+  return true;
 }
 
 export function isTransportAssignmentActive(
-  assignment: TransportOperationalAssignmentLike,
+  assignment: OperationalAssignment,
   now = Date.now()
 ) {
   if (assignment.isActive === false) return false;
+  if (assignment.status !== "ACTIVE") return false;
   if (assignment.operationKind !== TRANSPORT_ATTENDANCE_OPERATION_KIND) {
     return false;
   }
@@ -682,8 +742,12 @@ export function getVisibleRoutesForTransportSupervisor({
       .filter((assignment) => assignment.orgId === orgId)
       .filter((assignment) => assignment.actorPersonId === actorPersonId)
       .filter((assignment) => isTransportAssignmentActive(assignment, now))
+      .filter((assignment) => assignment.permissions.includes("VIEW"))
       .filter((assignment) => assignment.scopeType === "ROUTE")
-      .map((assignment) => assignment.scopeId)
+      .flatMap((assignment) => [
+        assignment.scopeId,
+        ...assignment.targetRouteIds,
+      ])
       .filter((routeId): routeId is string => Boolean(routeId))
   );
 
@@ -707,7 +771,19 @@ export function getRouteTransportEnrollments({
   academicYearId,
   routeId,
   enrollments,
+  serviceDate,
+  now = Date.now(),
 }: GetRouteTransportEnrollmentsParams): StudentTransportEnrollment[] {
+  const serviceDayStart = serviceDate
+    ? Date.parse(`${serviceDate}T00:00:00+03:00`)
+    : now;
+  const activeRange = {
+    startsAt: Number.isFinite(serviceDayStart) ? serviceDayStart : now,
+    endsAt: Number.isFinite(serviceDayStart)
+      ? serviceDayStart + 24 * 60 * 60 * 1000 - 1
+      : now,
+  };
+
   return enrollments
     .filter((enrollment) => enrollment.orgId === orgId)
     .filter((enrollment) => enrollment.routeId === routeId)
@@ -716,7 +792,9 @@ export function getRouteTransportEnrollments({
       (enrollment) =>
         !academicYearId || enrollment.academicYearId === academicYearId
     )
-    .filter(isActiveStudentTransportEnrollment)
+    .filter((enrollment) =>
+      isActiveStudentTransportEnrollment(enrollment, activeRange)
+    )
     .sort((a, b) => {
       const aStop = a.pickupStopTitle ?? a.dropoffStopTitle ?? "";
       const bStop = b.pickupStopTitle ?? b.dropoffStopTitle ?? "";
@@ -752,7 +830,12 @@ export function calculateTransportBatchSummary(
 
   const targetCount = studentRows.length;
   const missingCount = byStatus.PENDING;
-  const issueCount = byStatus.ISSUE;
+  const issueCount =
+    byStatus.NOT_BOARDED +
+    byStatus.ABSENT +
+    byStatus.EXCUSED +
+    byStatus.LATE +
+    byStatus.ISSUE;
   const completedCount = targetCount - missingCount;
 
   return {
@@ -801,6 +884,7 @@ export function buildTransportAttendanceBatchDraft({
     academicYearId,
     routeId: route.id,
     enrollments,
+    serviceDate,
   });
 
   const studentRows: TransportAttendanceBatchStudentRow[] =
@@ -883,6 +967,13 @@ export function updateTransportAttendanceBatchRow({
   recordedByPersonId,
   now = Date.now(),
 }: UpdateTransportBatchRowParams): TransportAttendanceBatch {
+  if (!["DRAFT", "IN_PROGRESS"].includes(batch.status)) {
+    throw new Error("Only editable transport attendance batches can be changed.");
+  }
+  if (!isStatusAllowedForTransportTrip({ tripKind: batch.tripKind, status })) {
+    throw new Error("Student status is not valid for this transport trip.");
+  }
+
   const nextRows = batch.studentRows.map((row) => {
     if (row.studentId !== studentId) return row;
 
@@ -916,6 +1007,28 @@ export function submitTransportAttendanceBatch(
   batch: TransportAttendanceBatch,
   now = Date.now()
 ): TransportAttendanceBatch {
+  if (!["DRAFT", "IN_PROGRESS"].includes(batch.status)) {
+    throw new Error("Only editable transport attendance batches can be submitted.");
+  }
+  if (batch.studentRows.length === 0) {
+    throw new Error("Transport attendance batch has no students.");
+  }
+  if (batch.studentRows.some((row) => row.status === "PENDING")) {
+    throw new Error("All transport attendance rows must be recorded.");
+  }
+  if (
+    batch.studentRows.some(
+      (row) =>
+        !isStatusAllowedForTransportTrip({
+          tripKind: batch.tripKind,
+          status: row.status,
+          includePending: false,
+        })
+    )
+  ) {
+    throw new Error("Transport attendance contains an invalid trip status.");
+  }
+
   const summary = calculateTransportBatchSummary(batch.studentRows);
 
   return {

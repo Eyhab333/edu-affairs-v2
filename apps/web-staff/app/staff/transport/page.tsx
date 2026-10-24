@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   AlertCircle,
@@ -14,8 +14,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useRequireAuth } from "@/hooks/use-require-auth";
-import { getOrgId } from "@/lib/org";
+import { useStaffActor } from "@/components/staff/staff-actor-provider";
 import {
   buildStaffTransportWorkspace,
   type StaffTransportRouteCard,
@@ -132,7 +131,7 @@ function TransportRouteCard({ card }: { card: StaffTransportRouteCard }) {
 }
 
 export default function StaffTransportPage() {
-  const { user, checkingAuth } = useRequireAuth();
+  const { actor } = useStaffActor();
 
   const [workspace, setWorkspace] = useState<StaffTransportWorkspace | null>(
     null
@@ -140,32 +139,17 @@ export default function StaffTransportPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const orgId = useMemo(() => {
-    if (!user) return null;
-    return getOrgId(user.uid) || "takween";
-  }, [user]);
-
   const load = useCallback(async () => {
-    if (!user || !orgId) return;
+    if (!actor.orgId) return;
 
     setLoading(true);
     setError(null);
 
     try {
       const result = await buildStaffTransportWorkspace({
-        orgId,
-
-        /**
-         * مؤقتًا نستخدم uid كـ actorPersonId في صفحة العرض.
-         * لاحقًا سنمرر personId الحقيقي من staff actor.
-         */
-        actorPersonId: user.uid,
-
-        /**
-         * مؤقتًا لاختبار الصفحة وعرض الخط التجريبي.
-         * لاحقًا نستبدلها بـ OperationalAssignment / supervisorPersonIds.
-         */
-        canViewAllTransportRoutes: true,
+        orgId: actor.orgId,
+        actorPersonId: actor.personId,
+        assignments: actor.operationalAssignments,
       });
 
       setWorkspace(result);
@@ -175,16 +159,13 @@ export default function StaffTransportPage() {
     } finally {
       setLoading(false);
     }
-  }, [orgId, user]);
+  }, [actor.operationalAssignments, actor.orgId, actor.personId]);
 
   useEffect(() => {
-    if (checkingAuth) return;
-    if (!user || !orgId) return;
-
     void load();
-  }, [checkingAuth, load, orgId, user]);
+  }, [load]);
 
-  if (checkingAuth || loading) {
+  if (loading) {
     return (
       <main className="flex min-h-[60vh] items-center justify-center">
         <div className="flex items-center gap-3 text-muted-foreground">

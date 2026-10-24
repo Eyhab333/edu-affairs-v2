@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import {
   CalendarRange,
+  Bus,
   ChevronLeft,
   ClipboardCheck,
   GraduationCap,
@@ -68,6 +69,11 @@ function buildNavItems(orgId: string) {
       title: "الطلاب",
       href: `/orgs/${orgId}/students`,
       icon: GraduationCap,
+    },
+    {
+      title: "النقل المدرسي",
+      href: `/orgs/${orgId}/transport`,
+      icon: Bus,
     },
     {
       title: "أولياء الأمور",

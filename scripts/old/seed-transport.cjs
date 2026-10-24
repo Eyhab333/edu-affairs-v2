@@ -50,7 +50,7 @@ const ROUTE_ID = "route-mrb-boys-sayh-01";
 
 const NOW = Date.now();
 
-
+// old seed-transport.cjs is used to create a test transport route with stops and enrollments for the first class of students in a specific school and academic year. It supports a dry-run mode to preview changes without applying them to the database. The script retrieves active student enrollments, creates a transport vehicle and route, adds stops, and enrolls students in the transport system.
 
 function printDryRun(pathValue, data) {
   console.log(`[dry-run] set ${pathValue}`);

@@ -24,6 +24,7 @@ import type {
 
 import { db } from "@/lib/firebase";
 import type { OrgSummary } from "@/hooks/use-org-summary";
+import { getStaffTransportAccessSummary } from "@/lib/staff-transport";
 
 import {
   buildStaffHome,
@@ -714,6 +715,7 @@ function resolveVisibleModules(params: {
   memberships: Membership[];
   actorPersonId: string;
   orgId: string;
+  hasTransportAccess?: boolean;
 }): StaffHomeVisibleModule[] {
   const modules = new Set<StaffHomeVisibleModule>();
 
@@ -765,6 +767,10 @@ function resolveVisibleModules(params: {
     modules.add("STUDENTS");
   }
 
+  if (params.hasTransportAccess) {
+    modules.add("TRANSPORT");
+  }
+
   return Array.from(modules);
 }
 
@@ -804,6 +810,7 @@ export async function getStaffActorData(params: {
     schools,
     classes,
     classSubjectOfferings,
+    transportAccess,
   ] = await Promise.all([
     getPerson({
       orgId: params.orgId,
@@ -830,6 +837,9 @@ export async function getStaffActorData(params: {
       orgId: params.orgId,
       allowedSchoolIds,
     }),
+    getStaffTransportAccessSummary(params.orgId).catch(() => ({
+      hasAccess: false,
+    })),
   ]);
 
   const teacherAssignmentClassLinks = await getTeacherAssignmentClassLinks({
@@ -864,6 +874,7 @@ export async function getStaffActorData(params: {
     memberships,
     actorPersonId,
     orgId: params.orgId,
+    hasTransportAccess: transportAccess.hasAccess,
   });
 
   const academicYearIds = uniqueItems([
