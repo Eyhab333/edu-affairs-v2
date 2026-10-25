@@ -90,6 +90,58 @@ const accessSummaryCallable = httpsCallable<
   { hasAccess: boolean }
 >(functions, "getTransportAccessSummary");
 
+const OPTIONAL_BATCH_FIELDS = [
+  "termId",
+  "termTitle",
+  "termShortTitle",
+  "routeTitle",
+  "vehicleId",
+  "driverPersonId",
+  "supervisorPersonId",
+  "createdByRoleKey",
+  "operationalAssignmentId",
+  "issueCount",
+  "submittedAt",
+  "reviewedAt",
+  "lockedAt",
+  "cancelledAt",
+  "note",
+] as const;
+
+const OPTIONAL_STUDENT_ROW_FIELDS = [
+  "studentPersonId",
+  "enrollmentId",
+  "stopId",
+  "stopTitle",
+  "recordedAt",
+  "recordedByPersonId",
+  "note",
+  "recordId",
+] as const;
+
+function normalizeNullOptionalFields<T extends object>(
+  value: T,
+  fields: readonly string[],
+): T {
+  const normalized = { ...value } as unknown as Record<string, unknown>;
+  for (const field of fields) {
+    if (normalized[field] === null) normalized[field] = undefined;
+  }
+  return normalized as unknown as T;
+}
+
+function normalizeTransportDraftForCall(
+  batch: TransportAttendanceBatch,
+): TransportAttendanceBatch {
+  const normalized = normalizeNullOptionalFields(batch, OPTIONAL_BATCH_FIELDS);
+  return {
+    ...normalized,
+    studentRows: normalized.studentRows.map((row) =>
+      normalizeNullOptionalFields(row, OPTIONAL_STUDENT_ROW_FIELDS),
+    ),
+  };
+}
+
 export function getRiyadhServiceDate(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Riyadh",
@@ -228,9 +280,10 @@ export async function saveStaffTransportDraft(params: {
   batch: TransportAttendanceBatch;
   expectedUpdatedAt?: number;
 }) {
+  const normalizedBatch = normalizeTransportDraftForCall(params.batch);
   const payload = {
     orgId: params.orgId,
-    batch: JSON.parse(JSON.stringify(params.batch)) as TransportAttendanceBatch,
+    batch: JSON.parse(JSON.stringify(normalizedBatch)) as TransportAttendanceBatch,
     ...(params.expectedUpdatedAt === undefined
       ? {}
       : { expectedUpdatedAt: params.expectedUpdatedAt }),
