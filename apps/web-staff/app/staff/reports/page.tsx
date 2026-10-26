@@ -135,8 +135,8 @@ export default function ReportsPage() {
       ? [
           {
             href: "/staff/measurements/central-summary",
-            title: "خلاصة القياسات المركزية",
-            description: "ملخص نتائج القياسات المركزية حسب الصف والمادة والمعلم.",
+            title: "خلاصة الاختبارات والقياسات",
+            description: "ملخص نتائج الاختبارات والقياسات الرسمية حسب الصف والمادة والمعلم.",
             icon: Ruler,
             tone: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
           },

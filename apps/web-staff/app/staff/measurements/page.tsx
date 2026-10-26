@@ -617,7 +617,7 @@ export default function StaffMeasurementsPage() {
                   className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border bg-background px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <ChartNoAxesCombined className="h-4 w-4" />
-                  خلاصة القياسات المركزية
+                  خلاصة الاختبارات والقياسات
                 </Link>
 
                 {hasVisibleKgClass ? (

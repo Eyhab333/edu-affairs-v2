@@ -24,8 +24,30 @@ import { calculateMeasurementClassSummary } from "@/lib/measurement-class-summar
 import { getFriendlySubjectLabel } from "@/lib/measurement-presentation";
 import { loadSpecialMeasurementSummarySource } from "@/lib/special-measurement-summary-report";
 
-const CENTRAL_MEASUREMENT_1 = "PRIMARY_CENTRAL_MEASUREMENT_1";
-const CENTRAL_MEASUREMENT_2 = "PRIMARY_CENTRAL_MEASUREMENT_2";
+const OFFICIAL_PRIMARY_ASSESSMENTS = [
+  {
+    kind: "PRIMARY_DIAGNOSTIC_TEST",
+    label: "الاختبار التشخيصي",
+  },
+  {
+    kind: "PRIMARY_PERIODIC_TEST_1",
+    label: "الاختبار الفتري الأول",
+  },
+  {
+    kind: "PRIMARY_PERIODIC_TEST_2",
+    label: "الاختبار الفتري الثاني",
+  },
+  {
+    kind: "PRIMARY_CENTRAL_MEASUREMENT_1",
+    label: "القياس المركزي الأول",
+  },
+  {
+    kind: "PRIMARY_CENTRAL_MEASUREMENT_2",
+    label: "القياس المركزي الثاني",
+  },
+] as const;
+type OfficialPrimaryAssessmentKind =
+  (typeof OFFICIAL_PRIMARY_ASSESSMENTS)[number]["kind"];
 // Firestore's current `in` query limit is 30 values.
 const FIRESTORE_IN_QUERY_LIMIT = 30;
 
@@ -99,8 +121,9 @@ type SummaryRow = {
   teacherAssignmentId: string;
   teacherPersonId: string;
   teacherName: string;
-  centralMeasurement1?: CentralBatch;
-  centralMeasurement2?: CentralBatch;
+  assessmentsByKind: Partial<
+    Record<OfficialPrimaryAssessmentKind, CentralBatch>
+  >;
 };
 
 type TeacherDirectoryEntry = {
@@ -134,6 +157,34 @@ function getClassKey(value: {
   classId?: string;
 }) {
   return [value.schoolId || "NO_SCHOOL", value.academicYearId || "NO_YEAR", value.classId || "NO_CLASS"].join(":");
+}
+
+function isOfficialPrimaryAssessmentKind(
+  value: string | undefined,
+): value is OfficialPrimaryAssessmentKind {
+  return OFFICIAL_PRIMARY_ASSESSMENTS.some(
+    (assessment) => assessment.kind === value,
+  );
+}
+
+function getBatchActivityTimestamp(batch: CentralBatch) {
+  for (const value of [batch.submittedAt, batch.updatedAt, batch.createdAt]) {
+    if (typeof value === "number" && Number.isFinite(value)) return value;
+  }
+  return 0;
+}
+
+function isLaterSubmittedBatch(
+  candidate: CentralBatch,
+  current: CentralBatch,
+) {
+  const candidateTimestamp = getBatchActivityTimestamp(candidate);
+  const currentTimestamp = getBatchActivityTimestamp(current);
+
+  return (
+    candidateTimestamp > currentTimestamp ||
+    (candidateTimestamp === currentTimestamp && candidate.id > current.id)
+  );
 }
 
 function getTeacherSubjectKeysForClass(
@@ -331,6 +382,9 @@ export default function StaffCentralMeasurementSummaryPage() {
   const [subjectFilter, setSubjectFilter] = useState("ALL");
   const [classFilter, setClassFilter] = useState("ALL");
   const [teacherFilter, setTeacherFilter] = useState("ALL");
+  const [assessmentFilter, setAssessmentFilter] = useState<
+    OfficialPrimaryAssessmentKind | "ALL"
+  >("ALL");
 
   const orgId = staffActor?.orgId?.trim() || "";
   const actorPersonId = staffActor?.personId?.trim() || "";
@@ -404,24 +458,20 @@ export default function StaffCentralMeasurementSummaryPage() {
             item,
           ]),
         );
-        const scopedCentralBatches = (source.batches as unknown as CentralBatch[])
+        const scopedOfficialBatches = (source.batches as unknown as CentralBatch[])
           .filter((batch) => batch.status === "SUBMITTED")
           .filter(
             (batch) =>
               batch.academicYearId === currentTerm.academicYearId &&
               batch.termId === currentTerm.id,
           )
-          .filter(
-            (batch) =>
-              batch.assessmentKind === CENTRAL_MEASUREMENT_1 ||
-              batch.assessmentKind === CENTRAL_MEASUREMENT_2,
-          )
+          .filter((batch) => isOfficialPrimaryAssessmentKind(batch.assessmentKind))
           .filter((batch) => reportClassByKey.has(getClassKey(batch)));
-        const visibleBatches = scopedCentralBatches.filter(
+        const visibleBatches = scopedOfficialBatches.filter(
           (batch) => batch.isCompensationBatch !== true,
         );
         const originalBatchIds = new Set(visibleBatches.map((batch) => batch.id));
-        const attachedCompensationBatches = scopedCentralBatches.filter(
+        const attachedCompensationBatches = scopedOfficialBatches.filter(
           (batch) =>
             batch.isCompensationBatch === true &&
             typeof batch.originalBatchId === "string" &&
@@ -489,19 +539,15 @@ export default function StaffCentralMeasurementSummaryPage() {
         ),
       );
 
-      const scopedCentralBatches = schoolSnapshots
+      const scopedOfficialBatches = schoolSnapshots
         .flatMap((snapshot) => snapshot.docs)
         .map((snapshot) => ({ id: snapshot.id, ...(snapshot.data() as Omit<CentralBatch, "id">) }))
         .filter((batch) => batch.status === "SUBMITTED")
         .filter((batch) => batch.academicYearId === currentTerm.academicYearId && batch.termId === currentTerm.id)
-        .filter(
-          (batch) =>
-            batch.assessmentKind === CENTRAL_MEASUREMENT_1 ||
-            batch.assessmentKind === CENTRAL_MEASUREMENT_2,
-        )
+        .filter((batch) => isOfficialPrimaryAssessmentKind(batch.assessmentKind))
         .filter((batch) => normalVisibleClassByKey.has(getClassKey(batch)));
 
-      const visibleBatches = scopedCentralBatches
+      const visibleBatches = scopedOfficialBatches
         .filter((batch) => batch.isCompensationBatch !== true)
         .filter((batch) => {
           const classInfo = normalVisibleClassByKey.get(getClassKey(batch));
@@ -511,7 +557,7 @@ export default function StaffCentralMeasurementSummaryPage() {
           return getTeacherSubjectKeysForClass(teacherAssignments, teacherPersonId, classInfo).has(batch.subjectKey);
         });
       const originalBatchIds = new Set(visibleBatches.map((batch) => batch.id));
-      const attachedCompensationBatches = scopedCentralBatches.filter(
+      const attachedCompensationBatches = scopedOfficialBatches.filter(
         (batch) =>
           batch.isCompensationBatch === true &&
           typeof batch.originalBatchId === "string" &&
@@ -604,12 +650,18 @@ export default function StaffCentralMeasurementSummaryPage() {
         classKey,
         classTitle: getFriendlyClassTitle(classInfo, visibleClasses) || classInfo.title || classInfo.code || "فصل دراسي",
         teacherAssignmentId: batch.teacherAssignmentId,
+        assessmentsByKind: {},
       };
 
-      if (batch.assessmentKind === CENTRAL_MEASUREMENT_1) {
-        existing.centralMeasurement1 = batch;
-      } else if (batch.assessmentKind === CENTRAL_MEASUREMENT_2) {
-        existing.centralMeasurement2 = batch;
+      if (!isOfficialPrimaryAssessmentKind(batch.assessmentKind)) return;
+
+      const currentAssessment =
+        existing.assessmentsByKind[batch.assessmentKind];
+      if (
+        !currentAssessment ||
+        isLaterSubmittedBatch(batch, currentAssessment)
+      ) {
+        existing.assessmentsByKind[batch.assessmentKind] = batch;
       }
       grouped.set(key, existing);
     });
@@ -744,7 +796,7 @@ export default function StaffCentralMeasurementSummaryPage() {
     teacherFilter,
   ]);
 
-  const filteredRows = useMemo(
+  const rowsMatchingFilters = useMemo(
     () =>
       rowsMatchingSchoolTeacherAndSubject.filter(
         (row) =>
@@ -754,72 +806,81 @@ export default function StaffCentralMeasurementSummaryPage() {
     [effectiveClassFilter, rowsMatchingSchoolTeacherAndSubject],
   );
 
+  const visibleAssessments = useMemo(
+    () =>
+      assessmentFilter === "ALL"
+        ? OFFICIAL_PRIMARY_ASSESSMENTS
+        : OFFICIAL_PRIMARY_ASSESSMENTS.filter(
+            (assessment) => assessment.kind === assessmentFilter,
+          ),
+    [assessmentFilter],
+  );
+
+  const filteredRows = useMemo(
+    () =>
+      rowsMatchingFilters.filter((row) =>
+        visibleAssessments.some(
+          (assessment) => !!row.assessmentsByKind[assessment.kind],
+        ),
+      ),
+    [rowsMatchingFilters, visibleAssessments],
+  );
+
   const filteredSummary = useMemo(
     () => ({
       rowCount: filteredRows.length,
-      firstCount: filteredRows.filter((row) => !!row.centralMeasurement1).length,
-      secondCount: filteredRows.filter((row) => !!row.centralMeasurement2).length,
+      resultCount: filteredRows.reduce(
+        (count, row) =>
+          count +
+          visibleAssessments.filter(
+            (assessment) => !!row.assessmentsByKind[assessment.kind],
+          ).length,
+        0,
+      ),
     }),
-    [filteredRows],
+    [filteredRows, visibleAssessments],
   );
 
-  const filteredPercentageAverages = useMemo(() => {
-    const percentagePairs = filteredRows.map((row) => {
-      const firstPercentage = row.centralMeasurement1
-        ? getBatchPercentage({
-            batch: row.centralMeasurement1,
-            compensationBatches:
-              compensationBatchesByOriginalBatchId.get(
-                row.centralMeasurement1.id,
-              ) ?? [],
-            templateMaxScoreById,
-          })
-        : null;
-      const secondPercentage = row.centralMeasurement2
-        ? getBatchPercentage({
-            batch: row.centralMeasurement2,
-            compensationBatches:
-              compensationBatchesByOriginalBatchId.get(
-                row.centralMeasurement2.id,
-              ) ?? [],
-            templateMaxScoreById,
-          })
-        : null;
-
-      return { firstPercentage, secondPercentage };
-    });
-
-    const first = averageFinitePercentages(
-      percentagePairs.map((pair) => pair.firstPercentage),
-    );
-    const second = averageFinitePercentages(
-      percentagePairs.map((pair) => pair.secondPercentage),
-    );
-    const overall = averageFinitePercentages(
-      percentagePairs.flatMap((pair) =>
-        typeof pair.firstPercentage === "number" &&
-        Number.isFinite(pair.firstPercentage) &&
-        typeof pair.secondPercentage === "number" &&
-        Number.isFinite(pair.secondPercentage)
-          ? [(pair.firstPercentage + pair.secondPercentage) / 2]
-          : [],
-      ),
-    );
-
-    return { first, second, overall };
-  }, [
-    compensationBatchesByOriginalBatchId,
-    filteredRows,
-    templateMaxScoreById,
-  ]);
+  const filteredPercentageAverages = useMemo(
+    () =>
+      visibleAssessments.map((assessment) => ({
+        ...assessment,
+        average: averageFinitePercentages(
+          filteredRows.map((row) => {
+            const batch = row.assessmentsByKind[assessment.kind];
+            return batch
+              ? getBatchPercentage({
+                  batch,
+                  compensationBatches:
+                    compensationBatchesByOriginalBatchId.get(batch.id) ?? [],
+                  templateMaxScoreById,
+                })
+              : null;
+          }),
+        ),
+      })),
+    [
+      compensationBatchesByOriginalBatchId,
+      filteredRows,
+      templateMaxScoreById,
+      visibleAssessments,
+    ],
+  );
 
   const hasActiveFilters =
     schoolFilter !== "ALL" ||
     subjectFilter !== "ALL" ||
     classFilter !== "ALL" ||
-    teacherFilter !== "ALL";
+    teacherFilter !== "ALL" ||
+    assessmentFilter !== "ALL";
   const selectedSchoolName = schoolFilter === "ALL" ? "" : schoolOptions.find(([id]) => id === schoolFilter)?.[1] || "";
   const selectedSubjectTitle = subjectFilter === "ALL" ? "" : subjectOptions.find(([key]) => key === subjectFilter)?.[1] || "";
+  const selectedAssessmentLabel =
+    assessmentFilter === "ALL"
+      ? ""
+      : OFFICIAL_PRIMARY_ASSESSMENTS.find(
+          (assessment) => assessment.kind === assessmentFilter,
+        )?.label || "";
   const organizationName = staffActor?.org?.nameAr || staffActor?.org?.name || staffActor?.org?.shortName || "المنشأة التعليمية";
 
   if (!staffActor) {
@@ -870,13 +931,14 @@ export default function StaffCentralMeasurementSummaryPage() {
                   <TableProperties className="size-5" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">خلاصة القياسات المركزية</h1>
-                  <p className="mt-1 text-sm text-muted-foreground">نتائج القياس المركزي الأول والثاني للفصول المرئية.</p>
+                  <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">خلاصة الاختبارات والقياسات</h1>
+                  <p className="mt-1 text-sm text-muted-foreground">نتائج الاختبارات والقياسات الرسمية للفصول المرئية.</p>
                 </div>
               </div>
               <p className="central-summary-print-context mt-4 hidden text-sm leading-7 text-slate-700">
                 {selectedSchoolName || organizationName} · السنة الدراسية الحالية · {currentTerm?.title || currentTerm?.shortTitle || "الفصل الدراسي الحالي"}
-                {selectedSubjectTitle ? ` · ${selectedSubjectTitle}` : ""} · تاريخ الطباعة: {new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium" }).format(new Date())}
+                {selectedSubjectTitle ? ` · ${selectedSubjectTitle}` : ""}
+                {selectedAssessmentLabel ? ` · ${selectedAssessmentLabel}` : ""} · تاريخ الطباعة: {new Intl.DateTimeFormat("ar-SA", { dateStyle: "medium" }).format(new Date())}
               </p>
             </div>
 
@@ -887,7 +949,7 @@ export default function StaffCentralMeasurementSummaryPage() {
           </div>
         </header>
 
-        {error ? <section className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">تعذر تحميل خلاصة القياسات المركزية: {error}</section> : null}
+        {error ? <section className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">تعذر تحميل خلاصة الاختبارات والقياسات: {error}</section> : null}
 
         <section className="no-print rounded-2xl border bg-card p-4 shadow-sm">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
@@ -919,8 +981,15 @@ export default function StaffCentralMeasurementSummaryPage() {
                 {classOptions.map(([key, title]) => <option key={key} value={key}>{title}</option>)}
               </select>
             </label>
+            <label className="grid gap-1.5 text-sm font-medium lg:min-w-48">
+              الاختبار / القياس
+              <select value={assessmentFilter} onChange={(event) => setAssessmentFilter(event.target.value as OfficialPrimaryAssessmentKind | "ALL")} className="h-10 rounded-xl border bg-background px-3 text-sm font-normal outline-none focus:ring-2 focus:ring-ring">
+                <option value="ALL">الكل</option>
+                {OFFICIAL_PRIMARY_ASSESSMENTS.map((assessment) => <option key={assessment.kind} value={assessment.kind}>{assessment.label}</option>)}
+              </select>
+            </label>
             {hasActiveFilters ? (
-              <Button type="button" variant="ghost" className="w-fit" onClick={() => { setSchoolFilter("ALL"); setSubjectFilter("ALL"); setClassFilter("ALL"); setTeacherFilter("ALL"); }}>
+              <Button type="button" variant="ghost" className="w-fit" onClick={() => { setSchoolFilter("ALL"); setSubjectFilter("ALL"); setClassFilter("ALL"); setTeacherFilter("ALL"); setAssessmentFilter("ALL"); }}>
                 <RotateCcw className="size-4" />
                 مسح الفلاتر
               </Button>
@@ -928,25 +997,19 @@ export default function StaffCentralMeasurementSummaryPage() {
           </div>
         </section>
 
-        <section className="grid gap-3 md:grid-cols-3">
-          <PercentageAverageCard
-            label="متوسط القياس المركزي الأول"
-            average={filteredPercentageAverages.first}
-          />
-          <PercentageAverageCard
-            label="متوسط القياس المركزي الثاني"
-            average={filteredPercentageAverages.second}
-          />
-          <PercentageAverageCard
-            label="متوسط المجموع الكلي"
-            average={filteredPercentageAverages.overall}
-          />
+        <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+          {filteredPercentageAverages.map((assessment) => (
+            <PercentageAverageCard
+              key={assessment.kind}
+              label={`متوسط ${assessment.label}`}
+              average={assessment.average}
+            />
+          ))}
         </section>
 
-        <section className="grid gap-3 sm:grid-cols-3">
+        <section className="grid gap-3 sm:grid-cols-2">
           <SummaryCard label="الفصول/المواد" value={filteredSummary.rowCount} />
-          <SummaryCard label="القياس الأول المرصود" value={filteredSummary.firstCount} />
-          <SummaryCard label="القياس الثاني المرصود" value={filteredSummary.secondCount} />
+          <SummaryCard label="النتائج المرصودة" value={filteredSummary.resultCount} />
         </section>
 
         <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
@@ -955,19 +1018,22 @@ export default function StaffCentralMeasurementSummaryPage() {
               {Array.from({ length: 5 }).map((_, index) => <div key={index} className="h-14 animate-pulse rounded-xl bg-muted" />)}
             </div>
           ) : rows.length === 0 ? (
-            <div className="p-8 text-center text-sm text-muted-foreground">لا توجد نتائج قياسات مركزية مرصودة حتى الآن.</div>
+            <div className="p-8 text-center text-sm text-muted-foreground">لا توجد نتائج اختبارات أو قياسات رسمية مرصودة حتى الآن.</div>
           ) : filteredRows.length === 0 ? (
             <div className="p-8 text-center text-sm text-muted-foreground">لا توجد نتائج مطابقة للفلاتر المحددة.</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[760px] text-right text-sm">
+              <table className="w-full min-w-[1100px] text-right text-sm">
                 <thead className="bg-muted/50 text-xs text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 font-semibold">المادة</th>
                     <th className="px-4 py-3 font-semibold">اسم المعلم</th>
                     <th className="px-4 py-3 font-semibold">الصف والفصل</th>
-                    <th className="px-4 py-3 font-semibold">القياس المركزي الأول</th>
-                    <th className="px-4 py-3 font-semibold">القياس المركزي الثاني</th>
+                    {visibleAssessments.map((assessment) => (
+                      <th key={assessment.kind} className="px-4 py-3 font-semibold">
+                        {assessment.label}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
@@ -976,8 +1042,22 @@ export default function StaffCentralMeasurementSummaryPage() {
                       <td className="px-4 py-4 font-medium">{row.subjectTitle}</td>
                       <td className="px-4 py-4">{row.teacherName}</td>
                       <td className="px-4 py-4">{row.classTitle}</td>
-                      <td className="px-4 py-4"><MeasurementPercentage batch={row.centralMeasurement1} compensationBatches={row.centralMeasurement1 ? compensationBatchesByOriginalBatchId.get(row.centralMeasurement1.id) ?? [] : []} templateMaxScoreById={templateMaxScoreById} /></td>
-                      <td className="px-4 py-4"><MeasurementPercentage batch={row.centralMeasurement2} compensationBatches={row.centralMeasurement2 ? compensationBatchesByOriginalBatchId.get(row.centralMeasurement2.id) ?? [] : []} templateMaxScoreById={templateMaxScoreById} /></td>
+                      {visibleAssessments.map((assessment) => {
+                        const batch = row.assessmentsByKind[assessment.kind];
+                        return (
+                          <td key={assessment.kind} className="px-4 py-4">
+                            <MeasurementPercentage
+                              batch={batch}
+                              compensationBatches={
+                                batch
+                                  ? compensationBatchesByOriginalBatchId.get(batch.id) ?? []
+                                  : []
+                              }
+                              templateMaxScoreById={templateMaxScoreById}
+                            />
+                          </td>
+                        );
+                      })}
                     </tr>
                   ))}
                 </tbody>
