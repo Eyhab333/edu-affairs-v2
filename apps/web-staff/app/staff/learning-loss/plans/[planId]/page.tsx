@@ -27,6 +27,10 @@ import {
   isTechnicalIdentifier,
   normalizeText,
 } from "@/lib/class-presentation";
+import {
+  getFriendlyMeasurementLabel,
+  getFriendlySubjectLabel,
+} from "@/lib/measurement-presentation";
 
 type VisibleClass = {
   id: string;
@@ -59,6 +63,7 @@ type StaffLearningLossActor = {
   roleKeys?: string[];
   visibleClasses?: VisibleClass[];
   classSubjectOfferings?: VisibleOffering[];
+  schools?: Array<{ id: string; name?: string }>;
 };
 
 type LearningLossPlanDoc = StudentLearningLossPlan & {
@@ -83,6 +88,24 @@ type SourceTrackerEntry = StudentTrackerEntry & {
   id: string;
   classSubjectOfferingId?: string;
   batchId?: string;
+};
+
+type SourceMeasurementBatch = {
+  id: string;
+  createdByPersonId?: string;
+  createdByRoleKey?: string;
+  teacherAssignmentId?: string;
+  templateTitle?: string;
+  assessmentKind?: string;
+  assessmentSlot?: string;
+  trackerKind?: string;
+  measuredAt?: number;
+  submittedAt?: number;
+};
+
+type SourceTeacherAssignment = {
+  id: string;
+  teacherPersonId?: string;
 };
 
 type LoadingState = "idle" | "loading" | "success" | "error";
@@ -319,7 +342,7 @@ function getSubjectLabel(
               (identifier) =>
                 value.toLowerCase() === identifier!.toLowerCase(),
             ),
-      ) || null
+      ) || getFriendlySubjectLabel(plan.subjectKey) || null
   );
 }
 
@@ -439,6 +462,127 @@ async function loadSourceTrackerEntry(
   } catch {
     return null;
   }
+}
+
+async function loadSourceMeasurementBatch(
+  orgId: string,
+  batchId: string,
+): Promise<SourceMeasurementBatch | null> {
+  if (!batchId) return null;
+
+  try {
+    const ref = doc(db, "orgs", orgId, "studentMeasurementBatches", batchId);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) return null;
+
+    return {
+      id: snap.id,
+      ...(snap.data() as Omit<SourceMeasurementBatch, "id">),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function loadSourceTeacherAssignment(
+  orgId: string,
+  teacherAssignmentId: string,
+): Promise<SourceTeacherAssignment | null> {
+  if (!teacherAssignmentId) return null;
+
+  try {
+    const ref = doc(db, "orgs", orgId, "teacherAssignments", teacherAssignmentId);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) return null;
+
+    return {
+      id: snap.id,
+      ...(snap.data() as Omit<SourceTeacherAssignment, "id">),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function loadPeopleDirectory(orgId: string, personIds: string[]) {
+  const uniquePersonIds = Array.from(
+    new Set(personIds.map((personId) => personId.trim()).filter(Boolean)),
+  );
+  const names = new Map<string, string>();
+
+  await Promise.all(
+    uniquePersonIds.map(async (personId) => {
+      try {
+        const ref = doc(db, "orgs", orgId, "people", personId);
+        const snap = await getDoc(ref);
+        const displayName = (snap.data() as { displayName?: string } | undefined)
+          ?.displayName?.trim();
+
+        if (displayName) {
+          names.set(personId, displayName);
+        }
+      } catch {
+        // Source-responsibility enrichment is best-effort for historical data.
+      }
+    }),
+  );
+
+  return names;
+}
+
+function resolveSourceBatchId(
+  plan: LearningLossPlanDoc,
+  sourceRecord: SourceAssessmentRecord | null,
+  sourceTrackerEntry: SourceTrackerEntry | null,
+) {
+  return [
+    plan.sourceBatchId,
+    sourceRecord?.batchId,
+    sourceTrackerEntry?.batchId,
+  ]
+    .map((value) => value?.trim() || "")
+    .find(Boolean) || "";
+}
+
+function getFriendlySourceTitle(params: {
+  plan: LearningLossPlanDoc;
+  sourceRecord: SourceAssessmentRecord | null;
+  sourceTrackerEntry: SourceTrackerEntry | null;
+  sourceBatch: SourceMeasurementBatch | null;
+}) {
+  const values =
+    params.plan.sourceType === "TRACKER_ENTRY"
+      ? [
+          params.sourceBatch?.templateTitle,
+          params.sourceTrackerEntry?.topicTitle,
+          params.sourceTrackerEntry?.lessonTitle,
+          params.sourceTrackerEntry?.kind,
+          params.sourceBatch?.trackerKind,
+          params.plan.sourceTitle,
+        ]
+      : [
+          params.sourceBatch?.templateTitle,
+          params.sourceRecord?.assessmentSlot,
+          params.sourceRecord?.kind,
+          params.sourceBatch?.assessmentSlot,
+          params.sourceBatch?.assessmentKind,
+          params.plan.sourceTitle,
+        ];
+
+  return (
+    values
+      .map((value) => {
+        const normalized = normalizeText(value);
+
+        return (
+          getFriendlyMeasurementLabel(normalized) ||
+          (normalized && !isTechnicalIdentifier(normalized) ? normalized : "")
+        );
+      })
+      .find(Boolean) || "غير محدد"
+  );
 }
 
 function buildInitialCheckForm(
@@ -583,6 +727,13 @@ export default function LearningLossPlanPage() {
 
   const [sourceTrackerEntry, setSourceTrackerEntry] =
     useState<SourceTrackerEntry | null>(null);
+  const [sourceBatch, setSourceBatch] =
+    useState<SourceMeasurementBatch | null>(null);
+  const [sourceTeacherAssignment, setSourceTeacherAssignment] =
+    useState<SourceTeacherAssignment | null>(null);
+  const [peopleById, setPeopleById] = useState<Map<string, string>>(
+    () => new Map(),
+  );
 
   const [firstCheck, setFirstCheck] = useState<CheckForm>(
     buildInitialCheckForm(),
@@ -631,6 +782,91 @@ export default function LearningLossPlanPage() {
     () => (plan ? getSubjectLabel(plan, visibleOfferings) : null),
     [plan, visibleOfferings],
   );
+
+  const schoolLabel = useMemo(() => {
+    if (!plan) return "غير محدد";
+
+    return (
+      classInfo?.schoolName?.trim() ||
+      currentActor?.schools?.find((school) => school.id === plan.schoolId)
+        ?.name?.trim() ||
+      plan.schoolId ||
+      "غير محدد"
+    );
+  }, [classInfo, currentActor?.schools, plan]);
+
+  const sourceTitle = useMemo(() => {
+    if (!plan) return "غير محدد";
+
+    return getFriendlySourceTitle({
+      plan,
+      sourceRecord,
+      sourceTrackerEntry,
+      sourceBatch,
+    });
+  }, [plan, sourceBatch, sourceRecord, sourceTrackerEntry]);
+
+  const sourceDate = useMemo(() => {
+    if (!plan) return undefined;
+
+    return plan.sourceType === "TRACKER_ENTRY"
+      ? sourceTrackerEntry?.recordedAt ??
+          sourceBatch?.measuredAt ??
+          sourceBatch?.submittedAt ??
+          plan.baselineMeasuredAt
+      : sourceRecord?.measuredAt ??
+          sourceBatch?.measuredAt ??
+          sourceBatch?.submittedAt ??
+          plan.baselineMeasuredAt;
+  }, [plan, sourceBatch, sourceRecord, sourceTrackerEntry]);
+
+  const responsibilities = useMemo(() => {
+    const getPersonName = (personId?: string) => {
+      const normalizedPersonId = personId?.trim() || "";
+
+      return normalizedPersonId
+        ? peopleById.get(normalizedPersonId) || "غير محدد"
+        : "غير محدد";
+    };
+    const isTrackerSource = plan?.sourceType === "TRACKER_ENTRY";
+    const performerPersonId = isTrackerSource
+      ? sourceTrackerEntry?.recordedByPersonId
+      : sourceRecord?.assessedByPersonId;
+
+    return [
+      {
+        label: "معلم المادة",
+        value: getPersonName(sourceTeacherAssignment?.teacherPersonId),
+      },
+      {
+        label: isTrackerSource ? "منفذ المتابعة" : "منفذ القياس",
+        value: getPersonName(performerPersonId),
+      },
+      {
+        label: isTrackerSource
+          ? "منشئ دفعة المتابعة"
+          : "منشئ دفعة القياس",
+        value: getPersonName(sourceBatch?.createdByPersonId),
+      },
+      {
+        label: "منشئ خطة الفاقد",
+        value: getPersonName(plan?.createdByPersonId),
+      },
+      {
+        label: "مسؤول متابعة الخطة",
+        value: getPersonName(plan?.ownerPersonId),
+      },
+    ];
+  }, [
+    peopleById,
+    plan?.createdByPersonId,
+    plan?.ownerPersonId,
+    plan?.sourceType,
+    sourceBatch?.createdByPersonId,
+    sourceRecord?.assessedByPersonId,
+    sourceTeacherAssignment?.teacherPersonId,
+    sourceTrackerEntry?.recordedByPersonId,
+  ]);
 
   const hasAccessToPlan = useMemo(() => {
     if (!plan) return true;
@@ -700,6 +936,10 @@ export default function LearningLossPlanPage() {
         setPlan(null);
         setStudent(null);
         setSourceRecord(null);
+        setSourceTrackerEntry(null);
+        setSourceBatch(null);
+        setSourceTeacherAssignment(null);
+        setPeopleById(new Map());
         setError("لم يتم العثور على خطة الفاقد.");
         setStatus("error");
         return;
@@ -709,6 +949,18 @@ export default function LearningLossPlanPage() {
         id: planSnap.id,
         ...(planSnap.data() as Omit<LearningLossPlanDoc, "id">),
       };
+
+      if (!visibleClassMap.has(getPlanClassKey(loadedPlan))) {
+        setPlan(loadedPlan);
+        setStudent(null);
+        setSourceRecord(null);
+        setSourceTrackerEntry(null);
+        setSourceBatch(null);
+        setSourceTeacherAssignment(null);
+        setPeopleById(new Map());
+        setStatus("success");
+        return;
+      }
 
       const [loadedStudent, loadedSourceRecord, loadedSourceTrackerEntry] =
         await Promise.all([
@@ -728,11 +980,38 @@ export default function LearningLossPlanPage() {
             loadedPlan.sourceTrackerEntryId || "",
           ),
         ]);
+      const sourceBatchId = resolveSourceBatchId(
+        loadedPlan,
+        loadedSourceRecord,
+        loadedSourceTrackerEntry,
+      );
+      const loadedSourceBatch = await loadSourceMeasurementBatch(
+        currentActor.orgId,
+        sourceBatchId,
+      );
+      const loadedSourceTeacherAssignment = await loadSourceTeacherAssignment(
+        currentActor.orgId,
+        loadedSourceBatch?.teacherAssignmentId?.trim() || "",
+      );
+      const sourcePerformerPersonId =
+        loadedPlan.sourceType === "TRACKER_ENTRY"
+          ? loadedSourceTrackerEntry?.recordedByPersonId
+          : loadedSourceRecord?.assessedByPersonId;
+      const loadedPeopleById = await loadPeopleDirectory(currentActor.orgId, [
+        sourcePerformerPersonId || "",
+        loadedSourceBatch?.createdByPersonId || "",
+        loadedPlan.createdByPersonId || "",
+        loadedPlan.ownerPersonId || "",
+        loadedSourceTeacherAssignment?.teacherPersonId || "",
+      ]);
 
       setPlan(loadedPlan);
       setStudent(loadedStudent);
       setSourceRecord(loadedSourceRecord);
       setSourceTrackerEntry(loadedSourceTrackerEntry);
+      setSourceBatch(loadedSourceBatch);
+      setSourceTeacherAssignment(loadedSourceTeacherAssignment);
+      setPeopleById(loadedPeopleById);
       setTreatmentPlanForm(buildTreatmentPlanForm(loadedPlan));
       setActionForm(buildRemediationActionForm());
       setEditingActionIndex(null);
@@ -760,9 +1039,13 @@ export default function LearningLossPlanPage() {
     } catch (error: unknown) {
       setError(getErrorMessage(error));
       setStatus("error");
+      setSourceRecord(null);
       setSourceTrackerEntry(null);
+      setSourceBatch(null);
+      setSourceTeacherAssignment(null);
+      setPeopleById(new Map());
     }
-  }, [currentActor?.orgId, planId]);
+  }, [currentActor?.orgId, planId, visibleClassMap]);
 
   useEffect(() => {
     void loadPlan();
@@ -1251,6 +1534,10 @@ export default function LearningLossPlanPage() {
                 label="نهاية الخطة"
                 value={formatDate(plan.planEndAt)}
               />
+              <InfoItem
+                label="تاريخ إنشاء خطة الفاقد"
+                value={formatDate(plan.createdAt)}
+              />
             </div>
           </section>
 
@@ -1264,21 +1551,21 @@ export default function LearningLossPlanPage() {
               />
               <InfoItem
                 label="عنوان المصدر"
-                value={
-                  plan.sourceTitle ||
-                  sourceRecord?.assessmentSlot ||
-                  sourceTrackerEntry?.topicTitle ||
-                  sourceTrackerEntry?.lessonTitle ||
-                  "غير محدد"
-                }
+                value={sourceTitle}
+              />
+              <InfoItem label="المدرسة" value={schoolLabel} />
+              <InfoItem label="الفصل" value={classLabel} />
+              <InfoItem
+                label="المادة / المجال"
+                value={subjectLabel || plan.subjectKey || "غير محدد"}
               />
               <InfoItem
-                label="تاريخ القياس"
-                value={formatDate(
-                  plan.baselineMeasuredAt ||
-                    sourceRecord?.measuredAt ||
-                    sourceTrackerEntry?.recordedAt,
-                )}
+                label={
+                  plan.sourceType === "TRACKER_ENTRY"
+                    ? "تاريخ المتابعة"
+                    : "تاريخ القياس"
+                }
+                value={formatDate(sourceDate)}
               />
               <InfoItem
                 label="القياس الأساسي"
@@ -1291,6 +1578,32 @@ export default function LearningLossPlanPage() {
                   plan.baselineMaxScore,
                 )}
               />
+            </div>
+
+            {sourceBatch ? (
+              <button
+                type="button"
+                onClick={() =>
+                  router.push(
+                    `/staff/measurements/batches/${encodeURIComponent(sourceBatch.id)}`,
+                  )
+                }
+                className="mt-4 inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-medium transition hover:bg-muted"
+              >
+                {plan.sourceType === "TRACKER_ENTRY"
+                  ? "فتح المتابعة الأصلية"
+                  : "فتح القياس الأصلي"}
+              </button>
+            ) : null}
+
+            <div className="mt-6 border-t pt-5">
+              <h3 className="font-semibold">المسؤوليات</h3>
+
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {responsibilities.map((item) => (
+                  <InfoItem key={item.label} label={item.label} value={item.value} />
+                ))}
+              </div>
             </div>
           </section>
 

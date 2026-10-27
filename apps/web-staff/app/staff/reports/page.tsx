@@ -9,6 +9,7 @@ import {
   ListChecks,
   Ruler,
   School,
+  Target,
   UsersRound,
 } from "lucide-react";
 
@@ -62,6 +63,14 @@ const reportAreas = [
       "تقرير تفصيلي لدرجات الطلاب مع فلاتر المدرسة والفصل والمادة ونوع الاختبار.",
     icon: School,
     tone: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300",
+  },
+  {
+    access: "LEARNING_LOSS",
+    href: "/staff/learning-loss",
+    title: "الفاقد التعليمي",
+    description: "متابعة خطط الفاقد التعليمي والطلاب المرشحين ضمن الفصول المرئية.",
+    icon: Target,
+    tone: "bg-rose-500/10 text-rose-700 dark:text-rose-300",
   },
 ] as const;
 
@@ -126,6 +135,8 @@ export default function ReportsPage() {
         case "EVALUATIONS":
           return canAccessEvaluationReport;
         case "STUDENT_SCORES":
+          return actor.visibleClasses.length > 0;
+        case "LEARNING_LOSS":
           return actor.visibleClasses.length > 0;
       }
 

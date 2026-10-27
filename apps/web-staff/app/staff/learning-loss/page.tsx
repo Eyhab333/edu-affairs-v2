@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Target } from "lucide-react";
 import {
   collection,
   doc,
+  documentId,
   getDoc,
   getDocs,
   query,
@@ -109,6 +110,25 @@ type LearningLossPlanRow = {
   classInfo: VisibleClass | null;
 };
 
+type TeacherDirectoryEntry = {
+  teacherPersonId: string;
+  teacherName: string;
+};
+
+type EnrichedLearningLossCandidate = LearningLossCandidate &
+  TeacherDirectoryEntry;
+
+type EnrichedLearningLossPlanRow = LearningLossPlanRow & TeacherDirectoryEntry;
+
+type LearningLossFilterRow = {
+  schoolId: string;
+  schoolName: string;
+  teacherPersonId: string;
+  teacherName: string;
+  subjectKey: string;
+  subjectLabel: string;
+};
+
 type LoadingState = "idle" | "loading" | "success" | "error";
 
 type LearningLossContextFilter = {
@@ -118,6 +138,63 @@ type LearningLossContextFilter = {
   subjectKey: string;
   classSubjectOfferingId: string;
 };
+
+// Firestore's current `in` query limit is 30 values.
+const FIRESTORE_IN_QUERY_LIMIT = 30;
+// Candidates and plans load in parallel, so this caps roster requests at eight
+// concurrent calls across both sections.
+const CLASS_ROSTER_CONCURRENCY_PER_SECTION = 4;
+const ARABIC_SCHOOL_LABELS: Readonly<Record<string, string>> = {
+  "mrb-boys-sayh": "منار الريادة بنين - السيح",
+  "mrb-boys-faleh": "منار الريادة بنين - الفالح",
+  "mrb-girls": "منار الريادة بنات",
+  "kg-01": "واحة الرياحين 1",
+  "kg-02": "واحة الرياحين 2",
+  "kg-03": "واحة الرياحين 3",
+  "kg-04": "واحة الرياحين 4",
+};
+
+type ClassRosterPromiseCache = Map<
+  string,
+  ReturnType<typeof getClassRoster>
+>;
+
+function chunkValues<T>(values: T[], size: number) {
+  const chunks: T[][] = [];
+
+  for (let index = 0; index < values.length; index += size) {
+    chunks.push(values.slice(index, index + size));
+  }
+
+  return chunks;
+}
+
+function uniqueStrings(values: Array<string | undefined | null>) {
+  return Array.from(
+    new Set(values.map((value) => value?.trim() || "").filter(Boolean)),
+  );
+}
+
+async function mapWithConcurrency<T, TResult>(
+  values: T[],
+  concurrency: number,
+  mapper: (value: T, index: number) => Promise<TResult>,
+) {
+  const results = new Array<TResult>(values.length);
+  let nextIndex = 0;
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, values.length) }, async () => {
+      while (nextIndex < values.length) {
+        const index = nextIndex;
+        nextIndex += 1;
+        results[index] = await mapper(values[index], index);
+      }
+    }),
+  );
+
+  return results;
+}
 
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
@@ -143,6 +220,32 @@ function formatDate(value?: number) {
   } catch {
     return "غير محدد";
   }
+}
+
+function formatFollowUpMeasurement(params: {
+  score?: number | null;
+  maxScore?: number | null;
+  measuredAt?: number | null;
+}) {
+  const { score, maxScore, measuredAt } = params;
+
+  if (
+    typeof score !== "number" ||
+    !Number.isFinite(score) ||
+    typeof maxScore !== "number" ||
+    !Number.isFinite(maxScore) ||
+    maxScore <= 0
+  ) {
+    return null;
+  }
+
+  return {
+    score: `${score.toLocaleString("ar-SA")} / ${maxScore.toLocaleString("ar-SA")} — ${((score / maxScore) * 100).toFixed(1)}%`,
+    measuredAt:
+      typeof measuredAt === "number" && Number.isFinite(measuredAt)
+        ? formatDate(measuredAt)
+        : "",
+  };
 }
 
 function calculatePercentage(record: CandidateRecord) {
@@ -465,7 +568,7 @@ function getSourceLabel(value?: string) {
     case "TRACKER_ENTRY":
       return "من متابعة";
     case "MANUAL":
-      return "فتح يدوي";
+      return "فاقد يدوي";
     default:
       return "غير محدد";
   }
@@ -475,23 +578,42 @@ function isOpenPlan(plan: LearningLossPlanDoc) {
   return !["CLOSED", "CANCELLED"].includes(String(plan.status || ""));
 }
 
-async function loadSchoolStudentName(params: {
-  orgId: string;
-  schoolId: string;
-  academicYearId: string;
-  classId: string;
-  studentId: string;
-}) {
+async function loadSchoolStudentName(
+  params: {
+    orgId: string;
+    schoolId: string;
+    academicYearId: string;
+    classId: string;
+    studentId: string;
+  },
+  rosterByClassKey: ClassRosterPromiseCache,
+) {
   if (!params.schoolId || !params.academicYearId || !params.classId) {
     return { id: params.studentId, displayName: "طالب غير محدد" };
   }
 
-  const roster = await getClassRoster({
-    orgId: params.orgId,
-    schoolId: params.schoolId,
-    academicYearId: params.academicYearId,
-    classId: params.classId,
-  });
+  const rosterKey = [
+    params.orgId,
+    params.schoolId,
+    params.academicYearId,
+    params.classId,
+  ].join("::");
+  let rosterRequest = rosterByClassKey.get(rosterKey);
+
+  if (!rosterRequest) {
+    rosterRequest = getClassRoster({
+      orgId: params.orgId,
+      schoolId: params.schoolId,
+      academicYearId: params.academicYearId,
+      classId: params.classId,
+    }).catch((error: unknown) => {
+      rosterByClassKey.delete(rosterKey);
+      throw error;
+    });
+    rosterByClassKey.set(rosterKey, rosterRequest);
+  }
+
+  const roster = await rosterRequest;
   const displayName = roster.rows.find(
     (row) => row.studentId === params.studentId,
   )?.displayName;
@@ -500,6 +622,115 @@ async function loadSchoolStudentName(params: {
     id: params.studentId,
     displayName: displayName || "طالب غير محدد",
   };
+}
+
+async function loadTeacherDirectory(
+  orgId: string,
+  teacherAssignmentIds: string[],
+) {
+  const assignmentById = new Map<string, { teacherPersonId: string }>();
+  const assignmentsRef = collection(db, "orgs", orgId, "teacherAssignments");
+
+  const assignmentSnapshots = await Promise.all(
+    chunkValues(teacherAssignmentIds, FIRESTORE_IN_QUERY_LIMIT).map((ids) =>
+      getDocs(query(assignmentsRef, where(documentId(), "in", ids))),
+    ),
+  );
+
+  assignmentSnapshots
+    .flatMap((snapshot) => snapshot.docs)
+    .forEach((snapshot) => {
+      const data = snapshot.data() as { teacherPersonId?: string };
+      const teacherPersonId = data.teacherPersonId?.trim() || "";
+
+      if (teacherPersonId) {
+        assignmentById.set(snapshot.id, { teacherPersonId });
+      }
+    });
+
+  const personIds = uniqueStrings(
+    Array.from(assignmentById.values()).map(
+      (assignment) => assignment.teacherPersonId,
+    ),
+  );
+  const personNameById = new Map<string, string>();
+  const peopleRef = collection(db, "orgs", orgId, "people");
+
+  const personSnapshots = await Promise.all(
+    chunkValues(personIds, FIRESTORE_IN_QUERY_LIMIT).map((ids) =>
+      getDocs(query(peopleRef, where(documentId(), "in", ids))),
+    ),
+  );
+
+  personSnapshots
+    .flatMap((snapshot) => snapshot.docs)
+    .forEach((snapshot) => {
+      const data = snapshot.data() as { displayName?: string };
+      const displayName = data.displayName?.trim() || "";
+
+      if (displayName) {
+        personNameById.set(snapshot.id, displayName);
+      }
+    });
+
+  return new Map<string, TeacherDirectoryEntry>(
+    Array.from(assignmentById.entries()).map(
+      ([assignmentId, assignment]) =>
+        [
+          assignmentId,
+          {
+            teacherPersonId: assignment.teacherPersonId,
+            teacherName:
+              personNameById.get(assignment.teacherPersonId) || "غير محدد",
+          },
+        ] as const,
+    ),
+  );
+}
+
+async function loadTeachersBySourceBatchId(
+  orgId: string,
+  sourceBatchIds: string[],
+) {
+  const batchesRef = collection(
+    db,
+    "orgs",
+    orgId,
+    "studentMeasurementBatches",
+  );
+  const batchSnapshots = await Promise.all(
+    chunkValues(sourceBatchIds, FIRESTORE_IN_QUERY_LIMIT).map((ids) =>
+      getDocs(query(batchesRef, where(documentId(), "in", ids))),
+    ),
+  );
+  const teacherAssignmentIdByBatchId = new Map<string, string>();
+
+  batchSnapshots
+    .flatMap((snapshot) => snapshot.docs)
+    .forEach((snapshot) => {
+      const data = snapshot.data() as { teacherAssignmentId?: string };
+      const teacherAssignmentId = data.teacherAssignmentId?.trim() || "";
+
+      if (teacherAssignmentId) {
+        teacherAssignmentIdByBatchId.set(snapshot.id, teacherAssignmentId);
+      }
+    });
+
+  const teacherDirectoryByAssignmentId = await loadTeacherDirectory(
+    orgId,
+    uniqueStrings(Array.from(teacherAssignmentIdByBatchId.values())),
+  );
+  const teacherBySourceBatchId = new Map<string, TeacherDirectoryEntry>();
+
+  teacherAssignmentIdByBatchId.forEach((teacherAssignmentId, batchId) => {
+    const teacher = teacherDirectoryByAssignmentId.get(teacherAssignmentId);
+
+    if (teacher) {
+      teacherBySourceBatchId.set(batchId, teacher);
+    }
+  });
+
+  return teacherBySourceBatchId;
 }
 
 export default function StaffLearningLossPage() {
@@ -519,6 +750,13 @@ export default function StaffLearningLossPage() {
   const [error, setError] = useState<string | null>(null);
   const [candidates, setCandidates] = useState<LearningLossCandidate[]>([]);
   const [openPlans, setOpenPlans] = useState<LearningLossPlanRow[]>([]);
+  const [schoolFilter, setSchoolFilter] = useState("ALL");
+  const [teacherFilter, setTeacherFilter] = useState("ALL");
+  const [subjectFilter, setSubjectFilter] = useState("ALL");
+  const [teacherBySourceBatchId, setTeacherBySourceBatchId] = useState<
+    Map<string, TeacherDirectoryEntry>
+  >(() => new Map());
+  const rosterByClassKeyRef = useRef<ClassRosterPromiseCache>(new Map());
   const [creatingPlanRecordId, setCreatingPlanRecordId] = useState<
     string | null
   >(null);
@@ -531,6 +769,24 @@ export default function StaffLearningLossPage() {
   const visibleOfferings = useMemo(() => {
     return currentActor?.classSubjectOfferings ?? [];
   }, [currentActor]);
+
+  const schoolNameById = useMemo(() => {
+    const names = new Map<string, string>();
+
+    visibleClasses.forEach((classInfo) => {
+      const schoolId = classInfo.schoolId?.trim() || "";
+      const schoolName = classInfo.schoolName?.trim() || "";
+
+      if (schoolId && !names.has(schoolId)) {
+        names.set(
+          schoolId,
+          ARABIC_SCHOOL_LABELS[schoolId] || schoolName || schoolId,
+        );
+      }
+    });
+
+    return names;
+  }, [visibleClasses]);
 
   const visibleSchoolIds = useMemo(() => {
     return Array.from(
@@ -732,8 +988,10 @@ export default function StaffLearningLossPage() {
         ...trackerEntries,
       ];
 
-      const loadedCandidates = await Promise.all(
-        records.map(async (record) => {
+      const loadedCandidates = await mapWithConcurrency(
+        records,
+        CLASS_ROSTER_CONCURRENCY_PER_SECTION,
+        async (record) => {
           const classInfo = getClassInfoForRow(record);
 
           const schoolId = record.schoolId || classInfo?.schoolId || "";
@@ -744,21 +1002,24 @@ export default function StaffLearningLossPage() {
             );
           }
 
-          const student = await loadSchoolStudentName({
-            orgId: currentActor.orgId,
-            schoolId,
-            academicYearId:
-              record.academicYearId || classInfo?.academicYearId || "",
-            classId: record.classId || classInfo?.id || "",
-            studentId: record.studentId,
-          });
+          const student = await loadSchoolStudentName(
+            {
+              orgId: currentActor.orgId,
+              schoolId,
+              academicYearId:
+                record.academicYearId || classInfo?.academicYearId || "",
+              classId: record.classId || classInfo?.id || "",
+              studentId: record.studentId,
+            },
+            rosterByClassKeyRef.current,
+          );
 
           return {
             record,
             student,
             classInfo,
           };
-        }),
+        },
       );
 
       loadedCandidates.sort((a, b) => {
@@ -826,8 +1087,10 @@ export default function StaffLearningLossPage() {
           return rowMatchesContext(plan, contextFilter);
         });
 
-      const rows = await Promise.all(
-        plans.map(async (plan) => {
+      const rows = await mapWithConcurrency(
+        plans,
+        CLASS_ROSTER_CONCURRENCY_PER_SECTION,
+        async (plan) => {
           const classInfo = getClassInfoForRow(plan);
 
           const schoolId = plan.schoolId || classInfo?.schoolId || "";
@@ -836,21 +1099,24 @@ export default function StaffLearningLossPage() {
             throw new Error(`خطة الطالب ${plan.studentId} غير مرتبطة بمدرسة.`);
           }
 
-          const student = await loadSchoolStudentName({
-            orgId: currentActor.orgId,
-            schoolId,
-            academicYearId:
-              plan.academicYearId || classInfo?.academicYearId || "",
-            classId: plan.classId || classInfo?.id || "",
-            studentId: plan.studentId,
-          });
+          const student = await loadSchoolStudentName(
+            {
+              orgId: currentActor.orgId,
+              schoolId,
+              academicYearId:
+                plan.academicYearId || classInfo?.academicYearId || "",
+              classId: plan.classId || classInfo?.id || "",
+              studentId: plan.studentId,
+            },
+            rosterByClassKeyRef.current,
+          );
 
           return {
             plan,
             student,
             classInfo,
           };
-        }),
+        },
       );
 
       rows.sort((a, b) => {
@@ -877,12 +1143,266 @@ export default function StaffLearningLossPage() {
   ]);
 
   const loadAll = useCallback(async () => {
+    rosterByClassKeyRef.current.clear();
     await Promise.all([loadCandidates(), loadOpenPlans()]);
   }, [loadCandidates, loadOpenPlans]);
 
   useEffect(() => {
     void loadAll();
   }, [loadAll]);
+
+  const sourceBatchIds = useMemo(() => {
+    return uniqueStrings([
+      ...candidates.map((item) => item.record.batchId),
+      ...openPlans.map((item) => item.plan.sourceBatchId),
+    ]).sort();
+  }, [candidates, openPlans]);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    if (
+      candidatesStatus !== "success" ||
+      plansStatus !== "success" ||
+      !currentActor?.orgId
+    ) {
+      return () => {
+        isCurrent = false;
+      };
+    }
+
+    if (sourceBatchIds.length === 0) {
+      setTeacherBySourceBatchId(new Map());
+
+      return () => {
+        isCurrent = false;
+      };
+    }
+
+    void loadTeachersBySourceBatchId(
+      currentActor.orgId,
+      sourceBatchIds,
+    )
+      .then((teachers) => {
+        if (isCurrent) {
+          setTeacherBySourceBatchId(teachers);
+        }
+      })
+      .catch(() => {
+        if (isCurrent) {
+          setTeacherBySourceBatchId(new Map());
+        }
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [
+    candidatesStatus,
+    currentActor?.orgId,
+    plansStatus,
+    sourceBatchIds,
+  ]);
+
+  const enrichedCandidates = useMemo<EnrichedLearningLossCandidate[]>(() => {
+    return candidates.map((item) => {
+      const sourceBatchId = item.record.batchId?.trim() || "";
+      const teacher = sourceBatchId
+        ? teacherBySourceBatchId.get(sourceBatchId)
+        : undefined;
+
+      return {
+        ...item,
+        teacherPersonId: teacher?.teacherPersonId || "",
+        teacherName: teacher?.teacherName || "غير محدد",
+      };
+    });
+  }, [candidates, teacherBySourceBatchId]);
+
+  const enrichedOpenPlans = useMemo<EnrichedLearningLossPlanRow[]>(() => {
+    return openPlans.map((item) => {
+      const sourceBatchId = item.plan.sourceBatchId?.trim() || "";
+      const teacher = sourceBatchId
+        ? teacherBySourceBatchId.get(sourceBatchId)
+        : undefined;
+
+      return {
+        ...item,
+        teacherPersonId: teacher?.teacherPersonId || "",
+        teacherName: teacher?.teacherName || "غير محدد",
+      };
+    });
+  }, [openPlans, teacherBySourceBatchId]);
+
+  const buildFilterRow = useCallback(
+    (
+      row: {
+        schoolId?: string;
+        subjectKey?: string;
+        classSubjectOfferingId?: string;
+      },
+      classInfo: VisibleClass | null,
+      teacher: TeacherDirectoryEntry,
+    ): LearningLossFilterRow => {
+      const schoolId = row.schoolId?.trim() || classInfo?.schoolId?.trim() || "";
+      const subjectKey = row.subjectKey?.trim() || "";
+
+      return {
+        schoolId,
+        schoolName:
+          ARABIC_SCHOOL_LABELS[schoolId] ||
+          classInfo?.schoolName?.trim() ||
+          schoolNameById.get(schoolId) ||
+          schoolId ||
+          "غير محدد",
+        teacherPersonId: teacher.teacherPersonId,
+        teacherName: teacher.teacherName,
+        subjectKey,
+        subjectLabel:
+          getSubjectLabel(
+            subjectKey,
+            row.classSubjectOfferingId,
+            visibleOfferings,
+          ) || subjectKey || "غير محدد",
+      };
+    },
+    [schoolNameById, visibleOfferings],
+  );
+
+  const allFilterRows = useMemo<LearningLossFilterRow[]>(() => {
+    return [
+      ...enrichedOpenPlans.map((item) =>
+        buildFilterRow(item.plan, item.classInfo, item),
+      ),
+      ...enrichedCandidates.map((item) =>
+        buildFilterRow(item.record, item.classInfo, item),
+      ),
+    ];
+  }, [buildFilterRow, enrichedCandidates, enrichedOpenPlans]);
+
+  const schoolOptions = useMemo(() => {
+    const optionsById = new Map<string, string>();
+
+    allFilterRows.forEach((row) => {
+      if (row.schoolId && !optionsById.has(row.schoolId)) {
+        optionsById.set(row.schoolId, row.schoolName);
+      }
+    });
+
+    return Array.from(optionsById, ([id, label]) => ({ id, label })).sort(
+      (left, right) =>
+        left.label.localeCompare(right.label, "ar") ||
+        left.id.localeCompare(right.id),
+    );
+  }, [allFilterRows]);
+
+  const teacherOptions = useMemo(() => {
+    const optionsById = new Map<string, string>();
+
+    allFilterRows.forEach((row) => {
+      if (
+        (schoolFilter === "ALL" || row.schoolId === schoolFilter) &&
+        row.teacherPersonId &&
+        !optionsById.has(row.teacherPersonId)
+      ) {
+        optionsById.set(row.teacherPersonId, row.teacherName);
+      }
+    });
+
+    return Array.from(optionsById, ([id, label]) => ({ id, label })).sort(
+      (left, right) =>
+        left.label.localeCompare(right.label, "ar") ||
+        left.id.localeCompare(right.id),
+    );
+  }, [allFilterRows, schoolFilter]);
+
+  const subjectOptions = useMemo(() => {
+    const optionsByKey = new Map<string, string>();
+
+    allFilterRows.forEach((row) => {
+      if (
+        (schoolFilter === "ALL" || row.schoolId === schoolFilter) &&
+        (teacherFilter === "ALL" ||
+          row.teacherPersonId === teacherFilter) &&
+        row.subjectKey &&
+        !optionsByKey.has(row.subjectKey)
+      ) {
+        optionsByKey.set(row.subjectKey, row.subjectLabel);
+      }
+    });
+
+    return Array.from(optionsByKey, ([id, label]) => ({ id, label })).sort(
+      (left, right) =>
+        left.label.localeCompare(right.label, "ar") ||
+        left.id.localeCompare(right.id),
+    );
+  }, [allFilterRows, schoolFilter, teacherFilter]);
+
+  useEffect(() => {
+    if (
+      schoolFilter !== "ALL" &&
+      !schoolOptions.some((option) => option.id === schoolFilter)
+    ) {
+      setSchoolFilter("ALL");
+    }
+  }, [schoolFilter, schoolOptions]);
+
+  useEffect(() => {
+    if (
+      teacherFilter !== "ALL" &&
+      !teacherOptions.some((option) => option.id === teacherFilter)
+    ) {
+      setTeacherFilter("ALL");
+    }
+  }, [teacherFilter, teacherOptions]);
+
+  useEffect(() => {
+    if (
+      subjectFilter !== "ALL" &&
+      !subjectOptions.some((option) => option.id === subjectFilter)
+    ) {
+      setSubjectFilter("ALL");
+    }
+  }, [subjectFilter, subjectOptions]);
+
+  const rowMatchesLocalFilters = useCallback(
+    (row: LearningLossFilterRow) => {
+      if (schoolFilter !== "ALL" && row.schoolId !== schoolFilter) {
+        return false;
+      }
+
+      if (
+        teacherFilter !== "ALL" &&
+        row.teacherPersonId !== teacherFilter
+      ) {
+        return false;
+      }
+
+      return subjectFilter === "ALL" || row.subjectKey === subjectFilter;
+    },
+    [schoolFilter, subjectFilter, teacherFilter],
+  );
+
+  const filteredOpenPlans = useMemo(() => {
+    return enrichedOpenPlans.filter((item) => {
+      return rowMatchesLocalFilters(
+        buildFilterRow(item.plan, item.classInfo, item),
+      );
+    });
+  }, [buildFilterRow, enrichedOpenPlans, rowMatchesLocalFilters]);
+
+  const filteredCandidates = useMemo(() => {
+    return enrichedCandidates.filter((item) => {
+      return rowMatchesLocalFilters(
+        buildFilterRow(item.record, item.classInfo, item),
+      );
+    });
+  }, [buildFilterRow, enrichedCandidates, rowMatchesLocalFilters]);
+
+  const hasActiveFilters =
+    schoolFilter !== "ALL" ||
+    teacherFilter !== "ALL" ||
+    subjectFilter !== "ALL";
 
   const createLearningLossPlan = useCallback(
     async (candidate: LearningLossCandidate) => {
@@ -1113,6 +1633,83 @@ export default function StaffLearningLossPage() {
         </section>
       ) : null}
 
+      <section className="rounded-2xl border bg-card p-4 shadow-sm">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 className="text-sm font-semibold">تصفية النتائج</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {new Intl.NumberFormat("ar-SA").format(filteredOpenPlans.length)} خطة مفتوحة
+              {" · "}
+              {new Intl.NumberFormat("ar-SA").format(filteredCandidates.length)} طالبًا مرشحًا
+            </p>
+          </div>
+
+          {hasActiveFilters ? (
+            <button
+              type="button"
+              onClick={() => {
+                setSchoolFilter("ALL");
+                setTeacherFilter("ALL");
+                setSubjectFilter("ALL");
+              }}
+              className="inline-flex h-9 items-center justify-center rounded-xl border px-3 text-sm font-medium transition hover:bg-muted"
+            >
+              مسح الفلاتر
+            </button>
+          ) : null}
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <label className="grid gap-1.5 text-sm font-medium">
+            المدرسة
+            <select
+              value={schoolFilter}
+              onChange={(event) => setSchoolFilter(event.target.value)}
+              className="h-10 rounded-xl border bg-background px-3 text-sm font-normal"
+            >
+              <option value="ALL">الكل</option>
+              {schoolOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="grid gap-1.5 text-sm font-medium">
+            المعلم
+            <select
+              value={teacherFilter}
+              onChange={(event) => setTeacherFilter(event.target.value)}
+              className="h-10 rounded-xl border bg-background px-3 text-sm font-normal"
+            >
+              <option value="ALL">الكل</option>
+              {teacherOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="grid gap-1.5 text-sm font-medium">
+            المادة
+            <select
+              value={subjectFilter}
+              onChange={(event) => setSubjectFilter(event.target.value)}
+              className="h-10 rounded-xl border bg-background px-3 text-sm font-normal"
+            >
+              <option value="ALL">الكل</option>
+              {subjectOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      </section>
+
       {successMessage ? (
         <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">
           {successMessage}
@@ -1141,9 +1738,13 @@ export default function StaffLearningLossPage() {
           <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
             لا توجد خطط فاقد مفتوحة ضمن السياق الحالي.
           </div>
+        ) : filteredOpenPlans.length === 0 ? (
+          <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
+            لا توجد خطط فاقد مطابقة للفلاتر المحددة.
+          </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[960px] text-right text-sm">
+            <table className="w-full min-w-[1160px] text-right text-sm">
               <thead className="bg-muted/40 text-muted-foreground">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
@@ -1165,7 +1766,10 @@ export default function StaffLearningLossPage() {
                     مؤشر التحسن
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    المتابعة
+                    قياس المتابعة الأول
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-3 font-medium">
+                    قياس المتابعة الثاني
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
                     الإجراء
@@ -1174,13 +1778,18 @@ export default function StaffLearningLossPage() {
               </thead>
 
               <tbody>
-                {openPlans.map((item) => {
+                {filteredOpenPlans.map((item) => {
                   const plan = item.plan;
-                  const needsFirstCheck =
-                    typeof plan.firstCheckScore !== "number";
-                  const needsSecondCheck =
-                    typeof plan.firstCheckScore === "number" &&
-                    typeof plan.secondCheckScore !== "number";
+                  const firstFollowUpMeasurement = formatFollowUpMeasurement({
+                    score: plan.firstCheckScore,
+                    maxScore: plan.firstCheckMaxScore,
+                    measuredAt: plan.firstCheckMeasuredAt,
+                  });
+                  const secondFollowUpMeasurement = formatFollowUpMeasurement({
+                    score: plan.secondCheckScore,
+                    maxScore: plan.secondCheckMaxScore,
+                    measuredAt: plan.secondCheckMeasuredAt,
+                  });
 
                   return (
                     <tr key={plan.id} className="border-t transition-colors hover:bg-muted/30">
@@ -1200,8 +1809,19 @@ export default function StaffLearningLossPage() {
                         ) || "غير محدد"}
                       </td>
 
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {getSourceLabel(plan.sourceType)}
+                      <td className="min-w-52 px-4 py-3">
+                        {plan.sourceType === "MANUAL" ? (
+                          <div className="space-y-1">
+                            <span className="inline-flex rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-800 dark:text-amber-200">
+                              فاقد يدوي
+                            </span>
+                            <p className="max-w-52 text-xs leading-5 text-muted-foreground">
+                              تم فتح الخطة يدويًا وليست ناتجة عن قياس أو متابعة.
+                            </p>
+                          </div>
+                        ) : (
+                          getSourceLabel(plan.sourceType)
+                        )}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1213,11 +1833,33 @@ export default function StaffLearningLossPage() {
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
-                        {needsFirstCheck
-                          ? "تحتاج القياس الأول"
-                          : needsSecondCheck
-                            ? "تحتاج القياس الثاني"
-                            : "القياسان مسجلان"}
+                        {firstFollowUpMeasurement ? (
+                          <div>
+                            <p>{firstFollowUpMeasurement.score}</p>
+                            {firstFollowUpMeasurement.measuredAt ? (
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {firstFollowUpMeasurement.measuredAt}
+                              </p>
+                            ) : null}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">لم يتم</span>
+                        )}
+                      </td>
+
+                      <td className="whitespace-nowrap px-4 py-3">
+                        {secondFollowUpMeasurement ? (
+                          <div>
+                            <p>{secondFollowUpMeasurement.score}</p>
+                            {secondFollowUpMeasurement.measuredAt ? (
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {secondFollowUpMeasurement.measuredAt}
+                              </p>
+                            ) : null}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">لم يتم</span>
+                        )}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-3">
@@ -1256,6 +1898,10 @@ export default function StaffLearningLossPage() {
         ) : candidates.length === 0 ? (
           <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
             لا توجد سجلات تحتاج فتح خطة فاقد ضمن السياق الحالي.
+          </div>
+        ) : filteredCandidates.length === 0 ? (
+          <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
+            لا يوجد طلاب مرشحون مطابقون للفلاتر المحددة.
           </div>
         ) : (
           <div className="w-full overflow-x-auto">
@@ -1296,7 +1942,7 @@ export default function StaffLearningLossPage() {
               </thead>
 
               <tbody>
-                {candidates.map((item) => {
+                {filteredCandidates.map((item) => {
                   const record = item.record;
                   const isCreating = creatingPlanRecordId === record.id;
 
