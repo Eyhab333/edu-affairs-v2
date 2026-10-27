@@ -139,6 +139,8 @@ type LearningLossContextFilter = {
   classSubjectOfferingId: string;
 };
 
+type LearningLossTypeFilter = "ALL" | "AUTO" | "MANUAL";
+
 // Firestore's current `in` query limit is 30 values.
 const FIRESTORE_IN_QUERY_LIMIT = 30;
 // Candidates and plans load in parallel, so this caps roster requests at eight
@@ -574,6 +576,40 @@ function getSourceLabel(value?: string) {
   }
 }
 
+function readablePlanSourceValue(value?: string) {
+  const result = value?.trim() || "";
+  return result && !isTechnicalIdentifier(result) ? result : "";
+}
+
+function getPlanSourceDisplayLabel(plan: LearningLossPlanDoc) {
+  if (plan.sourceType === "MANUAL") return "فاقد يدوي";
+
+  const sourceTitle = plan.sourceTitle?.trim() || "";
+  const sourceKind = plan.sourceKind?.trim() || "";
+
+  if (plan.sourceType === "ASSESSMENT_RECORD") {
+    return (
+      getFriendlyMeasurementLabel(sourceTitle) ||
+      getFriendlyMeasurementLabel(sourceKind) ||
+      readablePlanSourceValue(sourceTitle) ||
+      readablePlanSourceValue(sourceKind) ||
+      "من قياس"
+    );
+  }
+
+  if (plan.sourceType === "TRACKER_ENTRY") {
+    return (
+      getFriendlyMeasurementLabel(sourceTitle) ||
+      readablePlanSourceValue(sourceTitle) ||
+      getFriendlyMeasurementLabel(sourceKind) ||
+      readablePlanSourceValue(sourceKind) ||
+      "من متابعة"
+    );
+  }
+
+  return getSourceLabel(plan.sourceType);
+}
+
 function isOpenPlan(plan: LearningLossPlanDoc) {
   return !["CLOSED", "CANCELLED"].includes(String(plan.status || ""));
 }
@@ -753,6 +789,8 @@ export default function StaffLearningLossPage() {
   const [schoolFilter, setSchoolFilter] = useState("ALL");
   const [teacherFilter, setTeacherFilter] = useState("ALL");
   const [subjectFilter, setSubjectFilter] = useState("ALL");
+  const [lossTypeFilter, setLossTypeFilter] =
+    useState<LearningLossTypeFilter>("ALL");
   const [teacherBySourceBatchId, setTeacherBySourceBatchId] = useState<
     Map<string, TeacherDirectoryEntry>
   >(() => new Map());
@@ -1385,24 +1423,47 @@ export default function StaffLearningLossPage() {
 
   const filteredOpenPlans = useMemo(() => {
     return enrichedOpenPlans.filter((item) => {
-      return rowMatchesLocalFilters(
-        buildFilterRow(item.plan, item.classInfo, item),
+      const matchesLossType =
+        lossTypeFilter === "ALL" ||
+        (lossTypeFilter === "AUTO" &&
+          (item.plan.sourceType === "ASSESSMENT_RECORD" ||
+            item.plan.sourceType === "TRACKER_ENTRY")) ||
+        (lossTypeFilter === "MANUAL" && item.plan.sourceType === "MANUAL");
+
+      return (
+        matchesLossType &&
+        rowMatchesLocalFilters(
+          buildFilterRow(item.plan, item.classInfo, item),
+        )
       );
     });
-  }, [buildFilterRow, enrichedOpenPlans, rowMatchesLocalFilters]);
+  }, [
+    buildFilterRow,
+    enrichedOpenPlans,
+    lossTypeFilter,
+    rowMatchesLocalFilters,
+  ]);
 
   const filteredCandidates = useMemo(() => {
+    if (lossTypeFilter === "MANUAL") return [];
+
     return enrichedCandidates.filter((item) => {
       return rowMatchesLocalFilters(
         buildFilterRow(item.record, item.classInfo, item),
       );
     });
-  }, [buildFilterRow, enrichedCandidates, rowMatchesLocalFilters]);
+  }, [
+    buildFilterRow,
+    enrichedCandidates,
+    lossTypeFilter,
+    rowMatchesLocalFilters,
+  ]);
 
   const hasActiveFilters =
     schoolFilter !== "ALL" ||
     teacherFilter !== "ALL" ||
-    subjectFilter !== "ALL";
+    subjectFilter !== "ALL" ||
+    lossTypeFilter !== "ALL";
 
   const createLearningLossPlan = useCallback(
     async (candidate: LearningLossCandidate) => {
@@ -1651,6 +1712,7 @@ export default function StaffLearningLossPage() {
                 setSchoolFilter("ALL");
                 setTeacherFilter("ALL");
                 setSubjectFilter("ALL");
+                setLossTypeFilter("ALL");
               }}
               className="inline-flex h-9 items-center justify-center rounded-xl border px-3 text-sm font-medium transition hover:bg-muted"
             >
@@ -1659,7 +1721,7 @@ export default function StaffLearningLossPage() {
           ) : null}
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-3">
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <label className="grid gap-1.5 text-sm font-medium">
             المدرسة
             <select
@@ -1705,6 +1767,21 @@ export default function StaffLearningLossPage() {
                   {option.label}
                 </option>
               ))}
+            </select>
+          </label>
+
+          <label className="grid gap-1.5 text-sm font-medium">
+            نوع الفاقد
+            <select
+              value={lossTypeFilter}
+              onChange={(event) =>
+                setLossTypeFilter(event.target.value as LearningLossTypeFilter)
+              }
+              className="h-10 rounded-xl border bg-background px-3 text-sm font-normal"
+            >
+              <option value="ALL">الكل</option>
+              <option value="AUTO">تلقائي</option>
+              <option value="MANUAL">يدوي</option>
             </select>
           </label>
         </div>
@@ -1820,7 +1897,7 @@ export default function StaffLearningLossPage() {
                             </p>
                           </div>
                         ) : (
-                          getSourceLabel(plan.sourceType)
+                          getPlanSourceDisplayLabel(plan)
                         )}
                       </td>
 
@@ -1894,6 +1971,11 @@ export default function StaffLearningLossPage() {
         {candidatesStatus === "loading" ? (
           <div className="p-8 text-center text-sm text-muted-foreground">
             جاري تحميل المرشحين...
+          </div>
+        ) : lossTypeFilter === "MANUAL" ? (
+          <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
+            الترشيحات تظهر فقط للحالات المكتشفة تلقائيًا من القياسات أو
+            المتابعات، ولا تنطبق على الفاقد اليدوي.
           </div>
         ) : candidates.length === 0 ? (
           <div className="border-t border-dashed p-8 text-center text-sm text-muted-foreground">
