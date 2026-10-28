@@ -390,7 +390,7 @@ export const getTransportAdminWorkspace = onCall(
 );
 
 export const searchTransportAdminStudents = onCall(
-  { region: REGION, memory: "512MiB" },
+  { region: REGION, memory: "1GiB" },
   async (request) => {
     const uid = request.auth?.uid;
     if (!uid) throw new HttpsError("unauthenticated", "Authentication is required.");
@@ -493,7 +493,7 @@ export const searchTransportAdminStudents = onCall(
 );
 
 export const searchTransportAdminEmployees = onCall(
-  { region: REGION, memory: "512MiB" },
+  { region: REGION, memory: "1GiB" },
   async (request) => {
     const uid = request.auth?.uid;
     if (!uid) throw new HttpsError("unauthenticated", "Authentication is required.");
