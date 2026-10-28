@@ -14,7 +14,7 @@ import {
 const REGION = "me-central2";
 
 export const getStaffChatGroups = onCall(
-  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, memory: "1GiB" },
   async (request) => {
     const uid = request.auth?.uid;
     if (!uid) {

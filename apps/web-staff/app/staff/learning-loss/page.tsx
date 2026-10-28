@@ -250,6 +250,55 @@ function formatFollowUpMeasurement(params: {
   };
 }
 
+function getNormalizedPercentage(
+  score?: number | null,
+  maxScore?: number | null,
+) {
+  if (
+    typeof score !== "number" ||
+    !Number.isFinite(score) ||
+    typeof maxScore !== "number" ||
+    !Number.isFinite(maxScore) ||
+    maxScore <= 0
+  ) {
+    return null;
+  }
+
+  return (score / maxScore) * 100;
+}
+
+function getPlanBaselinePercentage(plan: LearningLossPlanDoc) {
+  return getNormalizedPercentage(plan.baselineScore, plan.baselineMaxScore);
+}
+
+function getPlanLatestFollowUpPercentage(plan: LearningLossPlanDoc) {
+  return (
+    getNormalizedPercentage(plan.secondCheckScore, plan.secondCheckMaxScore) ??
+    getNormalizedPercentage(plan.firstCheckScore, plan.firstCheckMaxScore)
+  );
+}
+
+function averagePercentages(values: number[]) {
+  if (values.length === 0) return null;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function formatSummaryPercentage(value: number | null) {
+  return value === null ? "—" : `${value.toFixed(1)}%`;
+}
+
+function formatImprovementPoints(value: number | null) {
+  if (value === null) return "—";
+
+  const roundedValue = Math.round(value * 10) / 10;
+  const absoluteValue = Math.abs(roundedValue).toLocaleString("ar-SA", {
+    maximumFractionDigits: 1,
+  });
+  const sign = roundedValue > 0 ? "+" : roundedValue < 0 ? "-" : "";
+
+  return `${sign}${absoluteValue} نقطة`;
+}
+
 function calculatePercentage(record: CandidateRecord) {
   if (
     typeof record.score !== "number" ||
@@ -610,6 +659,29 @@ function getPlanSourceDisplayLabel(plan: LearningLossPlanDoc) {
   return getSourceLabel(plan.sourceType);
 }
 
+function getPlanAssessmentKey(plan: LearningLossPlanDoc) {
+  if (plan.sourceType !== "ASSESSMENT_RECORD") return "";
+  return plan.sourceKind?.trim() || plan.sourceTitle?.trim() || "";
+}
+
+function getPlanAssessmentLabel(plan: LearningLossPlanDoc) {
+  const sourceTitle = plan.sourceTitle?.trim() || "";
+  const sourceKind = plan.sourceKind?.trim() || "";
+
+  return (
+    getFriendlyMeasurementLabel(sourceKind) ||
+    getFriendlyMeasurementLabel(sourceTitle) ||
+    readablePlanSourceValue(sourceTitle) ||
+    readablePlanSourceValue(sourceKind) ||
+    getPlanAssessmentKey(plan)
+  );
+}
+
+function getCandidateAssessmentKey(record: CandidateRecord) {
+  if (record.sourceType !== "ASSESSMENT_RECORD") return "";
+  return record.kind?.trim() || record.assessmentSlot?.trim() || "";
+}
+
 function isOpenPlan(plan: LearningLossPlanDoc) {
   return !["CLOSED", "CANCELLED"].includes(String(plan.status || ""));
 }
@@ -791,6 +863,7 @@ export default function StaffLearningLossPage() {
   const [subjectFilter, setSubjectFilter] = useState("ALL");
   const [lossTypeFilter, setLossTypeFilter] =
     useState<LearningLossTypeFilter>("ALL");
+  const [assessmentFilter, setAssessmentFilter] = useState("ALL");
   const [teacherBySourceBatchId, setTeacherBySourceBatchId] = useState<
     Map<string, TeacherDirectoryEntry>
   >(() => new Map());
@@ -1376,6 +1449,38 @@ export default function StaffLearningLossPage() {
     );
   }, [allFilterRows, schoolFilter, teacherFilter]);
 
+  const assessmentOptions = useMemo(() => {
+    const optionsByKey = new Map<string, string>();
+
+    enrichedOpenPlans.forEach((item) => {
+      if (item.plan.sourceType !== "ASSESSMENT_RECORD") return;
+
+      const filterRow = buildFilterRow(item.plan, item.classInfo, item);
+      const matchesParentFilters =
+        (schoolFilter === "ALL" || filterRow.schoolId === schoolFilter) &&
+        (teacherFilter === "ALL" ||
+          filterRow.teacherPersonId === teacherFilter) &&
+        (subjectFilter === "ALL" || filterRow.subjectKey === subjectFilter);
+      const key = getPlanAssessmentKey(item.plan);
+
+      if (matchesParentFilters && key && !optionsByKey.has(key)) {
+        optionsByKey.set(key, getPlanAssessmentLabel(item.plan) || key);
+      }
+    });
+
+    return Array.from(optionsByKey, ([id, label]) => ({ id, label })).sort(
+      (left, right) =>
+        left.label.localeCompare(right.label, "ar") ||
+        left.id.localeCompare(right.id),
+    );
+  }, [
+    buildFilterRow,
+    enrichedOpenPlans,
+    schoolFilter,
+    subjectFilter,
+    teacherFilter,
+  ]);
+
   useEffect(() => {
     if (
       schoolFilter !== "ALL" &&
@@ -1403,6 +1508,21 @@ export default function StaffLearningLossPage() {
     }
   }, [subjectFilter, subjectOptions]);
 
+  useEffect(() => {
+    if (lossTypeFilter === "MANUAL" && assessmentFilter !== "ALL") {
+      setAssessmentFilter("ALL");
+    }
+  }, [assessmentFilter, lossTypeFilter]);
+
+  useEffect(() => {
+    if (
+      assessmentFilter !== "ALL" &&
+      !assessmentOptions.some((option) => option.id === assessmentFilter)
+    ) {
+      setAssessmentFilter("ALL");
+    }
+  }, [assessmentFilter, assessmentOptions]);
+
   const rowMatchesLocalFilters = useCallback(
     (row: LearningLossFilterRow) => {
       if (schoolFilter !== "ALL" && row.schoolId !== schoolFilter) {
@@ -1429,9 +1549,14 @@ export default function StaffLearningLossPage() {
           (item.plan.sourceType === "ASSESSMENT_RECORD" ||
             item.plan.sourceType === "TRACKER_ENTRY")) ||
         (lossTypeFilter === "MANUAL" && item.plan.sourceType === "MANUAL");
+      const matchesAssessment =
+        assessmentFilter === "ALL" ||
+        (item.plan.sourceType === "ASSESSMENT_RECORD" &&
+          getPlanAssessmentKey(item.plan) === assessmentFilter);
 
       return (
         matchesLossType &&
+        matchesAssessment &&
         rowMatchesLocalFilters(
           buildFilterRow(item.plan, item.classInfo, item),
         )
@@ -1439,6 +1564,7 @@ export default function StaffLearningLossPage() {
     });
   }, [
     buildFilterRow,
+    assessmentFilter,
     enrichedOpenPlans,
     lossTypeFilter,
     rowMatchesLocalFilters,
@@ -1448,22 +1574,61 @@ export default function StaffLearningLossPage() {
     if (lossTypeFilter === "MANUAL") return [];
 
     return enrichedCandidates.filter((item) => {
-      return rowMatchesLocalFilters(
-        buildFilterRow(item.record, item.classInfo, item),
+      const matchesAssessment =
+        assessmentFilter === "ALL" ||
+        (item.record.sourceType === "ASSESSMENT_RECORD" &&
+          getCandidateAssessmentKey(item.record) === assessmentFilter);
+
+      return (
+        matchesAssessment &&
+        rowMatchesLocalFilters(
+          buildFilterRow(item.record, item.classInfo, item),
+        )
       );
     });
   }, [
+    assessmentFilter,
     buildFilterRow,
     enrichedCandidates,
     lossTypeFilter,
     rowMatchesLocalFilters,
   ]);
 
+  const filteredPlanSummary = useMemo(() => {
+    const baselinePercentages: number[] = [];
+    const afterPercentages: number[] = [];
+    const improvementDeltas: number[] = [];
+
+    filteredOpenPlans.forEach(({ plan }) => {
+      const baselinePercentage = getPlanBaselinePercentage(plan);
+      const afterPercentage = getPlanLatestFollowUpPercentage(plan);
+
+      if (baselinePercentage !== null) {
+        baselinePercentages.push(baselinePercentage);
+      }
+
+      if (afterPercentage !== null) {
+        afterPercentages.push(afterPercentage);
+      }
+
+      if (baselinePercentage !== null && afterPercentage !== null) {
+        improvementDeltas.push(afterPercentage - baselinePercentage);
+      }
+    });
+
+    return {
+      averageBaseline: averagePercentages(baselinePercentages),
+      averageAfter: averagePercentages(afterPercentages),
+      averageImprovement: averagePercentages(improvementDeltas),
+    };
+  }, [filteredOpenPlans]);
+
   const hasActiveFilters =
     schoolFilter !== "ALL" ||
     teacherFilter !== "ALL" ||
     subjectFilter !== "ALL" ||
-    lossTypeFilter !== "ALL";
+    lossTypeFilter !== "ALL" ||
+    assessmentFilter !== "ALL";
 
   const createLearningLossPlan = useCallback(
     async (candidate: LearningLossCandidate) => {
@@ -1656,14 +1821,14 @@ export default function StaffLearningLossPage() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <button
+            {/* <button
               type="button"
               onClick={() => router.push("/staff/learning-loss/summary")}
               disabled={isLoading || creatingPlanRecordId !== null}
               className="inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-medium transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
             >
               ملخص الفاقد التعليمي
-            </button>
+            </button> */}
 
             <button
               type="button"
@@ -1713,6 +1878,7 @@ export default function StaffLearningLossPage() {
                 setTeacherFilter("ALL");
                 setSubjectFilter("ALL");
                 setLossTypeFilter("ALL");
+                setAssessmentFilter("ALL");
               }}
               className="inline-flex h-9 items-center justify-center rounded-xl border px-3 text-sm font-medium transition hover:bg-muted"
             >
@@ -1721,7 +1887,7 @@ export default function StaffLearningLossPage() {
           ) : null}
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
           <label className="grid gap-1.5 text-sm font-medium">
             المدرسة
             <select
@@ -1784,6 +1950,23 @@ export default function StaffLearningLossPage() {
               <option value="MANUAL">يدوي</option>
             </select>
           </label>
+
+          <label className="grid gap-1.5 text-sm font-medium">
+            نوع الاختبار
+            <select
+              value={assessmentFilter}
+              onChange={(event) => setAssessmentFilter(event.target.value)}
+              disabled={lossTypeFilter === "MANUAL"}
+              className="h-10 rounded-xl border bg-background px-3 text-sm font-normal disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <option value="ALL">كل الاختبارات</option>
+              {assessmentOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </section>
 
@@ -1798,6 +1981,33 @@ export default function StaffLearningLossPage() {
           {error}
         </section>
       ) : null}
+
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {[
+          [
+            "متوسط قبل الفاقد",
+            formatSummaryPercentage(filteredPlanSummary.averageBaseline),
+          ],
+          [
+            "متوسط بعد الفاقد",
+            formatSummaryPercentage(filteredPlanSummary.averageAfter),
+          ],
+          [
+            "متوسط التحسن",
+            formatImprovementPoints(filteredPlanSummary.averageImprovement),
+          ],
+        ].map(([label, value]) => (
+          <article
+            key={label}
+            className="rounded-2xl border bg-card p-4 shadow-sm"
+          >
+            <p className="text-xs font-medium text-muted-foreground">{label}</p>
+            <p className="mt-2 text-xl font-bold tracking-tight text-foreground">
+              {value}
+            </p>
+          </article>
+        ))}
+      </section>
 
       <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
         <div className="border-b bg-muted/20 p-5">

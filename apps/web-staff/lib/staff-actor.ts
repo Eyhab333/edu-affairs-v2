@@ -117,6 +117,12 @@ const emptyPermissions: MembershipPermissions = {
   manageGuardianFinanceSettings: false,
 };
 
+const LEARNING_LOSS_EXTRA_PERSON_IDS = new Set([
+  "p-students-mentor-syeh",
+  "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
+  "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+]);
+
 function resolveMembershipIsActive(data: {
   isActive?: boolean;
   active?: boolean;
@@ -761,6 +767,10 @@ function resolveVisibleModules(params: {
   modules.add("MESSAGES");
   modules.add("STAFF_CHAT");
   modules.add("PDF_FILES");
+
+  if (LEARNING_LOSS_EXTRA_PERSON_IDS.has(params.actorPersonId)) {
+    modules.add("LEARNING_LOSS");
+  }
 
   if (params.visibleClasses.length > 0) {
     modules.add("CLASSES");

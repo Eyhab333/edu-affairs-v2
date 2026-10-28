@@ -446,7 +446,7 @@ async function currentTerm(orgId: string, academicYearId: string) {
 }
 
 export const getTransportAccessSummary = onCall(
-  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, memory: "1GiB" },
   async (request): Promise<{ hasAccess: boolean }> => {
     const uid = request.auth?.uid;
     if (!uid) throw new HttpsError("unauthenticated", "Authentication is required.");

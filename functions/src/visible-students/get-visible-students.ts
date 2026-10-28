@@ -331,7 +331,7 @@ function toCallableError(error: unknown) {
 }
 
 export const getVisibleStudents = onCall(
-  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, memory: "1GiB" },
   async (request): Promise<GetVisibleStudentsResult> => {
     const uid = request.auth?.uid;
 

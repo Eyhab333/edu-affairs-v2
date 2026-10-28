@@ -15,7 +15,7 @@ const REGION = "me-central2";
 const MAX_MESSAGE_LENGTH = 4_000;
 
 export const sendStaffChatMessage = onCall(
-  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
+  { region: REGION, cors: WEB_STAFF_CORS_ORIGINS, memory: "1GiB" },
   async (request) => {
     const uid = request.auth?.uid;
     if (!uid) {
