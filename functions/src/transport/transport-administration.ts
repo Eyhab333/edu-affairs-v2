@@ -933,18 +933,6 @@ export const manageTransportAdministration = onCall(
         if (!route || route.status === "ARCHIVED") {
           throw new HttpsError("failed-precondition", "Archived routes cannot receive supervisors.");
         }
-        if (
-          personIds.some((personId) => {
-            const candidate = candidates.find((item) => item.personId === personId);
-            return candidate && candidate.schoolIds.length > 0 &&
-              !candidate.schoolIds.includes(route.schoolId ?? "");
-          })
-        ) {
-          throw new HttpsError(
-            "failed-precondition",
-            "A selected supervisor is outside the route school scope.",
-          );
-        }
         const existing = assignmentsSnapshot.docs.filter((document) => {
           const assignment = data(document.data());
           return readString(assignment.scopeId) === routeId ||

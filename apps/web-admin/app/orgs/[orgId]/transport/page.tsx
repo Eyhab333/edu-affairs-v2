@@ -298,10 +298,10 @@ export default function TransportAdministrationPage() {
     setSupervisorRouteId(routeId);
     const route = workspace?.routes.find((item) => item.id === routeId);
     setSelectedSupervisors(new Set(route ? routeSupervisorIds(route) : []));
-    setSupervisorSchoolId(route?.schoolId ?? "");
+    setSupervisorSchoolId("");
     setEmployeeResults([]);
     setEmployeeCursor(undefined);
-    if (routeId) void runEmployeeSearch(true, routeId, route?.schoolId ?? "");
+    if (routeId) void runEmployeeSearch(true, routeId, "");
   }
 
   async function runStudentSearch() {
