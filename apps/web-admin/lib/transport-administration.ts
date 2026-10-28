@@ -19,7 +19,12 @@ export type TransportAdminStaff = {
   personId: string;
   displayName: string;
   roleKey: string;
+  positionTitle: string;
   schoolIds: string[];
+};
+export type TransportAdminEmployee = TransportAdminStaff & {
+  assignedRouteIds: string[];
+  isAssignedToRoute: boolean;
 };
 export type TransportAdminAssignment = {
   id: string;
@@ -46,6 +51,8 @@ export type TransportStudentSearchRow = {
   displayName: string;
   schoolId: string;
   academicYearId: string;
+  classId: string;
+  classTitle: string;
   academicEnrollmentId: string;
   transportEnrollment?: StudentTransportEnrollment;
 };
@@ -57,6 +64,7 @@ export type TransportAdminAction =
   | "UPSERT_STOP"
   | "ARCHIVE_STOP"
   | "CREATE_ENROLLMENT"
+  | "CREATE_ENROLLMENTS_BULK"
   | "CHANGE_ENROLLMENT_STATUS"
   | "TRANSFER_ENROLLMENT";
 
@@ -66,9 +74,34 @@ const workspaceCallable = httpsCallable<
 >(functions, "getTransportAdminWorkspace");
 
 const studentSearchCallable = httpsCallable<
-  { orgId: string; schoolId: string; query?: string },
+  { orgId: string; schoolId: string; classId?: string; query?: string },
   TransportStudentSearchRow[]
 >(functions, "searchTransportAdminStudents");
+
+const employeeSearchCallable = httpsCallable<
+  {
+    orgId: string;
+    schoolId?: string;
+    query?: string;
+    position?: string;
+    assignmentStatus?: "ALL" | "ASSIGNED" | "UNASSIGNED";
+    routeId?: string;
+    cursor?: string;
+  },
+  { employees: TransportAdminEmployee[]; nextCursor?: string }
+>(functions, "searchTransportAdminEmployees");
+
+const bulkEnrollmentCallable = httpsCallable<
+  {
+    orgId: string;
+    action: "CREATE_ENROLLMENTS_BULK";
+    payload: Record<string, unknown>;
+  },
+  {
+    succeeded: Array<{ studentId: string; id: string }>;
+    skipped: Array<{ studentId: string; code: string; message: string }>;
+  }
+>(functions, "manageTransportAdministration");
 
 const mutationCallable = httpsCallable<
   { orgId: string; action: TransportAdminAction; payload: Record<string, unknown> },
@@ -83,9 +116,35 @@ export async function getTransportAdminWorkspace(orgId: string) {
 export async function searchTransportAdminStudents(params: {
   orgId: string;
   schoolId: string;
+  classId?: string;
   query?: string;
 }) {
   const response = await studentSearchCallable(params);
+  return response.data;
+}
+
+export async function searchTransportAdminEmployees(params: {
+  orgId: string;
+  schoolId?: string;
+  query?: string;
+  position?: string;
+  assignmentStatus?: "ALL" | "ASSIGNED" | "UNASSIGNED";
+  routeId?: string;
+  cursor?: string;
+}) {
+  const response = await employeeSearchCallable(params);
+  return response.data;
+}
+
+export async function bulkEnrollTransportStudents(params: {
+  orgId: string;
+  payload: Record<string, unknown>;
+}) {
+  const response = await bulkEnrollmentCallable({
+    orgId: params.orgId,
+    action: "CREATE_ENROLLMENTS_BULK",
+    payload: JSON.parse(JSON.stringify(params.payload)) as Record<string, unknown>,
+  });
   return response.data;
 }
 

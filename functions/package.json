@@ -15,6 +15,9 @@
     "staff:batch:preview": "tsx src/staff-provisioning/run-staff-provisioning-batch-preview.ts",
     "staff:batch:apply": "tsx src/staff-provisioning/run-staff-provisioning-batch-apply.ts",
     "staff:batch:verify": "tsx src/staff-provisioning/run-staff-provisioning-batch-verify.ts",
+    "bus-supervisor:preview": "tsx src/bus-supervisor-provisioning/run-bus-supervisor-provisioning-preview.ts",
+    "bus-supervisor:apply": "tsx src/bus-supervisor-provisioning/run-bus-supervisor-provisioning-apply.ts",
+    "bus-supervisor:verify": "tsx src/bus-supervisor-provisioning/run-bus-supervisor-provisioning-verify.ts",
     "teacher:batch:preview": "tsx src/teacher-provisioning/run-teacher-provisioning-batch-preview.ts",
     "teacher:inspect": "tsx src/teacher-provisioning/run-teacher-provisioning-inspect.ts",
     "teacher:firestore-plan:preview": "tsx src/teacher-provisioning/run-teacher-provisioning-firestore-plan-preview.ts",
@@ -25,6 +28,7 @@
   },
   "dependencies": {
     "@temporalio/client": "^1.16.2",
+    "exceljs": "^4.4.0",
     "firebase-admin": "^13.7.0",
     "firebase-functions": "^7.2.5",
     "googleapis": "^173.0.0"

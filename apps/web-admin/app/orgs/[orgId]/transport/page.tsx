@@ -32,11 +32,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import {
+  bulkEnrollTransportStudents,
   getTransportAdminWorkspace,
   mutateTransportAdministration,
+  searchTransportAdminEmployees,
   searchTransportAdminStudents,
   transportAdminErrorMessage,
   type TransportAdminAction,
+  type TransportAdminEmployee,
   type TransportAdminWorkspace,
   type TransportStudentSearchRow,
 } from "@/lib/transport-administration";
@@ -114,11 +117,24 @@ export default function TransportAdministrationPage() {
   const [stopDraft, setStopDraft] = useState(newStopDraft);
   const [supervisorRouteId, setSupervisorRouteId] = useState("");
   const [selectedSupervisors, setSelectedSupervisors] = useState<Set<string>>(new Set());
+  const [supervisorQuery, setSupervisorQuery] = useState("");
+  const [supervisorSchoolId, setSupervisorSchoolId] = useState("");
+  const [supervisorPosition, setSupervisorPosition] = useState("");
+  const [supervisorAssignmentStatus, setSupervisorAssignmentStatus] = useState<"ALL" | "ASSIGNED" | "UNASSIGNED">("ALL");
+  const [employeeResults, setEmployeeResults] = useState<TransportAdminEmployee[]>([]);
+  const [employeeCursor, setEmployeeCursor] = useState<string | undefined>();
+  const [searchingEmployees, setSearchingEmployees] = useState(false);
   const [studentSchoolId, setStudentSchoolId] = useState("");
+  const [studentClassId, setStudentClassId] = useState("");
   const [studentQuery, setStudentQuery] = useState("");
   const [studentResults, setStudentResults] = useState<TransportStudentSearchRow[]>([]);
   const [searchingStudents, setSearchingStudents] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState<TransportStudentSearchRow | null>(null);
+  const [selectedStudents, setSelectedStudents] = useState<Record<string, TransportStudentSearchRow>>({});
+  const [bulkEnrolling, setBulkEnrolling] = useState(false);
+  const [bulkResult, setBulkResult] = useState<{
+    succeeded: string[];
+    skipped: Array<{ studentId: string; code: string; message: string }>;
+  } | null>(null);
   const [enrollmentRouteId, setEnrollmentRouteId] = useState("");
   const [pickupStopId, setPickupStopId] = useState("");
   const [dropoffStopId, setDropoffStopId] = useState("");
@@ -282,18 +298,84 @@ export default function TransportAdministrationPage() {
     setSupervisorRouteId(routeId);
     const route = workspace?.routes.find((item) => item.id === routeId);
     setSelectedSupervisors(new Set(route ? routeSupervisorIds(route) : []));
+    setSupervisorSchoolId(route?.schoolId ?? "");
+    setEmployeeResults([]);
+    setEmployeeCursor(undefined);
+    if (routeId) void runEmployeeSearch(true, routeId, route?.schoolId ?? "");
   }
 
   async function runStudentSearch() {
     if (!studentSchoolId) return toast.error("اختر المدرسة أولًا");
     setSearchingStudents(true);
     try {
-      setStudentResults(await searchTransportAdminStudents({ orgId, schoolId: studentSchoolId, query: studentQuery }));
+      setStudentResults(await searchTransportAdminStudents({
+        orgId,
+        schoolId: studentSchoolId,
+        classId: studentClassId || undefined,
+        query: studentQuery,
+      }));
     } catch (searchError) {
       toast.error(transportAdminErrorMessage(searchError));
     } finally {
       setSearchingStudents(false);
     }
+  }
+
+  async function runEmployeeSearch(
+    reset = true,
+    routeId = supervisorRouteId,
+    schoolId = supervisorSchoolId,
+  ) {
+    if (!routeId) return toast.error("اختر خط النقل أولًا");
+    setSearchingEmployees(true);
+    try {
+      const result = await searchTransportAdminEmployees({
+        orgId,
+        routeId,
+        schoolId: schoolId || undefined,
+        query: supervisorQuery,
+        position: supervisorPosition,
+        assignmentStatus: supervisorAssignmentStatus,
+        cursor: reset ? undefined : employeeCursor,
+      });
+      setEmployeeResults((current) => reset ? result.employees : [
+        ...current,
+        ...result.employees.filter((employee) => !current.some((item) => item.personId === employee.personId)),
+      ]);
+      setEmployeeCursor(result.nextCursor);
+    } catch (searchError) {
+      toast.error(transportAdminErrorMessage(searchError));
+    } finally {
+      setSearchingEmployees(false);
+    }
+  }
+
+  function toggleStudent(student: TransportStudentSearchRow) {
+    if (student.transportEnrollment) return;
+    setSelectedStudents((current) => {
+      const next = { ...current };
+      if (next[student.studentId]) delete next[student.studentId];
+      else next[student.studentId] = student;
+      return next;
+    });
+  }
+
+  function selectVisibleStudents() {
+    setSelectedStudents((current) => {
+      const next = { ...current };
+      studentResults.filter((student) => !student.transportEnrollment).forEach((student) => {
+        next[student.studentId] = student;
+      });
+      return next;
+    });
+  }
+
+  function clearVisibleStudents() {
+    setSelectedStudents((current) => {
+      const next = { ...current };
+      studentResults.forEach((student) => delete next[student.studentId]);
+      return next;
+    });
   }
 
   const enrollmentStops = (workspace?.stops ?? []).filter(
@@ -302,6 +384,50 @@ export default function TransportAdministrationPage() {
   const transferStops = (workspace?.stops ?? []).filter(
     (stop) => stop.routeId === transferRouteId && stop.isActive !== false && !stop.isArchived,
   );
+  const studentClassOptions = useMemo(() => {
+    const classes = new Map<string, string>();
+    studentResults.forEach((student) => {
+      if (student.classId) classes.set(student.classId, student.classTitle || student.classId);
+    });
+    return Array.from(classes, ([id, title]) => ({ id, title }))
+      .sort((left, right) => left.title.localeCompare(right.title, "ar"));
+  }, [studentResults]);
+  const selectedStudentCount = Object.keys(selectedStudents).length;
+
+  async function saveBulkEnrollments() {
+    if (!enrollmentRouteId || !selectedStudentCount) return;
+    setBulkEnrolling(true);
+    setBulkResult(null);
+    try {
+      const result = await bulkEnrollTransportStudents({
+        orgId,
+        payload: {
+          studentIds: Object.keys(selectedStudents),
+          routeId: enrollmentRouteId,
+          pickupStopId,
+          dropoffStopId,
+          startsAt: dateMs(startsAt),
+          endsAt: dateMs(endsAt, true),
+          notes: enrollmentNotes,
+        },
+      });
+      const succeeded = result.succeeded.map((item) => item.studentId);
+      setBulkResult({ succeeded, skipped: result.skipped });
+      setSelectedStudents((current) => {
+        const next = { ...current };
+        succeeded.forEach((studentId) => delete next[studentId]);
+        return next;
+      });
+      if (succeeded.length) toast.success(`تمت إضافة ${succeeded.length} طالب/ة إلى النقل`);
+      if (result.skipped.length) toast.error(`تم تخطي ${result.skipped.length} طالب/ة. راجع التفاصيل.`);
+      await load();
+      await runStudentSearch();
+    } catch (saveError) {
+      toast.error(transportAdminErrorMessage(saveError));
+    } finally {
+      setBulkEnrolling(false);
+    }
+  }
 
   if (checkingAuth || loading) {
     return <div className="flex min-h-[60vh] items-center justify-center"><Loader2 className="h-7 w-7 animate-spin text-primary" /></div>;
@@ -460,13 +586,26 @@ export default function TransportAdministrationPage() {
       {tab === "SUPERVISORS" ? (
         <FormSection title="إسناد مشرفي الباص" description="يمكن اختيار أكثر من مشرف للخط، ويمكن للمعلم أن يكون مشرفًا دون تغيير دوره الأساسي." contentClassName="space-y-4">
           <div><Label>خط النقل</Label><select className={inputClass} value={supervisorRouteId} onChange={(e) => chooseSupervisorRoute(e.target.value)}><option value="">اختر الخط</option>{workspace.routes.filter((route) => route.status !== "ARCHIVED").map((route) => <option key={route.id} value={route.id}>{route.title}</option>)}</select></div>
-          {supervisorRouteId ? <div className="grid max-h-[420px] gap-2 overflow-y-auto md:grid-cols-2">{workspace.staff.filter((person) => {
-            const routeSchoolId = workspace.routes.find((route) => route.id === supervisorRouteId)?.schoolId ?? "";
-            return !person.schoolIds.length || person.schoolIds.includes(routeSchoolId);
-          }).map((person) => {
-            const checked = selectedSupervisors.has(person.personId);
-            return <label key={person.personId} className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 ${checked ? "border-primary bg-primary/5" : ""}`}><input type="checkbox" checked={checked} onChange={() => setSelectedSupervisors((current) => { const next = new Set(current); checked ? next.delete(person.personId) : next.add(person.personId); return next; })} /><span><span className="block font-semibold">{person.displayName}</span><span className="text-xs text-muted-foreground">{person.roleKey || "موظف"} · {person.personId}</span></span></label>;
-          })}</div> : null}
+          {supervisorRouteId ? <>
+            <div className="grid gap-3 rounded-2xl border bg-muted/20 p-3 md:grid-cols-2 xl:grid-cols-5">
+              <Input placeholder="بحث باسم الموظف" value={supervisorQuery} onChange={(e) => setSupervisorQuery(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") void runEmployeeSearch(); }} />
+              <select className={inputClass} value={supervisorSchoolId} onChange={(e) => setSupervisorSchoolId(e.target.value)}><option value="">كل المدارس ضمن الصلاحية</option>{workspace.schools.map((school) => <option key={school.id} value={school.id}>{school.title}</option>)}</select>
+              <Input placeholder="المسمى أو الوظيفة" value={supervisorPosition} onChange={(e) => setSupervisorPosition(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") void runEmployeeSearch(); }} />
+              <select className={inputClass} value={supervisorAssignmentStatus} onChange={(e) => setSupervisorAssignmentStatus(e.target.value as "ALL" | "ASSIGNED" | "UNASSIGNED")}><option value="ALL">كل الموظفين</option><option value="ASSIGNED">لديهم إسناد نقل</option><option value="UNASSIGNED">دون إسناد نقل</option></select>
+              <Button variant="outline" disabled={searchingEmployees} onClick={() => void runEmployeeSearch()}>{searchingEmployees ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}بحث</Button>
+            </div>
+            <div className="flex items-center justify-between text-sm text-muted-foreground"><span>المحددون لهذا الخط: {selectedSupervisors.size}</span><span>نتائج الموظفين: {employeeResults.length}</span></div>
+            <div className="grid max-h-[420px] gap-2 overflow-y-auto md:grid-cols-2">
+              {employeeResults.map((person) => {
+                const checked = selectedSupervisors.has(person.personId);
+                const schoolNames = person.schoolIds.length ? person.schoolIds.map((schoolId) => workspace.schools.find((school) => school.id === schoolId)?.title ?? schoolId).join("، ") : "كل المدارس";
+                const assignedRoutes = person.assignedRouteIds.map((routeId) => workspace.routes.find((route) => route.id === routeId)?.title ?? routeId).join("، ");
+                return <label key={person.personId} className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 ${checked ? "border-primary bg-primary/5" : ""}`}><input className="mt-1" type="checkbox" checked={checked} onChange={() => setSelectedSupervisors((current) => { const next = new Set(current); checked ? next.delete(person.personId) : next.add(person.personId); return next; })} /><span className="min-w-0"><span className="block font-semibold">{person.displayName}</span><span className="block text-xs text-muted-foreground">{schoolNames} · {person.positionTitle || person.roleKey || "موظف"}</span><span className={`mt-1 block text-xs ${person.isAssignedToRoute ? "text-primary" : "text-muted-foreground"}`}>{person.assignedRouteIds.length ? `إسناد النقل الحالي: ${assignedRoutes}` : "لا يوجد إسناد نقل حالي"}</span></span></label>;
+              })}
+              {!searchingEmployees && !employeeResults.length ? <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground md:col-span-2">ابحث لعرض الموظفين المؤهلين ضمن نطاق المدرسة.</div> : null}
+            </div>
+            {employeeCursor ? <Button variant="outline" disabled={searchingEmployees} onClick={() => void runEmployeeSearch(false)}>عرض المزيد من الموظفين</Button> : null}
+          </> : null}
           <Button disabled={busy || !supervisorRouteId} onClick={() => void mutate("SET_ROUTE_SUPERVISORS", { routeId: supervisorRouteId, personIds: Array.from(selectedSupervisors) }, "تم تحديث مشرفي الخط")}><ShieldCheck className="h-4 w-4" />حفظ الإسناد</Button>
         </FormSection>
       ) : null}
@@ -488,10 +627,22 @@ export default function TransportAdministrationPage() {
 
       {tab === "ENROLLMENTS" ? (
         <div className="space-y-6">
-          <FormSection title="البحث عن طالب وإضافته للنقل" description="يعرض الطلاب ذوي القيد الدراسي النشط في المدرسة المحددة دون إنشاء هويات جديدة." contentClassName="space-y-4">
-            <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto]"><select className={inputClass} value={studentSchoolId} onChange={(e) => { setStudentSchoolId(e.target.value); setStudentResults([]); setSelectedStudent(null); }}><option value="">اختر المدرسة</option>{workspace.schools.map((school) => <option key={school.id} value={school.id}>{school.title}</option>)}</select><Input placeholder="اسم الطالب أو المعرّف" value={studentQuery} onChange={(e) => setStudentQuery(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") void runStudentSearch(); }} /><Button onClick={() => void runStudentSearch()} disabled={searchingStudents}>{searchingStudents ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}بحث</Button></div>
-            {studentResults.length ? <div className="grid gap-2 md:grid-cols-2">{studentResults.map((student) => <button type="button" key={student.studentId} onClick={() => { setSelectedStudent(student); setEnrollmentRouteId(""); setPickupStopId(""); setDropoffStopId(""); }} className={`rounded-xl border p-3 text-right ${selectedStudent?.studentId === student.studentId ? "border-primary bg-primary/5" : ""}`}><span className="block font-bold">{student.displayName}</span><span className="text-xs text-muted-foreground">{student.studentId} · {student.transportEnrollment ? `لديه اشتراك ${statusLabel(student.transportEnrollment.status)}` : "بلا اشتراك نقل نشط"}</span></button>)}</div> : null}
-            {selectedStudent && !selectedStudent.transportEnrollment ? <div className="space-y-3 rounded-2xl border bg-muted/30 p-4"><h3 className="font-bold">إضافة {selectedStudent.displayName}</h3><div className="grid gap-3 md:grid-cols-3"><div><Label>الخط *</Label><select className={inputClass} value={enrollmentRouteId} onChange={(e) => { setEnrollmentRouteId(e.target.value); setPickupStopId(""); setDropoffStopId(""); }}><option value="">اختر</option>{workspace.routes.filter((route) => route.status === "ACTIVE" && route.schoolId === selectedStudent.schoolId && (!route.academicYearId || route.academicYearId === selectedStudent.academicYearId)).map((route) => <option key={route.id} value={route.id}>{route.title}</option>)}</select></div><div><Label>محطة الصعود</Label><select className={inputClass} value={pickupStopId} onChange={(e) => setPickupStopId(e.target.value)}><option value="">بدون</option>{enrollmentStops.filter((stop) => stop.kind !== "DROPOFF").map((stop) => <option key={stop.id} value={stop.id}>{stop.title}</option>)}</select></div><div><Label>محطة النزول</Label><select className={inputClass} value={dropoffStopId} onChange={(e) => setDropoffStopId(e.target.value)}><option value="">بدون</option>{enrollmentStops.filter((stop) => stop.kind !== "PICKUP").map((stop) => <option key={stop.id} value={stop.id}>{stop.title}</option>)}</select></div><div><Label>البداية</Label><Input type="date" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} /></div><div><Label>النهاية الاختيارية</Label><Input type="date" value={endsAt} onChange={(e) => setEndsAt(e.target.value)} /></div></div><textarea className={textareaClass} placeholder="ملاحظة اختيارية" value={enrollmentNotes} onChange={(e) => setEnrollmentNotes(e.target.value)} /><Button disabled={busy || !enrollmentRouteId} onClick={async () => { const ok = await mutate("CREATE_ENROLLMENT", { studentId: selectedStudent.studentId, routeId: enrollmentRouteId, pickupStopId, dropoffStopId, startsAt: dateMs(startsAt), endsAt: dateMs(endsAt, true), notes: enrollmentNotes }, "تمت إضافة الطالب للنقل"); if (ok) { setSelectedStudent(null); await runStudentSearch(); } }}><Plus className="h-4 w-4" />إضافة الاشتراك</Button></div> : null}
+          <FormSection title="اختيار الطلاب وإضافتهم للنقل" description="ابحث عن الطلاب النشطين، حدّد مجموعة، ثم طبّق خطًا ومحطات وتواريخ مشتركة عليهم." contentClassName="space-y-4">
+            <div className="grid gap-3 rounded-2xl border bg-muted/20 p-3 md:grid-cols-2 xl:grid-cols-4">
+              <select className={inputClass} value={studentSchoolId} onChange={(e) => { setStudentSchoolId(e.target.value); setStudentClassId(""); setStudentResults([]); }}><option value="">اختر المدرسة</option>{workspace.schools.map((school) => <option key={school.id} value={school.id}>{school.title}</option>)}</select>
+              <select className={inputClass} value={studentClassId} onChange={(e) => setStudentClassId(e.target.value)} disabled={!studentSchoolId}><option value="">كل الفصول</option>{studentClassOptions.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}</select>
+              <Input placeholder="بحث باسم الطالب أو المعرّف" value={studentQuery} onChange={(e) => setStudentQuery(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") void runStudentSearch(); }} />
+              <Button onClick={() => void runStudentSearch()} disabled={searchingStudents}>{searchingStudents ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}بحث</Button>
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2 text-sm"><span>الطلاب المحددون: <strong>{selectedStudentCount}</strong></span><div className="flex gap-2"><Button size="sm" variant="outline" disabled={!studentResults.length} onClick={selectVisibleStudents}>تحديد النتائج الظاهرة</Button><Button size="sm" variant="outline" disabled={!studentResults.length} onClick={clearVisibleStudents}>مسح النتائج الظاهرة</Button></div></div>
+            {studentResults.length ? <div className="grid max-h-[420px] gap-2 overflow-y-auto md:grid-cols-2">{studentResults.map((student) => {
+              const existing = student.transportEnrollment;
+              const checked = !!selectedStudents[student.studentId];
+              const otherRoute = existing && existing.routeId !== enrollmentRouteId;
+              return <label key={student.studentId} className={`flex items-start gap-3 rounded-xl border p-3 ${checked ? "border-primary bg-primary/5" : ""} ${existing ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}><input className="mt-1" type="checkbox" checked={checked} disabled={!!existing} onChange={() => toggleStudent(student)} /><span className="min-w-0"><span className="block font-bold">{student.displayName}</span><span className="block text-xs text-muted-foreground">{student.classTitle || student.classId || "بدون فصل"} · {student.studentId}</span><span className={`mt-1 block text-xs ${otherRoute ? "text-amber-700 dark:text-amber-300" : "text-muted-foreground"}`}>{existing ? (otherRoute ? `مشترك حاليًا في خط آخر: ${existing.routeTitle ?? existing.routeId}` : `لديه اشتراك نشط في هذا الخط: ${existing.routeTitle ?? existing.routeId}`) : "متاح للإضافة"}</span></span></label>;
+            })}</div> : null}
+            {studentSchoolId ? <div className="space-y-3 rounded-2xl border bg-muted/30 p-4"><div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-bold">إعداد الاشتراك المشترك</h3><span className="text-sm text-muted-foreground">{selectedStudentCount} طالب/ة محدد</span></div><div className="grid gap-3 md:grid-cols-3"><div><Label>خط النقل *</Label><select className={inputClass} value={enrollmentRouteId} onChange={(e) => { setEnrollmentRouteId(e.target.value); setPickupStopId(""); setDropoffStopId(""); }}><option value="">اختر</option>{workspace.routes.filter((route) => route.status === "ACTIVE" && route.schoolId === studentSchoolId).map((route) => <option key={route.id} value={route.id}>{route.title}</option>)}</select></div><div><Label>محطة الصعود</Label><select className={inputClass} value={pickupStopId} onChange={(e) => setPickupStopId(e.target.value)}><option value="">بدون</option>{enrollmentStops.filter((stop) => stop.kind !== "DROPOFF").map((stop) => <option key={stop.id} value={stop.id}>{stop.title}</option>)}</select></div><div><Label>محطة النزول</Label><select className={inputClass} value={dropoffStopId} onChange={(e) => setDropoffStopId(e.target.value)}><option value="">بدون</option>{enrollmentStops.filter((stop) => stop.kind !== "PICKUP").map((stop) => <option key={stop.id} value={stop.id}>{stop.title}</option>)}</select></div><div><Label>البداية</Label><Input type="date" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} /></div><div><Label>النهاية الاختيارية</Label><Input type="date" value={endsAt} onChange={(e) => setEndsAt(e.target.value)} /></div></div><textarea className={textareaClass} placeholder="ملاحظة اختيارية للمجموعة" value={enrollmentNotes} onChange={(e) => setEnrollmentNotes(e.target.value)} /><Button disabled={bulkEnrolling || !enrollmentRouteId || !selectedStudentCount} onClick={() => void saveBulkEnrollments()}>{bulkEnrolling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}إضافة {selectedStudentCount} طالب/ة إلى الخط</Button></div> : null}
+            {bulkResult ? <div className="space-y-2 rounded-xl border p-3 text-sm"><div className="text-emerald-700 dark:text-emerald-300">تمت إضافة {bulkResult.succeeded.length} طالب/ة بنجاح.</div>{bulkResult.skipped.length ? <div className="space-y-1 text-amber-800 dark:text-amber-200"><div>تم تخطي {bulkResult.skipped.length} طالب/ة:</div>{bulkResult.skipped.map((item) => <div key={item.studentId}>• {selectedStudents[item.studentId]?.displayName ?? item.studentId}: {item.message}</div>)}</div> : null}</div> : null}
           </FormSection>
 
           {transferEnrollment ? <FormSection title={`نقل ${transferEnrollment.studentDisplayName ?? transferEnrollment.studentId} إلى خط آخر`} description="يُنهي الاشتراك السابق وينشئ اشتراكًا جديدًا دون تغيير السجلات التاريخية." contentClassName="space-y-3"><div className="grid gap-3 md:grid-cols-3"><div><Label>الخط الجديد</Label><select className={inputClass} value={transferRouteId} onChange={(e) => { setTransferRouteId(e.target.value); setPickupStopId(""); setDropoffStopId(""); }}><option value="">اختر</option>{workspace.routes.filter((route) => route.status === "ACTIVE" && route.id !== transferEnrollment.routeId && route.schoolId === transferEnrollment.schoolId && (!route.academicYearId || route.academicYearId === transferEnrollment.academicYearId)).map((route) => <option key={route.id} value={route.id}>{route.title}</option>)}</select></div><div><Label>محطة الصعود</Label><select className={inputClass} value={pickupStopId} onChange={(e) => setPickupStopId(e.target.value)}><option value="">بدون</option>{transferStops.filter((stop) => stop.kind !== "DROPOFF").map((stop) => <option key={stop.id} value={stop.id}>{stop.title}</option>)}</select></div><div><Label>محطة النزول</Label><select className={inputClass} value={dropoffStopId} onChange={(e) => setDropoffStopId(e.target.value)}><option value="">بدون</option>{transferStops.filter((stop) => stop.kind !== "PICKUP").map((stop) => <option key={stop.id} value={stop.id}>{stop.title}</option>)}</select></div><div><Label>تاريخ النقل</Label><Input type="date" value={transferDate} onChange={(e) => setTransferDate(e.target.value)} /></div></div><div className="flex gap-2"><Button disabled={busy || !transferRouteId} onClick={async () => { if (!window.confirm("نقل الطالب وإنهاء اشتراكه السابق؟")) return; const ok = await mutate("TRANSFER_ENROLLMENT", { enrollmentId: transferEnrollment.id, targetRouteId: transferRouteId, transferAt: dateMs(transferDate), pickupStopId, dropoffStopId, operationId: crypto.randomUUID() }, "تم نقل الطالب إلى الخط الجديد"); if (ok) setTransferEnrollment(null); }}><Bus className="h-4 w-4" />تأكيد النقل</Button><Button variant="outline" onClick={() => setTransferEnrollment(null)}>إلغاء</Button></div></FormSection> : null}

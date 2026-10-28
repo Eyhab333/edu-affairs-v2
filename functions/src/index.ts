@@ -61,6 +61,7 @@ export {
 export {
   getTransportAdminWorkspace,
   manageTransportAdministration,
+  searchTransportAdminEmployees,
   searchTransportAdminStudents,
 } from "./transport/transport-administration";
 export { getLearningLossSummary } from "./learning-loss/learning-loss-summary";

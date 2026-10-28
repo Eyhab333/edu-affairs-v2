@@ -36,8 +36,16 @@ type TransportAdminAction =
   | "UPSERT_STOP"
   | "ARCHIVE_STOP"
   | "CREATE_ENROLLMENT"
+  | "CREATE_ENROLLMENTS_BULK"
   | "CHANGE_ENROLLMENT_STATUS"
   | "TRANSFER_ENROLLMENT";
+
+type TransportStaffCandidate = {
+  personId: string;
+  roleKey: string;
+  positionTitle: string;
+  schoolIds: string[];
+};
 
 function data(value: unknown): FirestoreRecord {
   return value && typeof value === "object" && !Array.isArray(value)
@@ -217,28 +225,52 @@ function normalizeEnrollment(
   return parsed.success ? parsed.data : undefined;
 }
 
-async function loadStaffCandidates(orgId: string) {
-  const snapshot = await getFirestore()
-    .collectionGroup("orgMemberships")
-    .where("orgId", "==", orgId)
-    .get();
-  const rows = snapshot.docs.flatMap((document) => {
-    const membership = data(document.data());
-    const personId = readString(membership.personId);
-    const roleKey = membershipRoleKey(membership);
-    return personId && isActiveMembership(membership) && roleKey !== "GUARDIAN"
-      ? [{
-          personId,
-          roleKey,
-          schoolIds: membershipSchoolIds(membership),
-        }]
-      : [];
+function isEligibleEmployeeMembership(membership: FirestoreRecord) {
+  return (
+    isActiveMembership(membership) &&
+    !!readString(membership.personId) &&
+    membershipRoleKey(membership) !== "GUARDIAN"
+  );
+}
+
+function candidateFromMembership(membership: FirestoreRecord): TransportStaffCandidate {
+  const roleKey = membershipRoleKey(membership);
+  return {
+    personId: readString(membership.personId),
+    roleKey,
+    positionTitle:
+      readString(membership.title) || readString(membership.positionCode) || roleKey,
+    schoolIds: membershipSchoolIds(membership),
+  };
+}
+
+function mergeStaffCandidates(candidates: TransportStaffCandidate[]) {
+  const merged = new Map<string, TransportStaffCandidate>();
+  candidates.forEach((candidate) => {
+    const current = merged.get(candidate.personId);
+    if (!current) {
+      merged.set(candidate.personId, candidate);
+      return;
+    }
+    merged.set(candidate.personId, {
+      ...current,
+      schoolIds: Array.from(new Set([...current.schoolIds, ...candidate.schoolIds])),
+      positionTitle: current.positionTitle || candidate.positionTitle,
+      roleKey: current.roleKey || candidate.roleKey,
+    });
   });
-  const uniqueRows = Array.from(new Map(rows.map((row) => [row.personId, row])).values());
-  const people = uniqueRows.length
-    ? await getFirestore().getAll(
-        ...uniqueRows.map((row) =>
-          getFirestore().doc(`orgs/${orgId}/people/${row.personId}`),
+  return Array.from(merged.values());
+}
+
+async function hydrateStaffCandidates(
+  orgId: string,
+  candidates: TransportStaffCandidate[],
+) {
+  const db = getFirestore();
+  const people = candidates.length
+    ? await db.getAll(
+        ...candidates.map((candidate) =>
+          db.doc(`orgs/${orgId}/people/${candidate.personId}`),
         ),
       )
     : [];
@@ -247,11 +279,32 @@ async function loadStaffCandidates(orgId: string) {
       .filter((person) => person.exists)
       .map((person) => [person.id, data(person.data())]),
   );
-  return uniqueRows
-    .map((row) => ({
-      ...row,
-      displayName: label(peopleById.get(row.personId) ?? {}, row.personId),
-    }))
+  return candidates.map((candidate) => ({
+    ...candidate,
+    displayName: label(peopleById.get(candidate.personId) ?? {}, candidate.personId),
+  }));
+}
+
+async function loadStaffCandidates(orgId: string, personIds: string[]) {
+  const ids = Array.from(new Set(personIds.filter(Boolean)));
+  if (!ids.length) return [];
+  const db = getFirestore();
+  const snapshots = await Promise.all(
+    Array.from({ length: Math.ceil(ids.length / 30) }, (_, index) =>
+      db.collectionGroup("orgMemberships")
+        .where("personId", "in", ids.slice(index * 30, (index + 1) * 30))
+        .get(),
+    ),
+  );
+  const candidates = mergeStaffCandidates(
+    snapshots.flatMap((snapshot) => snapshot.docs).flatMap((document) => {
+      const membership = data(document.data());
+      return readString(membership.orgId) === orgId && isEligibleEmployeeMembership(membership)
+        ? [candidateFromMembership(membership)]
+        : [];
+    }),
+  );
+  return (await hydrateStaffCandidates(orgId, candidates))
     .sort((left, right) => left.displayName.localeCompare(right.displayName, "ar"));
 }
 
@@ -263,7 +316,7 @@ export const getTransportAdminWorkspace = onCall(
     const orgId = id(data(request.data).orgId, "orgId");
     await assertAdmin(uid, orgId);
     const db = getFirestore();
-    const [schoolsSnapshot, orgYearsSnapshot, vehiclesSnapshot, routesSnapshot, stopsSnapshot, enrollmentsSnapshot, assignmentsSnapshot, staff] =
+    const [schoolsSnapshot, orgYearsSnapshot, vehiclesSnapshot, routesSnapshot, stopsSnapshot, enrollmentsSnapshot, assignmentsSnapshot] =
       await Promise.all([
         db.collection(`orgs/${orgId}/schools`).get(),
         db.collection(`orgs/${orgId}/academicYears`).get(),
@@ -274,8 +327,14 @@ export const getTransportAdminWorkspace = onCall(
         db.collection(`orgs/${orgId}/operationalAssignments`)
           .where("operationKind", "==", "TRANSPORT_ATTENDANCE")
           .get(),
-        loadStaffCandidates(orgId),
       ]);
+    const referencedSupervisorIds = Array.from(new Set([
+      ...routesSnapshot.docs.flatMap((document) => strings(document.data().supervisorPersonIds)),
+      ...assignmentsSnapshot.docs
+        .filter((document) => readString(document.data().status) === "ACTIVE" && document.data().isActive !== false)
+        .map((document) => readString(document.data().actorPersonId)),
+    ].filter(Boolean)));
+    const staff = await loadStaffCandidates(orgId, referencedSupervisorIds);
     const nestedYearSnapshots = await Promise.all(
       schoolsSnapshot.docs.map((school) => school.ref.collection("academicYears").get()),
     );
@@ -338,6 +397,7 @@ export const searchTransportAdminStudents = onCall(
     const input = data(request.data);
     const orgId = id(input.orgId, "orgId");
     const schoolId = id(input.schoolId, "schoolId");
+    const classId = optionalId(input.classId, "classId");
     const queryText = readString(input.query).toLocaleLowerCase("ar");
     await assertAdmin(uid, orgId);
     const db = getFirestore();
@@ -357,7 +417,8 @@ export const searchTransportAdminStudents = onCall(
       )
       .filter(
         (item) => !optionalNumber(item.endAt) || numberValue(item.endAt) >= Date.now(),
-      );
+      )
+      .filter((item) => !classId || readString(item.classId) === classId);
     const studentIds = Array.from(
       new Set(activeEnrollments.map((item) => readString(item.studentId)).filter(Boolean)),
     );
@@ -417,12 +478,122 @@ export const searchTransportAdminStudents = onCall(
           displayName,
           schoolId,
           academicYearId: readString(academic?.academicYearId),
+          classId: readString(academic?.classId),
+          classTitle:
+            readString(academic?.classTitle) ||
+            readString(studentData.classTitle) ||
+            readString(academic?.classId),
           academicEnrollmentId: readString(academic?.id),
           transportEnrollment: transportByStudent.get(student.id),
         }];
       })
       .sort((left, right) => left.displayName.localeCompare(right.displayName, "ar"))
       .slice(0, 100);
+  },
+);
+
+export const searchTransportAdminEmployees = onCall(
+  { region: REGION, memory: "512MiB" },
+  async (request) => {
+    const uid = request.auth?.uid;
+    if (!uid) throw new HttpsError("unauthenticated", "Authentication is required.");
+    const input = data(request.data);
+    const orgId = id(input.orgId, "orgId");
+    const schoolId = optionalId(input.schoolId, "schoolId");
+    const queryText = readString(input.query).toLocaleLowerCase("ar");
+    const positionText = readString(input.position).toLocaleLowerCase("ar");
+    const assignmentStatus = readString(input.assignmentStatus) || "ALL";
+    if (!["ALL", "ASSIGNED", "UNASSIGNED"].includes(assignmentStatus)) {
+      throw new HttpsError("invalid-argument", "Employee assignment status is invalid.");
+    }
+    const routeId = optionalId(input.routeId, "routeId");
+    const cursor = readString(input.cursor);
+    if (cursor && !/^users\/[^/]+\/orgMemberships\/[^/]+$/.test(cursor)) {
+      throw new HttpsError("invalid-argument", "Employee cursor is invalid.");
+    }
+    await assertAdmin(uid, orgId);
+    const db = getFirestore();
+    const pageSize = 100;
+    let membershipQuery = db.collectionGroup("orgMemberships")
+      .where("orgId", "==", orgId)
+      .orderBy("personId")
+      .limit(pageSize);
+    if (cursor) {
+      const cursorSnapshot = await db.doc(cursor).get();
+      if (
+        !cursorSnapshot.exists ||
+        readString(cursorSnapshot.data()?.orgId) !== orgId
+      ) {
+        throw new HttpsError("invalid-argument", "Employee cursor no longer exists.");
+      }
+      membershipQuery = membershipQuery.startAfter(cursorSnapshot);
+    }
+    const membershipSnapshot = await membershipQuery.get();
+    const candidates = mergeStaffCandidates(
+      membershipSnapshot.docs.flatMap((document) => {
+        const membership = data(document.data());
+        return isEligibleEmployeeMembership(membership)
+          ? [candidateFromMembership(membership)]
+          : [];
+      }),
+    );
+    const [staff, assignmentsSnapshot] = await Promise.all([
+      hydrateStaffCandidates(orgId, candidates),
+      db.collection(`orgs/${orgId}/operationalAssignments`)
+        .where("operationKind", "==", "TRANSPORT_ATTENDANCE")
+        .get(),
+    ]);
+    const activeRoutesByPerson = new Map<string, string[]>();
+    assignmentsSnapshot.docs.forEach((document) => {
+      const assignment = data(document.data());
+      if (readString(assignment.status) !== "ACTIVE" || assignment.isActive === false) return;
+      const personId = readString(assignment.actorPersonId);
+      if (!personId) return;
+      const routeIds = Array.from(new Set([
+        readString(assignment.scopeType) === "ROUTE" ? readString(assignment.scopeId) : "",
+        ...strings(assignment.targetRouteIds),
+      ].filter(Boolean)));
+      if (routeIds.length) {
+        activeRoutesByPerson.set(personId, Array.from(new Set([
+          ...(activeRoutesByPerson.get(personId) ?? []),
+          ...routeIds,
+        ])));
+      }
+    });
+    const employees = staff
+      .filter((employee) =>
+        !schoolId || employee.schoolIds.length === 0 || employee.schoolIds.includes(schoolId),
+      )
+      .filter((employee) =>
+        !queryText ||
+        employee.displayName.toLocaleLowerCase("ar").includes(queryText) ||
+        employee.personId.toLocaleLowerCase().includes(queryText),
+      )
+      .filter((employee) =>
+        !positionText ||
+        employee.positionTitle.toLocaleLowerCase("ar").includes(positionText) ||
+        employee.roleKey.toLocaleLowerCase().includes(positionText),
+      )
+      .map((employee) => {
+        const assignedRouteIds = activeRoutesByPerson.get(employee.personId) ?? [];
+        return {
+          ...employee,
+          assignedRouteIds,
+          isAssignedToRoute: !!routeId && assignedRouteIds.includes(routeId),
+        };
+      })
+      .filter((employee) =>
+        assignmentStatus === "ALL" ||
+        (assignmentStatus === "ASSIGNED" && employee.assignedRouteIds.length > 0) ||
+        (assignmentStatus === "UNASSIGNED" && employee.assignedRouteIds.length === 0),
+      )
+      .sort((left, right) => left.displayName.localeCompare(right.displayName, "ar"));
+    return {
+      employees,
+      nextCursor: membershipSnapshot.size === pageSize
+        ? membershipSnapshot.docs[membershipSnapshot.docs.length - 1]?.ref.path
+        : undefined,
+    };
   },
 );
 
@@ -507,6 +678,91 @@ async function validateStudentPlacement(params: {
     displayName: label(data(personSnapshot?.data()), params.studentId),
     academicYearId: readString(placement.data().academicYearId),
   };
+}
+
+async function createTransportEnrollment(params: {
+  orgId: string;
+  routeId: string;
+  studentId: string;
+  pickupStopId: string;
+  dropoffStopId: string;
+  startsAt: number;
+  endsAt?: number;
+  notes?: string;
+  now: number;
+}) {
+  const db = getFirestore();
+  const enrollmentRef = db.collection(`orgs/${params.orgId}/studentTransportEnrollments`).doc();
+  return db.runTransaction(async (transaction) => {
+    const [routeSnapshot, existingSnapshot] = await Promise.all([
+      transaction.get(db.doc(`orgs/${params.orgId}/transportRoutes/${params.routeId}`)),
+      transaction.get(
+        db.collection(`orgs/${params.orgId}/studentTransportEnrollments`)
+          .where("studentId", "==", params.studentId),
+      ),
+    ]);
+    if (!routeSnapshot.exists) throw new HttpsError("not-found", "Transport route was not found.");
+    const route = normalizeRoute(routeSnapshot.id, params.orgId, data(routeSnapshot.data()));
+    if (!route || route.status !== "ACTIVE") {
+      throw new HttpsError("failed-precondition", "Student enrollment requires an active route.");
+    }
+    const overlapping = existingSnapshot.docs.some((document) => {
+      const item = normalizeEnrollment(document.id, params.orgId, data(document.data()));
+      return item && ACTIVE_ENROLLMENT_STATUSES.has(item.status) &&
+        rangesOverlap(
+          params.startsAt,
+          params.endsAt,
+          item.startsAt ?? item.createdAt,
+          item.endsAt,
+        );
+    });
+    if (overlapping) {
+      throw new HttpsError("already-exists", "Student already has an overlapping transport enrollment.");
+    }
+    const placement = await validateStudentPlacement({
+      transaction,
+      orgId: params.orgId,
+      studentId: params.studentId,
+      route,
+    });
+    const stops = await validateStops({
+      transaction,
+      orgId: params.orgId,
+      routeId: params.routeId,
+      pickupStopId: params.pickupStopId,
+      dropoffStopId: params.dropoffStopId,
+    });
+    const enrollment = StudentTransportEnrollmentSchema.parse({
+      id: enrollmentRef.id,
+      orgId: params.orgId,
+      schoolId: route.schoolId,
+      academicYearId: route.academicYearId || placement.academicYearId,
+      studentId: params.studentId,
+      studentPersonId: placement.personId || undefined,
+      studentDisplayName: placement.displayName,
+      routeId: params.routeId,
+      routeTitle: route.title,
+      pickupStopId: params.pickupStopId || undefined,
+      pickupStopTitle: stops.get(params.pickupStopId)?.title,
+      dropoffStopId: params.dropoffStopId || undefined,
+      dropoffStopTitle: stops.get(params.dropoffStopId)?.title,
+      status: "ACTIVE",
+      startsAt: params.startsAt,
+      endsAt: params.endsAt,
+      notes: params.notes || undefined,
+      createdAt: params.now,
+      updatedAt: params.now,
+    });
+    transaction.create(enrollmentRef, clean(enrollment));
+    return { id: enrollmentRef.id };
+  });
+}
+
+function enrollmentFailure(error: unknown) {
+  if (error instanceof HttpsError) {
+    return { code: error.code, message: error.message };
+  }
+  return { code: "internal", message: "Unable to create transport enrollment." };
 }
 
 export const manageTransportAdministration = onCall(
@@ -658,7 +914,7 @@ export const manageTransportAdministration = onCall(
     if (action === "SET_ROUTE_SUPERVISORS") {
       const routeId = id(payload.routeId, "routeId");
       const personIds = Array.from(new Set(strings(payload.personIds)));
-      const candidates = await loadStaffCandidates(orgId);
+      const candidates = await loadStaffCandidates(orgId, personIds);
       const candidateIds = new Set(candidates.map((candidate) => candidate.personId));
       if (personIds.some((personId) => !candidateIds.has(personId))) {
         throw new HttpsError("failed-precondition", "A selected supervisor is not an active employee.");
@@ -864,53 +1120,63 @@ export const manageTransportAdministration = onCall(
       if (endsAt !== undefined && endsAt < startsAt) {
         throw new HttpsError("invalid-argument", "Enrollment end date precedes its start date.");
       }
-      const enrollmentRef = db.collection(`orgs/${orgId}/studentTransportEnrollments`).doc();
-      return db.runTransaction(async (transaction) => {
-        const [routeSnapshot, existingSnapshot] = await Promise.all([
-          transaction.get(db.doc(`orgs/${orgId}/transportRoutes/${routeId}`)),
-          transaction.get(db.collection(`orgs/${orgId}/studentTransportEnrollments`).where("studentId", "==", studentId)),
-        ]);
-        if (!routeSnapshot.exists) throw new HttpsError("not-found", "Transport route was not found.");
-        const route = normalizeRoute(routeSnapshot.id, orgId, data(routeSnapshot.data()));
-        if (!route || route.status !== "ACTIVE") {
-          throw new HttpsError("failed-precondition", "Student enrollment requires an active route.");
-        }
-        const overlapping = existingSnapshot.docs.some((document) => {
-          const item = normalizeEnrollment(document.id, orgId, data(document.data()));
-          return item && ACTIVE_ENROLLMENT_STATUSES.has(item.status) &&
-            rangesOverlap(startsAt, endsAt, item.startsAt ?? item.createdAt, item.endsAt);
-        });
-        if (overlapping) {
-          throw new HttpsError("already-exists", "Student already has an overlapping transport enrollment.");
-        }
-        const placement = await validateStudentPlacement({ transaction, orgId, studentId, route });
-        const pickupStopId = optionalId(payload.pickupStopId, "pickupStopId");
-        const dropoffStopId = optionalId(payload.dropoffStopId, "dropoffStopId");
-        const stops = await validateStops({ transaction, orgId, routeId, pickupStopId, dropoffStopId });
-        const enrollment = StudentTransportEnrollmentSchema.parse({
-          id: enrollmentRef.id,
-          orgId,
-          schoolId: route.schoolId,
-          academicYearId: route.academicYearId || placement.academicYearId,
-          studentId,
-          studentPersonId: placement.personId || undefined,
-          studentDisplayName: placement.displayName,
-          routeId,
-          routeTitle: route.title,
-          pickupStopId: pickupStopId || undefined,
-          pickupStopTitle: stops.get(pickupStopId)?.title,
-          dropoffStopId: dropoffStopId || undefined,
-          dropoffStopTitle: stops.get(dropoffStopId)?.title,
-          status: "ACTIVE",
-          startsAt,
-          endsAt,
-          notes: readString(payload.notes) || undefined,
-          createdAt: now,
-          updatedAt: now,
-        });
-        transaction.create(enrollmentRef, clean(enrollment));
-        return { id: enrollmentRef.id };
+      return createTransportEnrollment({
+        orgId,
+        routeId,
+        studentId,
+        pickupStopId: optionalId(payload.pickupStopId, "pickupStopId"),
+        dropoffStopId: optionalId(payload.dropoffStopId, "dropoffStopId"),
+        startsAt,
+        endsAt,
+        notes: readString(payload.notes),
+        now,
       });
+    }
+
+    if (action === "CREATE_ENROLLMENTS_BULK") {
+      const routeId = id(payload.routeId, "routeId");
+      const studentIds = Array.from(new Set(strings(payload.studentIds)));
+      if (!studentIds.length || studentIds.length > 100) {
+        throw new HttpsError("invalid-argument", "Choose between one and 100 students.");
+      }
+      studentIds.forEach((studentId) => id(studentId, "studentId"));
+      const startsAt = numberValue(payload.startsAt, now);
+      const endsAt = optionalNumber(payload.endsAt);
+      if (endsAt !== undefined && endsAt < startsAt) {
+        throw new HttpsError("invalid-argument", "Enrollment end date precedes its start date.");
+      }
+      const shared = {
+        orgId,
+        routeId,
+        pickupStopId: optionalId(payload.pickupStopId, "pickupStopId"),
+        dropoffStopId: optionalId(payload.dropoffStopId, "dropoffStopId"),
+        startsAt,
+        endsAt,
+        notes: readString(payload.notes),
+        now,
+      };
+      const succeeded: Array<{ studentId: string; id: string }> = [];
+      const skipped: Array<{ studentId: string; code: string; message: string }> = [];
+      for (let index = 0; index < studentIds.length; index += 10) {
+        const outcomes = await Promise.all(
+          studentIds.slice(index, index + 10).map(async (studentId) => {
+            try {
+              const created = await createTransportEnrollment({ ...shared, studentId });
+              return { studentId, created };
+            } catch (error) {
+              return { studentId, error: enrollmentFailure(error) };
+            }
+          }),
+        );
+        outcomes.forEach((outcome) => {
+          if ("created" in outcome) {
+            succeeded.push({ studentId: outcome.studentId, id: outcome.created.id });
+          } else {
+            skipped.push({ studentId: outcome.studentId, ...outcome.error });
+          }
+        });
+      }
+      return { succeeded, skipped };
     }
 
     if (action === "CHANGE_ENROLLMENT_STATUS") {
