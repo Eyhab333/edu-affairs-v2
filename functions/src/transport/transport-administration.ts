@@ -1169,9 +1169,9 @@ export const manageTransportAdministration = onCall(
           }),
         );
         outcomes.forEach((outcome) => {
-          if ("created" in outcome) {
+          if (outcome.created) {
             succeeded.push({ studentId: outcome.studentId, id: outcome.created.id });
-          } else {
+          } else if (outcome.error) {
             skipped.push({ studentId: outcome.studentId, ...outcome.error });
           }
         });
