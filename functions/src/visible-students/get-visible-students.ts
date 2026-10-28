@@ -1,4 +1,5 @@
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import { logger } from "firebase-functions";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { WEB_STAFF_CORS_ORIGINS } from "../shared/cors";
 import type {
@@ -12,6 +13,7 @@ import { getVisibleClassesForActor } from "@takween/domain";
 import { getActorSupervisionSchoolIds } from "../access/get-actor-supervision-school-ids";
 
 const REGION = "me-central2";
+const DOCUMENT_READ_BATCH_SIZE = 100;
 
 type FirestoreRecord = Record<string, unknown>;
 
@@ -83,6 +85,34 @@ function chunkArray<T>(items: T[], chunkSize: number): T[][] {
   }
 
   return chunks;
+}
+
+async function loadDocumentsById(params: {
+  db: Firestore;
+  orgId: string;
+  collectionId: "students" | "people";
+  ids: string[];
+}) {
+  const documents = new Map<string, FirestoreRecord | undefined>();
+
+  for (const idChunk of chunkArray(params.ids, DOCUMENT_READ_BATCH_SIZE)) {
+    const snapshots = await params.db.getAll(
+      ...idChunk.map((id) =>
+        params.db.doc(`orgs/${params.orgId}/${params.collectionId}/${id}`),
+      ),
+    );
+
+    for (const snapshot of snapshots) {
+      documents.set(
+        snapshot.id,
+        snapshot.exists
+          ? (snapshot.data() as FirestoreRecord)
+          : undefined,
+      );
+    }
+  }
+
+  return documents;
 }
 
 function normalizeMembership(params: {
@@ -243,6 +273,63 @@ function resolveDisplayName(params: {
   );
 }
 
+function logVisibleStudentsFailure(params: {
+  error: unknown;
+  stage: string;
+  orgId: string;
+  visibleClassCount: number;
+  visibleSchoolCount: number;
+  enrollmentRecordCount: number;
+  studentDocumentRequestCount: number;
+  studentDocumentCount: number;
+  personDocumentRequestCount: number;
+  personDocumentCount: number;
+}) {
+  const errorRecord =
+    params.error && typeof params.error === "object"
+      ? (params.error as Record<string, unknown>)
+      : {};
+  const errorMessage =
+    params.error instanceof Error
+      ? params.error.message
+      : typeof errorRecord.message === "string"
+        ? errorRecord.message
+        : String(params.error);
+  const errorStack =
+    params.error instanceof Error
+      ? params.error.stack
+      : typeof errorRecord.stack === "string"
+        ? errorRecord.stack
+        : undefined;
+  const firestoreErrorCode =
+    typeof errorRecord.code === "string" ||
+    typeof errorRecord.code === "number"
+      ? errorRecord.code
+      : undefined;
+
+  logger.error("getVisibleStudents failed", {
+    functionName: "getVisibleStudents",
+    stage: params.stage,
+    orgId: params.orgId,
+    visibleClassCount: params.visibleClassCount,
+    visibleSchoolCount: params.visibleSchoolCount,
+    enrollmentRecordCount: params.enrollmentRecordCount,
+    studentDocumentRequestCount: params.studentDocumentRequestCount,
+    studentDocumentCount: params.studentDocumentCount,
+    personDocumentRequestCount: params.personDocumentRequestCount,
+    personDocumentCount: params.personDocumentCount,
+    firestoreErrorCode,
+    errorMessage,
+    errorStack,
+  });
+}
+
+function toCallableError(error: unknown) {
+  return error instanceof HttpsError
+    ? error
+    : new HttpsError("internal", "Unable to load visible students.");
+}
+
 export const getVisibleStudents = onCall(
   { region: REGION, cors: WEB_STAFF_CORS_ORIGINS },
   async (request): Promise<GetVisibleStudentsResult> => {
@@ -253,7 +340,33 @@ export const getVisibleStudents = onCall(
     }
 
     const orgId = requireDocumentId(readRecord(request.data).orgId, "orgId");
-    const visibleClasses = await getActorVisibleClasses({ uid, orgId });
+    let visibleClassCount = 0;
+    let visibleSchoolCount = 0;
+    let enrollmentRecordCount = 0;
+    let studentDocumentRequestCount = 0;
+    let studentDocumentCount = 0;
+    let personDocumentRequestCount = 0;
+    let personDocumentCount = 0;
+    let visibleClasses: Class[] = [];
+
+    try {
+      visibleClasses = await getActorVisibleClasses({ uid, orgId });
+      visibleClassCount = visibleClasses.length;
+    } catch (error) {
+      logVisibleStudentsFailure({
+        error,
+        stage: "resolve-visible-classes",
+        orgId,
+        visibleClassCount,
+        visibleSchoolCount,
+        enrollmentRecordCount,
+        studentDocumentRequestCount,
+        studentDocumentCount,
+        personDocumentRequestCount,
+        personDocumentCount,
+      });
+      throw toCallableError(error);
+    }
     const classByKey = new Map(
       visibleClasses.map((classItem) => [
         makeClassKey({
@@ -271,15 +384,38 @@ export const getVisibleStudents = onCall(
           .filter(Boolean),
       ),
     );
+    visibleSchoolCount = schoolIds.length;
     const db = getFirestore();
-    const enrollmentSnapshots = await Promise.all(
-      chunkArray(schoolIds, 30).map((schoolIdChunk) =>
-        db
-          .collection(`orgs/${orgId}/studentEnrollments`)
-          .where("schoolId", "in", schoolIdChunk)
-          .where("status", "==", "ACTIVE")
-          .get(),
-      ),
+    const enrollmentSnapshots = await (async () => {
+      try {
+        return await Promise.all(
+          chunkArray(schoolIds, 30).map((schoolIdChunk) =>
+            db
+              .collection(`orgs/${orgId}/studentEnrollments`)
+              .where("schoolId", "in", schoolIdChunk)
+              .where("status", "==", "ACTIVE")
+              .get(),
+          ),
+        );
+      } catch (error) {
+        logVisibleStudentsFailure({
+          error,
+          stage: "query-active-enrollments",
+          orgId,
+          visibleClassCount,
+          visibleSchoolCount,
+          enrollmentRecordCount,
+          studentDocumentRequestCount,
+          studentDocumentCount,
+          personDocumentRequestCount,
+          personDocumentCount,
+        });
+        throw toCallableError(error);
+      }
+    })();
+    enrollmentRecordCount = enrollmentSnapshots.reduce(
+      (count, snapshot) => count + snapshot.size,
+      0,
     );
     const enrollments = enrollmentSnapshots
       .flatMap((snapshot) => snapshot.docs)
@@ -298,16 +434,35 @@ export const getVisibleStudents = onCall(
           : [];
       });
 
-    const studentIds = Array.from(new Set(enrollments.map((enrollment) => enrollment.studentId)));
-    const studentSnapshots = await Promise.all(
-      studentIds.map((studentId) => db.doc(`orgs/${orgId}/students/${studentId}`).get()),
+    const studentIds = Array.from(
+      new Set(enrollments.map((enrollment) => enrollment.studentId)),
     );
-    const studentsById = new Map(
-      studentSnapshots.map((snapshot) => [
-        snapshot.id,
-        snapshot.exists ? (snapshot.data() as FirestoreRecord) : undefined,
-      ]),
-    );
+    studentDocumentRequestCount = studentIds.length;
+    const studentsById = await (async () => {
+      try {
+        return await loadDocumentsById({
+          db,
+          orgId,
+          collectionId: "students",
+          ids: studentIds,
+        });
+      } catch (error) {
+        logVisibleStudentsFailure({
+          error,
+          stage: "load-students",
+          orgId,
+          visibleClassCount,
+          visibleSchoolCount,
+          enrollmentRecordCount,
+          studentDocumentRequestCount,
+          studentDocumentCount,
+          personDocumentRequestCount,
+          personDocumentCount,
+        });
+        throw toCallableError(error);
+      }
+    })();
+    studentDocumentCount = Array.from(studentsById.values()).filter(Boolean).length;
     const personIds = Array.from(
       new Set(
         Array.from(studentsById.values())
@@ -315,15 +470,32 @@ export const getVisibleStudents = onCall(
           .filter(Boolean),
       ),
     );
-    const personSnapshots = await Promise.all(
-      personIds.map((personId) => db.doc(`orgs/${orgId}/people/${personId}`).get()),
-    );
-    const peopleById = new Map(
-      personSnapshots.map((snapshot) => [
-        snapshot.id,
-        snapshot.exists ? (snapshot.data() as FirestoreRecord) : undefined,
-      ]),
-    );
+    personDocumentRequestCount = personIds.length;
+    const peopleById = await (async () => {
+      try {
+        return await loadDocumentsById({
+          db,
+          orgId,
+          collectionId: "people",
+          ids: personIds,
+        });
+      } catch (error) {
+        logVisibleStudentsFailure({
+          error,
+          stage: "load-people",
+          orgId,
+          visibleClassCount,
+          visibleSchoolCount,
+          enrollmentRecordCount,
+          studentDocumentRequestCount,
+          studentDocumentCount,
+          personDocumentRequestCount,
+          personDocumentCount,
+        });
+        throw toCallableError(error);
+      }
+    })();
+    personDocumentCount = Array.from(peopleById.values()).filter(Boolean).length;
 
     const rows = enrollments
       .map((enrollment) => {
@@ -346,6 +518,19 @@ export const getVisibleStudents = onCall(
         };
       })
       .sort((a, b) => a.displayName.localeCompare(b.displayName, "ar"));
+
+    logger.info("getVisibleStudents completed", {
+      functionName: "getVisibleStudents",
+      orgId,
+      visibleClassCount,
+      visibleSchoolCount,
+      enrollmentRecordCount,
+      studentDocumentRequestCount,
+      studentDocumentCount,
+      personDocumentRequestCount,
+      personDocumentCount,
+      rowCount: rows.length,
+    });
 
     return { orgId, rows };
   },

@@ -18,7 +18,7 @@ import {
 } from "./performance-improvement-access";
 
 const REGION = "me-central2";
-const MAX_WRITES_PER_OPERATION = 450;
+const MAX_WRITES_PER_OPERATION = 750;
 
 type EvaluationRow = Record<string, unknown>;
 type Row = EvaluationRow & { id: string };
