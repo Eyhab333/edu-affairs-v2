@@ -14,11 +14,8 @@ import {
 } from "lucide-react";
 
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
-import { getSpecialStaffReportingAccess } from "@takween/domain";
-import {
-  canAccessEvaluationReports,
-  getStaffNavigationAccess,
-} from "@/lib/staff-navigation";
+import { hasFullStaffReportingAccess } from "@takween/domain";
+import { getStaffNavigationAccess } from "@/lib/staff-navigation";
 import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
 import type { PersonSupervisionScope } from "@takween/contracts";
 
@@ -107,23 +104,21 @@ export default function ReportsPage() {
   }, [actor.orgId, actor.personId]);
 
   const navigationAccess = getStaffNavigationAccess(actor, supervisionScopes);
-  const specialReportingAccess = getSpecialStaffReportingAccess({
+  const hasFullReportingAccess = hasFullStaffReportingAccess({
     orgId: actor.orgId,
     personId: actor.personId,
     uid: actor.uid,
+    roles: actor.roles,
   });
-  const hasSpecialReportingAccess =
-    specialReportingAccess?.canAccessReports === true;
-  const canAccessEvaluationReport = canAccessEvaluationReports(actor);
   const canAccessCentralMeasurementSummary =
     actor.visibleModules.includes("MEASUREMENTS") ||
-    specialReportingAccess?.canAccessCentralMeasurementSummary === true;
+    hasFullReportingAccess;
   const canAccessKgMeasurementSummary =
     actor.visibleModules.includes("MEASUREMENTS") ||
-    specialReportingAccess?.canAccessKgMeasurementSummary === true;
+    hasFullReportingAccess;
   const visibleReportAreas = [
     ...reportAreas.filter((area) => {
-      if (hasSpecialReportingAccess) return true;
+      if (hasFullReportingAccess) return true;
 
       switch (area.access) {
         case "TEACHER_WORK":
@@ -133,7 +128,7 @@ export default function ReportsPage() {
         case "ADMIN_WORK":
           return navigationAccess.canAccessAdminWork;
         case "EVALUATIONS":
-          return canAccessEvaluationReport;
+          return false;
         case "STUDENT_SCORES":
           return actor.visibleClasses.length > 0;
         case "LEARNING_LOSS":

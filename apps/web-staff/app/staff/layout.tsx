@@ -34,7 +34,7 @@ import {
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
 import { loadPersonSupervisionScopes } from "@/lib/person-supervision-scopes";
 import type { PersonSupervisionScope } from "@takween/contracts";
-import { getSpecialStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
+import { hasFullStaffReportingAccess, hasOrgWideAccess } from "@takween/domain";
 
 function isActiveHref(pathname: string, href: string) {
   if (href === "/staff") return pathname === "/staff";
@@ -171,19 +171,18 @@ function StaffShell({ children }: { children: ReactNode }) {
     ],
   );
 
-  const specialReportingAccess = getSpecialStaffReportingAccess({
+  const hasFullReportingAccess = hasFullStaffReportingAccess({
     orgId: actor.orgId,
     personId: actor.personId,
     uid: actor.uid,
+    roles: actor.roles,
   });
-  const hasSpecialReportingAccess =
-    specialReportingAccess?.canAccessReports === true;
   const canAccessCentralMeasurementSummary =
     visibleModuleSet.has("MEASUREMENTS") ||
-    specialReportingAccess?.canAccessCentralMeasurementSummary === true;
+    hasFullReportingAccess;
   const canAccessKgMeasurementSummary =
     visibleModuleSet.has("MEASUREMENTS") ||
-    specialReportingAccess?.canAccessKgMeasurementSummary === true;
+    hasFullReportingAccess;
   const requiredModule = getRequiredModuleForStaffPath(pathname);
   const isWorkDocumentationRoute =
     pathname === "/staff/work-documentation" ||
@@ -235,13 +234,13 @@ function StaffShell({ children }: { children: ReactNode }) {
     : isKgMeasurementSummaryRoute
       ? canAccessKgMeasurementSummary
       : isTeacherWorkRoute
-        ? canAccessTeacherWorkRoute || hasSpecialReportingAccess
+        ? canAccessTeacherWorkRoute || hasFullReportingAccess
         : isStaffWorkRoute
-          ? scopesLoading || canAccessStaffWorkRoute || hasSpecialReportingAccess
+          ? scopesLoading || canAccessStaffWorkRoute || hasFullReportingAccess
           : isAdminWorkRoute
-            ? scopesLoading || canAccessAdminWorkRoute || hasSpecialReportingAccess
+            ? scopesLoading || canAccessAdminWorkRoute || hasFullReportingAccess
             : isEvaluationReportRoute
-              ? canAccessEvaluationReportsRoute
+              ? canAccessEvaluationReportsRoute || hasFullReportingAccess
               : isReportsRoute
                 ? canAccessReportsRoute
                 : isLessonPrepApprovalsRoute

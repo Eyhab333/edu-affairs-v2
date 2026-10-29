@@ -35,24 +35,13 @@ import {
 import { canAccessPerformanceImprovement } from "@/lib/performance-improvement-access";
 import { getLessonPrepReviewSchoolIds } from "@/lib/lesson-prep-review-policy";
 import {
-  getSpecialStaffReportingAccess,
+  hasFullStaffReportingAccess,
   hasOrgWideAccess,
-  isAdminWorkPrincipal,
 } from "@takween/domain";
 import { canAccessTeacherWork } from "@/lib/teacher-work-access";
 import { canAccessStaffWork } from "@/lib/staff-work-access";
 import { canAccessAdminWork } from "@/lib/admin-work-access";
-import type {
-  MembershipRole,
-  PersonSupervisionScope,
-} from "@takween/contracts";
-
-const REPORTS_CENTER_VICE_PRINCIPAL_ROLE_KEYS = new Set<MembershipRole>([
-  "BOYS_VP",
-  "BOYS_EDU_VP",
-  "GIRLS_VP",
-  "KG_VP",
-]);
+import type { PersonSupervisionScope } from "@takween/contracts";
 
 export type StaffNavItem = {
   href: string;
@@ -271,21 +260,25 @@ export type StaffNavigationAccess = {
 };
 
 export function canAccessEvaluationReports(actor: StaffActorData) {
-  return (
-    hasOrgWideAccess(actor.roles) ||
-    actor.roles.includes("ORG_SUPERVISION_HEAD") ||
-    getSpecialStaffReportingAccess({
-      orgId: actor.orgId,
-      personId: actor.personId,
-      uid: actor.uid,
-    })?.canAccessReports === true
-  );
+  return hasFullStaffReportingAccess({
+    orgId: actor.orgId,
+    personId: actor.personId,
+    uid: actor.uid,
+    roles: actor.roles,
+  });
 }
 
 export function getStaffNavigationAccess(
   actor: StaffActorData,
   supervisionScopes: readonly PersonSupervisionScope[] = [],
 ): StaffNavigationAccess {
+  const canAccessFullReports = hasFullStaffReportingAccess({
+    orgId: actor.orgId,
+    personId: actor.personId,
+    uid: actor.uid,
+    roles: actor.roles,
+  });
+
   return {
     visibleModuleSet: new Set(actor.visibleModules),
     isTransportOnly: isStandaloneBusSupervisor(actor.roles),
@@ -316,13 +309,7 @@ export function getStaffNavigationAccess(
       roles: actor.roles,
       scopes: supervisionScopes,
     }),
-    canAccessReports:
-      canAccessEvaluationReports(actor) ||
-      actor.roles.some(
-        (role) =>
-          isAdminWorkPrincipal(role) ||
-          REPORTS_CENTER_VICE_PRINCIPAL_ROLE_KEYS.has(role),
-      ),
+    canAccessReports: canAccessFullReports,
   };
 }
 

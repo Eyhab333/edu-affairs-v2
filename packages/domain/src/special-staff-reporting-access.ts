@@ -1,3 +1,7 @@
+import type { MembershipRole } from "@takween/contracts";
+
+import { hasOrgWideAccess } from "./access";
+
 export type SpecialStaffReportingAccess = Readonly<{
   schoolIds: readonly string[];
   canAccessReports: true;
@@ -36,6 +40,24 @@ const SPECIAL_STAFF_REPORTING_RULES: readonly SpecialStaffReportingRule[] = [
   },
 ];
 
+const FULL_STAFF_REPORTING_ROLE_KEYS = new Set<MembershipRole>([
+  "BOYS_PRINCIPAL",
+  "GIRLS_PRINCIPAL",
+  "KG_PRINCIPAL",
+  "BOYS_VP",
+  "BOYS_EDU_VP",
+  "BOYS_STUDENTS_VP",
+  "BOYS_TEACHERS_VP",
+  "GIRLS_VP",
+  "KG_VP",
+  "ORG_SUPERVISION_HEAD",
+  "BOYS_SUPERVISION_HEAD",
+  "EDU_SUPERVISOR",
+  "BOYS_EDU_SUPERVISOR",
+  "GIRLS_EDU_SUPERVISOR",
+  "KG_EDU_SUPERVISOR",
+]);
+
 function normalizeId(value: string | undefined) {
   return value?.trim() || "";
 }
@@ -72,4 +94,23 @@ export function getSpecialStaffReportingAccess(params: {
     canAccessCentralMeasurementSummary: true as const,
     canAccessKgMeasurementSummary: true as const,
   });
+}
+
+/**
+ * Controls which report surfaces an actor may open. It intentionally does not
+ * resolve or expand the actor's school, class, or supervision data scope.
+ */
+export function hasFullStaffReportingAccess(params: {
+  orgId: string;
+  personId?: string;
+  uid?: string;
+  roles?: readonly MembershipRole[];
+}): boolean {
+  return (
+    hasOrgWideAccess(params.roles) ||
+    Boolean(
+      params.roles?.some((role) => FULL_STAFF_REPORTING_ROLE_KEYS.has(role)),
+    ) ||
+    getSpecialStaffReportingAccess(params)?.canAccessReports === true
+  );
 }

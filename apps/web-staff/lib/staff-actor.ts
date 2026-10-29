@@ -30,6 +30,7 @@ import { isStandaloneBusSupervisor } from "@/lib/bus-supervisor-access";
 import {
   buildStaffHome,
   getVisibleClassesForActor,
+  hasFullStaffReportingAccess,
   hasOrgWideAccess,
   isOrgWideRole,
   type StaffHomeVisibleModule,
@@ -122,14 +123,7 @@ const LEARNING_LOSS_EXTRA_PERSON_IDS = new Set([
   "p-students-mentor-syeh",
   "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
   "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
-  "p-n-alshaya",
-  "p-malrameh",
-  "p-s-sayed",
-  "p-a-almansur",
-  "p-f-alhamaad",
   "p-t-altwala",
-  "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
-  "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
 ]);
 
 function resolveMembershipIsActive(data: {
@@ -781,7 +775,14 @@ function resolveVisibleModules(params: {
   modules.add("STAFF_CHAT");
   modules.add("PDF_FILES");
 
-  if (LEARNING_LOSS_EXTRA_PERSON_IDS.has(params.actorPersonId)) {
+  if (
+    hasFullStaffReportingAccess({
+      orgId: params.orgId,
+      personId: params.actorPersonId,
+      roles: params.roles,
+    }) ||
+    LEARNING_LOSS_EXTRA_PERSON_IDS.has(params.actorPersonId)
+  ) {
     modules.add("LEARNING_LOSS");
   }
 
