@@ -140,6 +140,7 @@ type LearningLossContextFilter = {
 };
 
 type LearningLossTypeFilter = "ALL" | "AUTO" | "MANUAL";
+type LearningLossExecutionFilter = "ALL" | "EXECUTED" | "NOT_EXECUTED";
 
 // Firestore's current `in` query limit is 30 values.
 const FIRESTORE_IN_QUERY_LIMIT = 30;
@@ -275,6 +276,15 @@ function getPlanLatestFollowUpPercentage(plan: LearningLossPlanDoc) {
   return (
     getNormalizedPercentage(plan.secondCheckScore, plan.secondCheckMaxScore) ??
     getNormalizedPercentage(plan.firstCheckScore, plan.firstCheckMaxScore)
+  );
+}
+
+function hasValidFollowUp(plan: LearningLossPlanDoc) {
+  return (
+    getNormalizedPercentage(plan.firstCheckScore, plan.firstCheckMaxScore) !==
+      null ||
+    getNormalizedPercentage(plan.secondCheckScore, plan.secondCheckMaxScore) !==
+      null
   );
 }
 
@@ -860,6 +870,8 @@ export default function StaffLearningLossPage() {
   const [openPlans, setOpenPlans] = useState<LearningLossPlanRow[]>([]);
   const [schoolFilter, setSchoolFilter] = useState("ALL");
   const [teacherFilter, setTeacherFilter] = useState("ALL");
+  const [executionFilter, setExecutionFilter] =
+    useState<LearningLossExecutionFilter>("ALL");
   const [subjectFilter, setSubjectFilter] = useState("ALL");
   const [lossTypeFilter, setLossTypeFilter] =
     useState<LearningLossTypeFilter>("ALL");
@@ -1553,10 +1565,16 @@ export default function StaffLearningLossPage() {
         assessmentFilter === "ALL" ||
         (item.plan.sourceType === "ASSESSMENT_RECORD" &&
           getPlanAssessmentKey(item.plan) === assessmentFilter);
+      const isExecuted = hasValidFollowUp(item.plan);
+      const matchesExecution =
+        executionFilter === "ALL" ||
+        (executionFilter === "EXECUTED" && isExecuted) ||
+        (executionFilter === "NOT_EXECUTED" && !isExecuted);
 
       return (
         matchesLossType &&
         matchesAssessment &&
+        matchesExecution &&
         rowMatchesLocalFilters(
           buildFilterRow(item.plan, item.classInfo, item),
         )
@@ -1566,6 +1584,7 @@ export default function StaffLearningLossPage() {
     buildFilterRow,
     assessmentFilter,
     enrichedOpenPlans,
+    executionFilter,
     lossTypeFilter,
     rowMatchesLocalFilters,
   ]);
@@ -1626,6 +1645,7 @@ export default function StaffLearningLossPage() {
   const hasActiveFilters =
     schoolFilter !== "ALL" ||
     teacherFilter !== "ALL" ||
+    executionFilter !== "ALL" ||
     subjectFilter !== "ALL" ||
     lossTypeFilter !== "ALL" ||
     assessmentFilter !== "ALL";
@@ -1876,6 +1896,7 @@ export default function StaffLearningLossPage() {
               onClick={() => {
                 setSchoolFilter("ALL");
                 setTeacherFilter("ALL");
+                setExecutionFilter("ALL");
                 setSubjectFilter("ALL");
                 setLossTypeFilter("ALL");
                 setAssessmentFilter("ALL");
@@ -1887,7 +1908,7 @@ export default function StaffLearningLossPage() {
           ) : null}
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6">
           <label className="grid gap-1.5 text-sm font-medium">
             المدرسة
             <select
@@ -1917,6 +1938,23 @@ export default function StaffLearningLossPage() {
                   {option.label}
                 </option>
               ))}
+            </select>
+          </label>
+
+          <label className="grid gap-1.5 text-sm font-medium">
+            حالة تنفيذ الفاقد
+            <select
+              value={executionFilter}
+              onChange={(event) =>
+                setExecutionFilter(
+                  event.target.value as LearningLossExecutionFilter,
+                )
+              }
+              className="h-10 rounded-xl border bg-background px-3 text-sm font-normal"
+            >
+              <option value="ALL">الكل</option>
+              <option value="EXECUTED">تم تنفيذ الفاقد</option>
+              <option value="NOT_EXECUTED">لم يتم تنفيذ الفاقد</option>
             </select>
           </label>
 
