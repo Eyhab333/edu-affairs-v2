@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 
 import type { StaffActorData } from "@/lib/staff-actor";
+import { isStandaloneBusSupervisor } from "@/lib/bus-supervisor-access";
 import { canAccessWorkDocumentation } from "@/lib/work-documentation";
 import {
   canManagePdfResources,
@@ -255,6 +256,7 @@ export const staffNavItems: StaffNavItem[] = [
 
 export type StaffNavigationAccess = {
   visibleModuleSet: Set<StaffHomeVisibleModule | "TASKS">;
+  isTransportOnly: boolean;
   canAccessDocumentation: boolean;
   canManageDocuments: boolean;
   canAccessTeachingResources: boolean;
@@ -286,6 +288,7 @@ export function getStaffNavigationAccess(
 ): StaffNavigationAccess {
   return {
     visibleModuleSet: new Set(actor.visibleModules),
+    isTransportOnly: isStandaloneBusSupervisor(actor.roles),
     canAccessDocumentation: canAccessWorkDocumentation(actor.roles),
     canManageDocuments: canManagePdfResources(actor.roles),
     canAccessTeachingResources:
@@ -344,6 +347,10 @@ export function getVisibleStaffNavItems(
   ]);
 
   return staffNavItems.filter((item) => {
+    if (access.isTransportOnly) {
+      return item.href === "/staff" || item.href === "/staff/transport";
+    }
+
     if (item.teacherWork) return access.canAccessTeacherWork;
     if (item.staffWork) return access.canAccessStaffWork;
     if (item.adminWork) return access.canAccessAdminWork;

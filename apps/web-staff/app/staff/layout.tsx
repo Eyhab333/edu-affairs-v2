@@ -137,6 +137,7 @@ function StaffShell({ children }: { children: ReactNode }) {
   const navigationAccess = getStaffNavigationAccess(actor, supervisionScopes);
   const {
     visibleModuleSet,
+    isTransportOnly,
     canAccessDocumentation,
     canManageDocuments,
     canAccessTeachingResources,
@@ -224,7 +225,12 @@ function StaffShell({ children }: { children: ReactNode }) {
   const isLessonPrepApprovalsRoute =
     pathname === "/staff/lesson-prep/approvals" ||
     pathname.startsWith("/staff/lesson-prep/approvals/");
-  const canAccessCurrentRoute = isCentralMeasurementSummaryRoute
+  const isTransportRoute =
+    pathname === "/staff/transport" ||
+    pathname.startsWith("/staff/transport/");
+  const canAccessCurrentRoute = isTransportOnly
+    ? pathname === "/staff" || isTransportRoute
+    : isCentralMeasurementSummaryRoute
     ? canAccessCentralMeasurementSummary
     : isKgMeasurementSummaryRoute
       ? canAccessKgMeasurementSummary

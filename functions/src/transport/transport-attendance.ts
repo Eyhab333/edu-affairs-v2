@@ -453,7 +453,9 @@ export const getTransportAccessSummary = onCall(
     const orgId = requireId(record(request.data).orgId, "orgId");
     const actor = await resolveActor(uid, orgId);
     const routes = await getVisibleRoutes(actor);
-    return { hasAccess: routes.length > 0 };
+    return {
+      hasAccess: actor.roleKey === "BUS_SUPERVISOR" || routes.length > 0,
+    };
   },
 );
 

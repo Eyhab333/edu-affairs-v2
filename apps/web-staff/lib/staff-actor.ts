@@ -25,6 +25,7 @@ import type {
 import { db } from "@/lib/firebase";
 import type { OrgSummary } from "@/hooks/use-org-summary";
 import { getStaffTransportAccessSummary } from "@/lib/staff-transport";
+import { isStandaloneBusSupervisor } from "@/lib/bus-supervisor-access";
 
 import {
   buildStaffHome,
@@ -747,6 +748,10 @@ function resolveVisibleModules(params: {
       "GUARDIAN_SERVICES",
       "PDF_FILES",
     ];
+  }
+
+  if (isStandaloneBusSupervisor(params.roles)) {
+    return ["HOME", "TRANSPORT"];
   }
 
   const home = buildStaffHome({
