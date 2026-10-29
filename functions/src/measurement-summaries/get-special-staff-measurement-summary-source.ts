@@ -15,6 +15,10 @@ const KG_LEADERSHIP_ROLE_KEYS = new Set<MembershipRole>([
   "KG_PRINCIPAL",
   "KG_VP",
 ]);
+const CENTRAL_SUMMARY_PRINCIPAL_ROLE_KEYS = new Set<MembershipRole>([
+  "BOYS_PRINCIPAL",
+  "GIRLS_PRINCIPAL",
+]);
 
 type Row = Record<string, unknown>;
 
@@ -185,7 +189,16 @@ export const getSpecialStaffMeasurementSummarySource = onCall(
     const hasKgLeadershipAccess =
       summaryKind === "KG" &&
       KG_LEADERSHIP_ROLE_KEYS.has(membershipRole as MembershipRole);
-    if (!specialReportingAccess && !hasKgLeadershipAccess) {
+    const hasCentralSummaryPrincipalAccess =
+      !summaryKind &&
+      CENTRAL_SUMMARY_PRINCIPAL_ROLE_KEYS.has(
+        membershipRole as MembershipRole,
+      );
+    if (
+      !specialReportingAccess &&
+      !hasKgLeadershipAccess &&
+      !hasCentralSummaryPrincipalAccess
+    ) {
       throw new HttpsError(
         "permission-denied",
         "Measurement summary reporting access is required.",

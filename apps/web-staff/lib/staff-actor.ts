@@ -122,6 +122,14 @@ const LEARNING_LOSS_EXTRA_PERSON_IDS = new Set([
   "p-students-mentor-syeh",
   "staff-gm37B5cNxxUyIasU9G70zHgVkEj2",
   "staff-Ivr7RIb0AoWIuKAgQTcK0LzKRCz1",
+  "p-n-alshaya",
+  "p-malrameh",
+  "p-s-sayed",
+  "p-a-almansur",
+  "p-f-alhamaad",
+  "p-t-altwala",
+  "staff-NOFByrx0XLVovqxuFjfwRWSokgs1",
+  "staff-ZKSVVOeoJOhUhIu4HDFapMwApo83",
 ]);
 
 function resolveMembershipIsActive(data: {

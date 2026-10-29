@@ -46,6 +46,10 @@ const OFFICIAL_PRIMARY_ASSESSMENTS = [
     label: "القياس المركزي الثاني",
   },
 ] as const;
+const CENTRAL_SUMMARY_PRINCIPAL_ROLE_KEYS = new Set([
+  "BOYS_PRINCIPAL",
+  "GIRLS_PRINCIPAL",
+]);
 type OfficialPrimaryAssessmentKind =
   (typeof OFFICIAL_PRIMARY_ASSESSMENTS)[number]["kind"];
 // Firestore's current `in` query limit is 30 values.
@@ -399,16 +403,21 @@ export default function StaffCentralMeasurementSummaryPage() {
       }),
     [actorPersonId, actorUid, orgId],
   );
+  const usesSecureSummarySource =
+    Boolean(specialReportingAccess) ||
+    [...(staffActor?.roles ?? []), ...(staffActor?.roleKeys ?? [])].some((role) =>
+      CENTRAL_SUMMARY_PRINCIPAL_ROLE_KEYS.has(role.trim().toUpperCase()),
+    );
   const normalVisibleClasses = useMemo(
     () => staffActor?.visibleClasses ?? [],
     [staffActor?.visibleClasses],
   );
   const visibleClasses = useMemo(
     () =>
-      specialReportingAccess
+      usesSecureSummarySource
         ? specialReportClasses
         : normalVisibleClasses,
-    [normalVisibleClasses, specialReportClasses, specialReportingAccess],
+    [normalVisibleClasses, specialReportClasses, usesSecureSummarySource],
   );
   const offerings = useMemo(() => staffActor?.classSubjectOfferings ?? [], [staffActor?.classSubjectOfferings]);
   const normalVisibleClassByKey = useMemo(
@@ -419,14 +428,14 @@ export default function StaffCentralMeasurementSummaryPage() {
     () => new Map(visibleClasses.map((item) => [getClassKey({ ...item, classId: item.id }), item])),
     [visibleClasses],
   );
-  const teacherOnly = isTeacherOnlyActor(staffActor) && !specialReportingAccess;
+  const teacherOnly = isTeacherOnlyActor(staffActor) && !usesSecureSummarySource;
   const teacherPersonId = actorPersonId;
   const teacherAssignments = staffActor?.teacherAssignments ?? [];
 
   const loadSummary = useCallback(async () => {
     if (!orgId || !currentTerm?.academicYearId || !currentTerm.id) return;
 
-    if (specialReportingAccess) {
+    if (usesSecureSummarySource) {
       setStatus("loading");
       setError("");
       setSpecialReportClasses([]);
@@ -594,7 +603,7 @@ export default function StaffCentralMeasurementSummaryPage() {
     normalVisibleClassByKey,
     normalVisibleClasses,
     orgId,
-    specialReportingAccess,
+    usesSecureSummarySource,
     teacherAssignments,
     teacherOnly,
     teacherPersonId,
