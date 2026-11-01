@@ -88,6 +88,15 @@ class ForegroundNotificationService {
       case 'ANNOUNCEMENT':
         return '/notifications';
 
+      case 'STUDENT_TRANSPORT':
+        final studentId = _readString(data, 'studentId');
+        final serviceDate = _readString(data, 'serviceDate');
+        if (studentId.isEmpty) return '/notifications';
+
+        final query = <String, String>{'tab': 'transport'};
+        if (serviceDate.isNotEmpty) query['serviceDate'] = serviceDate;
+        return '/students/${Uri.encodeComponent(studentId)}?${Uri(queryParameters: query).query}';
+
       case 'NOTIFICATION_DETAILS':
       default:
         return '/notifications';

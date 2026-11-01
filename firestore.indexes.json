@@ -32,6 +32,14 @@
         { "fieldPath": "orgId", "order": "ASCENDING" },
         { "fieldPath": "schoolId", "order": "ASCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "studentTransportAttendanceRecords",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "studentId", "order": "ASCENDING" },
+        { "fieldPath": "serviceDate", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

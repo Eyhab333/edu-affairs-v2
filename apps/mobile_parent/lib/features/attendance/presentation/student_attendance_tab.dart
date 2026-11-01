@@ -131,7 +131,7 @@ class _LatestAttendanceCard extends StatelessWidget {
                 Text(
                   'آخر حالة حضور',
                   style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -146,7 +146,7 @@ class _LatestAttendanceCard extends StatelessWidget {
                 Text(
                   latest.dateLabel,
                   style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -158,7 +158,7 @@ class _LatestAttendanceCard extends StatelessWidget {
               vertical: 8,
             ),
             decoration: BoxDecoration(
-              color: AppColors.soft,
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(AppRadius.pill),
             ),
             child: Text(
@@ -277,7 +277,7 @@ class _CounterCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -321,7 +321,7 @@ class _AttendanceItemCard extends StatelessWidget {
                 Text(
                   item.dateLabel,
                   style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -329,7 +329,7 @@ class _AttendanceItemCard extends StatelessWidget {
                 Text(
                   item.extraLine,
                   style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     height: 1.5,
                   ),
                 ),

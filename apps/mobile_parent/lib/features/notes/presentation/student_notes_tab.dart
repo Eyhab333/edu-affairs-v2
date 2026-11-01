@@ -309,7 +309,7 @@ class _NoteItemCard extends StatelessWidget {
                   item.body.isEmpty ? 'لا يوجد نص للملاحظة' : item.body,
                   style: textTheme.bodyMedium?.copyWith(
                     height: 1.6,
-                    color: AppColors.text,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -434,7 +434,9 @@ class _MutedBadge extends StatelessWidget {
         vertical: 5,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
         borderRadius: BorderRadius.circular(AppRadius.pill),
       ),
       child: Text(

@@ -3,24 +3,32 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_empty_state.dart';
 import '../../../shared/widgets/app_error_state.dart';
-import '../../../shared/widgets/app_info_row.dart';
 import '../../../shared/widgets/app_loading_state.dart';
-import '../../../shared/widgets/app_section_title.dart';
 import '../../attendance/presentation/student_attendance_tab.dart';
 import '../../gamification/data/student_gamification_service.dart';
 import '../../guardian/data/guardian_children_service.dart';
 import '../../guardian/models/parent_student_summary.dart';
 import '../../measurements/presentation/student_measurements_tab.dart';
+import '../../transport/presentation/student_transport_tab.dart';
 import '../../virtual_classes/data/student_virtual_classes_service.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StudentOverviewScreen extends StatefulWidget {
-  const StudentOverviewScreen({super.key, required this.studentId});
+  const StudentOverviewScreen({
+    super.key,
+    required this.studentId,
+    this.initialTab,
+    this.transportServiceDate,
+  });
 
   final String studentId;
+  final String? initialTab;
+  final String? transportServiceDate;
 
   @override
   State<StudentOverviewScreen> createState() => _StudentOverviewScreenState();
@@ -55,6 +63,15 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
     });
   }
 
+  int get _initialTabIndex {
+    switch (widget.initialTab) {
+      case 'transport':
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ParentStudentSummary?>(
@@ -77,7 +94,13 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
               ),
             ],
           ),
-          body: SafeArea(child: _buildBody(context, snapshot)),
+          body: AppBackground(
+            child: SafeArea(
+              child: AppContentContainer(
+                child: _buildBody(context, snapshot),
+              ),
+            ),
+          ),
         );
       },
     );
@@ -116,6 +139,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
 
     return DefaultTabController(
       length: 5,
+      initialIndex: _initialTabIndex,
       child: Column(
         children: [
           _StudentHeader(
@@ -125,31 +149,29 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
                 '/students/${Uri.encodeComponent(student.studentId)}/communication',
               );
             },
-            onActivitiesPressed: () {
-              context.push(
-                '/students/${Uri.encodeComponent(student.studentId)}/activities',
-              );
-            },
           ),
 
           const TabBar(
             isScrollable: true,
             tabs: [
-              Tab(text: 'الملخص'),
-              Tab(text: 'الحضور'),
-              Tab(text: 'التحفيز'),
-              Tab(text: 'القياسات'),
               Tab(text: 'الحصص الافتراضية'),
+              Tab(text: 'القياسات'),
+              Tab(text: 'الحضور'),
+              Tab(text: 'النقل'),
+              Tab(text: 'التحفيز'),
             ],
           ),
           Expanded(
             child: TabBarView(
               children: [
-                _SummaryTab(student: student),
-                StudentAttendanceTab(studentId: student.studentId),
-                StudentGamificationTab(student: student),
-                StudentMeasurementsTab(studentId: student.studentId),
                 StudentVirtualClassesTab(student: student),
+                StudentMeasurementsTab(studentId: student.studentId),
+                StudentAttendanceTab(studentId: student.studentId),
+                StudentTransportTab(
+                  studentId: student.studentId,
+                  initialServiceDate: widget.transportServiceDate,
+                ),
+                StudentGamificationTab(student: student),
               ],
             ),
           ),
@@ -340,12 +362,10 @@ class _StudentHeader extends StatelessWidget {
   const _StudentHeader({
     required this.student,
     required this.onCommunicationPressed,
-    required this.onActivitiesPressed,
   });
 
   final ParentStudentSummary student;
   final VoidCallback onCommunicationPressed;
-  final VoidCallback onActivitiesPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -366,16 +386,16 @@ class _StudentHeader extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 62,
-                  height: 62,
+                  width: 52,
+                  height: 52,
                   decoration: BoxDecoration(
                     color: colorScheme.primary.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
                   child: Icon(
                     Icons.child_care_rounded,
                     color: colorScheme.primary,
-                    size: 34,
+                    size: 28,
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -399,7 +419,7 @@ class _StudentHeader extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.bodyMedium?.copyWith(
-                          color: AppColors.text,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -408,7 +428,7 @@ class _StudentHeader extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.bodySmall?.copyWith(
-                          color: AppColors.mutedText,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -421,7 +441,7 @@ class _StudentHeader extends StatelessWidget {
                     vertical: 7,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.soft,
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                   ),
                   child: Text(
@@ -435,96 +455,17 @@ class _StudentHeader extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.md),
 
-            Row(
-              children: [
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: onActivitiesPressed,
-                    icon: const Icon(Icons.emoji_events_rounded),
-                    label: const Text('الأنشطة'),
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: onCommunicationPressed,
-                    icon: const Icon(Icons.forum_rounded),
-                    label: const Text('التواصل'),
-                  ),
-                ),
-              ],
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: FilledButton.tonalIcon(
+                onPressed: onCommunicationPressed,
+                icon: const Icon(Icons.forum_rounded),
+                label: const Text('التواصل'),
+              ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SummaryTab extends StatelessWidget {
-  const _SummaryTab({required this.student});
-
-  final ParentStudentSummary student;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      children: [
-        AppCard(
-          child: Column(
-            children: [
-              const AppSectionTitle(
-                title: 'بيانات الطالب',
-                icon: Icons.badge_rounded,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              AppInfoRow(label: 'الاسم', value: student.studentName),
-              AppInfoRow(label: 'صلة القرابة', value: student.relationLabel),
-              AppInfoRow(
-                label: 'المدرسة',
-                value: student.schoolName.isEmpty
-                    ? 'غير محددة'
-                    : student.schoolName,
-              ),
-              AppInfoRow(
-                label: 'السنة الدراسية',
-                value: student.academicYearTitle.isEmpty
-                    ? 'غير محددة'
-                    : student.academicYearTitle,
-              ),
-              AppInfoRow(
-                label: 'الصف / المستوى',
-                value: student.gradeTitle.isEmpty
-                    ? 'غير محدد'
-                    : student.gradeTitle,
-              ),
-              AppInfoRow(
-                label: 'الفصل',
-                value: student.classTitle.isEmpty
-                    ? 'غير محدد'
-                    : student.classTitle,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        const AppCard(
-          child: Column(
-            children: [
-              AppSectionTitle(
-                title: 'لمحة سريعة',
-                subtitle: 'سيتم ربط هذه البيانات تدريجيًا في المراحل القادمة.',
-                icon: Icons.insights_rounded,
-              ),
-              SizedBox(height: AppSpacing.md),
-              AppInfoRow(label: 'آخر حضور', value: 'يظهر في تبويب الحضور'),
-              AppInfoRow(label: 'آخر تحفيز', value: 'سيظهر لاحقًا'),
-              AppInfoRow(label: 'آخر قياس', value: 'سيظهر لاحقًا'),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
@@ -659,7 +600,7 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
     final participant = widget.bundle.participant;
     final student = widget.student;
 
-    Future<void> _joinVirtualClass() async {
+    Future<void> joinVirtualClass() async {
       final session = widget.bundle.session;
       final participant = widget.bundle.participant;
       final student = widget.student;
@@ -694,6 +635,7 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
               'participantId': participant.id,
             });
 
+        if (!mounted) return;
         widget.onRefresh();
 
         final launched = await launchUrl(
@@ -701,13 +643,15 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
           mode: LaunchMode.externalApplication,
         );
 
-        if (!launched && mounted) {
+        if (!context.mounted) return;
+
+        if (!launched) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(const SnackBar(content: Text('تعذر فتح رابط الحصة.')));
         }
       } catch (error) {
-        if (!mounted) return;
+        if (!context.mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('تعذر تسجيل الدخول للحصة: $error')),
@@ -791,7 +735,7 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
               children: [
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: _joining ? null : _joinVirtualClass,
+                    onPressed: _joining ? null : joinVirtualClass,
                     icon: _joining
                         ? const SizedBox(
                             width: 18,

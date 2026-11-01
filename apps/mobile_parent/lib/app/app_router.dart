@@ -2,18 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/router/go_router_refresh_stream.dart';
+import '../features/announcements/presentation/parent_announcements_screen.dart';
+import '../features/activities/presentation/student_activities_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/splash_screen.dart';
 import '../features/guardian/presentation/my_children_screen.dart';
-import '../features/students/presentation/student_overview_screen.dart';
-import '../features/notifications/presentation/notifications_screen.dart';
-import '../features/messages/presentation/messages_screen.dart';
-import '../features/messages/presentation/message_thread_screen.dart';
-import '../features/students/presentation/student_communication_screen.dart';
-import '../features/announcements/presentation/parent_announcements_screen.dart';
-import '../features/guardian_finance/presentation/guardian_finance_screen.dart';
 import '../features/guardian_finance/presentation/guardian_finance_child_screen.dart';
 import '../features/guardian_finance/presentation/guardian_finance_receipt_screen.dart';
+import '../features/guardian_finance/presentation/guardian_finance_screen.dart';
+import '../features/messages/presentation/message_thread_screen.dart';
+import '../features/messages/presentation/messages_screen.dart';
+import '../features/notifications/presentation/notifications_screen.dart';
+import '../features/services/presentation/services_screen.dart';
+import '../features/students/presentation/student_communication_screen.dart';
+import '../features/students/presentation/student_overview_screen.dart';
+import 'parent_shell.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/splash',
@@ -23,89 +26,99 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(path: '/splash', builder: (context, state) => const SplashScreen()),
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-    GoRoute(
-      path: '/children',
-      builder: (context, state) => const MyChildrenScreen(),
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) => ParentShell(
+        navigationShell: navigationShell,
+      ),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/children',
+              builder: (context, state) => const MyChildrenScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/services',
+              builder: (context, state) => const ServicesScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/announcements',
+              builder: (context, state) => const ParentAnnouncementsScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/messages',
+              builder: (context, state) => const MessagesScreen(),
+            ),
+          ],
+        ),
+      ],
     ),
-
     GoRoute(
       path: '/guardian-finance',
       builder: (context, state) => const GuardianFinanceScreen(),
     ),
-
     GoRoute(
       path: '/guardian-finance/children/:studentId',
-      builder: (context, state) {
-        final studentId = state.pathParameters['studentId'] ?? '';
-
-        return GuardianFinanceChildScreen(studentId: studentId);
-      },
+      builder: (context, state) => GuardianFinanceChildScreen(
+        studentId: state.pathParameters['studentId'] ?? '',
+      ),
     ),
     GoRoute(
       path: '/guardian-finance/receipts/:receiptId',
-      builder: (context, state) {
-        final receiptId = state.pathParameters['receiptId'] ?? '';
-
-        return GuardianFinanceReceiptScreen(receiptId: receiptId);
-      },
+      builder: (context, state) => GuardianFinanceReceiptScreen(
+        receiptId: state.pathParameters['receiptId'] ?? '',
+      ),
     ),
-    GoRoute(
-      path: '/announcements',
-      builder: (context, state) => const ParentAnnouncementsScreen(),
-    ),
-
     GoRoute(
       path: '/students/:studentId',
-      builder: (context, state) {
-        final studentId = state.pathParameters['studentId'] ?? '';
-
-        return StudentOverviewScreen(studentId: studentId);
-      },
+      builder: (context, state) => StudentOverviewScreen(
+        studentId: state.pathParameters['studentId'] ?? '',
+        initialTab: state.uri.queryParameters['tab'],
+        transportServiceDate: state.uri.queryParameters['serviceDate'],
+      ),
     ),
-
     GoRoute(
       path: '/students/:studentId/communication',
-      builder: (context, state) {
-        final studentId = state.pathParameters['studentId'] ?? '';
-
-        return StudentCommunicationScreen(studentId: studentId);
-      },
+      builder: (context, state) => StudentCommunicationScreen(
+        studentId: state.pathParameters['studentId'] ?? '',
+      ),
     ),
-
+    GoRoute(
+      path: '/students/:studentId/activities',
+      builder: (context, state) => StudentActivitiesScreen(
+        studentId: state.pathParameters['studentId'] ?? '',
+      ),
+    ),
     GoRoute(
       path: '/notifications',
       builder: (context, state) => const NotificationsScreen(),
     ),
     GoRoute(
-      path: '/messages',
-      builder: (context, state) => const MessagesScreen(),
-    ),
-
-    GoRoute(
       path: '/messages/:threadId',
-      builder: (context, state) {
-        final threadId = state.pathParameters['threadId'] ?? '';
-
-        return MessageThreadScreen(threadId: threadId);
-      },
+      builder: (context, state) => MessageThreadScreen(
+        threadId: state.pathParameters['threadId'] ?? '',
+      ),
     ),
   ],
   redirect: (context, state) {
     final user = FirebaseAuth.instance.currentUser;
     final location = state.matchedLocation;
 
-    if (location == '/splash') {
-      return null;
-    }
-
-    if (user == null && location != '/login') {
-      return '/login';
-    }
-
-    if (user != null && location == '/login') {
-      return '/children';
-    }
-
+    if (location == '/splash') return null;
+    if (user == null && location != '/login') return '/login';
+    if (user != null && location == '/login') return '/children';
     return null;
   },
 );

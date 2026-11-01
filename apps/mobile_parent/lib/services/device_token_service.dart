@@ -24,6 +24,8 @@ class DeviceTokenService {
   final FirebaseMessaging _messaging;
   final String orgId;
   static const _installIdKey = 'takween_parent_install_id';
+  static const _androidPermissionRequestedKey =
+      'takween_parent_android_notification_permission_requested';
   bool _started = false;
 
   void start() {
@@ -49,11 +51,7 @@ class DeviceTokenService {
     if (user == null) return;
 
     try {
-      final settings = await _messaging.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+      final settings = await _notificationSettings();
 
       if (settings.authorizationStatus == AuthorizationStatus.denied) {
         debugPrint('Notification permission denied.');
@@ -73,6 +71,35 @@ class DeviceTokenService {
     } catch (error) {
       debugPrint('Failed to save FCM token: $error');
     }
+  }
+
+  Future<NotificationSettings> _notificationSettings() async {
+    final isAndroid =
+        !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+
+    if (!isAndroid) {
+      return _messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    final permissionWasRequested =
+        prefs.getBool(_androidPermissionRequestedKey) ?? false;
+
+    if (permissionWasRequested) {
+      return _messaging.getNotificationSettings();
+    }
+
+    final settings = await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    await prefs.setBool(_androidPermissionRequestedKey, true);
+    return settings;
   }
 
   Future<void> _saveToken(String fcmToken) async {

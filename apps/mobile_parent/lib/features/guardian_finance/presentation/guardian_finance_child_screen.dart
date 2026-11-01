@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_error_state.dart';
 import '../../../shared/widgets/app_loading_state.dart';
 import '../data/guardian_finance_service.dart';
@@ -72,8 +74,11 @@ class _GuardianFinanceChildScreenState
           ),
         ],
       ),
-      body: SafeArea(
-        child: FutureBuilder<GuardianFinanceChild>(
+      body: AppBackground(
+        child: SafeArea(
+          child: AppContentContainer(
+            maxWidth: 960,
+            child: FutureBuilder<GuardianFinanceChild>(
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.connectionState ==
@@ -103,6 +108,8 @@ class _GuardianFinanceChildScreenState
 
             return _ChildFinanceBody(child: child);
           },
+            ),
+          ),
         ),
       ),
     );
@@ -226,7 +233,7 @@ class _StudentHeader extends StatelessWidget {
                         ).join(' • '),
                   style:
                       theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -317,7 +324,7 @@ class _SummaryItem extends StatelessWidget {
               .textTheme
               .bodySmall
               ?.copyWith(
-                color: AppColors.mutedText,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
         ),
         const SizedBox(height: 5),
@@ -376,7 +383,7 @@ class _ChargeCard extends StatelessWidget {
                   .textTheme
                   .bodySmall
                   ?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
             ),
           ],
@@ -410,7 +417,7 @@ class _ChargeCard extends StatelessWidget {
                   .textTheme
                   .bodySmall
                   ?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
             ),
           ],
@@ -459,7 +466,7 @@ class _InstallmentCard extends StatelessWidget {
                       .textTheme
                       .bodySmall
                       ?.copyWith(
-                        color: AppColors.mutedText,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                 ),
               ],
@@ -538,7 +545,7 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = positive
-        ? Colors.green
+        ? Theme.of(context).colorScheme.primary
         : Theme.of(context).colorScheme.error;
 
     return Container(

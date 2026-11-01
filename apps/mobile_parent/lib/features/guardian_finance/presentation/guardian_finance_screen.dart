@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_empty_state.dart';
 import '../../../shared/widgets/app_error_state.dart';
 import '../../../shared/widgets/app_loading_state.dart';
@@ -40,7 +42,7 @@ class _GuardianFinanceScreenState extends State<GuardianFinanceScreen> {
         title: const Text('الرسوم والمدفوعات'),
         leading: IconButton(
           tooltip: 'العودة',
-          onPressed: () => context.go('/children'),
+          onPressed: () => context.go('/services'),
           icon: const Icon(Icons.arrow_back_rounded),
         ),
         actions: [
@@ -51,8 +53,11 @@ class _GuardianFinanceScreenState extends State<GuardianFinanceScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: FutureBuilder<GuardianFinanceOverview>(
+      body: AppBackground(
+        child: SafeArea(
+          child: AppContentContainer(
+            maxWidth: 960,
+            child: FutureBuilder<GuardianFinanceOverview>(
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -81,6 +86,8 @@ class _GuardianFinanceScreenState extends State<GuardianFinanceScreen> {
 
             return _FinanceBody(overview: overview);
           },
+            ),
+          ),
         ),
       ),
     );
@@ -224,7 +231,7 @@ class _GuardianHeader extends StatelessWidget {
                 Text(
                   'الملف المالي للأسرة',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -345,7 +352,7 @@ class _AmountItem extends StatelessWidget {
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.mutedText,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 4),
@@ -406,7 +413,7 @@ class _ChildFinanceCard extends StatelessWidget {
                               ? child.enrollment!.classId
                               : child.enrollment!.gradeId,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.mutedText,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                     ],
@@ -485,7 +492,7 @@ class _CompactAmount extends StatelessWidget {
           label,
           style: Theme.of(
             context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.mutedText),
+          ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
         const SizedBox(height: 4),
         Text(
@@ -525,7 +532,7 @@ class _ChargeRow extends StatelessWidget {
                   _chargeStatusLabel(charge.status),
                   style: Theme.of(
                     context,
-                  ).textTheme.bodySmall?.copyWith(color: AppColors.mutedText),
+                  ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -566,7 +573,7 @@ class _PaymentCard extends StatelessWidget {
                   '${_paymentMethodLabel(payment.paymentMethod)} • ${_formatDate(payment.paidAt ?? payment.postedAt)}',
                   style: Theme.of(
                     context,
-                  ).textTheme.bodySmall?.copyWith(color: AppColors.mutedText),
+                  ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -618,7 +625,7 @@ class _ReceiptCard extends StatelessWidget {
                     _formatDate(receipt.issuedAt),
                     style: Theme.of(
                       context,
-                    ).textTheme.bodySmall?.copyWith(color: AppColors.mutedText),
+                    ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -645,7 +652,9 @@ class _StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = positive ? Colors.green : Theme.of(context).colorScheme.error;
+    final color = positive
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.error;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -698,7 +707,7 @@ class _SectionTitle extends StatelessWidget {
               Text(
                 subtitle,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.mutedText,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ],

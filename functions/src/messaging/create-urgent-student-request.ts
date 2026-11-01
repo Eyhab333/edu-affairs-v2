@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { defineSecret } from "firebase-functions/params";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 
@@ -6,6 +5,7 @@ import {
   URGENT_SLA_TASK_QUEUE,
   startUrgentSlaWorkflow,
 } from "./start-urgent-sla-workflow";
+import { assertGuardianStudentAccess } from "../guardian/guardian-student-access";
 
 const TEMPORAL_API_KEY = defineSecret("TEMPORAL_API_KEY");
 const TEACHER_WAIT_MS = 60_000;
@@ -88,14 +88,6 @@ function readInput(data: unknown): CreateUrgentStudentRequestInput {
   };
 }
 
-function isActiveGuardianLink(data: FirebaseFirestore.DocumentData) {
-  if (data.isActive === false) return false;
-  if (data.status === "INACTIVE") return false;
-  if (data.status === "DELETED") return false;
-  if (data.status === "CANCELLED") return false;
-  return true;
-}
-
 export const createUrgentStudentRequest = onCall(
   {
     region: "me-central2",
@@ -111,29 +103,13 @@ export const createUrgentStudentRequest = onCall(
     }
 
     const input = readInput(request.data);
-    const db = getFirestore();
+    const guardianAccess = await assertGuardianStudentAccess(uid, input.studentId);
+    const db = guardianAccess.db;
+    const orgId = guardianAccess.orgId;
     const now = Date.now();
 
-    const guardianLinksSnapshot = await db
-      .collection(`orgs/${input.orgId}/guardianLinks`)
-      .where("guardianUid", "==", uid)
-      .where("studentId", "==", input.studentId)
-      .limit(5)
-      .get();
-
-    const hasActiveGuardianLink = guardianLinksSnapshot.docs.some((doc) =>
-      isActiveGuardianLink(doc.data()),
-    );
-
-    if (!hasActiveGuardianLink) {
-      throw new HttpsError(
-        "permission-denied",
-        "You are not allowed to create an urgent request for this student",
-      );
-    }
-
     const threadRef = db
-      .collection(`orgs/${input.orgId}/threads`)
+      .collection(`orgs/${orgId}/threads`)
       .doc(input.threadId);
 
     const threadSnap = await threadRef.get();
@@ -155,13 +131,13 @@ export const createUrgentStudentRequest = onCall(
     }
 
     const requestRef = db
-      .collection(`orgs/${input.orgId}/urgentCommunicationRequests`)
+      .collection(`orgs/${orgId}/urgentCommunicationRequests`)
       .doc();
 
     const requestId = requestRef.id;
 
     const teacherDeadlineAt = now + 60 * 60 * 1000;
-    const workflowId = `urgentSla:${input.orgId}:${requestId}:${now}`;
+    const workflowId = `urgentSla:${orgId}:${requestId}:${now}`;
 
     const timelineRef = requestRef.collection("timelineEvents").doc();
 
@@ -169,7 +145,7 @@ export const createUrgentStudentRequest = onCall(
       transaction.set(requestRef, {
         id: requestId,
 
-        orgId: input.orgId,
+        orgId,
         schoolId: input.schoolId,
         academicYearId: input.academicYearId,
 
@@ -227,7 +203,7 @@ export const createUrgentStudentRequest = onCall(
       transaction.set(timelineRef, {
         id: timelineRef.id,
 
-        orgId: input.orgId,
+        orgId,
         requestId,
         threadId: input.threadId,
         studentId: input.studentId,
@@ -268,7 +244,7 @@ export const createUrgentStudentRequest = onCall(
       await startUrgentSlaWorkflow({
         workflowId,
         workflowInput: {
-          orgId: input.orgId,
+          orgId,
           requestId,
           threadId: input.threadId,
           studentId: input.studentId,
@@ -293,7 +269,7 @@ export const createUrgentStudentRequest = onCall(
       );
       batch.set(failedTimelineRef, {
         id: failedTimelineRef.id,
-        orgId: input.orgId,
+        orgId,
         requestId,
         threadId: input.threadId,
         studentId: input.studentId,
@@ -338,7 +314,7 @@ export const createUrgentStudentRequest = onCall(
     );
     startedBatch.set(startedTimelineRef, {
       id: startedTimelineRef.id,
-      orgId: input.orgId,
+      orgId,
       requestId,
       threadId: input.threadId,
       studentId: input.studentId,

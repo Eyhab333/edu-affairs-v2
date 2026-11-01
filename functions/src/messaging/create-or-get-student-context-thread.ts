@@ -3,6 +3,7 @@ import { logger } from "firebase-functions";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 
 import type { CreateOrGetStudentContextThreadInput, Thread } from "./types";
+import { assertGuardianStudentAccess } from "../guardian/guardian-student-access";
 
 const REGION = "me-central2";
 
@@ -61,37 +62,6 @@ function isActiveRecord(data: Record<string, unknown>) {
   if (data.active === false) return false;
   if (data.isArchived === true) return false;
   return true;
-}
-
-async function findActiveGuardianLink(params: {
-  orgId: string;
-  guardianUid: string;
-  studentId: string;
-}) {
-  const db = getFirestore();
-
-  const snap = await db
-    .collection(`orgs/${params.orgId}/guardianLinks`)
-    .where("guardianUid", "==", params.guardianUid)
-    .limit(50)
-    .get();
-
-  for (const doc of snap.docs) {
-    const data = doc.data() as Record<string, unknown>;
-
-    if (
-      data.studentId === params.studentId &&
-      data.active === true &&
-      data.isArchived !== true
-    ) {
-      return {
-        id: doc.id,
-        ...data,
-      } as FirestoreRecord;
-    }
-  }
-
-  return null;
 }
 
 async function findActiveTargetMembership(params: {
@@ -168,13 +138,14 @@ export const createOrGetStudentContextThread = onCall(
 
     const input = request.data as Partial<CreateOrGetStudentContextThreadInput>;
 
-    const orgId = readNonEmptyString(input.orgId, "orgId");
+    const studentId = readNonEmptyString(input.studentId, "studentId");
+    const guardianAccess = await assertGuardianStudentAccess(uid, studentId);
+    const orgId = guardianAccess.orgId;
     const schoolId = readNonEmptyString(input.schoolId, "schoolId");
     const academicYearId = readNonEmptyString(
       input.academicYearId,
       "academicYearId",
     );
-    const studentId = readNonEmptyString(input.studentId, "studentId");
     const targetUid = readNonEmptyString(input.targetUid, "targetUid");
 
     const requestedGuardianUid = readOptionalString(input.guardianUid);
@@ -193,7 +164,7 @@ export const createOrGetStudentContextThread = onCall(
       );
     }
 
-    const db = getFirestore();
+    const db = guardianAccess.db;
 
     const studentRef = db.doc(`orgs/${orgId}/students/${studentId}`);
     const studentSnap = await studentRef.get();
@@ -206,19 +177,6 @@ export const createOrGetStudentContextThread = onCall(
 
     if (studentData.isArchived === true) {
       throw new HttpsError("failed-precondition", "Student is archived.");
-    }
-
-    const guardianLink = await findActiveGuardianLink({
-      orgId,
-      guardianUid: uid,
-      studentId,
-    });
-
-    if (!guardianLink) {
-      throw new HttpsError(
-        "permission-denied",
-        "You are not linked to this student.",
-      );
     }
 
     const targetMembership = await findActiveTargetMembership({
@@ -244,9 +202,7 @@ export const createOrGetStudentContextThread = onCall(
       );
     }
 
-    const guardianPersonId =
-      readOptionalString(input.guardianPersonId) ||
-      readOptionalString(guardianLink["guardianPersonId"]);
+    const guardianPersonId = guardianAccess.personId;
 
     const guardianDisplayName =
       readOptionalString(input.guardianDisplayName) || "ولي الأمر";

@@ -1,6 +1,8 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 
+import { assertGuardianStudentAccess } from "../guardian/guardian-student-access";
+
 const REGION = "me-central2";
 
 type CommunicationTarget = {
@@ -86,38 +88,6 @@ async function readDoc(path: string) {
     path: snap.ref.path,
     ...(snap.data() as Record<string, unknown>),
   };
-}
-
-async function findActiveGuardianLink(params: {
-  orgId: string;
-  guardianUid: string;
-  studentId: string;
-}) {
-  const db = getFirestore();
-
-  const snap = await db
-    .collection(`orgs/${params.orgId}/guardianLinks`)
-    .where("guardianUid", "==", params.guardianUid)
-    .limit(50)
-    .get();
-
-  for (const doc of snap.docs) {
-    const data = doc.data() as Record<string, unknown>;
-
-    if (
-      data.studentId === params.studentId &&
-      data.active === true &&
-      data.isArchived !== true
-    ) {
-      return {
-        id: doc.id,
-        path: doc.ref.path,
-        ...data,
-      };
-    }
-  }
-
-  return null;
 }
 
 async function findActiveEnrollment(params: {
@@ -391,8 +361,9 @@ export const getStudentCommunicationTargets = onCall(
 
     const input = request.data as Record<string, unknown>;
 
-    const orgId = readNonEmptyString(input.orgId, "orgId");
     const studentId = readNonEmptyString(input.studentId, "studentId");
+    const guardianAccess = await assertGuardianStudentAccess(uid, studentId);
+    const orgId = guardianAccess.orgId;
 
     const requestedSchoolId = readOptionalString(input.schoolId);
     const requestedAcademicYearId = readOptionalString(input.academicYearId);
@@ -401,19 +372,6 @@ export const getStudentCommunicationTargets = onCall(
 
     if (!student) {
       throw new HttpsError("not-found", "Student not found.");
-    }
-
-    const guardianLink = await findActiveGuardianLink({
-      orgId,
-      guardianUid: uid,
-      studentId,
-    });
-
-    if (!guardianLink) {
-      throw new HttpsError(
-        "permission-denied",
-        "You are not linked to this student.",
-      );
     }
 
     const enrollment = await findActiveEnrollment({

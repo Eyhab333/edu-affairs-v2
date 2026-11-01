@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../shared/widgets/app_background.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -40,9 +42,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: _SplashContent(),
+      body: AppBackground(
+        child: SafeArea(
+          child: Center(
+            child: _SplashContent(),
+          ),
         ),
       ),
     );
@@ -83,7 +87,7 @@ class _SplashContent extends StatelessWidget {
         Text(
           'متابعة أبنائك بسهولة',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.black54,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
         ),
         const SizedBox(height: 28),

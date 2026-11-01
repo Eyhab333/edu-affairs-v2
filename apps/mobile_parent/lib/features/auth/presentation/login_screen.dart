@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_card.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -86,15 +89,17 @@ class _LoginScreenState extends State<LoginScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      body: SafeArea(
-        child: Center(
+      body: AppBackground(
+        child: SafeArea(
+          child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 420),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+              child: AppCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
                   const _LoginHeader(),
                   const SizedBox(height: 28),
                   TextField(
@@ -153,15 +158,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     'نسخة أولية لمتابعة الأبناء داخل منصة الشؤون التعليمية.',
                     textAlign: TextAlign.center,
                     style: textTheme.bodySmall?.copyWith(
-                      color: Colors.black54,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
+    ),
     );
   }
 }
@@ -200,7 +207,7 @@ class _LoginHeader extends StatelessWidget {
         Text(
           'سجّل الدخول لمتابعة أبنائك',
           style: textTheme.bodyMedium?.copyWith(
-            color: Colors.black54,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
       ],

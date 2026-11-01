@@ -7,6 +7,7 @@ setGlobalOptions({ memory: "512MiB" });
 initializeApp();
 
 export { onNotificationEventCreated } from "./notifications/on-notification-event-created";
+export { onStudentTransportAttendanceRecordCreated } from "./notifications/on-student-transport-attendance-record-created";
 export { sendThreadMessage } from "./messaging/send-thread-message";
 export { onThreadMessageCreated } from "./messaging/on-thread-message-created";
 export { createOrGetStudentContextThread } from "./messaging/create-or-get-student-context-thread";
@@ -100,6 +101,7 @@ export { getMyGuardianAttendance } from "./guardian/get-my-guardian-attendance";
 export { getMyGuardianGamification } from "./guardian/get-my-guardian-gamification";
 export { getMyGuardianMeasurements } from "./guardian/get-my-guardian-measurements";
 export { getMyGuardianNotes } from "./guardian/get-my-guardian-notes";
+export { getMyGuardianTransport } from "./guardian/get-my-guardian-transport";
 export { getMyGuardianVirtualClasses } from "./guardian/get-my-guardian-virtual-classes";
 export { markMyGuardianVirtualClassJoin } from "./guardian/mark-my-guardian-virtual-class-join";
 export {

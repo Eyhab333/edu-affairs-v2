@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_empty_state.dart';
 import '../../../shared/widgets/app_error_state.dart';
 import '../../../shared/widgets/app_loading_state.dart';
@@ -77,7 +77,7 @@ class _ParentAnnouncementsScreenState extends State<ParentAnnouncementsScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text(message)));
 
-      _reload();
+      await _reload();
     } catch (error) {
       if (!mounted) return;
 
@@ -158,10 +158,17 @@ class _ParentAnnouncementsScreenState extends State<ParentAnnouncementsScreen> {
     _future = _service.loadAnnouncements();
   }
 
-  void _reload() {
+  Future<void> _reload() async {
+    final nextFuture = _service.loadAnnouncements();
     setState(() {
-      _future = _service.loadAnnouncements();
+      _future = nextFuture;
     });
+
+    try {
+      await nextFuture;
+    } catch (_) {
+      // FutureBuilder displays the loading error in the screen.
+    }
   }
 
   @override
@@ -170,21 +177,11 @@ class _ParentAnnouncementsScreenState extends State<ParentAnnouncementsScreen> {
       future: _future,
       builder: (context, snapshot) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('الإعلانات والأنشطة'),
-            leading: IconButton(
-              onPressed: () => context.go('/children'),
-              icon: const Icon(Icons.arrow_back_rounded),
-            ),
-            actions: [
-              IconButton(
-                tooltip: 'تحديث',
-                onPressed: _reload,
-                icon: const Icon(Icons.refresh_rounded),
-              ),
-            ],
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            top: false,
+            child: AppContentContainer(child: _buildBody(snapshot)),
           ),
-          body: SafeArea(child: _buildBody(snapshot)),
         );
       },
     );
@@ -219,9 +216,15 @@ class _ParentAnnouncementsScreenState extends State<ParentAnnouncementsScreen> {
     }
 
     return RefreshIndicator(
-      onRefresh: () async => _reload(),
+      onRefresh: _reload,
       child: ListView.separated(
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.md,
+          AppSpacing.lg,
+          AppSpacing.xxl,
+        ),
         itemCount: entries.length + 1,
         separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
         itemBuilder: (context, index) {
@@ -249,20 +252,22 @@ class _PageIntroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final palette = context.appPalette;
 
     return AppCard(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: colorScheme.primary.withValues(alpha: 0.12),
+              color: palette.gold.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(AppRadius.lg),
             ),
             child: Icon(
-              Icons.campaign_rounded,
-              color: colorScheme.primary,
+              Icons.auto_awesome_rounded,
+              color: palette.gold,
               size: 30,
             ),
           ),
@@ -272,16 +277,16 @@ class _PageIntroCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'كل جديد في مكان واحد',
+                  'مساحتك لمتابعة كل جديد',
                   style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'هنا تظهر الأنشطة المفتوحة والإعلانات العامة الخاصة بأبنائك.',
+                  'الإعلانات والأنشطة والنتائج المهمة لأبنائك مرتبة في مكان واحد.',
                   style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -357,13 +362,20 @@ class _AnnouncementActivityCard extends StatelessWidget {
                     Text(
                       _activityKindLabel(activity.activityKind),
                       style: textTheme.bodySmall?.copyWith(
-                        color: AppColors.mutedText,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
               ),
-              const _StatusChip(label: 'التسجيل مفتوح'),
+              _StatusChip(
+                label: _activityStatusLabel(
+                  activity.status,
+                  hasResult: entry.hasResult,
+                ),
+                highlighted:
+                    activity.status == 'REGISTRATION_OPEN' && !entry.hasResult,
+              ),
             ],
           ),
           if (activity.shortDescription.isNotEmpty) ...[
@@ -376,7 +388,9 @@ class _AnnouncementActivityCard extends StatelessWidget {
               activity.description,
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.bodySmall?.copyWith(color: AppColors.mutedText),
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
           const SizedBox(height: AppSpacing.md),
@@ -441,8 +455,11 @@ class _AnnouncementActivityCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.soft,
+                color: colorScheme.primaryContainer.withValues(alpha: 0.36),
                 borderRadius: BorderRadius.circular(AppRadius.lg),
+                border: Border.all(
+                  color: colorScheme.primary.withValues(alpha: 0.15),
+                ),
               ),
               child: Text(
                 activity.consentText.isEmpty
@@ -500,13 +517,37 @@ class _AnnouncementActivityCard extends StatelessWidget {
 }
 
 class _StatusChip extends StatelessWidget {
-  const _StatusChip({required this.label});
+  const _StatusChip({required this.label, this.highlighted = false});
 
   final String label;
+  final bool highlighted;
 
   @override
   Widget build(BuildContext context) {
-    return Chip(label: Text(label), visualDensity: VisualDensity.compact);
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: highlighted
+            ? colorScheme.primary.withValues(alpha: 0.14)
+            : colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        border: Border.all(
+          color: highlighted
+              ? colorScheme.primary.withValues(alpha: 0.28)
+              : colorScheme.outlineVariant,
+        ),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: highlighted
+              ? colorScheme.primary
+              : colorScheme.onSurfaceVariant,
+          fontWeight: FontWeight.w900,
+        ),
+      ),
+    );
   }
 }
 
@@ -568,6 +609,25 @@ String _activityKindLabel(String value) {
       return 'أخرى';
     default:
       return value.isEmpty ? 'نشاط' : value;
+  }
+}
+
+String _activityStatusLabel(String status, {required bool hasResult}) {
+  if (hasResult) return 'النتيجة متاحة';
+
+  switch (status) {
+    case 'REGISTRATION_OPEN':
+      return 'التسجيل مفتوح';
+    case 'REGISTRATION_CLOSED':
+      return 'انتهى التسجيل';
+    case 'IN_PROGRESS':
+      return 'النشاط قائم';
+    case 'COMPLETED':
+      return 'مكتمل';
+    case 'CANCELLED':
+      return 'ملغي';
+    default:
+      return 'نشاط مدرسي';
   }
 }
 

@@ -21,6 +21,7 @@ class AppEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Center(
       child: SingleChildScrollView(
@@ -34,7 +35,7 @@ class AppEmptyState extends StatelessWidget {
                 Icon(
                   icon,
                   size: 56,
-                  color: Colors.black45,
+                  color: colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -49,7 +50,7 @@ class AppEmptyState extends StatelessWidget {
                   message,
                   textAlign: TextAlign.center,
                   style: textTheme.bodyMedium?.copyWith(
-                    color: Colors.black54,
+                    color: colorScheme.onSurfaceVariant,
                     height: 1.6,
                   ),
                 ),

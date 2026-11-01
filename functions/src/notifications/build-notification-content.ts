@@ -59,6 +59,30 @@ export function buildNotificationContent(
     };
   }
 
+  if (eventData.type === "STUDENT_TRANSPORT_ATTENDANCE_RECORDED") {
+    const studentName = stringFromPayload(payload, "studentName", "الطالب");
+    const tripKind = stringFromPayload(payload, "tripKind");
+    const status = stringFromPayload(payload, "status");
+    const studentId = eventData.targetStudentId ?? "";
+    const serviceDate = stringFromPayload(payload, "serviceDate");
+
+    return {
+      title: "تحديث النقل المدرسي",
+      body: transportAttendanceBody({ studentName, tripKind, status }),
+      targetRoute: "STUDENT_TRANSPORT",
+      targetParams: { studentId, serviceDate },
+      data: {
+        type: eventData.type,
+        sourceType: eventData.sourceType ?? "",
+        sourceId: eventData.sourceId ?? "",
+        targetRoute: "STUDENT_TRANSPORT",
+        studentId,
+        serviceDate,
+      },
+      channels: ["IN_APP", "PUSH"],
+    };
+  }
+
   if (eventData.type === "HOMEWORK_PUBLISHED") {
     return {
       title: "واجب جديد",
@@ -159,4 +183,48 @@ export function buildNotificationContent(
     },
     channels: ["IN_APP", "PUSH"],
   };
+}
+
+function transportAttendanceBody(params: {
+  studentName: string;
+  tripKind: string;
+  status: string;
+}): string {
+  const tripLabel = transportTripLabel(params.tripKind);
+
+  switch (params.status) {
+    case "BOARDED":
+      return `تم تسجيل صعود ${params.studentName} في ${tripLabel}.`;
+    case "NOT_BOARDED":
+      return `تم تسجيل أن ${params.studentName} لم يصعد في ${tripLabel}.`;
+    case "ARRIVED":
+      return `تم تسجيل وصول ${params.studentName} إلى المدرسة.`;
+    case "DROPPED_OFF":
+      return `تم تسجيل نزول ${params.studentName} عند المنزل.`;
+    case "ABSENT":
+      return `تم تسجيل ${params.studentName} غائبًا في ${tripLabel}.`;
+    case "EXCUSED":
+      return `تم تسجيل ${params.studentName} بعذر في ${tripLabel}.`;
+    case "LATE":
+      return `تم تسجيل ${params.studentName} متأخرًا في ${tripLabel}.`;
+    case "ISSUE":
+      return `تم تسجيل ملاحظة على رحلة ${params.studentName} في ${tripLabel}.`;
+    default:
+      return `تم تحديث حالة نقل ${params.studentName} في ${tripLabel}.`;
+  }
+}
+
+function transportTripLabel(tripKind: string): string {
+  switch (tripKind) {
+    case "MORNING_PICKUP":
+      return "الصعود الصباحي";
+    case "MORNING_ARRIVAL":
+      return "الوصول إلى المدرسة";
+    case "AFTERNOON_BOARDING":
+      return "الصعود وقت الانصراف";
+    case "AFTERNOON_DROPOFF":
+      return "النزول عند المنزل";
+    default:
+      return "رحلة النقل";
+  }
 }

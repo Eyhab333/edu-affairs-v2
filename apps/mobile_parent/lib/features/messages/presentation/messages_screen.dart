@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import '../data/parent_message_thread.dart';
 import '../data/parent_messages_service.dart';
 import 'package:go_router/go_router.dart';
+import '../../../shared/widgets/app_content_container.dart';
+import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_empty_state.dart';
+import '../../../shared/widgets/app_error_state.dart';
+import '../../../shared/widgets/app_loading_state.dart';
 
 class MessagesScreen extends StatelessWidget {
   const MessagesScreen({super.key});
@@ -12,28 +17,34 @@ class MessagesScreen extends StatelessWidget {
     final service = ParentMessagesService();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('الرسائل'), centerTitle: true),
-      body: StreamBuilder<List<ParentMessageThread>>(
+      backgroundColor: Colors.transparent,
+      body: AppContentContainer(
+        child: StreamBuilder<List<ParentMessageThread>>(
         stream: service.watchThreads(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return _ErrorState(
+            return AppErrorState(
+              title: 'تعذر تحميل الرسائل',
               message: 'تعذر تحميل الرسائل: ${snapshot.error}',
             );
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingState(message: 'جاري تحميل الرسائل...');
           }
 
           final threads = snapshot.data ?? const [];
 
           if (threads.isEmpty) {
-            return const _EmptyState();
+            return const AppEmptyState(
+              icon: Icons.forum_outlined,
+              title: 'لا توجد رسائل بعد',
+              message: 'ستظهر هنا محادثاتك مع المدرسة عند إنشائها.',
+            );
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
             itemCount: threads.length,
             separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
@@ -43,6 +54,7 @@ class MessagesScreen extends StatelessWidget {
             },
           );
         },
+        ),
       ),
     );
   }
@@ -58,17 +70,12 @@ class _ThreadCard extends StatelessWidget {
     final theme = Theme.of(context);
     final hasUnread = thread.unreadCount > 0;
 
-    return Card(
-      elevation: 0,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          context.push('/messages/${Uri.encodeComponent(thread.id)}');
-        },
-
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
+    return AppCard(
+      onTap: () {
+        context.push('/messages/${Uri.encodeComponent(thread.id)}');
+      },
+      padding: const EdgeInsets.all(14),
+      child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(child: Text(_avatarLetter(thread.otherDisplayName))),
@@ -124,8 +131,6 @@ class _ThreadCard extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ),
       ),
     );
   }
@@ -216,66 +221,3 @@ class _UnreadChip extends StatelessWidget {
   }
 }
 
-class _EmptyState extends StatelessWidget {
-  const _EmptyState();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.forum_outlined,
-              size: 56,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'لا توجد رسائل بعد',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'ستظهر هنا محادثاتك مع المدرسة عند إنشائها.',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.error,
-          ),
-        ),
-      ),
-    );
-  }
-}

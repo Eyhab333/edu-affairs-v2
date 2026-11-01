@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_empty_state.dart';
 import '../../../shared/widgets/app_error_state.dart';
 import '../../../shared/widgets/app_loading_state.dart';
@@ -193,7 +195,14 @@ Future<void> _createUrgentRequestForTarget({
             ),
             centerTitle: true,
           ),
-          body: SafeArea(child: _buildBody(context, snapshot)),
+          body: AppBackground(
+            child: SafeArea(
+              child: AppContentContainer(
+                maxWidth: 960,
+                child: _buildBody(context, snapshot),
+              ),
+            ),
+          ),
         );
       },
     );
@@ -363,7 +372,7 @@ class _StudentCommunicationHeader extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -372,7 +381,7 @@ class _StudentCommunicationHeader extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.mutedText,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -432,7 +441,7 @@ class _ExistingThreadCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.mutedText,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -524,7 +533,7 @@ class _CommunicationTargetCard extends StatelessWidget {
                     Text(
                       subtitle,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.mutedText,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -586,7 +595,7 @@ class _SectionTitle extends StatelessWidget {
               Text(
                 subtitle,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.mutedText,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -794,7 +803,7 @@ class _TargetGroupTitle extends StatelessWidget {
       title,
       style: theme.textTheme.titleSmall?.copyWith(
         fontWeight: FontWeight.w900,
-        color: AppColors.mutedText,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );
   }

@@ -19,6 +19,7 @@ class AppErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Center(
       child: SingleChildScrollView(
@@ -32,7 +33,7 @@ class AppErrorState extends StatelessWidget {
                 Icon(
                   Icons.error_outline_rounded,
                   size: 56,
-                  color: Colors.red.shade700,
+                  color: colorScheme.error,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -47,17 +48,17 @@ class AppErrorState extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.08),
+                    color: colorScheme.error.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: Colors.red.withValues(alpha: 0.18),
+                      color: colorScheme.error.withValues(alpha: 0.18),
                     ),
                   ),
                   child: Text(
                     message,
                     textAlign: TextAlign.center,
                     style: textTheme.bodySmall?.copyWith(
-                      color: Colors.red.shade800,
+                      color: colorScheme.error,
                       height: 1.5,
                     ),
                   ),

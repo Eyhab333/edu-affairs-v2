@@ -6,6 +6,9 @@ import '../data/parent_messages_service.dart';
 import '../data/parent_thread_message.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_content_container.dart';
+
 class MessageThreadScreen extends StatefulWidget {
   const MessageThreadScreen({required this.threadId, super.key});
 
@@ -64,8 +67,11 @@ class _MessageThreadScreenState extends State<MessageThreadScreen> {
             title: Text(thread?.otherDisplayName ?? 'المحادثة'),
             centerTitle: true,
           ),
-          body: Builder(
-            builder: (context) {
+          body: AppBackground(
+            child: AppContentContainer(
+              maxWidth: 960,
+              child: Builder(
+                builder: (context) {
               if (threadSnapshot.hasError) {
                 return _ErrorState(
                   message: 'تعذر تحميل المحادثة: ${threadSnapshot.error}',
@@ -135,7 +141,9 @@ class _MessageThreadScreenState extends State<MessageThreadScreen> {
                   ),
                 ],
               );
-            },
+                },
+              ),
+            ),
           ),
         );
       },

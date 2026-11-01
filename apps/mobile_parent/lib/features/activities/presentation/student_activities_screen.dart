@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_empty_state.dart';
 import '../../../shared/widgets/app_error_state.dart';
 import '../../../shared/widgets/app_loading_state.dart';
@@ -54,10 +56,17 @@ class _StudentActivitiesScreenState extends State<StudentActivitiesScreen> {
     return _StudentActivitiesBundle(student: student, activities: activities);
   }
 
-  void _reload() {
+  Future<void> _reload() async {
+    final nextFuture = _loadData();
     setState(() {
-      _future = _loadData();
+      _future = nextFuture;
     });
+
+    try {
+      await nextFuture;
+    } catch (_) {
+      // FutureBuilder displays the loading error in the screen.
+    }
   }
 
   @override
@@ -84,7 +93,14 @@ class _StudentActivitiesScreenState extends State<StudentActivitiesScreen> {
               ),
             ],
           ),
-          body: SafeArea(child: _buildBody(snapshot)),
+          body: AppBackground(
+            child: SafeArea(
+              child: AppContentContainer(
+                maxWidth: 960,
+                child: _buildBody(snapshot),
+              ),
+            ),
+          ),
         );
       },
     );
@@ -132,7 +148,7 @@ class _StudentActivitiesScreenState extends State<StudentActivitiesScreen> {
     }
 
     return RefreshIndicator(
-      onRefresh: () async => _reload(),
+      onRefresh: _reload,
       child: ListView.separated(
         padding: const EdgeInsets.all(AppSpacing.lg),
         itemCount: bundle.activities.length,
@@ -180,7 +196,7 @@ class _ActivityCard extends StatelessWidget {
                     Text(
                       _activityKindLabel(activity.activityKind),
                       style: textTheme.bodySmall?.copyWith(
-                        color: AppColors.mutedText,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -199,7 +215,7 @@ class _ActivityCard extends StatelessWidget {
               activity.description,
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.bodySmall?.copyWith(color: AppColors.mutedText),
+              style: textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ],
           const SizedBox(height: AppSpacing.md),
@@ -235,7 +251,7 @@ class _ActivityCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.soft,
+                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
                 borderRadius: BorderRadius.circular(AppRadius.lg),
               ),
               child: Text(

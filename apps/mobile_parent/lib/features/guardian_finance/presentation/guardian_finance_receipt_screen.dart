@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/app_background.dart';
+import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_error_state.dart';
 import '../../../shared/widgets/app_loading_state.dart';
 import '../data/guardian_finance_service.dart';
@@ -93,8 +95,11 @@ class _GuardianFinanceReceiptScreenState
           ),
         ],
       ),
-      body: SafeArea(
-        child: FutureBuilder<_ReceiptDetails>(
+      body: AppBackground(
+        child: SafeArea(
+          child: AppContentContainer(
+            maxWidth: 960,
+            child: FutureBuilder<_ReceiptDetails>(
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.connectionState ==
@@ -122,6 +127,8 @@ class _GuardianFinanceReceiptScreenState
 
             return _ReceiptBody(details: details);
           },
+            ),
+          ),
         ),
       ),
     );
@@ -293,7 +300,7 @@ class _ReceiptBody extends StatelessWidget {
                               .bodySmall
                               ?.copyWith(
                                 color:
-                                    AppColors.mutedText,
+                                    Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
                         ),
                       ],
@@ -443,7 +450,7 @@ class _DetailRow extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: AppColors.mutedText,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -503,7 +510,7 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = positive
-        ? Colors.green
+        ? Theme.of(context).colorScheme.primary
         : Theme.of(context).colorScheme.error;
 
     return Container(

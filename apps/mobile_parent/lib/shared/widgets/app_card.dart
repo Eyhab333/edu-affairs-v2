@@ -16,20 +16,32 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.appPalette;
     final content = Padding(
       padding: padding,
       child: child,
     );
 
-    if (onTap == null) {
-      return Card(child: content);
-    }
-
-    return Card(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: onTap,
-        child: content,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: palette.glassSurface,
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        border: Border.all(color: palette.glassBorder),
+        boxShadow: [
+          BoxShadow(
+            color: palette.deepShadow,
+            blurRadius: 26,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        clipBehavior: Clip.antiAlias,
+        child: onTap == null
+            ? content
+            : InkWell(onTap: onTap, child: content),
       ),
     );
   }
