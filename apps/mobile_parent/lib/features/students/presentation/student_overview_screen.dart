@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +14,7 @@ import '../../attendance/presentation/student_attendance_tab.dart';
 import '../../gamification/data/student_gamification_service.dart';
 import '../../guardian/data/guardian_children_service.dart';
 import '../../guardian/models/parent_student_summary.dart';
+import '../../learning_loss/presentation/student_learning_loss_tab.dart';
 import '../../measurements/presentation/student_measurements_tab.dart';
 import '../../transport/presentation/student_transport_tab.dart';
 import '../../virtual_classes/data/student_virtual_classes_service.dart';
@@ -66,7 +69,9 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
   int get _initialTabIndex {
     switch (widget.initialTab) {
       case 'transport':
-        return 3;
+        return 4;
+      case 'learning-loss':
+        return 2;
       default:
         return 0;
     }
@@ -138,7 +143,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
     }
 
     return DefaultTabController(
-      length: 5,
+      length: 6,
       initialIndex: _initialTabIndex,
       child: Column(
         children: [
@@ -156,6 +161,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
             tabs: [
               Tab(text: 'الحصص الافتراضية'),
               Tab(text: 'القياسات'),
+              Tab(text: 'الفاقد التعليمي'),
               Tab(text: 'الحضور'),
               Tab(text: 'النقل'),
               Tab(text: 'التحفيز'),
@@ -166,6 +172,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
               children: [
                 StudentVirtualClassesTab(student: student),
                 StudentMeasurementsTab(studentId: student.studentId),
+                StudentLearningLossTab(studentId: student.studentId),
                 StudentAttendanceTab(studentId: student.studentId),
                 StudentTransportTab(
                   studentId: student.studentId,
@@ -482,6 +489,7 @@ class StudentVirtualClassesTab extends StatefulWidget {
 
 class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
   late Future<List<_VirtualClassBundle>> _future;
+  Timer? _timeRefreshTimer;
 
   final _virtualClassesService = StudentVirtualClassesService();
 
@@ -489,12 +497,28 @@ class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
   void initState() {
     super.initState();
     _future = _loadVirtualClasses();
+    _timeRefreshTimer = Timer.periodic(const Duration(minutes: 1), (_) {
+      if (mounted) setState(() {});
+    });
   }
 
-  void _reload() {
+  @override
+  void dispose() {
+    _timeRefreshTimer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _reload() async {
+    final nextFuture = _loadVirtualClasses();
     setState(() {
-      _future = _loadVirtualClasses();
+      _future = nextFuture;
     });
+
+    try {
+      await nextFuture;
+    } catch (_) {
+      // FutureBuilder owns the visible error state.
+    }
   }
 
   Future<List<_VirtualClassBundle>> _loadVirtualClasses() async {
@@ -511,12 +535,6 @@ class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
       (bundle.session.academicYearId.isEmpty || bundle.session.academicYearId == widget.student.academicYearId) &&
       (bundle.session.classId.isEmpty || bundle.session.classId == widget.student.classId),
     ).toList();
-
-    bundles.sort((a, b) {
-      final aStart = a.session.startsAt ?? 0;
-      final bStart = b.session.startsAt ?? 0;
-      return aStart.compareTo(bStart);
-    });
 
     return bundles;
   }
@@ -555,24 +573,198 @@ class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
           );
         }
 
-        return RefreshIndicator(
-          onRefresh: () async => _reload(),
-          child: ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: items.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              final bundle = items[index];
+        final now = DateTime.now().millisecondsSinceEpoch;
+        final currentAndUpcoming = items
+            .where((bundle) => bundle.timingAt(now) != _VirtualClassTiming.ended)
+            .toList()
+          ..sort((left, right) => _compareCurrentAndUpcoming(left, right, now));
+        final history = items
+            .where((bundle) => bundle.timingAt(now) == _VirtualClassTiming.ended)
+            .toList()
+          ..sort((left, right) =>
+              (right.session.endsAt ?? 0).compareTo(left.session.endsAt ?? 0));
 
-              return _VirtualClassCard(
-                student: widget.student,
-                bundle: bundle,
-                onRefresh: _reload,
-              );
-            },
+        return RefreshIndicator(
+          onRefresh: _reload,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            children: [
+              _VirtualClassesSectionTitle(
+                title: 'الحصص الحالية والقادمة',
+                icon: Icons.video_call_rounded,
+                count: currentAndUpcoming.length,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              if (currentAndUpcoming.isEmpty)
+                const _VirtualClassesEmptyHint(
+                  message: 'لا توجد حصص حالية أو قادمة لهذا الطالب.',
+                )
+              else
+                for (final bundle in currentAndUpcoming)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                    child: _VirtualClassCard(
+                      student: widget.student,
+                      bundle: bundle,
+                      timing: bundle.timingAt(now),
+                      onRefresh: _reload,
+                    ),
+                  ),
+              if (history.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.sm),
+                AppCard(
+                  padding: EdgeInsets.zero,
+                  child: ExpansionTile(
+                    initiallyExpanded: false,
+                    tilePadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.xs,
+                    ),
+                    leading: Icon(
+                      Icons.history_rounded,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                    title: const Text('الحصص السابقة'),
+                    subtitle: Text('${history.length} حصة'),
+                    childrenPadding: const EdgeInsets.fromLTRB(
+                      AppSpacing.md,
+                      0,
+                      AppSpacing.md,
+                      AppSpacing.md,
+                    ),
+                    children: [
+                      for (final bundle in history)
+                        Padding(
+                          padding: const EdgeInsets.only(top: AppSpacing.sm),
+                          child: _VirtualClassCard(
+                            student: widget.student,
+                            bundle: bundle,
+                            timing: _VirtualClassTiming.ended,
+                            onRefresh: _reload,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
           ),
         );
       },
+    );
+  }
+
+  int _compareCurrentAndUpcoming(
+    _VirtualClassBundle left,
+    _VirtualClassBundle right,
+    int now,
+  ) {
+    int order(_VirtualClassTiming timing) => switch (timing) {
+          _VirtualClassTiming.live => 0,
+          _VirtualClassTiming.upcoming => 1,
+          _VirtualClassTiming.unavailable => 2,
+          _VirtualClassTiming.ended => 3,
+        };
+    final priority = order(left.timingAt(now)).compareTo(order(right.timingAt(now)));
+    if (priority != 0) return priority;
+    return (left.session.startsAt ?? (1 << 62)).compareTo(
+      right.session.startsAt ?? (1 << 62),
+    );
+  }
+}
+
+class _VirtualClassesSectionTitle extends StatelessWidget {
+  const _VirtualClassesSectionTitle({
+    required this.title,
+    required this.icon,
+    required this.count,
+  });
+
+  final String title;
+  final IconData icon;
+  final int count;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: [
+          Icon(icon, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+            ),
+          ),
+          Text(
+            '$count',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+          ),
+        ],
+      );
+}
+
+class _VirtualClassesEmptyHint extends StatelessWidget {
+  const _VirtualClassesEmptyHint({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) => AppCard(
+        child: Text(
+          message,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+        ),
+      );
+}
+
+enum _VirtualClassTiming { upcoming, live, ended, unavailable }
+
+class _TimingHint extends StatelessWidget {
+  const _TimingHint({required this.timing, required this.startsAt});
+
+  final _VirtualClassTiming timing;
+  final int? startsAt;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = switch (timing) {
+      _VirtualClassTiming.live => Theme.of(context).colorScheme.primary,
+      _VirtualClassTiming.upcoming => context.appPalette.gold,
+      _VirtualClassTiming.ended => Theme.of(context).colorScheme.onSurfaceVariant,
+      _VirtualClassTiming.unavailable => Theme.of(context).colorScheme.onSurfaceVariant,
+    };
+    final message = switch (timing) {
+      _VirtualClassTiming.live => 'الحصة متاحة الآن',
+      _VirtualClassTiming.upcoming => 'تبدأ الساعة ${_formatTime(startsAt)}',
+      _VirtualClassTiming.ended => 'انتهت الحصة',
+      _VirtualClassTiming.unavailable => 'موعد الحصة غير متاح',
+    };
+
+    return Row(
+      children: [
+        Icon(
+          timing == _VirtualClassTiming.live
+              ? Icons.circle
+              : Icons.info_outline_rounded,
+          size: 16,
+          color: color,
+        ),
+        const SizedBox(width: AppSpacing.xs),
+        Text(
+          message,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: color,
+                fontWeight: FontWeight.w800,
+              ),
+        ),
+      ],
     );
   }
 }
@@ -581,11 +773,13 @@ class _VirtualClassCard extends StatefulWidget {
   const _VirtualClassCard({
     required this.student,
     required this.bundle,
+    required this.timing,
     required this.onRefresh,
   });
 
   final ParentStudentSummary student;
   final _VirtualClassBundle bundle;
+  final _VirtualClassTiming timing;
   final VoidCallback onRefresh;
 
   @override
@@ -599,11 +793,17 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
     final session = widget.bundle.session;
     final participant = widget.bundle.participant;
     final student = widget.student;
+    final timing = widget.timing;
 
     Future<void> joinVirtualClass() async {
       final session = widget.bundle.session;
       final participant = widget.bundle.participant;
       final student = widget.student;
+
+      if (widget.bundle.timingAt(DateTime.now().millisecondsSinceEpoch) !=
+          _VirtualClassTiming.live) {
+        return;
+      }
 
       final joinUrl = session.joinUrl.trim();
 
@@ -695,7 +895,7 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
                     ],
                   ),
                 ),
-                _StatusChip(label: _sessionStatusLabel(session.status)),
+                _StatusChip(label: _timingLabel(timing)),
               ],
             ),
             const SizedBox(height: 16),
@@ -730,12 +930,16 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
                 value: _formatDateTime(participant.joinClickedAt),
               ),
             ],
+            const SizedBox(height: 8),
+            _TimingHint(timing: timing, startsAt: session.startsAt),
             const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: _joining ? null : joinVirtualClass,
+                    onPressed: _joining || timing != _VirtualClassTiming.live
+                        ? null
+                        : joinVirtualClass,
                     icon: _joining
                         ? const SizedBox(
                             width: 18,
@@ -746,7 +950,9 @@ class _VirtualClassCardState extends State<_VirtualClassCard> {
                     label: Text(
                       _joining
                           ? 'جاري فتح الحصة...'
-                          : 'دخول الحصة كـ ${student.studentName}',
+                          : timing == _VirtualClassTiming.live
+                              ? 'دخول الحصة كـ ${student.studentName}'
+                              : _timingLabel(timing),
                     ),
                   ),
                 ),
@@ -820,6 +1026,20 @@ class _VirtualClassBundle {
       participant: _VirtualClassParticipant.fromMap(data),
     );
   }
+
+  _VirtualClassTiming timingAt(int now) {
+    final startsAt = session.startsAt;
+    final endsAt = session.endsAt;
+    if (startsAt == null ||
+        endsAt == null ||
+        startsAt <= 0 ||
+        endsAt <= startsAt) {
+      return _VirtualClassTiming.unavailable;
+    }
+    if (now < startsAt) return _VirtualClassTiming.upcoming;
+    if (now >= endsAt) return _VirtualClassTiming.ended;
+    return _VirtualClassTiming.live;
+  }
 }
 
 class _VirtualClassSession {
@@ -831,7 +1051,6 @@ class _VirtualClassSession {
     required this.subjectKey,
     required this.subjectTitle,
     required this.title,
-    required this.status,
     required this.joinUrl,
     required this.startsAt,
     required this.endsAt,
@@ -845,7 +1064,6 @@ class _VirtualClassSession {
   final String subjectKey;
   final String subjectTitle;
   final String title;
-  final String status;
   final String joinUrl;
   final int? startsAt;
   final int? endsAt;
@@ -860,7 +1078,6 @@ class _VirtualClassSession {
       subjectKey: _readString(data, 'subjectKey'),
       subjectTitle: _readString(data, 'subjectTitle'),
       title: _readString(data, 'title'),
-      status: _readString(data, 'status'),
       joinUrl: _readString(data, 'joinUrl'),
       startsAt: _readInt(data, 'startsAt'),
       endsAt: _readInt(data, 'endsAt'),
@@ -983,28 +1200,26 @@ String _formatDateTime(int? value) {
   return '$dateText - $timeText';
 }
 
+String _formatTime(int? value) {
+  if (value == null || value <= 0) return 'غير محدد';
+  final date = DateTime.fromMillisecondsSinceEpoch(value);
+  return '${_twoDigits(date.hour)}:${_twoDigits(date.minute)}';
+}
+
 String _twoDigits(int value) {
   return value.toString().padLeft(2, '0');
 }
 
-String _sessionStatusLabel(String status) {
-  switch (status) {
-    case 'DRAFT':
-      return 'مسودة';
-    case 'SCHEDULED':
-      return 'مجدولة';
-    case 'LIVE':
-      return 'مباشرة';
-    case 'ENDED':
-      return 'منتهية';
-    case 'ATTENDANCE_IMPORTED':
-      return 'تم جلب الحضور';
-    case 'ATTENDANCE_REVIEWED':
-      return 'تم اعتماد الحضور';
-    case 'CANCELLED':
-      return 'ملغاة';
-    default:
-      return status.isEmpty ? 'غير محدد' : status;
+String _timingLabel(_VirtualClassTiming timing) {
+  switch (timing) {
+    case _VirtualClassTiming.upcoming:
+      return 'قريبًا';
+    case _VirtualClassTiming.live:
+      return 'مباشرة الآن';
+    case _VirtualClassTiming.ended:
+      return 'انتهت الحصة';
+    case _VirtualClassTiming.unavailable:
+      return 'غير متاحة';
   }
 }
 

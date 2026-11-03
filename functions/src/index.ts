@@ -100,6 +100,7 @@ export { getMyGuardianChildren } from "./guardian/get-my-guardian-children";
 export { getMyGuardianAttendance } from "./guardian/get-my-guardian-attendance";
 export { getMyGuardianGamification } from "./guardian/get-my-guardian-gamification";
 export { getMyGuardianMeasurements } from "./guardian/get-my-guardian-measurements";
+export { getMyGuardianLearningLoss } from "./guardian/get-my-guardian-learning-loss";
 export { getMyGuardianNotes } from "./guardian/get-my-guardian-notes";
 export { getMyGuardianTransport } from "./guardian/get-my-guardian-transport";
 export { getMyGuardianVirtualClasses } from "./guardian/get-my-guardian-virtual-classes";
