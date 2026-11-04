@@ -31,7 +31,7 @@ function readRows(data: FirestoreData): FirestoreData[] {
 
 /** Returns finalized batch results only; drafts and incomplete student rows stay staff-only. */
 export const getMyGuardianMeasurements = onCall(
-  { region: REGION },
+  { region: REGION, cors: true },
   async (request) => {
     const context = await assertGuardianStudentAccess(
       request.auth?.uid,

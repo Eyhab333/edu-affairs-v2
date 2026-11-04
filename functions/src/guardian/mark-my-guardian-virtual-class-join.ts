@@ -4,7 +4,7 @@ import { assertGuardianStudentAccess } from "./guardian-student-access";
 
 const REGION = "me-central2";
 
-export const markMyGuardianVirtualClassJoin = onCall({ region: REGION }, async (request) => {
+export const markMyGuardianVirtualClassJoin = onCall({ region: REGION, cors: true }, async (request) => {
   const context = await assertGuardianStudentAccess(request.auth?.uid, request.data?.studentId);
   const participantId = typeof request.data?.participantId === "string"
     ? request.data.participantId.trim()

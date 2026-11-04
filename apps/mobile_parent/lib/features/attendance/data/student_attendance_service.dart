@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 
+import '../../../shared/data/retry_transient_callable.dart';
 import '../models/student_attendance_summary.dart';
 
 class StudentAttendanceService {
@@ -12,7 +13,12 @@ class StudentAttendanceService {
   Future<StudentAttendanceSummary> loadStudentAttendance({
     required String studentId,
   }) async {
-    final result = await _functions.httpsCallable('getMyGuardianAttendance').call<Map<String, dynamic>>({'studentId': studentId});
+    final result = await retryTransientCallable(
+      operationName: 'getMyGuardianAttendance',
+      operation: () => _functions
+          .httpsCallable('getMyGuardianAttendance')
+          .call<Map<String, dynamic>>({'studentId': studentId}),
+    );
     final rawRecords = result.data['records'];
     if (rawRecords is! List) throw StateError('استجابة الحضور غير صالحة.');
 

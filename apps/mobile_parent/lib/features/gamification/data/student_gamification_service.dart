@@ -1,5 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 
+import '../../../shared/data/retry_transient_callable.dart';
+
 class StudentGamificationService {
   StudentGamificationService({FirebaseFunctions? functions})
       : _functions = functions ??
@@ -10,9 +12,12 @@ class StudentGamificationService {
   Future<List<Map<String, dynamic>>> loadStudentGamification({
     required String studentId,
   }) async {
-    final result = await _functions
-        .httpsCallable('getMyGuardianGamification')
-        .call<Map<String, dynamic>>({'studentId': studentId});
+    final result = await retryTransientCallable(
+      operationName: 'getMyGuardianGamification',
+      operation: () => _functions
+          .httpsCallable('getMyGuardianGamification')
+          .call<Map<String, dynamic>>({'studentId': studentId}),
+    );
 
     final rawEvents = result.data['events'];
     if (rawEvents is! List) {

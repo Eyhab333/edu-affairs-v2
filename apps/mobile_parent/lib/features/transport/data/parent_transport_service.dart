@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 
+import '../../../shared/data/retry_transient_callable.dart';
 import '../models/parent_transport_page.dart';
 
 class ParentTransportService {
@@ -22,9 +23,12 @@ class ParentTransportService {
       payload['anchorDate'] = anchorDate;
     }
 
-    final result = await _functions
-        .httpsCallable('getMyGuardianTransport')
-        .call<Map<String, dynamic>>(payload);
+    final result = await retryTransientCallable(
+      operationName: 'getMyGuardianTransport',
+      operation: () => _functions
+          .httpsCallable('getMyGuardianTransport')
+          .call<Map<String, dynamic>>(payload),
+    );
 
     return ParentTransportPage.fromMap(result.data);
   }

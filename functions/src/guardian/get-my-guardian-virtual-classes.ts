@@ -5,7 +5,7 @@ import { assertGuardianStudentAccess } from "./guardian-student-access";
 const REGION = "me-central2";
 
 export const getMyGuardianVirtualClasses = onCall(
-  { region: REGION },
+  { region: REGION, cors: true },
   async (request) => {
     const context = await assertGuardianStudentAccess(
       request.auth?.uid,

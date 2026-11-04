@@ -219,7 +219,7 @@ function relationPriority(relationType: string): number {
  * accepted from the client.
  */
 export const getMyGuardianChildren = onCall(
-  { region: REGION },
+  { region: REGION, cors: true },
   async (request) => {
     const uid = request.auth?.uid;
 
