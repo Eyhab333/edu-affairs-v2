@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,29 +12,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Timer? _timer;
-
   @override
   void initState() {
     super.initState();
-
-    _timer = Timer(const Duration(milliseconds: 700), () {
-      if (!mounted) return;
-
-      final user = FirebaseAuth.instance.currentUser;
-
-      if (user == null) {
-        context.go('/login');
-      } else {
-        context.go('/children');
-      }
-    });
+    _resolveAuthentication();
   }
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
+  Future<void> _resolveAuthentication() async {
+    try {
+      final user = await FirebaseAuth.instance.authStateChanges().first;
+      if (!mounted) return;
+      context.go(user == null ? '/login' : '/children');
+    } catch (_) {
+      if (!mounted) return;
+      context.go('/login');
+    }
   }
 
   @override

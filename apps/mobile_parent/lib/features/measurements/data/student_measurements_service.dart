@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 
+import '../../../shared/data/retry_transient_callable.dart';
 import '../models/student_measurement_item.dart';
 
 class StudentMeasurementsService {
@@ -12,9 +13,12 @@ class StudentMeasurementsService {
   Future<List<StudentMeasurementItem>> loadStudentMeasurements({
     required String studentId,
   }) async {
-    final result = await _functions
-        .httpsCallable('getMyGuardianMeasurements')
-        .call<Map<String, dynamic>>({'studentId': studentId});
+    final result = await retryTransientCallable(
+      operationName: 'getMyGuardianMeasurements',
+      operation: () => _functions
+          .httpsCallable('getMyGuardianMeasurements')
+          .call<Map<String, dynamic>>({'studentId': studentId}),
+    );
 
     final rawMeasurements = result.data['measurements'];
     if (rawMeasurements is! List) {

@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 
+import '../../../shared/data/retry_transient_callable.dart';
 import '../models/guardian_learning_loss_plan.dart';
 
 class GuardianLearningLossService {
@@ -12,9 +13,12 @@ class GuardianLearningLossService {
   Future<List<GuardianLearningLossPlan>> loadStudentLearningLoss({
     required String studentId,
   }) async {
-    final result = await _functions
-        .httpsCallable('getMyGuardianLearningLoss')
-        .call<Map<String, dynamic>>({'studentId': studentId});
+    final result = await retryTransientCallable(
+      operationName: 'getMyGuardianLearningLoss',
+      operation: () => _functions
+          .httpsCallable('getMyGuardianLearningLoss')
+          .call<Map<String, dynamic>>({'studentId': studentId}),
+    );
     final rawPlans = result.data['plans'];
     if (rawPlans is! List) {
       throw StateError('استجابة الفاقد التعليمي غير صالحة.');
