@@ -172,6 +172,11 @@ async function sendFcmChunk(
       sourceId: notification.sourceId ?? "",
       targetRoute: notification.targetRoute ?? "",
     },
+    webpush: {
+      fcmOptions: {
+        link: buildParentWebLink(notification),
+      },
+    },
   });
 
   const batch = db.batch();
@@ -241,6 +246,39 @@ async function sendFcmChunk(
     successCount: response.successCount,
     failureCount: response.failureCount,
   };
+}
+
+function buildParentWebLink(notification: NotificationLogData): string {
+  const base = "https://takween-parent.vercel.app/#";
+  const params = notification.targetParams ?? {};
+  const read = (key: string) => {
+    const value = params[key] ?? notification.data?.[key];
+    return typeof value === "string" ? value.trim() : "";
+  };
+
+  switch (notification.targetRoute) {
+    case "CHAT_CONVERSATION": {
+      const threadId = read("threadId");
+      return threadId ? `${base}/messages/${encodeURIComponent(threadId)}` : `${base}/messages`;
+    }
+    case "STUDENT_TRANSPORT": {
+      const studentId = read("studentId");
+      if (!studentId) return `${base}/notifications`;
+      const serviceDate = read("serviceDate");
+      const query = serviceDate
+        ? `?tab=transport&serviceDate=${encodeURIComponent(serviceDate)}`
+        : "?tab=transport";
+      return `${base}/students/${encodeURIComponent(studentId)}${query}`;
+    }
+    case "ANNOUNCEMENT":
+      return `${base}/announcements`;
+    case "VIRTUAL_CLASS_SESSION": {
+      const studentId = read("studentId");
+      return studentId ? `${base}/students/${encodeURIComponent(studentId)}` : `${base}/notifications`;
+    }
+    default:
+      return `${base}/notifications`;
+  }
 }
 
 async function resolveDeviceTokens(

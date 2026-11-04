@@ -130,6 +130,12 @@ type UrgentReplyCandidate = {
   signal?: UrgentSignalCandidate;
 };
 
+type ThreadMessageContext = {
+  thread: Thread;
+  urgentReplyCandidate?: UrgentReplyCandidate;
+  guardianPersonIds: string[];
+};
+
 function buildMessageSummary(message: Message): string {
   if (message.isDeleted) return "رسالة محذوفة";
 
@@ -313,6 +319,49 @@ async function closeUrgentRequestForResponsibleReply(input: {
   });
 }
 
+async function createGuardianMessageNotificationEvents(params: {
+  orgId: string;
+  threadId: string;
+  messageId: string;
+  sourcePath: string;
+  message: Message;
+  context: ThreadMessageContext;
+}) {
+  const db = getFirestore();
+  const studentId = readString(params.context.thread.studentId);
+
+  for (const personId of params.context.guardianPersonIds) {
+    const eventId = `chat-message__${params.messageId}__guardian__${personId}`;
+    const eventRef = db.doc(`orgs/${params.orgId}/notificationEvents/${eventId}`);
+    try {
+      await eventRef.create({
+        id: eventId,
+        orgId: params.orgId,
+        type: "CHAT_MESSAGE_CREATED",
+        sourceType: "CHAT_MESSAGE",
+        sourceId: params.messageId,
+        sourcePath: params.sourcePath,
+        actorUid: readString(params.message.senderUid),
+        actorPersonId: readString(params.message.senderPersonId),
+        targetPersonId: personId,
+        targetStudentId: studentId,
+        targetThreadId: params.threadId,
+        audienceKind: "DIRECT_RECIPIENTS",
+        audienceScopeType: "STUDENT",
+        audienceScopeId: studentId,
+        payload: { threadId: params.threadId },
+        status: "PENDING",
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      });
+    } catch (error) {
+      const code = (error as { code?: unknown }).code;
+      if (code === 6 || code === "already-exists") continue;
+      throw error;
+    }
+  }
+}
+
 export const onThreadMessageCreated = onDocumentCreated(
   {
     region: REGION,
@@ -335,7 +384,7 @@ export const onThreadMessageCreated = onDocumentCreated(
     const db = getFirestore();
     const threadRef = db.doc(`orgs/${orgId}/threads/${threadId}`);
 
-    const urgentReplyCandidate = await db.runTransaction(
+    const messageContext = await db.runTransaction(
       async (transaction) => {
         const threadSnap = await transaction.get(threadRef);
 
@@ -380,17 +429,44 @@ export const onThreadMessageCreated = onDocumentCreated(
           updatedAt: Date.now(),
         });
 
-        return buildUrgentReplyCandidate({
+        const senderParticipant = participants.find(
+          (participant) => participant.uid === senderUid,
+        );
+        const guardianPersonIds = senderParticipant?.kind === "STAFF"
+          ? [...new Set(participants
+              .filter((participant) =>
+                participant.kind === "GUARDIAN" &&
+                participant.uid !== senderUid &&
+                !!participant.personId,
+              )
+              .map((participant) => participant.personId))]
+          : [];
+
+        return {
           thread,
-          message,
-          messageId,
-        });
+          guardianPersonIds,
+          urgentReplyCandidate: buildUrgentReplyCandidate({
+            thread,
+            message,
+            messageId,
+          }),
+        } satisfies ThreadMessageContext;
       },
     );
 
-    if (!urgentReplyCandidate) {
-      return;
-    }
+    if (!messageContext) return;
+
+    await createGuardianMessageNotificationEvents({
+      orgId,
+      threadId,
+      messageId,
+      sourcePath: snap.ref.path,
+      message,
+      context: messageContext,
+    });
+
+    const urgentReplyCandidate = messageContext.urgentReplyCandidate;
+    if (!urgentReplyCandidate) return;
 
     try {
       await closeUrgentRequestForResponsibleReply({

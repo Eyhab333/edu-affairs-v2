@@ -110,10 +110,6 @@ class DeviceTokenService {
     final userData = userDoc.data();
 
     final personId = _readString(userData, 'personId');
-    final guardianId = personId.isEmpty
-        ? ''
-        : await _findGuardianIdByPersonId(personId);
-
     final platform = _resolvePlatform();
     final now = DateTime.now().millisecondsSinceEpoch;
 
@@ -129,7 +125,6 @@ class DeviceTokenService {
 
       'uid': user.uid,
       'personId': personId,
-      'guardianId': guardianId,
       'staffPersonId': '',
 
       'platform': platform,
@@ -157,23 +152,20 @@ class DeviceTokenService {
     debugPrint('FCM token saved: $tokenDocId');
   }
 
-  Future<String> _findGuardianIdByPersonId(String personId) async {
-    final guardiansSnap = await _firestore
-        .collection('orgs/$orgId/guardians')
-        .where('personId', isEqualTo: personId)
-        .limit(5)
-        .get();
+  /// Deactivates this installation only; historical token records are retained.
+  Future<void> deactivateCurrentDeviceToken() async {
+    final user = _auth.currentUser;
+    if (user == null) return;
 
-    for (final doc in guardiansSnap.docs) {
-      final data = doc.data();
-      final isArchived = data['isArchived'] == true;
+    final installId = await _getOrCreateInstallId();
+    final tokenDocId = '${user.uid}_mobile-parent_$installId';
+    final now = DateTime.now().millisecondsSinceEpoch;
 
-      if (!isArchived) {
-        return _readString(data, 'id', fallback: doc.id);
-      }
-    }
-
-    return '';
+    await _firestore.doc('orgs/$orgId/deviceTokens/$tokenDocId').set({
+      'isActive': false,
+      'disabledAt': now,
+      'updatedAt': now,
+    }, SetOptions(merge: true));
   }
 
   String _resolvePlatform() {

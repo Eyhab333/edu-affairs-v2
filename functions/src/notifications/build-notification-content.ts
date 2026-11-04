@@ -22,12 +22,14 @@ export function buildNotificationContent(
       targetParams: {
         sessionId: eventData.sourceId ?? "",
         classId: eventData.targetClassId ?? "",
+        studentId: eventData.targetStudentId ?? "",
       },
       data: {
         type: eventData.type,
         sourceType: eventData.sourceType ?? "",
         sourceId: eventData.sourceId ?? "",
         targetRoute: "VIRTUAL_CLASS_SESSION",
+        studentId: eventData.targetStudentId ?? "",
       },
       channels: ["IN_APP", "PUSH"],
     };

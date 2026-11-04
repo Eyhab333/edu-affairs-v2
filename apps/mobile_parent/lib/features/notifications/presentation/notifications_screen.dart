@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../shared/notifications/notification_route_resolver.dart';
 import '../../../shared/widgets/app_background.dart';
 import '../../../shared/widgets/app_content_container.dart';
 import '../../../shared/widgets/app_card.dart';
@@ -60,8 +63,8 @@ class NotificationsScreen extends StatelessWidget {
 
                   return _NotificationCard(
                     notification: notification,
-                    onMarkAsRead: () => service.markAsRead(notification.id),
-                    onOpen: () => _openNotification(context, notification),
+                    onOpen: () =>
+                        _openNotification(context, service, notification),
                   );
                 },
               );
@@ -74,41 +77,28 @@ class NotificationsScreen extends StatelessWidget {
 
   void _openNotification(
     BuildContext context,
+    ParentNotificationsService service,
     ParentNotification notification,
   ) {
-    if (notification.targetRoute == 'STUDENT_TRANSPORT') {
-      final studentId = _readString(notification.targetParams, 'studentId');
-      final serviceDate = _readString(
-        notification.targetParams,
-        'serviceDate',
-      );
-      if (studentId.isNotEmpty) {
-        final query = <String, String>{'tab': 'transport'};
-        if (serviceDate.isNotEmpty) query['serviceDate'] = serviceDate;
-        context.go(
-          '/students/${Uri.encodeComponent(studentId)}?${Uri(queryParameters: query).query}',
-        );
-        return;
-      }
+    if (!notification.isRead) {
+      unawaited(service.markAsRead(notification.id).catchError((_) {}));
     }
-
-  }
-
-  String _readString(Map<String, dynamic> data, String key) {
-    final value = data[key];
-    return value is String ? value.trim() : '';
+    context.go(
+      resolveParentNotificationPath(
+        targetRoute: notification.targetRoute,
+        targetParams: notification.targetParams,
+      ),
+    );
   }
 }
 
 class _NotificationCard extends StatelessWidget {
   const _NotificationCard({
     required this.notification,
-    required this.onMarkAsRead,
     required this.onOpen,
   });
 
   final ParentNotification notification;
-  final VoidCallback onMarkAsRead;
   final VoidCallback onOpen;
 
   @override
@@ -117,7 +107,6 @@ class _NotificationCard extends StatelessWidget {
 
     return AppCard(
       onTap: () {
-        if (!notification.isRead) onMarkAsRead();
         onOpen();
       },
       padding: const EdgeInsets.all(14),

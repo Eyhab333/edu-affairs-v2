@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../shared/notifications/notification_route_resolver.dart';
 
 class ForegroundNotificationService {
   ForegroundNotificationService._();
@@ -11,6 +16,7 @@ class ForegroundNotificationService {
 
   bool _started = false;
   GoRouter? _router;
+  final Set<String> _handledNotificationIds = <String>{};
 
   void start({required GoRouter router}) {
     if (_started) return;
@@ -37,26 +43,23 @@ class ForegroundNotificationService {
             duration: const Duration(seconds: 6),
             action: SnackBarAction(
               label: 'فتح',
-              onPressed: () => _openFromMessage(message),
+              onPressed: () => unawaited(_openFromMessage(message)),
             ),
           ),
         );
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      _openFromMessage(message);
+      unawaited(_openFromMessage(message));
     });
 
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message == null) return;
-
-      Future<void>.delayed(const Duration(milliseconds: 400), () {
-        _openFromMessage(message);
-      });
+      unawaited(_openFromMessage(message));
     });
   }
 
-  void _openFromMessage(RemoteMessage message) {
+  Future<void> _openFromMessage(RemoteMessage message) async {
     final router = _router;
 
     if (router == null) {
@@ -64,52 +67,21 @@ class ForegroundNotificationService {
       return;
     }
 
-    final path = _resolvePath(message.data);
+    final notificationId = message.data['notificationId']?.trim() ?? '';
+    if (notificationId.isNotEmpty && !_handledNotificationIds.add(notificationId)) {
+      return;
+    }
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      try {
+        await FirebaseAuth.instance.authStateChanges().first;
+      } catch (_) {
+        // The router will safely redirect unauthenticated users to login.
+      }
+    }
+
+    final path = resolveParentNotificationPath(data: message.data);
 
     router.go(path);
-  }
-
-  String _resolvePath(Map<String, dynamic> data) {
-    final targetRoute = _readString(data, 'targetRoute');
-
-    switch (targetRoute) {
-      case 'FINANCE':
-        return '/notifications';
-
-      case 'CHAT_CONVERSATION':
-        return '/messages';
-
-      case 'VIRTUAL_CLASS_SESSION':
-        return '/notifications';
-
-      case 'HOMEWORK_ASSIGNMENT':
-        return '/notifications';
-
-      case 'ANNOUNCEMENT':
-        return '/notifications';
-
-      case 'STUDENT_TRANSPORT':
-        final studentId = _readString(data, 'studentId');
-        final serviceDate = _readString(data, 'serviceDate');
-        if (studentId.isEmpty) return '/notifications';
-
-        final query = <String, String>{'tab': 'transport'};
-        if (serviceDate.isNotEmpty) query['serviceDate'] = serviceDate;
-        return '/students/${Uri.encodeComponent(studentId)}?${Uri(queryParameters: query).query}';
-
-      case 'NOTIFICATION_DETAILS':
-      default:
-        return '/notifications';
-    }
-  }
-
-  String _readString(Map<String, dynamic> data, String key) {
-    final value = data[key];
-
-    if (value is String && value.trim().isNotEmpty) {
-      return value.trim();
-    }
-
-    return '';
   }
 }

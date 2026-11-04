@@ -6,6 +6,7 @@ import '../../../app/theme_controller.dart';
 import '../../../shared/theme/app_tokens.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/app_content_container.dart';
+import '../../../services/device_token_service.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
@@ -29,6 +30,11 @@ class ServicesScreen extends StatelessWidget {
           ),
         ) ?? false;
     if (!confirmed) return;
+    try {
+      await DeviceTokenService().deactivateCurrentDeviceToken();
+    } catch (_) {
+      // Token cleanup must never prevent an explicit logout.
+    }
     await FirebaseAuth.instance.signOut();
     if (context.mounted) context.go('/login');
   }

@@ -12,13 +12,3 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage((payload) => {
-  const title = payload.notification?.title || "إشعار جديد";
-  const options = {
-    body: payload.notification?.body || "لديك تحديث جديد من المنصة.",
-    data: payload.data || {},
-  };
-
-  self.registration.showNotification(title, options);
-});

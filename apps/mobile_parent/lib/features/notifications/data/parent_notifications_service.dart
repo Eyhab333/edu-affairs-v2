@@ -26,7 +26,7 @@ class ParentNotificationsService {
       return;
     }
 
-    final guardianId = await _loadGuardianId();
+    final personId = await _loadCurrentPersonId();
 
     final streams = <Stream<QuerySnapshot<Map<String, dynamic>>>>[
       _firestore
@@ -36,11 +36,11 @@ class ParentNotificationsService {
           .snapshots(),
     ];
 
-    if (guardianId.isNotEmpty) {
+    if (personId.isNotEmpty) {
       streams.add(
         _firestore
             .collection('orgs/$orgId/notificationLogs')
-            .where('guardianId', isEqualTo: guardianId)
+            .where('recipientPersonId', isEqualTo: personId)
             .limit(50)
             .snapshots(),
       );
@@ -68,7 +68,7 @@ Stream<int> watchUnreadCount() {
     );
   }
 
-  Future<String> _loadGuardianId() async {
+  Future<String> _loadCurrentPersonId() async {
     try {
       final user = _auth.currentUser;
       if (user == null) return '';
@@ -79,22 +79,7 @@ Stream<int> watchUnreadCount() {
       final personId = _readString(userData, 'personId');
       if (personId.isEmpty) return '';
 
-      final guardiansSnap = await _firestore
-          .collection('orgs/$orgId/guardians')
-          .where('personId', isEqualTo: personId)
-          .limit(5)
-          .get();
-
-      for (final doc in guardiansSnap.docs) {
-        final data = doc.data();
-        final isArchived = data['isArchived'] == true;
-
-        if (!isArchived) {
-          return _readString(data, 'id', fallback: doc.id);
-        }
-      }
-
-      return '';
+      return personId;
     } catch (_) {
       return '';
     }
