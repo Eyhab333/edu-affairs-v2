@@ -348,6 +348,7 @@ function dedupeTargets(targets: CommunicationTarget[]) {
 export const getStudentCommunicationTargets = onCall(
   {
     region: REGION,
+    cors: true,
   },
   async (request): Promise<GetStudentCommunicationTargetsResult> => {
     const uid = request.auth?.uid;

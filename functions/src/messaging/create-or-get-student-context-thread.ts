@@ -125,6 +125,7 @@ async function findActiveEnrollment(params: {
 export const createOrGetStudentContextThread = onCall(
   {
     region: REGION,
+    cors: true,
   },
   async (request): Promise<CreateOrGetStudentContextThreadResult> => {
     const uid = request.auth?.uid;

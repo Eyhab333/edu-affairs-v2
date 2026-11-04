@@ -91,6 +91,7 @@ function readInput(data: unknown): CreateUrgentStudentRequestInput {
 export const createUrgentStudentRequest = onCall(
   {
     region: "me-central2",
+    cors: true,
     timeoutSeconds: 60,
     memory: "512MiB",
     secrets: [TEMPORAL_API_KEY],
