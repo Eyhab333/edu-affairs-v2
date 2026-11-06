@@ -508,10 +508,10 @@ export default function NewSubjectVirtualClassPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-muted p-3 text-xs leading-6 text-muted-foreground">
+            {/* <div className="rounded-2xl bg-muted p-3 text-xs leading-6 text-muted-foreground">
               في الخطوة التالية سننشئ المشاركين تلقائيًا لكل طلاب الفصل، لذلك
               سيظهر عدد الطلاب المستهدفين في القائمة بعد 15C.
-            </div>
+            </div> */}
           </aside>
         </div>
 

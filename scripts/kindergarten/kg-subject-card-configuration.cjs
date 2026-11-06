@@ -5,9 +5,9 @@
  *
  * The staff card deliberately hides NOTES, CURRICULUM_PLAN, and RESOURCES.
  * Keeping the same complete module set as primary subjects therefore exposes
- * exactly these six operations on KG cards:
+ * exactly these seven operations on KG cards:
  * measurement, learning loss, lesson prep, question bank, homework, and
- * gamification.
+ * gamification, and virtual classes.
  */
 
 const KG_SUBJECT_CARD_MODULE_KEYS = Object.freeze([
@@ -19,6 +19,7 @@ const KG_SUBJECT_CARD_MODULE_KEYS = Object.freeze([
   "CURRICULUM_PLAN",
   "RESOURCES",
   "GAMIFICATION",
+  "VIRTUAL_CLASSES",
   "NOTES",
 ]);
 

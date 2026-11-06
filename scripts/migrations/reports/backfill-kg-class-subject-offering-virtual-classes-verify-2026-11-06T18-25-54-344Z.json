@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "generatedAt": "2026-11-06T18:25:54.344Z",
+    "mode": "VERIFY",
+    "orgId": "takween",
+    "firestoreWritesPerformed": false,
+    "writeCollection": "orgs/takween/classSubjectOfferings",
+    "fieldsWritten": [
+      "enabledModuleKeys"
+    ],
+    "reportPath": "C:\\dev\\edu-affairs-v2\\scripts\\migrations\\reports\\backfill-kg-class-subject-offering-virtual-classes-verify-2026-11-06T18-25-54-344Z.json",
+    "verificationPassed": true
+  },
+  "selectionCriteria": {
+    "schoolCollection": "orgs/takween/schools",
+    "schoolOrgId": "takween",
+    "schoolType": "KG",
+    "offeringOrgId": "takween",
+    "offeringStatus": "ACTIVE",
+    "offeringMustNotBeArchived": true,
+    "offeringSubjectMustNotBe": [
+      "CLASS",
+      "HOMEROOM"
+    ]
+  },
+  "summary": {
+    "kgSchools": 4,
+    "offeringDocumentsInspected": 938,
+    "eligibleKgOfferings": 208,
+    "alreadyEnabled": 208,
+    "requiringUpdate": 0,
+    "excludedHomeroom": 10,
+    "malformedModuleArrays": 0
+  },
+  "kgSchoolIds": [
+    "kg-01",
+    "kg-02",
+    "kg-03",
+    "kg-04"
+  ],
+  "perSchool": {
+    "kg-01": {
+      "eligible": 67,
+      "alreadyEnabled": 67,
+      "requiringUpdate": 0,
+      "excludedHomeroom": 7,
+      "malformedModuleArrays": 0
+    },
+    "kg-02": {
+      "eligible": 48,
+      "alreadyEnabled": 48,
+      "requiringUpdate": 0,
+      "excludedHomeroom": 0,
+      "malformedModuleArrays": 0
+    },
+    "kg-03": {
+      "eligible": 48,
+      "alreadyEnabled": 48,
+      "requiringUpdate": 0,
+      "excludedHomeroom": 0,
+      "malformedModuleArrays": 0
+    },
+    "kg-04": {
+      "eligible": 45,
+      "alreadyEnabled": 45,
+      "requiringUpdate": 0,
+      "excludedHomeroom": 3,
+      "malformedModuleArrays": 0
+    }
+  },
+  "offeringIdsRequiringUpdate": [],
+  "sampleUpdates": [],
+  "malformedModuleArrays": []
+}

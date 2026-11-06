@@ -30,6 +30,7 @@ const VISIBLE_CARD_OPERATIONS = [
   "QUESTION_BANK",
   "HOMEWORK",
   "GAMIFICATION",
+  "VIRTUAL_CLASSES",
 ];
 
 async function main() {

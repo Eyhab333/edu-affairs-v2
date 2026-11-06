@@ -13,6 +13,7 @@ import {
   MessageSquareText,
   Sparkles,
   Target,
+  Video,
 } from "lucide-react";
 
 import {
@@ -175,6 +176,8 @@ function getWorkspaceActionLabel(operationKey: string) {
       return "ملاحظات";
     case "GAMIFICATION":
       return "تحفيز";
+    case "VIRTUAL_CLASSES":
+      return "حصص افتراضية";
     case "HOMEWORK":
       return "واجبات";
     case "LESSON_PREP":
@@ -194,6 +197,7 @@ function buildSubjectOperationHref(params: {
   classInfo: StaffVisibleClass;
   offeringId: string;
   subjectKey: string;
+  subjectTitle?: string;
   teacherAssignmentId?: string;
   operationKey: string;
   currentTerm?: StaffActorCurrentTerm | null;
@@ -279,6 +283,44 @@ function buildSubjectOperationHref(params: {
     )}/${modulePath}${queryString ? `?${queryString}` : ""}`;
   };
 
+  const buildVirtualClassesHref = () => {
+    const query = new URLSearchParams();
+
+    if (params.classInfo.schoolId) {
+      query.set("schoolId", params.classInfo.schoolId);
+    }
+
+    if (params.classInfo.academicYearId) {
+      query.set("academicYearId", params.classInfo.academicYearId);
+    }
+
+    if (params.classInfo.gradeId) {
+      query.set("gradeId", params.classInfo.gradeId);
+    }
+
+    if (params.classInfo.streamId) {
+      query.set("streamId", params.classInfo.streamId);
+    }
+
+    if (params.currentTerm?.id) {
+      query.set("termId", params.currentTerm.id);
+      query.set("termTitle", params.currentTerm.title || "");
+      query.set("termShortTitle", params.currentTerm.shortTitle || "");
+    }
+
+    query.set("subjectKey", normalizedSubjectKey);
+    query.set("subjectTitle", params.subjectTitle || "");
+    query.set("classSubjectOfferingId", params.offeringId);
+
+    const queryString = query.toString();
+
+    return `/staff/classes/${encodeURIComponent(
+      params.classInfo.id,
+    )}/subjects/${encodeURIComponent(
+      params.offeringId,
+    )}/virtual-classes${queryString ? `?${queryString}` : ""}`;
+  };
+
   switch (params.operationKey) {
     case "STUDENT_MEASUREMENTS":
       return buildNewMeasurementBatchHref(params.classInfo, subjectContext);
@@ -297,6 +339,9 @@ function buildSubjectOperationHref(params: {
 
     case "GAMIFICATION":
       return buildSubjectModuleHref("gamification");
+
+    case "VIRTUAL_CLASSES":
+      return buildVirtualClassesHref();
 
     default:
       return "";
@@ -320,6 +365,9 @@ function getSubjectOperationIcon(operationKey: string) {
 
     case "GAMIFICATION":
       return Sparkles;
+
+    case "VIRTUAL_CLASSES":
+      return Video;
 
     case "NOTES":
       return MessageSquareText;
@@ -530,6 +578,7 @@ function ClassSubjectWorkspaceCard({
               classInfo,
               offeringId: workspace.offeringId,
               subjectKey: workspace.subjectKey,
+              subjectTitle: workspace.displayName || workspace.subjectTitle,
               teacherAssignmentId: workspace.teacherAssignmentIds?.[0],
               operationKey: operation.operationKey,
               currentTerm,

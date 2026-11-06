@@ -37,6 +37,8 @@ class DeviceTokenService {
       await saveCurrentDeviceToken();
     });
 
+    // The notification backend still sends to FCM registration tokens, not FIDs.
+    // ignore: deprecated_member_use
     _messaging.onTokenRefresh
         .listen((token) async {
           await _saveToken(token);
@@ -58,6 +60,8 @@ class DeviceTokenService {
         return;
       }
 
+      // Keep the token contract until the backend migrates to FID registration.
+      // ignore: deprecated_member_use
       final token = await _messaging.getToken(
         vapidKey: kIsWeb ? webVapidKey : null,
       );
