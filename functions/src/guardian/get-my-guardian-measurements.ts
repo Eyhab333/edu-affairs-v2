@@ -1,4 +1,5 @@
 import { onCall } from "firebase-functions/v2/https";
+import { logger } from "firebase-functions";
 
 import { assertGuardianStudentAccess } from "./guardian-student-access";
 
@@ -33,16 +34,25 @@ function readRows(data: FirestoreData): FirestoreData[] {
 export const getMyGuardianMeasurements = onCall(
   { region: REGION, cors: true },
   async (request) => {
+    const startedAt = Date.now();
     const context = await assertGuardianStudentAccess(
       request.auth?.uid,
       request.data?.studentId,
     );
 
+    const authorizedAt = Date.now();
     const snapshot = await context.db
       .collection(`orgs/${context.orgId}/studentMeasurementBatches`)
       .where("targetStudentIds", "array-contains", context.studentId)
+      .select(
+        "status", "studentRows", "measuredAt", "submittedAt", "reviewedAt",
+        "lockedAt", "updatedAt", "createdAt", "templateTitle", "assessmentKind",
+        "trackerKind", "batchKind", "subjectKey", "assessmentSlot",
+        "isCompensationBatch",
+      )
       .get();
 
+    const queriedAt = Date.now();
     const measurements = snapshot.docs.flatMap((document) => {
       const batch = document.data() as FirestoreData;
       const batchStatus = readString(batch, "status");
@@ -94,6 +104,16 @@ export const getMyGuardianMeasurements = onCall(
 
     measurements.sort((first, second) => (second.date ?? 0) - (first.date ?? 0));
 
+    if (Math.random() < 0.05) {
+      const finishedAt = Date.now();
+      logger.info("guardian_callable_performance", {
+        operation: "measurements",
+        authorizationMs: authorizedAt - startedAt,
+        queryMs: queriedAt - authorizedAt,
+        processingMs: finishedAt - queriedAt,
+        totalMs: finishedAt - startedAt,
+      });
+    }
     return { ok: true, measurements };
   },
 );

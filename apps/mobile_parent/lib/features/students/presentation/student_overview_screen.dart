@@ -15,6 +15,7 @@ import '../../gamification/data/student_gamification_service.dart';
 import '../../guardian/data/guardian_children_service.dart';
 import '../../guardian/models/parent_student_summary.dart';
 import '../../learning_loss/presentation/student_learning_loss_tab.dart';
+import '../../measurements/data/student_measurements_service.dart';
 import '../../measurements/presentation/student_measurements_tab.dart';
 import '../../transport/presentation/student_transport_tab.dart';
 import '../../virtual_classes/data/student_virtual_classes_service.dart';
@@ -61,6 +62,8 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
   }
 
   void _reload() {
+    StudentMeasurementsService.clearCache();
+    StudentVirtualClassesService.clearCache();
     setState(() {
       _future = _loadStudent();
     });
@@ -503,13 +506,24 @@ class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
   }
 
   @override
+  void didUpdateWidget(covariant StudentVirtualClassesTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.student.studentId != widget.student.studentId ||
+        oldWidget.student.schoolId != widget.student.schoolId ||
+        oldWidget.student.academicYearId != widget.student.academicYearId ||
+        oldWidget.student.classId != widget.student.classId) {
+      _future = _loadVirtualClasses();
+    }
+  }
+
+  @override
   void dispose() {
     _timeRefreshTimer?.cancel();
     super.dispose();
   }
 
   Future<void> _reload() async {
-    final nextFuture = _loadVirtualClasses();
+    final nextFuture = _loadVirtualClasses(forceRefresh: true);
     setState(() {
       _future = nextFuture;
     });
@@ -521,14 +535,17 @@ class _StudentVirtualClassesTabState extends State<StudentVirtualClassesTab> {
     }
   }
 
-  Future<List<_VirtualClassBundle>> _loadVirtualClasses() async {
+  Future<List<_VirtualClassBundle>> _loadVirtualClasses({bool forceRefresh = false}) async {
     final studentId = widget.student.studentId;
 
     if (studentId.isEmpty) {
       return [];
     }
 
-    final rawClasses = await _virtualClassesService.loadStudentVirtualClasses(studentId: studentId);
+    final rawClasses = await _virtualClassesService.loadStudentVirtualClasses(
+      studentId: studentId,
+      forceRefresh: forceRefresh,
+    );
     final bundles = rawClasses.map(_VirtualClassBundle.fromMap).where((bundle) =>
       !bundle.session.isArchived &&
       (bundle.session.schoolId.isEmpty || bundle.session.schoolId == widget.student.schoolId) &&

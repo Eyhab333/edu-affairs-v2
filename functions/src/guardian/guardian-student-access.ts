@@ -60,33 +60,48 @@ export async function assertGuardianStudentAccess(
   const guardianSnapshot = await db.collectionGroup("guardians").where("personId", "==", personId).get();
   const now = Date.now();
 
-  for (const guardianDocument of guardianSnapshot.docs) {
+  const eligibleGuardians = guardianSnapshot.docs.flatMap((guardianDocument) => {
     const orgId = resolveOrgId(guardianDocument.ref);
     const guardian = guardianDocument.data() as FirestoreData;
-    if (!orgId || guardian.isArchived === true) continue;
+    if (!orgId || guardian.isArchived === true) return [];
     const declaredOrgId = readString(guardian, "orgId");
-    if (declaredOrgId && declaredOrgId !== orgId) continue;
+    if (declaredOrgId && declaredOrgId !== orgId) return [];
 
     const linkedUids = ["uid", "authUid", "userUid"]
       .map((key) => readString(guardian, key))
       .filter(Boolean);
-    if (linkedUids.length > 0 && !linkedUids.includes(uid)) continue;
+    if (linkedUids.length > 0 && !linkedUids.includes(uid)) return [];
 
-    const links = await db
-      .collection(`orgs/${orgId}/guardianLinks`)
-      .where("guardianId", "==", guardianDocument.id)
-      .get();
+    return [{ orgId, guardianId: guardianDocument.id }];
+  });
 
-    if (links.docs.some((link) => {
-      const data = link.data() as FirestoreData;
-      const linkOrgId = readString(data, "orgId");
-      const linkUid = readString(data, "guardianUid");
-      return readString(data, "studentId") === studentId &&
-        (!linkOrgId || linkOrgId === orgId) &&
-        (!linkUid || linkUid === uid) &&
-        isActiveLink(data, now);
-    })) {
-      return { db, uid, personId, orgId, guardianId: guardianDocument.id, studentId };
+  // Bound concurrency while preserving the original guardian selection order.
+  for (let index = 0; index < eligibleGuardians.length; index += 4) {
+    const group = eligibleGuardians.slice(index, index + 4);
+    const results = group.map(({ orgId, guardianId }) =>
+      db.collection(`orgs/${orgId}/guardianLinks`)
+        .where("guardianId", "==", guardianId)
+        .get()
+        .then(
+          (snapshot) => ({ ok: true as const, snapshot }),
+          (error: unknown) => ({ ok: false as const, error }),
+        ),
+    );
+    for (let offset = 0; offset < group.length; offset++) {
+      const result = await results[offset];
+      if (!result.ok) throw result.error;
+      const { orgId, guardianId } = group[offset];
+      if (result.snapshot.docs.some((link) => {
+        const data = link.data() as FirestoreData;
+        const linkOrgId = readString(data, "orgId");
+        const linkUid = readString(data, "guardianUid");
+        return readString(data, "studentId") === studentId &&
+          (!linkOrgId || linkOrgId === orgId) &&
+          (!linkUid || linkUid === uid) &&
+          isActiveLink(data, now);
+      })) {
+        return { db, uid, personId, orgId, guardianId, studentId };
+      }
     }
   }
 

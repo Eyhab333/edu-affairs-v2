@@ -1,4 +1,5 @@
 import { onCall } from "firebase-functions/v2/https";
+import { logger } from "firebase-functions";
 
 import { assertGuardianStudentAccess } from "./guardian-student-access";
 
@@ -7,16 +8,19 @@ const REGION = "me-central2";
 export const getMyGuardianVirtualClasses = onCall(
   { region: REGION, cors: true },
   async (request) => {
+    const startedAt = Date.now();
     const context = await assertGuardianStudentAccess(
       request.auth?.uid,
       request.data?.studentId,
     );
 
+    const authorizedAt = Date.now();
     const participants = await context.db
       .collection(`orgs/${context.orgId}/virtualClassParticipants`)
       .where("studentId", "==", context.studentId)
       .get();
 
+    const participantsQueriedAt = Date.now();
     const participantRows = participants.docs
       .map((document) => ({
         id: document.id,
@@ -28,17 +32,20 @@ export const getMyGuardianVirtualClasses = onCall(
           row.data.sessionId.trim(),
       );
 
-    const sessionRefs = participantRows.map((row) =>
+    const sessionIds = [...new Set(participantRows.map((row) => String(row.data.sessionId)))];
+    const sessionRefs = sessionIds.map((sessionId) =>
       context.db.doc(
-        `orgs/${context.orgId}/virtualClassSessions/${row.data.sessionId}`,
+        `orgs/${context.orgId}/virtualClassSessions/${sessionId}`,
       ),
     );
 
+    const sessionQueryStartedAt = Date.now();
     const sessions =
       sessionRefs.length > 0
         ? await context.db.getAll(...sessionRefs)
         : [];
 
+    const sessionsQueriedAt = Date.now();
     const sessionById = new Map(
       sessions
         .filter((session) => session.exists)
@@ -73,6 +80,16 @@ export const getMyGuardianVirtualClasses = onCall(
         Number(first.startsAt ?? 0) - Number(second.startsAt ?? 0),
     );
 
+    if (Math.random() < 0.05) {
+      const finishedAt = Date.now();
+      logger.info("guardian_callable_performance", {
+        operation: "virtual_classes",
+        authorizationMs: authorizedAt - startedAt,
+        queryMs: participantsQueriedAt - authorizedAt + sessionsQueriedAt - sessionQueryStartedAt,
+        processingMs: sessionQueryStartedAt - participantsQueriedAt + finishedAt - sessionsQueriedAt,
+        totalMs: finishedAt - startedAt,
+      });
+    }
     return {
       ok: true,
       classes,

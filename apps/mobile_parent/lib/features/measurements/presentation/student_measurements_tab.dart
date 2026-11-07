@@ -36,12 +36,25 @@ class _StudentMeasurementsTabState extends State<StudentMeasurementsTab> {
     _future = _load();
   }
 
-  Future<List<StudentMeasurementItem>> _load() {
-    return _service.loadStudentMeasurements(studentId: widget.studentId);
+  @override
+  void didUpdateWidget(covariant StudentMeasurementsTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.studentId != widget.studentId) {
+      _selectedSubject = _allSubjects;
+      _selectedMode = _MeasurementMode.all;
+      _future = _load();
+    }
+  }
+
+  Future<List<StudentMeasurementItem>> _load({bool forceRefresh = false}) {
+    return _service.loadStudentMeasurements(
+      studentId: widget.studentId,
+      forceRefresh: forceRefresh,
+    );
   }
 
   Future<void> _reload() async {
-    final nextFuture = _load();
+    final nextFuture = _load(forceRefresh: true);
     setState(() {
       _future = nextFuture;
     });
