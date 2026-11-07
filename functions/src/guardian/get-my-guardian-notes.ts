@@ -11,7 +11,7 @@ function guardianVisible(data: FirebaseFirestore.DocumentData): boolean {
     data.visibleToGuardian === true;
 }
 
-export const getMyGuardianNotes = onCall({ region: REGION }, async (request) => {
+export const getMyGuardianNotes = onCall({ region: REGION, memory: "1GiB", minInstances: 1 }, async (request) => {
   const context = await assertGuardianStudentAccess(request.auth?.uid, request.data?.studentId);
   const snapshot = await context.db
     .collection(`orgs/${context.orgId}/studentNotes`)

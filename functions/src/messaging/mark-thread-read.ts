@@ -35,6 +35,8 @@ export const markThreadRead = onCall(
   {
     region: REGION,
     cors: true,
+    memory: "1GiB",
+    minInstances: 1,
   },
   async (request): Promise<MarkThreadReadResult> => {
     const uid = request.auth?.uid;

@@ -365,6 +365,8 @@ async function createGuardianMessageNotificationEvents(params: {
 export const onThreadMessageCreated = onDocumentCreated(
   {
     region: REGION,
+    memory: "512MiB",
+    minInstances: 0,
     document: "orgs/{orgId}/threads/{threadId}/messages/{messageId}",
   },
   async (event) => {

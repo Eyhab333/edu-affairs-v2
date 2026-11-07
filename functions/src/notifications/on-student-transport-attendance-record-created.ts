@@ -14,6 +14,8 @@ const FINAL_BATCH_STATUSES = new Set(["SUBMITTED", "REVIEWED", "LOCKED"]);
 export const onStudentTransportAttendanceRecordCreated = onDocumentCreated(
   {
     region: REGION,
+    memory: "512MiB",
+    minInstances: 0,
     document: "orgs/{orgId}/studentTransportAttendanceRecords/{recordId}",
   },
   async (event) => {

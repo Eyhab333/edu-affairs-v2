@@ -93,7 +93,8 @@ export const createUrgentStudentRequest = onCall(
     region: "me-central2",
     cors: true,
     timeoutSeconds: 60,
-    memory: "512MiB",
+    memory: "1GiB",
+    minInstances: 1,
     secrets: [TEMPORAL_API_KEY],
   },
   async (request) => {

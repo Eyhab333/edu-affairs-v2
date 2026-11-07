@@ -19,6 +19,8 @@ const REGION = "me-central2";
 export const onNotificationEventCreated = onDocumentCreated(
   {
     region: REGION,
+    memory: "512MiB",
+    minInstances: 0,
     document: "orgs/{orgId}/notificationEvents/{eventId}",
   },
   async (event) => {

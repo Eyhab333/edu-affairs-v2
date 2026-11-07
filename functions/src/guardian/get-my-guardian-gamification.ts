@@ -12,7 +12,7 @@ const GUARDIAN_VISIBLE_EVENT_VISIBILITIES = new Set([
 ]);
 
 export const getMyGuardianGamification = onCall(
-  { region: REGION, cors: true },
+  { region: REGION, cors: true, memory: "1GiB", minInstances: 1 },
   async (request) => {
     const context = await assertGuardianStudentAccess(
       request.auth?.uid,

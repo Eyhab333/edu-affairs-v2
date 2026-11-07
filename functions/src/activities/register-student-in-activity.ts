@@ -287,6 +287,8 @@ async function loadStudentDisplayName(params: {
 export const registerStudentInActivity = onCall(
   {
     region: REGION,
+    memory: "1GiB",
+    minInstances: 1,
   },
   async (request) => {
     const uid = request.auth?.uid;
