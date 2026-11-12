@@ -3,5 +3,5 @@
     <color name="launch_background">#F8FAFC</color>
     <color name="normal_background">#F8FAFC</color>
     <color name="system_bar_background">#F8FAFC</color>
-    <color name="ic_launcher_background">#050816</color>
+    <color name="ic_launcher_background">#F6FAFD</color>
 </resources>
