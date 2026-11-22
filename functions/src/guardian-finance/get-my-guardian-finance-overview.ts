@@ -635,7 +635,7 @@ export const getMyGuardianFinanceOverview =
       cors: true,
       invoker: "public",
       memory: "1GiB",
-      minInstances: 1,
+      minInstances: 0,
     },
     async (request) => {
       if (!request.auth?.uid) {

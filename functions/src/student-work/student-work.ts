@@ -561,10 +561,11 @@ function drillDownItem(params: { collectionName: string; data: Row; personNames:
   }
   if (collectionName === "studentHomeworkSubmissions") {
     const at = activityAt(data, ["gradedAt", "submittedAt", "updatedAt", "createdAt"]);
+    const released = data.status === "GRADED";
     return { key: "homework", item: {
       id: text(data.id), title: recordTitle(data, "واجب"), status: text(data.status), activityAt: at,
-      summary: [readString(data, ["subjectKey"]), formatScore(data), data.isLate === true ? "متأخر" : "", formatDate(at)].filter(Boolean),
-      details: fields(field("المادة", readString(data, ["subjectKey"])), field("تاريخ الاستحقاق", formatDate(data.homeworkDueAt)), field("تاريخ البدء", formatDate(data.startedAt)), field("تاريخ التسليم", formatDate(data.submittedAt)), field("تاريخ التصحيح", formatDate(data.gradedAt)), field("الحالة", text(data.status)), field("النتيجة", formatScore(data)), field("النسبة", formatPercentage(data)), field("تسليم متأخر", yesNo(data.isLate)), field("ملاحظات المصحح", readString(data, ["feedback"])), field("ملاحظة", readString(data, ["note"]))),
+      summary: [readString(data, ["subjectKey"]), released ? formatScore(data) : "", data.isLate === true ? "متأخر" : "", formatDate(at)].filter(Boolean),
+      details: fields(field("المادة", readString(data, ["subjectKey"])), field("تاريخ الاستحقاق", formatDate(data.homeworkDueAt)), field("تاريخ البدء", formatDate(data.startedAt)), field("تاريخ التسليم", formatDate(data.submittedAt)), field("تاريخ التصحيح", released ? formatDate(data.gradedAt) : ""), field("الحالة", text(data.status)), field("النتيجة", released ? formatScore(data) : ""), field("النسبة", released ? formatPercentage(data) : ""), field("تسليم متأخر", yesNo(data.isLate)), field("ملاحظات المصحح", released ? readString(data, ["feedback"]) : ""), field("ملاحظة", released ? readString(data, ["note"]) : "")),
     }};
   }
   if (collectionName === "studentGamificationEvents") {

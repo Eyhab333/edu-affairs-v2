@@ -410,6 +410,8 @@ function ownsNotificationLog(orgId, notificationData) {
      */
 
     match /orgs/{orgId} {
+      // Preserve the pre-existing administrator fallback for the organization document itself.
+      allow read, write: if canManageOrg(orgId);
       allow get: if hasOrgMembership(orgId);
       allow list: if false;
 
@@ -833,15 +835,7 @@ match /studentTrackerTemplates/{templateId} {
  */
 
 match /questionBankItems/{questionId} {
-  allow get, list: if hasOrgMembership(orgId);
-
-  allow create: if hasOrgMembership(orgId)
-    && request.resource.data.orgId == orgId;
-
-  allow update: if hasOrgMembership(orgId)
-    && request.resource.data.orgId == orgId;
-
-  allow delete: if false;
+  allow read, write: if false;
 }
 
 
@@ -849,30 +843,14 @@ match /questionBankItems/{questionId} {
 
 
 match /studentHomeworkAssignments/{homeworkId} {
-  allow get, list: if hasOrgMembership(orgId);
-
-  allow create: if hasOrgMembership(orgId)
-    && request.resource.data.orgId == orgId;
-
-  allow update: if hasOrgMembership(orgId)
-    && request.resource.data.orgId == orgId;
-
-  allow delete: if false;
+  allow read, write: if false;
 }
 
 
 
 
 match /studentHomeworkSubmissions/{submissionId} {
-  allow get, list: if hasOrgMembership(orgId);
-
-  allow create: if hasOrgMembership(orgId)
-    && request.resource.data.orgId == orgId;
-
-  allow update: if hasOrgMembership(orgId)
-    && request.resource.data.orgId == orgId;
-
-  allow delete: if false;
+  allow read, write: if false;
 }
 
 
@@ -912,55 +890,7 @@ match /subjectLessonPreps/{lessonPrepId} {
 
 
 match /studentHomeworkSubmissions/{submissionId} {
-  allow get, list: if canManageOrg(orgId)
-    || hasAssignedClassSubjectAccess(
-      orgId,
-      resource.data
-    );
-
-  /*
-   * عند نشر الواجب، المعلم ينشئ تسليمًا أوليًا لكل طالب.
-   */
-  allow create: if canManageOrg(orgId)
-    || (
-      request.resource.data.orgId == orgId
-      && hasAssignedClassSubjectAccess(
-        orgId,
-        request.resource.data
-      )
-      && request.resource.data.status == "NOT_STARTED"
-      && request.resource.data.answers.size() == 0
-      && request.resource.data.score == 0
-      && request.resource.data.gradedByPersonId == ""
-    );
-
-  allow update: if canManageOrg(orgId)
-    || (
-      hasAssignedClassSubjectAccess(
-        orgId,
-        resource.data
-      )
-      && request.resource.data.orgId
-        == resource.data.orgId
-      && request.resource.data.schoolId
-        == resource.data.schoolId
-      && request.resource.data.academicYearId
-        == resource.data.academicYearId
-      && request.resource.data.termId
-        == resource.data.termId
-      && request.resource.data.homeworkId
-        == resource.data.homeworkId
-      && request.resource.data.studentId
-        == resource.data.studentId
-      && request.resource.data.classId
-        == resource.data.classId
-      && request.resource.data.subjectKey
-        == resource.data.subjectKey
-      && request.resource.data.classSubjectOfferingId
-        == resource.data.classSubjectOfferingId
-    );
-
-  allow delete: if false;
+  allow read, write: if false;
 }
 
 
@@ -1808,8 +1738,8 @@ match /studentTransportAttendanceRecords/{recordId} {
        * ==========================================================
        */
 
-      match /{orgSubPath=**} {
-        allow read, write: if canManageOrg(orgId);
+      match /{orgCollection}/{orgSubPath=**} {
+        allow read, write: if !(orgCollection in ["questionBankItems", "studentHomeworkAssignments", "studentHomeworkSubmissions"]) && canManageOrg(orgId);
       }
     }
   }

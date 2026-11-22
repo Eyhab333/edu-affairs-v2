@@ -105,6 +105,9 @@ export { getMyGuardianNotes } from "./guardian/get-my-guardian-notes";
 export { getMyGuardianTransport } from "./guardian/get-my-guardian-transport";
 export { getMyGuardianVirtualClasses } from "./guardian/get-my-guardian-virtual-classes";
 export { markMyGuardianVirtualClassJoin } from "./guardian/mark-my-guardian-virtual-class-join";
+export { getMyGuardianHomeworks, getMyGuardianHomeworkDetails, saveMyGuardianHomeworkDraft, submitMyGuardianHomework } from "./guardian/guardian-homework";
+export { gradeStudentHomework } from "./guardian/grade-student-homework";
+export { staffHomework } from "./guardian/staff-homework";
 export {
   archiveStaffPortfolioItem,
   beginStaffPortfolioItem,

@@ -14,6 +14,7 @@ import '../../attendance/presentation/student_attendance_tab.dart';
 import '../../gamification/data/student_gamification_service.dart';
 import '../../guardian/data/guardian_children_service.dart';
 import '../../guardian/models/parent_student_summary.dart';
+import '../../homework/presentation/guardian_homework_tab.dart';
 import '../../learning_loss/presentation/student_learning_loss_tab.dart';
 import '../../measurements/data/student_measurements_service.dart';
 import '../../measurements/presentation/student_measurements_tab.dart';
@@ -72,9 +73,9 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
   int get _initialTabIndex {
     switch (widget.initialTab) {
       case 'transport':
-        return 4;
+        return 5;
       case 'learning-loss':
-        return 2;
+        return 3;
       default:
         return 0;
     }
@@ -146,7 +147,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
     }
 
     return DefaultTabController(
-      length: 6,
+      length: 7,
       initialIndex: _initialTabIndex,
       child: Column(
         children: [
@@ -163,6 +164,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
             isScrollable: true,
             tabs: [
               Tab(text: 'الحصص الافتراضية'),
+              Tab(text: 'الواجبات'),
               Tab(text: 'القياسات'),
               Tab(text: 'الفاقد التعليمي'),
               Tab(text: 'الحضور'),
@@ -174,6 +176,7 @@ class _StudentOverviewScreenState extends State<StudentOverviewScreen> {
             child: TabBarView(
               children: [
                 StudentVirtualClassesTab(student: student),
+                GuardianHomeworkTab(studentId: student.studentId),
                 StudentMeasurementsTab(studentId: student.studentId),
                 StudentLearningLossTab(studentId: student.studentId),
                 StudentAttendanceTab(studentId: student.studentId),

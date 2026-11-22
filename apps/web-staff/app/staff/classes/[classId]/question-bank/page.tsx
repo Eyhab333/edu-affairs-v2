@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   AlertCircle,
   ArrowRight,
@@ -14,7 +14,6 @@ import {
   Plus,
   RefreshCw,
 } from "lucide-react";
-import { collection, getDocs, query, where } from "firebase/firestore";
 
 import {
   QuestionBankItemSchema,
@@ -22,7 +21,7 @@ import {
 } from "@takween/contracts";
 import { filterQuestionBankForSubjectContext } from "@takween/domain";
 
-import { db } from "@/lib/firebase";
+import { staffHomework, staffHomeworkItems } from "@/lib/staff-homework";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
@@ -167,6 +166,8 @@ export default function StaffClassQuestionBankPage() {
   const params = useParams<{ classId: string }>();
   const searchParams = useSearchParams();
   const { actor } = useStaffActor();
+  const [scopeError, setScopeError] = useState("");
+  const [scoping, setScoping] = useState<string | null>(null);
 
   const classId = String(params.classId || "");
 
@@ -216,21 +217,11 @@ export default function StaffClassQuestionBankPage() {
   const loadQuestionBankItems = useCallback(async (): Promise<
     QuestionBankItem[]
   > => {
-    if (!actor?.orgId || !subjectKey) return [];
+    if (!actor?.orgId || !subjectKey || !currentTerm?.id || !classSubjectOfferingId) return [];
 
-    const ref = collection(db, "orgs", actor.orgId, "questionBankItems");
-
-    const snap = await getDocs(
-      query(ref, where("subjectKey", "==", subjectKey)),
-    );
-
-    return snap.docs.map((docSnap) => {
-      return QuestionBankItemSchema.parse({
-        id: docSnap.id,
-        ...docSnap.data(),
-      });
-    });
-  }, [actor?.orgId, subjectKey]);
+    const result = await staffHomeworkItems({ action: "listQuestions", orgId: actor.orgId, offeringId: classSubjectOfferingId, termId: currentTerm.id });
+    return result.map((item) => QuestionBankItemSchema.parse(item));
+  }, [actor?.orgId, subjectKey, classSubjectOfferingId, currentTerm?.id]);
 
   const {
     data: rawItems,
@@ -240,7 +231,7 @@ export default function StaffClassQuestionBankPage() {
   } = useDocumentLoader<QuestionBankItem[]>({
     enabled: Boolean(actor?.orgId && subjectKey),
     loader: loadQuestionBankItems,
-    deps: [actor?.orgId, subjectKey],
+    deps: [actor?.orgId, subjectKey, classSubjectOfferingId, currentTerm?.id],
   });
 
   const filteredItems = useMemo(() => {
@@ -270,6 +261,20 @@ export default function StaffClassQuestionBankPage() {
     subjectKey,
     classSubjectOfferingId,
   ]);
+
+  const legacyItems = (rawItems ?? []).filter((item) => !item.schoolId || !item.academicYearId || !item.classSubjectOfferingId);
+  const isAdmin = actor?.roles?.some((role) => ["platform_owner", "platform_admin", "org_owner", "org_admin"].includes(role)) ?? false;
+
+  async function scopeLegacy(questionId: string, termId: string) {
+    if (!actor?.orgId || !window.confirm("ربط السؤال بسياق هذه المادة والفصل؟")) return;
+    setScoping(questionId); setScopeError("");
+    try {
+      await staffHomework({ action: "scopeLegacyQuestion", orgId: actor.orgId, offeringId: classSubjectOfferingId, termId, questionId });
+      await reload();
+    } catch (error) {
+      setScopeError(error instanceof Error ? error.message : "تعذر ربط السؤال.");
+    } finally { setScoping(null); }
+  }
 
   const stats = useMemo(() => {
     const activeCount = filteredItems.filter((item) => item.isActive).length;
@@ -510,6 +515,16 @@ export default function StaffClassQuestionBankPage() {
           </div>
         </section>
       ) : null}
+
+      {isAdmin && legacyItems.length > 0 && <section className="rounded-3xl border border-amber-300 p-5">
+        <h2 className="font-bold">أسئلة قديمة تحتاج إلى تحديد نطاق</h2>
+        <p className="mt-1 text-sm">تظهر للمسؤول فقط حتى تُربط بسياق هذه المادة والفصل.</p>
+        {scopeError && <p role="alert" className="text-red-600">{scopeError}</p>}
+        {legacyItems.map((item) => <div key={item.id} className="mt-3 flex items-center justify-between gap-3">
+          <span>{item.prompt} — {item.termTitle || item.termId}</span>
+          <button type="button" disabled={scoping !== null} onClick={() => void scopeLegacy(item.id, item.termId)} className="rounded-xl border px-3 py-2">ربط بهذا الفصل</button>
+        </div>)}
+      </section>}
 
       <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center justify-between gap-3">

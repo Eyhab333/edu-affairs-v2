@@ -12,14 +12,6 @@ import {
   Loader2,
   Save,
 } from "lucide-react";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
 
 import {
   QuestionBankItemSchema,
@@ -33,7 +25,7 @@ import {
   validateHomeworkQuestions,
 } from "@takween/domain";
 
-import { db } from "@/lib/firebase";
+import { staffHomework, staffHomeworkItems } from "@/lib/staff-homework";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
@@ -239,21 +231,22 @@ export default function NewHomeworkAssignmentPage() {
   const loadQuestionBankItems = useCallback(async (): Promise<
     QuestionBankItem[]
   > => {
-    if (!actor?.orgId || !subjectKey) return [];
+    if (
+      !actor?.orgId ||
+      !subjectKey ||
+      !currentTerm?.id ||
+      !classSubjectOfferingId
+    )
+      return [];
 
-    const ref = collection(db, "orgs", actor.orgId, "questionBankItems");
-
-    const snap = await getDocs(
-      query(ref, where("subjectKey", "==", subjectKey)),
-    );
-
-    return snap.docs.map((docSnap) => {
-      return QuestionBankItemSchema.parse({
-        id: docSnap.id,
-        ...docSnap.data(),
-      });
+    const result = await staffHomeworkItems({
+      action: "listQuestions",
+      orgId: actor.orgId,
+      offeringId: classSubjectOfferingId,
+      termId: currentTerm.id,
     });
-  }, [actor?.orgId, subjectKey]);
+    return result.map((item) => QuestionBankItemSchema.parse(item));
+  }, [actor?.orgId, subjectKey, classSubjectOfferingId, currentTerm?.id]);
 
   const {
     data: rawItems,
@@ -263,14 +256,17 @@ export default function NewHomeworkAssignmentPage() {
   } = useDocumentLoader<QuestionBankItem[]>({
     enabled: Boolean(actor?.orgId && subjectKey),
     loader: loadQuestionBankItems,
-    deps: [actor?.orgId, subjectKey],
+    deps: [actor?.orgId, subjectKey, classSubjectOfferingId, currentTerm?.id],
   });
 
   const questionBankItems = useMemo(() => {
     if (!actor?.orgId || !subjectKey) return [];
 
     return filterQuestionBankForSubjectContext({
-      items: rawItems ?? [],
+      items: (rawItems ?? []).filter(
+        (item) =>
+          item.schoolId && item.academicYearId && item.classSubjectOfferingId,
+      ),
       context: {
         orgId: actor.orgId,
         schoolId: resolvedSchoolId,
@@ -371,15 +367,12 @@ export default function NewHomeworkAssignmentPage() {
     }
 
     const now = Date.now();
-    const ref = doc(
-      collection(db, "orgs", actor.orgId, "studentHomeworkAssignments"),
-    );
 
     const maxScore = calculateHomeworkMaxScore(questions);
     const dueAt = parseDatetimeLocalToMs(dueAtText);
 
     const rawAssignment = {
-      id: ref.id,
+      id: "pending",
 
       orgId: actor.orgId,
       schoolId: resolvedSchoolId || "",
@@ -431,12 +424,18 @@ export default function NewHomeworkAssignmentPage() {
     setSaving(true);
 
     try {
-      await setDoc(ref, stripUndefined(parsedAssignment));
+      const result = await staffHomework<{ id: string }>({
+        action: "createAssignment",
+        orgId: actor.orgId,
+        offeringId: classSubjectOfferingId,
+        item: stripUndefined(parsedAssignment),
+        questionIds: selectedQuestions.map((item) => item.id),
+      });
 
       router.push(
         buildHomeworkDetailsHref({
           classId: visibleClass.id,
-          homeworkId: ref.id,
+          homeworkId: result.id,
         }),
       );
     } catch (saveError) {
@@ -803,14 +802,14 @@ export default function NewHomeworkAssignmentPage() {
             </div>
           </section>
 
-          <section className="rounded-3xl border border-slate-200 bg-slate-50 p-5 text-sm leading-7 text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+          {/* <section className="rounded-3xl border border-slate-200 bg-slate-50 p-5 text-sm leading-7 text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
             <div className="mb-3 flex items-center gap-2 font-bold text-slate-800 dark:text-slate-100">
               <CheckCircle2 className="h-4 w-4 text-emerald-600" />
               ماذا يحدث عند الحفظ؟
             </div>
             سيتم إنشاء واجب بحالة DRAFT داخل studentHomeworkAssignments، وتُحفظ
             الأسئلة المختارة كنسخة Snapshot داخل الواجب.
-          </section>
+          </section> */}
 
           <button
             type="submit"
@@ -822,7 +821,7 @@ export default function NewHomeworkAssignmentPage() {
             ) : (
               <Save className="h-4 w-4" />
             )}
-            حفtttttttttttttttttظ كمسودة
+            حفظ كمسودة
           </button>
         </aside>
       </form>

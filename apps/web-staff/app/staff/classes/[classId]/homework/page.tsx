@@ -13,14 +13,13 @@ import {
   Plus,
   RefreshCw,
 } from "lucide-react";
-import { collection, getDocs, query, where } from "firebase/firestore";
 
 import {
   StudentHomeworkAssignmentSchema,
   type StudentHomeworkAssignment,
 } from "@takween/contracts";
 
-import { db } from "@/lib/firebase";
+import { staffHomeworkItems } from "@/lib/staff-homework";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
@@ -233,32 +232,21 @@ export default function StaffClassHomeworkListPage() {
       return [];
     }
 
-    const ref = collection(
-      db,
-      "orgs",
-      actor.orgId,
-      "studentHomeworkAssignments",
-    );
-
-    const snap = await getDocs(
-      query(
-        ref,
-        where("schoolId", "==", resolvedSchoolId),
-        where("academicYearId", "==", resolvedAcademicYearId),
-        where("termId", "==", currentTerm.id),
-        where("classId", "==", classId),
-        where("subjectKey", "==", subjectKey),
-        where("classSubjectOfferingId", "==", classSubjectOfferingId),
-      ),
-    );
-
-    return snap.docs.map((docSnap) => {
-      return StudentHomeworkAssignmentSchema.parse({
-        id: docSnap.id,
-        ...docSnap.data(),
-      });
+    const result = await staffHomeworkItems({
+      action: "listAssignments",
+      orgId: actor.orgId,
+      offeringId: classSubjectOfferingId,
+      termId: currentTerm.id,
     });
-  }, [actor?.orgId, subjectKey]);
+    return result.map((item) => StudentHomeworkAssignmentSchema.parse(item));
+  }, [
+    actor?.orgId,
+    subjectKey,
+    resolvedSchoolId,
+    resolvedAcademicYearId,
+    currentTerm?.id,
+    classSubjectOfferingId,
+  ]);
 
   const {
     data: rawAssignments,
@@ -268,7 +256,14 @@ export default function StaffClassHomeworkListPage() {
   } = useDocumentLoader<StudentHomeworkAssignment[]>({
     enabled: Boolean(actor?.orgId && subjectKey),
     loader: loadHomeworkAssignments,
-    deps: [actor?.orgId, subjectKey],
+    deps: [
+      actor?.orgId,
+      subjectKey,
+      classSubjectOfferingId,
+      currentTerm?.id,
+      resolvedSchoolId,
+      resolvedAcademicYearId,
+    ],
   });
 
   const homeworkAssignments = useMemo(() => {
@@ -292,6 +287,7 @@ export default function StaffClassHomeworkListPage() {
       });
   }, [
     actor?.orgId,
+    rawAssignments,
     resolvedSchoolId,
     resolvedAcademicYearId,
     currentTerm?.id,

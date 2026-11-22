@@ -118,7 +118,7 @@ function resolveSubjectTitle(params: {
 
 /** Returns guardian-safe learning-loss plans for one linked child only. */
 export const getMyGuardianLearningLoss = onCall(
-  { region: REGION, cors: true, memory: "1GiB", minInstances: 1 },
+  { region: REGION, cors: true, memory: "1GiB", minInstances: 0 },
   async (request) => {
     const context = await assertGuardianStudentAccess(
       request.auth?.uid,

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AlertCircle,
   ArrowRight,
@@ -14,15 +14,6 @@ import {
   RefreshCw,
   Send,
 } from "lucide-react";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-  writeBatch,
-} from "firebase/firestore";
 
 import {
   StudentHomeworkAssignmentSchema,
@@ -31,9 +22,11 @@ import {
   type StudentHomeworkSubmission,
 } from "@takween/contracts";
 
-import { db } from "@/lib/firebase";
+import { staffHomework, staffHomeworkItems } from "@/lib/staff-homework";
 import { useDocumentLoader } from "@/hooks/use-document-loader";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
+import { getVisibleStudents } from "@/lib/visible-students";
+import { HomeworkGrading } from "./homework-grading";
 
 type StaffVisibleClass = {
   id: string;
@@ -46,17 +39,6 @@ type StaffVisibleClass = {
   title?: string;
   sectionLabel?: string;
   order?: number;
-};
-
-type StudentEnrollmentTarget = {
-  id: string;
-  orgId?: string;
-  schoolId?: string;
-  academicYearId?: string;
-  studentId?: string;
-  gradeId?: string;
-  classId?: string;
-  status?: string;
 };
 
 function formatNumber(value: number) {
@@ -213,67 +195,6 @@ function buildQuestionBankHref(params: {
   }`;
 }
 
-function stripUndefined<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T;
-}
-
-function buildHomeworkSubmissionId(params: {
-  homeworkId: string;
-  studentId: string;
-}) {
-  return `${params.homeworkId}_${encodeURIComponent(params.studentId)}`;
-}
-
-async function loadActiveStudentTargetsForHomework(params: {
-  orgId: string;
-  assignment: StudentHomeworkAssignment;
-}) {
-  const { orgId, assignment } = params;
-
-  const enrollmentsRef = collection(db, "orgs", orgId, "studentEnrollments");
-
-  /**
-   * نقرأ بالـ classId لتقليل القراءة،
-   * ثم نفلتر بالسياق الكامل حتى لا نعتمد على classId وحده.
-   */
-  const snap = await getDocs(
-    query(enrollmentsRef, where("classId", "==", assignment.classId)),
-  );
-
-  const rows = snap.docs.map((docSnap) => {
-    return {
-      id: docSnap.id,
-      ...docSnap.data(),
-    } as StudentEnrollmentTarget;
-  });
-
-  const targetsByStudentId = new Map<
-    string,
-    {
-      studentId: string;
-      enrollmentId: string;
-    }
-  >();
-
-  rows
-    .filter((row) => row.schoolId === assignment.schoolId)
-    .filter((row) => row.academicYearId === assignment.academicYearId)
-    .filter((row) => row.classId === assignment.classId)
-    .filter((row) => row.status === "ACTIVE")
-    .forEach((row) => {
-      const studentId = row.studentId || "";
-
-      if (!studentId || targetsByStudentId.has(studentId)) return;
-
-      targetsByStudentId.set(studentId, {
-        studentId,
-        enrollmentId: row.id,
-      });
-    });
-
-  return Array.from(targetsByStudentId.values());
-}
-
 export default function StaffHomeworkDetailsPage() {
   const params = useParams<{
     classId: string;
@@ -287,27 +208,41 @@ export default function StaffHomeworkDetailsPage() {
 
   const [publishing, setPublishing] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [studentNames, setStudentNames] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let active = true;
+    if (!actor?.orgId)
+      return () => {
+        active = false;
+      };
+    void getVisibleStudents({ orgId: actor.orgId })
+      .then((result) => {
+        if (active)
+          setStudentNames(
+            Object.fromEntries(
+              result.rows.map((row) => [row.studentId, row.displayName]),
+            ),
+          );
+      })
+      .catch(() => {
+        if (active) setStudentNames({});
+      });
+    return () => {
+      active = false;
+    };
+  }, [actor?.orgId]);
 
   const loadHomework =
     useCallback(async (): Promise<StudentHomeworkAssignment | null> => {
       if (!actor?.orgId || !homeworkId) return null;
 
-      const ref = doc(
-        db,
-        "orgs",
-        actor.orgId,
-        "studentHomeworkAssignments",
+      const result = await staffHomework<{ item: unknown }>({
+        action: "details",
+        orgId: actor.orgId,
         homeworkId,
-      );
-
-      const snap = await getDoc(ref);
-
-      if (!snap.exists()) return null;
-
-      return StudentHomeworkAssignmentSchema.parse({
-        id: snap.id,
-        ...snap.data(),
       });
+      return StudentHomeworkAssignmentSchema.parse(result.item);
     }, [actor?.orgId, homeworkId]);
 
   const {
@@ -316,7 +251,6 @@ export default function StaffHomeworkDetailsPage() {
     error,
     notFound,
     reload,
-    setData,
   } = useDocumentLoader<StudentHomeworkAssignment>({
     enabled: Boolean(actor?.orgId && homeworkId),
     loader: loadHomework,
@@ -330,42 +264,18 @@ export default function StaffHomeworkDetailsPage() {
       return [];
     }
 
-    const ref = collection(
-      db,
-      "orgs",
-      actor.orgId,
-      "studentHomeworkSubmissions",
-    );
-
-    const snap = await getDocs(
-      query(
-        ref,
-        where("homeworkId", "==", homeworkId),
-        where("schoolId", "==", assignment.schoolId),
-        where("academicYearId", "==", assignment.academicYearId),
-        where("termId", "==", assignment.termId),
-        where("classId", "==", assignment.classId),
-        where("subjectKey", "==", assignment.subjectKey),
-        where(
-          "classSubjectOfferingId",
-          "==",
-          assignment.classSubjectOfferingId,
-        ),
-      ),
-    );
-
-    return snap.docs
-      .map((docSnap) => {
-        return StudentHomeworkSubmissionSchema.parse({
-          id: docSnap.id,
-          ...docSnap.data(),
-        });
-      })
-      .sort((a, b) => {
-        const aTime = a.submittedAt ?? a.updatedAt ?? a.createdAt ?? 0;
-        const bTime = b.submittedAt ?? b.updatedAt ?? b.createdAt ?? 0;
-        return bTime - aTime;
-      });
+    const result = await staffHomeworkItems({
+      action: "listSubmissions",
+      orgId: actor.orgId,
+      homeworkId,
+    });
+    return result
+      .map((item) => StudentHomeworkSubmissionSchema.parse(item))
+      .sort(
+        (a, b) =>
+          (b.submittedAt ?? b.updatedAt ?? b.createdAt ?? 0) -
+          (a.submittedAt ?? a.updatedAt ?? a.createdAt ?? 0),
+      );
   }, [
     actor?.orgId,
     homeworkId,
@@ -456,122 +366,16 @@ export default function StaffHomeworkDetailsPage() {
       return;
     }
 
-    const now = Date.now();
-
     setPublishing(true);
 
     try {
-      const studentTargets = await loadActiveStudentTargetsForHomework({
+      await staffHomework({
+        action: "publish",
         orgId: actor.orgId,
-        assignment,
+        homeworkId: assignment.id,
       });
-
-      if (studentTargets.length === 0) {
-        setActionError(
-          "لا يمكن نشر الواجب لأن الفصل لا يحتوي على طلاب نشطين مرتبطين به.",
-        );
-        return;
-      }
-
-      const targetStudentIds = studentTargets.map((target) => target.studentId);
-
-      const assignmentRef = doc(
-        db,
-        "orgs",
-        actor.orgId,
-        "studentHomeworkAssignments",
-        assignment.id,
-      );
-
-      const batch = writeBatch(db);
-
-      const nextAssignmentPatch = {
-        status: "PUBLISHED",
-        publishMode: "PUBLISH_NOW",
-        targetStudentIds,
-        targetCount: targetStudentIds.length,
-        missingCount: targetStudentIds.length,
-        submittedCount: 0,
-        gradedCount: 0,
-        publishedAt: now,
-        updatedAt: now,
-      } as const;
-
-      batch.update(assignmentRef, nextAssignmentPatch);
-
-      studentTargets.forEach((target) => {
-        const submissionId = buildHomeworkSubmissionId({
-          homeworkId: assignment.id,
-          studentId: target.studentId,
-        });
-
-        const submissionRef = doc(
-          db,
-          "orgs",
-          actor.orgId,
-          "studentHomeworkSubmissions",
-          submissionId,
-        );
-
-        const submission = StudentHomeworkSubmissionSchema.parse({
-          id: submissionId,
-
-          orgId: assignment.orgId,
-          schoolId: assignment.schoolId,
-          academicYearId: assignment.academicYearId,
-
-          termId: assignment.termId,
-          termTitle: assignment.termTitle,
-          termShortTitle: assignment.termShortTitle,
-
-          homeworkId: assignment.id,
-
-          homeworkTitle: assignment.title,
-          homeworkDescription: assignment.description,
-          homeworkDueAt: assignment.dueAt,
-          homeworkPublishedAt: now,
-          homeworkQuestions: assignment.questions,
-
-          studentId: target.studentId,
-          enrollmentId: target.enrollmentId,
-
-          gradeId: assignment.gradeId,
-          classId: assignment.classId,
-
-          subjectKey: assignment.subjectKey,
-          classSubjectOfferingId: assignment.classSubjectOfferingId,
-
-          answers: [],
-
-          score: 0,
-          maxScore: assignment.maxScore,
-
-          status: "NOT_STARTED",
-
-          gradedByPersonId: "",
-          feedback: "",
-
-          isLate: false,
-          note: "",
-
-          createdAt: now,
-          updatedAt: now,
-        });
-
-        batch.set(submissionRef, stripUndefined(submission));
-      });
-
-      await batch.commit();
-
-      setData((current) =>
-        current
-          ? {
-              ...current,
-              ...nextAssignmentPatch,
-            }
-          : current,
-      );
-      void reloadSubmissions();
+      await reload();
+      await reloadSubmissions();
     } catch (publishError) {
       const message =
         publishError instanceof Error
@@ -669,7 +473,7 @@ export default function StaffHomeworkDetailsPage() {
           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
         >
           <ArrowRight className="h-4 w-4" />
-          العودة لبffنك الأسئلة
+          العودة لبنك الاسئلة
         </Link>
 
         <div className="flex flex-wrap gap-2">
@@ -679,7 +483,7 @@ export default function StaffHomeworkDetailsPage() {
             className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             <RefreshCw className="h-4 w-4" />
-            تحpديث
+            تحديث
           </button>
 
           <button
@@ -743,7 +547,7 @@ export default function StaffHomeworkDetailsPage() {
             </div>
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-4 lg:min-w-[34rem]">
+          <div className="grid gap-2 sm:grid-cols-4 lg:min-w-136">
             <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-950">
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 الأسئلة
@@ -929,7 +733,8 @@ export default function StaffHomeworkDetailsPage() {
                     </p>
 
                     <h3 className="mt-2 truncate font-bold text-slate-950 dark:text-white">
-                      {submission.studentId}
+                      {studentNames[submission.studentId] ||
+                        submission.studentId}
                     </h3>
 
                     <p className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">
@@ -984,6 +789,15 @@ export default function StaffHomeworkDetailsPage() {
                     </span>
                   </div>
                 </div>
+                <HomeworkGrading
+                  orgId={actor.orgId}
+                  assignment={assignment}
+                  submission={submission}
+                  onChanged={() => {
+                    void reloadSubmissions();
+                    void reload();
+                  }}
+                />
               </article>
             ))}
           </div>
@@ -1132,13 +946,13 @@ export default function StaffHomeworkDetailsPage() {
             </div>
           </section>
 
-          {assignment.status === "DRAFT" ? (
+          {/* {assignment.status === "DRAFT" ? (
             <section className="rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
               هذا الواجب ما زال مسودة. عند الضغط على نشر الواجب سيتم تحويله إلى
               PUBLISHED. استهداف الطلاب وإنشاء التسليمات التفصيلية سيأتي في
               الخطوة التالية.
             </section>
-          ) : null}
+          ) : null} */}
         </aside>
       </section>
     </main>

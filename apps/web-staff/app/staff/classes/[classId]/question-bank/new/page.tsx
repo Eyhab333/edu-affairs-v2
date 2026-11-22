@@ -12,7 +12,6 @@ import {
   Save,
   Trash2,
 } from "lucide-react";
-import { collection, doc, setDoc } from "firebase/firestore";
 
 import {
   QuestionBankItemSchema,
@@ -20,7 +19,7 @@ import {
 } from "@takween/contracts";
 import { validateQuestionBankItem } from "@takween/domain";
 
-import { db } from "@/lib/firebase";
+import { staffHomework } from "@/lib/staff-homework";
 import { useStaffActor } from "@/components/staff/staff-actor-provider";
 
 type StaffVisibleClass = {
@@ -275,7 +274,6 @@ export default function NewQuestionBankItemPage() {
     }
 
     const now = Date.now();
-    const ref = doc(collection(db, "orgs", actor.orgId, "questionBankItems"));
 
     const normalizedChoices =
       questionType === "MULTIPLE_CHOICE"
@@ -301,7 +299,7 @@ export default function NewQuestionBankItemPage() {
           : "";
 
     const rawItem = {
-      id: ref.id,
+      id: "pending",
 
       orgId: actor.orgId,
       schoolId: resolvedSchoolId || "",
@@ -352,7 +350,12 @@ export default function NewQuestionBankItemPage() {
     setSaving(true);
 
     try {
-      await setDoc(ref, stripUndefined(parsedItem));
+      await staffHomework({
+        action: "createQuestion",
+        orgId: actor.orgId,
+        offeringId: classSubjectOfferingId,
+        item: stripUndefined(parsedItem),
+      });
       router.push(questionBankHref);
     } catch (saveError) {
       const message =
@@ -781,11 +784,11 @@ export default function NewQuestionBankItemPage() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+            {/* <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
               سيتم حفظ السؤال داخل بنك الأسئلة مع سياق المادة والفصل الدراسي
               الحالي. وعند إنشاء واجب لاحقًا، سنأخذ Snapshot من السؤال داخل
               الواجب.
-            </div>
+            </div> */}
 
             <button
               type="submit"

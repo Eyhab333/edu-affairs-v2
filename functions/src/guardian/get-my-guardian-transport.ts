@@ -104,7 +104,7 @@ function serializeRecord(record: StudentTransportAttendanceRecord) {
 
 /** Reads only submitted transport records for a guardian-linked child. */
 export const getMyGuardianTransport = onCall(
-  { region: REGION, cors: true, memory: "1GiB", minInstances: 1 },
+  { region: REGION, cors: true, memory: "1GiB", minInstances: 0 },
   async (request) => {
     const context = await assertGuardianStudentAccess(
       request.auth?.uid,

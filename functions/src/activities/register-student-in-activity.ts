@@ -288,7 +288,7 @@ export const registerStudentInActivity = onCall(
   {
     region: REGION,
     memory: "1GiB",
-    minInstances: 1,
+    minInstances: 0,
   },
   async (request) => {
     const uid = request.auth?.uid;
