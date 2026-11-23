@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, Plus, Search, UserRound, Users, X } from "lucide-react";
+import { ArrowLeft, BarChart3, Download, LoaderCircle, Plus, Search, UserRound, Users, X } from "lucide-react";
+import type { User } from "firebase/auth";
 import { toast } from "sonner";
 
 import { db } from "@/lib/firebase";
@@ -25,6 +26,59 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+type AcademicYearOption = {
+  id: string;
+  title: string;
+};
+
+type ClassStudentStatisticsReport = {
+  scope: { mode: "current" | "year"; academicYearId: string | null; title: string };
+  summary: { schoolCount: number; classCount: number; studentCount: number };
+  groups: Array<{
+    schoolId: string;
+    schoolName: string;
+    totalStudents: number;
+    rows: Array<{
+      schoolId: string;
+      schoolName: string;
+      gradeId: string;
+      gradeTitle: string;
+      classId: string;
+      classTitle: string;
+      studentCount: number;
+    }>;
+  }>;
+};
+
+function classStatisticsUrl({
+  orgId,
+  mode,
+  format = "json",
+  academicYearId,
+}: {
+  orgId: string;
+  mode: "metadata" | "current" | "year";
+  format?: "json" | "xlsx";
+  academicYearId?: string;
+}) {
+  const query = new URLSearchParams({ mode, format });
+  if (academicYearId) query.set("academicYearId", academicYearId);
+  return `/api/orgs/${encodeURIComponent(orgId)}/students/class-statistics?${query.toString()}`;
+}
+
+async function authorizedStatisticsFetch(user: User, url: string) {
+  const token = await user.getIdToken();
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+
+  if (response.ok) return response;
+
+  const body = await response.json().catch(() => null) as { error?: string } | null;
+  throw new Error(body?.error || "تعذر تحميل إحصائية الطلاب حسب الفصول.");
+}
 
 function StudentsPageSkeleton() {
   return (
@@ -60,6 +114,12 @@ export default function StudentsPage() {
   const { user, checkingAuth } = useRequireAuth();
   const [schoolId, setSchoolId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [academicYears, setAcademicYears] = useState<AcademicYearOption[]>([]);
+  const [statisticsScope, setStatisticsScope] = useState("current");
+  const [statistics, setStatistics] = useState<ClassStudentStatisticsReport | null>(null);
+  const [statisticsLoading, setStatisticsLoading] = useState(false);
+  const [statisticsExporting, setStatisticsExporting] = useState(false);
+  const [statisticsError, setStatisticsError] = useState<string | null>(null);
 
   const loadDirectory = useCallback(() => loadStudentDirectory({ db, orgId }), [orgId]);
   const { data, loading, error, notFound, reload } = useDocumentLoader({
@@ -71,6 +131,24 @@ export default function StudentsPage() {
   useEffect(() => {
     if (error) toast.error("تعذر تحميل دليل الطلاب");
   }, [error]);
+
+  useEffect(() => {
+    if (!user || !orgId) return;
+
+    let cancelled = false;
+    void authorizedStatisticsFetch(user, classStatisticsUrl({ orgId, mode: "metadata" }))
+      .then(async (response) => response.json() as Promise<{ academicYears?: AcademicYearOption[] }>)
+      .then((payload) => {
+        if (!cancelled) setAcademicYears(payload.academicYears ?? []);
+      })
+      .catch(() => {
+        if (!cancelled) setAcademicYears([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [orgId, user]);
 
   const schoolCounts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -92,6 +170,64 @@ export default function StudentsPage() {
 
   const archivedCount = (data?.rows ?? []).filter((row) => row.isArchived).length;
   const currentEnrollmentCount = (data?.rows ?? []).filter((row) => row.currentEnrollment).length;
+  const selectedStatisticsMode = statisticsScope === "current" ? "current" : "year";
+  const selectedAcademicYearId = selectedStatisticsMode === "year" ? statisticsScope : undefined;
+
+  const loadStatistics = useCallback(async () => {
+    if (!user || !orgId) return;
+
+    setStatisticsLoading(true);
+    setStatisticsError(null);
+    try {
+      const response = await authorizedStatisticsFetch(user, classStatisticsUrl({
+        orgId,
+        mode: selectedStatisticsMode,
+        academicYearId: selectedAcademicYearId,
+      }));
+      setStatistics(await response.json() as ClassStudentStatisticsReport);
+    } catch (statisticsLoadError) {
+      const message = statisticsLoadError instanceof Error
+        ? statisticsLoadError.message
+        : "تعذر تحميل إحصائية الطلاب حسب الفصول.";
+      setStatisticsError(message);
+      toast.error(message);
+    } finally {
+      setStatisticsLoading(false);
+    }
+  }, [orgId, selectedAcademicYearId, selectedStatisticsMode, user]);
+
+  const exportStatistics = useCallback(async () => {
+    if (!user || !orgId) return;
+
+    setStatisticsExporting(true);
+    setStatisticsError(null);
+    try {
+      const response = await authorizedStatisticsFetch(user, classStatisticsUrl({
+        orgId,
+        mode: selectedStatisticsMode,
+        format: "xlsx",
+        academicYearId: selectedAcademicYearId,
+      }));
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = response.headers.get("content-disposition")?.match(/filename=\"?([^\";]+)\"?/)?.[1]
+        || "class-student-statistics.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (statisticsExportError) {
+      const message = statisticsExportError instanceof Error
+        ? statisticsExportError.message
+        : "تعذر تصدير إحصائية الطلاب حسب الفصول.";
+      setStatisticsError(message);
+      toast.error(message);
+    } finally {
+      setStatisticsExporting(false);
+    }
+  }, [orgId, selectedAcademicYearId, selectedStatisticsMode, user]);
 
   if (checkingAuth || loading) return <StudentsPageSkeleton />;
 
@@ -131,6 +267,99 @@ export default function StudentsPage() {
         <InfoCard label="ذوو القيد النشط" value={currentEnrollmentCount} hint="بحسب القيد التشغيلي الحالي" />
         <InfoCard label="الطلاب المؤرشفون" value={archivedCount} hint="حالة سجل الطالب مستقلة عن القيد" />
       </div>
+
+      <FormSection
+        title="إحصائية الطلاب حسب الفصول"
+        description="حمّل الإحصائية عند الحاجة، ثم صدّر نفس النتائج إلى Excel."
+        contentClassName="space-y-5"
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+          <div className="w-full max-w-sm space-y-2">
+            <label htmlFor="class-statistics-scope" className="text-sm font-medium">الفترة</label>
+            <select
+              id="class-statistics-scope"
+              value={statisticsScope}
+              onChange={(event) => {
+                setStatisticsScope(event.target.value);
+                setStatistics(null);
+                setStatisticsError(null);
+              }}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none ring-offset-background transition focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <option value="current">الوضع الحالي</option>
+              {academicYears.map((academicYear) => (
+                <option key={academicYear.id} value={academicYear.id}>{academicYear.title}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={() => void loadStatistics()} disabled={!user || statisticsLoading || statisticsExporting}>
+              {statisticsLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <BarChart3 className="h-4 w-4" />}
+              عرض الإحصائية
+            </Button>
+            <Button variant="outline" onClick={() => void exportStatistics()} disabled={!user || statisticsLoading || statisticsExporting}>
+              {statisticsExporting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              تصدير Excel
+            </Button>
+          </div>
+        </div>
+
+        {statisticsError ? (
+          <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+            {statisticsError}
+          </div>
+        ) : null}
+
+        {statistics ? (
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">النطاق: <span className="font-medium text-foreground">{statistics.scope.title}</span></p>
+            <div className="grid gap-4 md:grid-cols-3">
+              <InfoCard label="إجمالي الطلاب" value={statistics.summary.studentCount} />
+              <InfoCard label="عدد المدارس" value={statistics.summary.schoolCount} />
+              <InfoCard label="عدد الفصول" value={statistics.summary.classCount} />
+            </div>
+
+            {statistics.groups.length === 0 ? (
+              <div className="rounded-2xl border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">
+                لا توجد قيود طلاب مطابقة لهذا النطاق.
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>المدرسة</TableHead>
+                    <TableHead>الصف</TableHead>
+                    <TableHead>الفصل</TableHead>
+                    <TableHead className="text-end">عدد الطلاب</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {statistics.groups.map((group) => (
+                    <Fragment key={group.schoolId}>
+                      {group.rows.map((row) => (
+                        <TableRow key={`${row.schoolId}-${row.classId}`}>
+                          <TableCell>{row.schoolName}</TableCell>
+                          <TableCell>{row.gradeTitle}</TableCell>
+                          <TableCell>{row.classTitle}</TableCell>
+                          <TableCell className="text-end tabular-nums">{row.studentCount}</TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow className="bg-muted/50 font-semibold">
+                        <TableCell colSpan={3}>إجمالي المدرسة: {group.schoolName}</TableCell>
+                        <TableCell className="text-end tabular-nums">{group.totalStudents}</TableCell>
+                      </TableRow>
+                    </Fragment>
+                  ))}
+                  <TableRow className="bg-primary/10 font-bold">
+                    <TableCell colSpan={3}>الإجمالي العام</TableCell>
+                    <TableCell className="text-end tabular-nums">{statistics.summary.studentCount}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            )}
+          </div>
+        ) : null}
+      </FormSection>
 
       {error ? (
         <FormSection title="حدث خطأ" description="تعذر تحميل البيانات المطلوبة." contentClassName="space-y-4">

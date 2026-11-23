@@ -1,10 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import {
   AlertTriangle,
+  BarChart3,
   Bus,
+  Download,
   Edit3,
   Loader2,
   MapPin,
@@ -15,6 +17,7 @@ import {
   ShieldCheck,
   UserRoundCheck,
 } from "lucide-react";
+import type { User } from "firebase/auth";
 import { toast } from "sonner";
 
 import type {
@@ -30,6 +33,14 @@ import InfoCard from "@/components/shared/InfoCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useRequireAuth } from "@/hooks/use-require-auth";
 import {
   bulkEnrollTransportStudents,
@@ -44,10 +55,62 @@ import {
   type TransportStudentSearchRow,
 } from "@/lib/transport-administration";
 
-type TabKey = "DASHBOARD" | "ROUTES" | "VEHICLES" | "SUPERVISORS" | "ENROLLMENTS" | "STOPS";
+type TabKey = "DASHBOARD" | "REPORT" | "ROUTES" | "VEHICLES" | "SUPERVISORS" | "ENROLLMENTS" | "STOPS";
+
+type AcademicYearOption = {
+  id: string;
+  title: string;
+};
+
+type TransportStatisticsReport = {
+  scope: { mode: "current" | "year"; academicYearId: string | null; title: string };
+  summary: { schoolCount: number; routeCount: number; supervisorCount: number; studentCount: number };
+  groups: Array<{
+    schoolId: string;
+    schoolName: string;
+    totalStudents: number;
+    rows: Array<{
+      schoolId: string;
+      schoolName: string;
+      routeId: string;
+      routeTitle: string;
+      supervisorNames: string;
+      driverName: string;
+      studentCount: number;
+    }>;
+  }>;
+};
 
 const inputClass = "h-10 w-full rounded-xl border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 const textareaClass = "min-h-20 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring";
+
+function transportStatisticsUrl({
+  orgId,
+  mode,
+  format = "json",
+  academicYearId,
+}: {
+  orgId: string;
+  mode: "metadata" | "current" | "year";
+  format?: "json" | "xlsx";
+  academicYearId?: string;
+}) {
+  const query = new URLSearchParams({ mode, format });
+  if (academicYearId) query.set("academicYearId", academicYearId);
+  return `/api/orgs/${encodeURIComponent(orgId)}/transport/statistics?${query.toString()}`;
+}
+
+async function authorizedTransportStatisticsFetch(user: User, url: string) {
+  const token = await user.getIdToken();
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+  if (response.ok) return response;
+
+  const body = await response.json().catch(() => null) as { error?: string } | null;
+  throw new Error(body?.error || "تعذر تحميل تقرير النقل.");
+}
 
 function riyadhDate() {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -110,6 +173,12 @@ export default function TransportAdministrationPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState<TabKey>("DASHBOARD");
+  const [reportAcademicYears, setReportAcademicYears] = useState<AcademicYearOption[]>([]);
+  const [reportScope, setReportScope] = useState("current");
+  const [transportReport, setTransportReport] = useState<TransportStatisticsReport | null>(null);
+  const [reportLoading, setReportLoading] = useState(false);
+  const [reportExporting, setReportExporting] = useState(false);
+  const [reportError, setReportError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [schoolFilter, setSchoolFilter] = useState("");
   const [vehicleDraft, setVehicleDraft] = useState(newVehicleDraft);
@@ -159,6 +228,79 @@ export default function TransportAdministrationPage() {
   }, [orgId, user]);
 
   useEffect(() => { void load(); }, [load]);
+
+  useEffect(() => {
+    if (!orgId || !user) return;
+
+    let cancelled = false;
+    void authorizedTransportStatisticsFetch(user, transportStatisticsUrl({ orgId, mode: "metadata" }))
+      .then(async (response) => response.json() as Promise<{ academicYears?: AcademicYearOption[] }>)
+      .then((payload) => {
+        if (!cancelled) setReportAcademicYears(payload.academicYears ?? []);
+      })
+      .catch(() => {
+        if (!cancelled) setReportAcademicYears([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [orgId, user]);
+
+  const selectedReportMode = reportScope === "current" ? "current" : "year";
+  const selectedReportAcademicYearId = selectedReportMode === "year" ? reportScope : undefined;
+
+  const loadTransportReport = useCallback(async () => {
+    if (!orgId || !user) return;
+
+    setReportLoading(true);
+    setReportError(null);
+    try {
+      const response = await authorizedTransportStatisticsFetch(user, transportStatisticsUrl({
+        orgId,
+        mode: selectedReportMode,
+        academicYearId: selectedReportAcademicYearId,
+      }));
+      setTransportReport(await response.json() as TransportStatisticsReport);
+    } catch (reportLoadError) {
+      const message = reportLoadError instanceof Error ? reportLoadError.message : "تعذر تحميل تقرير النقل.";
+      setReportError(message);
+      toast.error(message);
+    } finally {
+      setReportLoading(false);
+    }
+  }, [orgId, selectedReportAcademicYearId, selectedReportMode, user]);
+
+  const exportTransportReport = useCallback(async () => {
+    if (!orgId || !user) return;
+
+    setReportExporting(true);
+    setReportError(null);
+    try {
+      const response = await authorizedTransportStatisticsFetch(user, transportStatisticsUrl({
+        orgId,
+        mode: selectedReportMode,
+        format: "xlsx",
+        academicYearId: selectedReportAcademicYearId,
+      }));
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = response.headers.get("content-disposition")?.match(/filename=\"?([^\";]+)\"?/)?.[1]
+        || "transport-statistics.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (reportExportError) {
+      const message = reportExportError instanceof Error ? reportExportError.message : "تعذر تصدير تقرير النقل.";
+      setReportError(message);
+      toast.error(message);
+    } finally {
+      setReportExporting(false);
+    }
+  }, [orgId, selectedReportAcademicYearId, selectedReportMode, user]);
 
   async function mutate(action: TransportAdminAction, payload: Record<string, unknown>, success: string) {
     setBusy(true);
@@ -445,6 +587,7 @@ export default function TransportAdministrationPage() {
 
   const tabs: Array<{ key: TabKey; label: string }> = [
     { key: "DASHBOARD", label: "لوحة المتابعة" },
+    { key: "REPORT", label: "تقرير النقل" },
     { key: "ROUTES", label: "الخطوط" },
     { key: "VEHICLES", label: "المركبات" },
     { key: "SUPERVISORS", label: "المشرفون" },
@@ -469,6 +612,104 @@ export default function TransportAdministrationPage() {
           </Button>
         ))}
       </div>
+
+      {tab === "REPORT" ? (
+        <FormSection
+          title="تقرير النقل"
+          description="اعرض الإحصائية عند الحاجة أو صدّر نفس النتائج إلى Excel. اسم السائق يعرض القيمة المخزنة في المركبة."
+          contentClassName="space-y-5"
+        >
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+            <div className="w-full max-w-sm space-y-2">
+              <Label htmlFor="transport-report-scope">الفترة</Label>
+              <select
+                id="transport-report-scope"
+                className={inputClass}
+                value={reportScope}
+                onChange={(event) => {
+                  setReportScope(event.target.value);
+                  setTransportReport(null);
+                  setReportError(null);
+                }}
+              >
+                <option value="current">الوضع الحالي</option>
+                {reportAcademicYears.map((academicYear) => (
+                  <option key={academicYear.id} value={academicYear.id}>{academicYear.title}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button onClick={() => void loadTransportReport()} disabled={!user || reportLoading || reportExporting}>
+                {reportLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <BarChart3 className="h-4 w-4" />}
+                عرض التقرير
+              </Button>
+              <Button variant="outline" onClick={() => void exportTransportReport()} disabled={!user || reportLoading || reportExporting}>
+                {reportExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                تصدير Excel
+              </Button>
+            </div>
+          </div>
+
+          {reportError ? (
+            <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {reportError}
+            </div>
+          ) : null}
+
+          {transportReport ? (
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">النطاق: <span className="font-medium text-foreground">{transportReport.scope.title}</span></p>
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                <InfoCard label="عدد المدارس" value={transportReport.summary.schoolCount} />
+                <InfoCard label="عدد الخطوط" value={transportReport.summary.routeCount} />
+                <InfoCard label="عدد المشرفين" value={transportReport.summary.supervisorCount} />
+                <InfoCard label="إجمالي طلاب النقل" value={transportReport.summary.studentCount} />
+              </div>
+
+              {transportReport.groups.length === 0 ? (
+                <div className="rounded-2xl border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">
+                  لا توجد خطوط نقل مطابقة لهذا النطاق.
+                </div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>المدرسة</TableHead>
+                      <TableHead>الخط</TableHead>
+                      <TableHead>اسم المشرف</TableHead>
+                      <TableHead>اسم السائق</TableHead>
+                      <TableHead className="text-end">عدد طلاب النقل</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {transportReport.groups.map((group) => (
+                      <Fragment key={group.schoolId}>
+                        {group.rows.map((row) => (
+                          <TableRow key={row.routeId}>
+                            <TableCell>{row.schoolName}</TableCell>
+                            <TableCell>{row.routeTitle}</TableCell>
+                            <TableCell>{row.supervisorNames}</TableCell>
+                            <TableCell>{row.driverName}</TableCell>
+                            <TableCell className="text-end tabular-nums">{row.studentCount}</TableCell>
+                          </TableRow>
+                        ))}
+                        <TableRow className="bg-muted/50 font-semibold">
+                          <TableCell colSpan={4}>إجمالي المدرسة: {group.schoolName}</TableCell>
+                          <TableCell className="text-end tabular-nums">{group.totalStudents}</TableCell>
+                        </TableRow>
+                      </Fragment>
+                    ))}
+                    <TableRow className="bg-primary/10 font-bold">
+                      <TableCell colSpan={4}>الإجمالي العام</TableCell>
+                      <TableCell className="text-end tabular-nums">{transportReport.summary.studentCount}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              )}
+            </div>
+          ) : null}
+        </FormSection>
+      ) : null}
 
       {tab === "DASHBOARD" ? (
         <>
