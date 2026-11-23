@@ -9,6 +9,7 @@ import {
   GraduationCap,
   LayoutDashboard,
   MessageSquare,
+  Megaphone,
   NotebookPen,
   Ruler,
   School,
@@ -58,6 +59,7 @@ export type StaffNavItem = {
   staffWork?: boolean;
   adminWork?: boolean;
   reports?: boolean;
+  announcements?: boolean;
 };
 
 export const staffNavItems: StaffNavItem[] = [
@@ -236,6 +238,12 @@ export const staffNavItems: StaffNavItem[] = [
     moduleKey: "ACTIVITIES",
   },
   {
+    href: "/staff/announcements",
+    label: "الإعلانات",
+    icon: Megaphone,
+    announcements: true,
+  },
+  {
     href: "/staff/guardian-services",
     label: "خدمات ولي الأمر",
     icon: UsersRound,
@@ -257,6 +265,7 @@ export type StaffNavigationAccess = {
   canAccessStaffWork: boolean;
   canAccessAdminWork: boolean;
   canAccessReports: boolean;
+  canAccessAnnouncements: boolean;
 };
 
 export function canAccessEvaluationReports(actor: StaffActorData) {
@@ -310,6 +319,14 @@ export function getStaffNavigationAccess(
       scopes: supervisionScopes,
     }),
     canAccessReports: canAccessFullReports,
+    canAccessAnnouncements:
+      actor.schools.length > 0 ||
+      actor.teacherAssignments.some(
+        (assignment) =>
+          assignment.isActive !== false &&
+          assignment.isArchived !== true &&
+          !!assignment.schoolId,
+      ),
   };
 }
 
@@ -342,6 +359,7 @@ export function getVisibleStaffNavItems(
     if (item.staffWork) return access.canAccessStaffWork;
     if (item.adminWork) return access.canAccessAdminWork;
     if (item.reports) return access.canAccessReports;
+    if (item.announcements) return access.canAccessAnnouncements;
 
     if (item.lessonPrepApprovals) return access.canAccessLessonPrepApprovals;
 

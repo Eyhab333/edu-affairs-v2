@@ -15,6 +15,7 @@
     "clean:staff:turbopack": "node -e \"require('fs').rmSync('apps/web-staff/.next/dev/cache/turbopack',{recursive:true,force:true})\"",
     "dev:staff:fresh": "pnpm clean:staff:turbopack && pnpm dev:staff",
     "build:staff": "pnpm --filter web-staff build",
+    "build:parent:android": "cd apps/mobile_parent && flutter build appbundle --release --dart-define=MADAR_PRIVACY_POLICY_URL=https://takween-almaryfa.com/privacy-policy.html",
     "lint:staff": "pnpm --filter web-staff lint",
     "inspect:evaluations:faleh-teachers": "node scripts/inspections/inspect-faleh-teachers-for-evaluations.cjs",
     "inspect:evaluations:sayh-teachers": "node scripts/inspections/inspect-faleh-teachers-for-evaluations.cjs --school=sayh",

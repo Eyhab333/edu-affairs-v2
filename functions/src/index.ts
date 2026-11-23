@@ -108,6 +108,7 @@ export { markMyGuardianVirtualClassJoin } from "./guardian/mark-my-guardian-virt
 export { getMyGuardianHomeworks, getMyGuardianHomeworkDetails, saveMyGuardianHomeworkDraft, submitMyGuardianHomework } from "./guardian/guardian-homework";
 export { gradeStudentHomework } from "./guardian/grade-student-homework";
 export { staffHomework } from "./guardian/staff-homework";
+export { staffSchoolAnnouncements } from "./announcements/staff-school-announcements";
 export {
   archiveStaffPortfolioItem,
   beginStaffPortfolioItem,

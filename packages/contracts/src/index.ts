@@ -5794,6 +5794,7 @@ export * from "./performance-improvement";
 export * from "./student-cases";
 export * from "./transport";
 export * from "./school-activities";
+export * from "./school-announcements";
 export * from "./urgent-communications";
 export * from "./guardian-finance";
 export * from "./staff-provisioning";

@@ -227,6 +227,9 @@ function StaffShell({ children }: { children: ReactNode }) {
   const isTransportRoute =
     pathname === "/staff/transport" ||
     pathname.startsWith("/staff/transport/");
+  const isAnnouncementsRoute =
+    pathname === "/staff/announcements" ||
+    pathname.startsWith("/staff/announcements/");
   const canAccessCurrentRoute = isTransportOnly
     ? pathname === "/staff" || isTransportRoute
     : isCentralMeasurementSummaryRoute
@@ -243,6 +246,8 @@ function StaffShell({ children }: { children: ReactNode }) {
               ? canAccessEvaluationReportsRoute || hasFullReportingAccess
               : isReportsRoute
                 ? canAccessReportsRoute
+                  : isAnnouncementsRoute
+                    ? navigationAccess.canAccessAnnouncements
                 : isLessonPrepApprovalsRoute
                   ? scopesLoading || canAccessLessonPrepApprovals
                   : isPerformanceImprovementRoute

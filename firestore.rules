@@ -1672,6 +1672,13 @@ match /staffPortfolioItems/{itemId} {
   allow read, write: if false;
 }
 
+/* School announcements are managed exclusively by staff Callables. This keeps
+ * school-scope resolution, publication transitions, and audience validation
+ * on the server; even organization administrators must use that path. */
+match /schoolAnnouncements/{announcementId} {
+  allow read, write: if false;
+}
+
 /*
  * TEMPORARY RELAXED RULES: hierarchical document visibility is currently
  * enforced by application logic. Tighten Firestore rules before final
@@ -1739,7 +1746,7 @@ match /studentTransportAttendanceRecords/{recordId} {
        */
 
       match /{orgCollection}/{orgSubPath=**} {
-        allow read, write: if !(orgCollection in ["questionBankItems", "studentHomeworkAssignments", "studentHomeworkSubmissions"]) && canManageOrg(orgId);
+        allow read, write: if !(orgCollection in ["questionBankItems", "studentHomeworkAssignments", "studentHomeworkSubmissions", "schoolAnnouncements"]) && canManageOrg(orgId);
       }
     }
   }
