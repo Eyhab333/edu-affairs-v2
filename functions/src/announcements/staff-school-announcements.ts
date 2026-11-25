@@ -1,4 +1,4 @@
-import { FieldPath, getFirestore } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
   SchoolAnnouncementSchema,
@@ -6,6 +6,8 @@ import {
   type SchoolAnnouncement,
   type SchoolAnnouncementAudience,
 } from "@takween/contracts";
+import { isActiveMembership, membershipRoleKey } from "../staff-chat/shared";
+import { createHash } from "node:crypto";
 
 const options = {
   region: "me-central2",
@@ -63,33 +65,14 @@ function active(data: Record<string, unknown>) {
   );
 }
 
-function schoolIdsFromMembership(membership: Row) {
-  const scopes = recordOrNull(membership.scopes);
-  const values = Array.isArray(scopes?.schoolIds)
-    ? scopes.schoolIds.filter((value): value is string => typeof value === "string")
-    : [];
-  if (membership.scopeType === "SCHOOL" && typeof membership.scopeId === "string") {
-    values.push(membership.scopeId);
-  }
-  return [...new Set(values.filter(Boolean))];
-}
-
 function recordOrNull(value: unknown): Row | null {
   return value && typeof value === "object" && !Array.isArray(value)
     ? (value as Row)
     : null;
 }
 
-function isOrganizationAdministrator(membership: Row) {
-  const role = String(membership.roleKey ?? membership.role ?? "");
-  const permissions = recordOrNull(membership.permissions);
-  const scopes = recordOrNull(membership.scopes);
-  return (
-    ["platform_owner", "platform_admin", "org_owner", "org_admin"].includes(role) ||
-    permissions?.manageOrg === true ||
-    permissions?.manageSchools === true ||
-    scopes?.canAccessAllSchools === true
-  );
+function isPlatformOwner(membership: Row) {
+  return isActiveMembership(membership) && membershipRoleKey(membership) === "platform_owner";
 }
 
 async function resolveStaffActor(uid: string | undefined, orgId: string) {
@@ -102,80 +85,51 @@ async function resolveStaffActor(uid: string | undefined, orgId: string) {
   ]);
   const membership = recordOrNull(membershipSnapshot.data());
   const user = recordOrNull(userSnapshot.data());
-  if (!membership || (membership.isActive !== true && membership.active !== true)) {
-    throw new HttpsError("permission-denied", "An active staff membership is required.");
+  if (!membership || !isPlatformOwner(membership)) {
+    throw new HttpsError("permission-denied", "Platform owner access is required.");
   }
 
-  const administrator = isOrganizationAdministrator(membership);
   const personId = text(user?.personId, 200) || text(membership.personId, 200) || uid;
-  const schoolIds = new Set(schoolIdsFromMembership(membership));
-
-  // Teachers can use announcements only for schools covered by an active
-  // assignment; a client-supplied school never expands that server scope.
-  if (!administrator && personId) {
-    const assignments = await db
-      .collection(`orgs/${orgId}/teacherAssignments`)
-      .where("teacherPersonId", "==", personId)
-      .limit(QUERY_LIMIT)
-      .get();
-    const now = Date.now();
-    for (const assignment of assignments.docs) {
-      const data = assignment.data() as Row;
-      const schoolId = text(data.schoolId, 200);
-      if (
-        schoolId &&
-        active(data) &&
-        (typeof data.startAt !== "number" || data.startAt <= now) &&
-        (typeof data.endAt !== "number" || data.endAt >= now)
-      ) {
-        schoolIds.add(schoolId);
-      }
-    }
-  }
-
-  if (!administrator && schoolIds.size === 0) {
-    throw new HttpsError("permission-denied", "No school announcement scope is available.");
-  }
 
   return {
     db,
     orgId,
     uid,
     personId,
-    roleKey: text(membership.roleKey ?? membership.role, 100),
+    roleKey: membershipRoleKey(membership),
     displayName:
       text(user?.displayName, 200) || text(user?.email, 200) || text(membership.displayName, 200),
-    administrator,
-    schoolIds,
   };
 }
 
-async function assertSchoolAccess(
+function isActiveSchool(data: Row) {
+  return (
+    data.isArchived !== true &&
+    data.isActive !== false &&
+    data.active !== false &&
+    (!data.status || data.status === "ACTIVE")
+  );
+}
+
+async function assertActiveSchools(
   actor: Awaited<ReturnType<typeof resolveStaffActor>>,
-  schoolId: string,
+  schoolIds: string[],
 ) {
-  if (!actor.administrator && !actor.schoolIds.has(schoolId)) {
-    throw new HttpsError("permission-denied", "School announcement access denied.");
+  if (!schoolIds.length) {
+    throw new HttpsError("invalid-argument", "Select at least one school.");
   }
-  const school = await actor.db.doc(`orgs/${actor.orgId}/schools/${schoolId}`).get();
-  if (!school.exists || school.data()?.isArchived === true) {
-    throw new HttpsError("not-found", "School not found.");
+  const snapshots = await actor.db.getAll(
+    ...schoolIds.map((schoolId) => actor.db.doc(`orgs/${actor.orgId}/schools/${schoolId}`)),
+  );
+  if (snapshots.some((school) => !school.exists || !isActiveSchool(school.data() as Row))) {
+    throw new HttpsError("invalid-argument", "One or more selected schools are unavailable.");
   }
-  return school;
 }
 
 async function listAccessibleSchools(actor: Awaited<ReturnType<typeof resolveStaffActor>>) {
-  const snapshots = actor.administrator
-    ? (await actor.db.collection(`orgs/${actor.orgId}/schools`).limit(QUERY_LIMIT).get()).docs
-    : (
-        await actor.db.getAll(
-          ...[...actor.schoolIds].map((schoolId) =>
-            actor.db.doc(`orgs/${actor.orgId}/schools/${schoolId}`),
-          ),
-        )
-      ).filter((snapshot) => snapshot.exists);
+  const snapshots = (await actor.db.collection(`orgs/${actor.orgId}/schools`).limit(QUERY_LIMIT).get()).docs;
   return snapshots
-    .filter((snapshot) => snapshot.data()?.isArchived !== true)
+    .filter((snapshot) => isActiveSchool(snapshot.data() as Row))
     .map((snapshot) => ({ id: snapshot.id, name: text(snapshot.data()?.name, 200) || snapshot.id }))
     .sort((left, right) => left.name.localeCompare(right.name, "ar"));
 }
@@ -188,11 +142,13 @@ function normalizeAudience(input: Row): SchoolAnnouncementAudience {
   const selectedScope = scope as SchoolAnnouncementAudience["scope"];
   const audience: SchoolAnnouncementAudience = {
     scope: selectedScope,
+    schoolIds: stringList(input.schoolIds ?? [], "schoolIds", 200),
     gradeIds: selectedScope === "GRADES" ? stringList(input.gradeIds ?? [], "gradeIds", 100) : [],
     classIds: selectedScope === "CLASSES" ? stringList(input.classIds ?? [], "classIds", 300) : [],
     studentIds: selectedScope === "STUDENTS" ? stringList(input.studentIds ?? [], "studentIds", 500) : [],
   };
   if (
+    audience.schoolIds.length === 0 ||
     (audience.scope === "GRADES" && audience.gradeIds.length === 0) ||
     (audience.scope === "CLASSES" && audience.classIds.length === 0) ||
     (audience.scope === "STUDENTS" && audience.studentIds.length === 0)
@@ -204,10 +160,11 @@ function normalizeAudience(input: Row): SchoolAnnouncementAudience {
 
 async function validateAudienceTargets(params: {
   actor: Awaited<ReturnType<typeof resolveStaffActor>>;
-  schoolId: string;
+  schoolIds: string[];
   audience: SchoolAnnouncementAudience;
 }) {
-  const { actor, schoolId, audience } = params;
+  const { actor, schoolIds, audience } = params;
+  const selectedSchoolIds = new Set(schoolIds);
   const enrollmentCollection = actor.db.collection(
     `orgs/${actor.orgId}/studentEnrollments`,
   );
@@ -225,7 +182,8 @@ async function validateAudienceTargets(params: {
         if (
           active(enrollment) &&
           enrollment.orgId === actor.orgId &&
-          enrollment.schoolId === schoolId &&
+          typeof enrollment.schoolId === "string" &&
+          selectedSchoolIds.has(enrollment.schoolId) &&
           values.includes(value)
         ) {
           found.add(value);
@@ -302,6 +260,31 @@ function parseForStatus(params: {
   return parsed.data;
 }
 
+function omitUndefined(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item) => item !== undefined)
+      .map((item) => omitUndefined(item));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Row)
+        .filter(([, item]) => item !== undefined)
+        .map(([key, item]) => [key, omitUndefined(item)]),
+    );
+  }
+  return value;
+}
+
+function firestoreAnnouncementPayload(announcement: SchoolAnnouncement) {
+  return omitUndefined(announcement) as FirebaseFirestore.DocumentData;
+}
+
+function announcementSchoolIds(announcement: SchoolAnnouncement) {
+  const selected = announcement.audience.schoolIds ?? [];
+  return [...new Set(selected.length ? selected : [announcement.schoolId])];
+}
+
 function toAnnouncement(snapshot: FirebaseFirestore.QueryDocumentSnapshot | FirebaseFirestore.DocumentSnapshot) {
   const parsed = SchoolAnnouncementSchema.safeParse({ id: snapshot.id, ...snapshot.data() });
   return parsed.success ? parsed.data : null;
@@ -318,29 +301,39 @@ export const staffSchoolAnnouncements = onCall(options, async (request) => {
       return { schools: await listAccessibleSchools(actor) };
 
     case "list": {
-      const schoolId = id(input.schoolId, "schoolId");
-      await assertSchoolAccess(actor, schoolId);
+      const schoolId = optionalId(input.schoolId);
       const status = input.status == null || input.status === "" ? null : SchoolAnnouncementStatusSchema.parse(input.status);
-      const rows = (await collection.where("schoolId", "==", schoolId).limit(QUERY_LIMIT).get()).docs
+      const snapshots = schoolId
+        ? await Promise.all([
+            collection.where("schoolId", "==", schoolId).limit(QUERY_LIMIT).get(),
+            collection.where("audience.schoolIds", "array-contains", schoolId).limit(QUERY_LIMIT).get(),
+          ])
+        : [await collection.limit(QUERY_LIMIT).get()];
+      const documents = new Map(
+        snapshots.flatMap((snapshot) => snapshot.docs).map((document) => [document.id, document]),
+      );
+      const rows = [...documents.values()]
         .map(toAnnouncement)
         .filter((item): item is SchoolAnnouncement => !!item)
+        .filter((item) => !schoolId || announcementSchoolIds(item).includes(schoolId))
         .filter((item) => !status || item.status === status)
         .sort((left, right) => right.updatedAt - left.updatedAt);
       return { items: rows };
     }
 
     case "audienceOptions": {
-      const schoolId = id(input.schoolId, "schoolId");
-      await assertSchoolAccess(actor, schoolId);
-      const cursor = input.cursor == null || input.cursor === "" ? null : id(input.cursor, "cursor");
-      let query = actor.db
-        .collection(`orgs/${orgId}/studentEnrollments`)
-        .where("schoolId", "==", schoolId)
-        .orderBy(FieldPath.documentId())
-        .limit(AUDIENCE_PAGE_SIZE);
-      if (cursor) query = query.startAfter(cursor);
-      const snapshot = await query.get();
-      const entries: Array<Row & { id: string }> = snapshot.docs
+      const schoolIds = stringList(input.schoolIds ?? [], "schoolIds", 200);
+      await assertActiveSchools(actor, schoolIds);
+      const snapshots = await Promise.all(
+        schoolIds.map((schoolId) =>
+          actor.db
+            .collection(`orgs/${orgId}/studentEnrollments`)
+            .where("schoolId", "==", schoolId)
+            .limit(AUDIENCE_PAGE_SIZE)
+            .get(),
+        ),
+      );
+      const entries: Array<Row & { id: string }> = snapshots.flatMap((snapshot) => snapshot.docs)
         .map((document): Row & { id: string } => ({
           id: document.id,
           ...(document.data() as Row),
@@ -367,26 +360,27 @@ export const staffSchoolAnnouncements = onCall(options, async (request) => {
         grades: [...grades].map(([id, name]) => ({ id, name })),
         classes: [...classes.values()],
         students: [...students.values()],
-        nextCursor: snapshot.size === AUDIENCE_PAGE_SIZE ? snapshot.docs[snapshot.size - 1].id : null,
+        nextCursor: null,
       };
     }
 
     case "create": {
-      const schoolId = id(input.schoolId, "schoolId");
-      await assertSchoolAccess(actor, schoolId);
       const fields = parseDraftFields(record(input.item));
-      await validateAudienceTargets({ actor, schoolId, audience: fields.audience });
+      const schoolIds = fields.audience.schoolIds;
+      await assertActiveSchools(actor, schoolIds);
+      await validateAudienceTargets({ actor, schoolIds, audience: fields.audience });
       const ref = collection.doc();
       const announcement = parseForStatus({
         id: ref.id,
         actor,
-        schoolId,
+        schoolId: schoolIds[0],
         fields,
         status: "DRAFT",
         createdAt: Date.now(),
       });
-      await ref.create(announcement);
-      return { item: announcement };
+      if (announcement.attachments.length > 5) throw new HttpsError("invalid-argument", "Maximum of five attachments.");
+      await ref.create(firestoreAnnouncementPayload(announcement));
+      return { item: firestoreAnnouncementPayload(announcement) };
     }
 
     case "update": {
@@ -394,23 +388,30 @@ export const staffSchoolAnnouncements = onCall(options, async (request) => {
       const existingSnapshot = await ref.get();
       const existing = toAnnouncement(existingSnapshot);
       if (!existing) throw new HttpsError("not-found", "Announcement not found.");
-      await assertSchoolAccess(actor, existing.schoolId);
       if (existing.status !== "DRAFT") {
         throw new HttpsError("failed-precondition", "Only draft announcements can be edited.");
       }
       const fields = parseDraftFields(record(input.item));
-      await validateAudienceTargets({ actor, schoolId: existing.schoolId, audience: fields.audience });
+      const schoolIds = fields.audience.schoolIds;
+      await assertActiveSchools(actor, schoolIds);
+      await validateAudienceTargets({ actor, schoolIds, audience: fields.audience });
       const announcement = parseForStatus({
         id: existing.id,
         actor,
-        schoolId: existing.schoolId,
+        schoolId: schoolIds[0],
         fields,
         status: "DRAFT",
         createdAt: existing.createdAt,
         creator: existing,
       });
-      await ref.set(announcement);
-      return { item: announcement };
+      return actor.db.runTransaction(async (transaction) => {
+        const fresh = toAnnouncement(await transaction.get(ref));
+        if (!fresh || fresh.status !== "DRAFT") throw new HttpsError("failed-precondition", "Only draft announcements can be edited.");
+        if (announcement.attachments.length + fresh.storedAttachments.length > Math.max(5, fresh.attachments.length + fresh.storedAttachments.length)) throw new HttpsError("invalid-argument", "Maximum of five attachments.");
+        const preserved = { ...announcement, mainImageFile: fresh.mainImageFile, storedAttachments: fresh.storedAttachments };
+        transaction.set(ref, firestoreAnnouncementPayload(preserved));
+        return { item: firestoreAnnouncementPayload(preserved) };
+      });
     }
 
     case "publish": {
@@ -419,12 +420,13 @@ export const staffSchoolAnnouncements = onCall(options, async (request) => {
         const existingSnapshot = await transaction.get(ref);
         const existing = toAnnouncement(existingSnapshot);
         if (!existing) throw new HttpsError("not-found", "Announcement not found.");
-        await assertSchoolAccess(actor, existing.schoolId);
         if (existing.status === "PUBLISHED") return { item: existing };
         if (existing.status !== "DRAFT") {
           throw new HttpsError("failed-precondition", "Announcement cannot be published.");
         }
-        await validateAudienceTargets({ actor, schoolId: existing.schoolId, audience: existing.audience });
+        const schoolIds = announcementSchoolIds(existing);
+        await assertActiveSchools(actor, schoolIds);
+        await validateAudienceTargets({ actor, schoolIds, audience: existing.audience });
         const publishedAt = Date.now();
         const announcement = SchoolAnnouncementSchema.parse({
           ...existing,
@@ -432,7 +434,19 @@ export const staffSchoolAnnouncements = onCall(options, async (request) => {
           publishedAt,
           updatedAt: publishedAt,
         });
-        transaction.set(ref, announcement);
+        transaction.set(ref, firestoreAnnouncementPayload(announcement));
+        const jobId = createHash("sha256").update(`${orgId}\u0000${ref.id}`).digest("hex");
+        const jobRef = actor.db.collection("schoolAnnouncementNotificationJobs").doc(jobId);
+        transaction.create(jobRef, {
+          orgId,
+          announcementId: ref.id,
+          state: "DISCOVERING",
+          schoolIndex: 0,
+          cursor: "",
+          nextRunAt: Math.max(publishedAt, announcement.publicationStartsAt ?? publishedAt),
+          createdAt: publishedAt,
+          updatedAt: publishedAt,
+        });
         return { item: announcement };
       });
     }
@@ -443,7 +457,6 @@ export const staffSchoolAnnouncements = onCall(options, async (request) => {
         const existingSnapshot = await transaction.get(ref);
         const existing = toAnnouncement(existingSnapshot);
         if (!existing) throw new HttpsError("not-found", "Announcement not found.");
-        await assertSchoolAccess(actor, existing.schoolId);
         if (existing.status === "ARCHIVED") return { item: existing };
         const archivedAt = Date.now();
         const announcement = SchoolAnnouncementSchema.parse({
@@ -452,7 +465,7 @@ export const staffSchoolAnnouncements = onCall(options, async (request) => {
           archivedAt,
           updatedAt: archivedAt,
         });
-        transaction.set(ref, announcement);
+        transaction.set(ref, firestoreAnnouncementPayload(announcement));
         return { item: announcement };
       });
     }

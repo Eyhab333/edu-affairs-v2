@@ -109,6 +109,9 @@ export { getMyGuardianHomeworks, getMyGuardianHomeworkDetails, saveMyGuardianHom
 export { gradeStudentHomework } from "./guardian/grade-student-homework";
 export { staffHomework } from "./guardian/staff-homework";
 export { staffSchoolAnnouncements } from "./announcements/staff-school-announcements";
+export { staffAnnouncementFiles, cleanupAnnouncementUploads } from "./announcements/staff-announcement-files";
+export { getMyGuardianAnnouncements } from "./announcements/get-my-guardian-announcements";
+export { processSchoolAnnouncementNotifications } from "./announcements/process-announcement-notifications";
 export {
   archiveStaffPortfolioItem,
   beginStaffPortfolioItem,

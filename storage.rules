@@ -197,6 +197,32 @@ service firebase.storage {
         && staffPdfFileData(orgId, fileId).ownerUid == request.auth.uid;
     }
 
+    match /orgs/{orgId}/schoolAnnouncements/{announcementId}/uploads/{grantId} {
+      function grantPath() {
+        return /databases/(default)/documents/announcementUploadGrants/$(grantId);
+      }
+      function grant() { return firestore.get(grantPath()).data; }
+      allow read, update, delete: if false;
+      allow create: if membershipIsActive(orgId)
+        && pdfResourceRole(orgId) == "platform_owner"
+        && firestore.exists(grantPath())
+        && grant().state == "PENDING"
+        && grant().uid == request.auth.uid
+        && grant().orgId == orgId
+        && grant().announcementId == announcementId
+        && grant().expiresAt > request.time.toMillis()
+        && grant().sizeBytes == request.resource.size
+        && request.resource.size > 0
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType == grant().contentType
+        && request.resource.contentType in [
+          "application/pdf", "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "image/jpeg", "image/png", "image/webp"
+        ];
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

@@ -37,6 +37,11 @@ export type SchoolAnnouncementAudienceScope = z.infer<
 
 export const SchoolAnnouncementAudienceSchema = z.object({
   scope: SchoolAnnouncementAudienceScopeSchema.default("SCHOOL"),
+  /**
+   * Selected active schools. Empty is retained for announcements created
+   * before multi-school targeting; their top-level schoolId remains canonical.
+   */
+  schoolIds: z.array(IdSchema).max(200).default([]),
   gradeIds: z.array(IdSchema).max(100).default([]),
   classIds: z.array(IdSchema).max(300).default([]),
   studentIds: z.array(IdSchema).max(500).default([]),
@@ -55,6 +60,15 @@ export type SchoolAnnouncementAttachment = z.infer<
   typeof SchoolAnnouncementAttachmentSchema
 >;
 
+export const SchoolAnnouncementStoredFileSchema = z.object({
+  id: IdSchema,
+  storagePath: z.string().min(1).max(1024),
+  name: z.string().trim().min(1).max(200),
+  contentType: z.string().min(1).max(200),
+  sizeBytes: z.number().int().positive().max(10 * 1024 * 1024),
+});
+export type SchoolAnnouncementStoredFile = z.infer<typeof SchoolAnnouncementStoredFileSchema>;
+
 /**
  * A standalone school announcement. It deliberately has no dependency on the
  * school-activity lifecycle, registration, or notification models.
@@ -71,8 +85,11 @@ export const SchoolAnnouncementSchema = z.object({
   priority: SchoolAnnouncementPrioritySchema.default("NORMAL"),
   imageUrl: HttpsUrlSchema.optional(),
   attachments: z.array(SchoolAnnouncementAttachmentSchema).max(10).default([]),
+  mainImageFile: SchoolAnnouncementStoredFileSchema.optional(),
+  storedAttachments: z.array(SchoolAnnouncementStoredFileSchema).max(5).default([]),
   audience: SchoolAnnouncementAudienceSchema.default({
     scope: "SCHOOL",
+    schoolIds: [],
     gradeIds: [],
     classIds: [],
     studentIds: [],

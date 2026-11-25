@@ -117,6 +117,7 @@ export function buildNotificationContent(
         sourceType: eventData.sourceType ?? "",
         sourceId: eventData.sourceId ?? "",
         targetRoute: "ANNOUNCEMENT",
+        announcementId: eventData.sourceId ?? "",
       },
       channels: ["IN_APP", "PUSH"],
     };

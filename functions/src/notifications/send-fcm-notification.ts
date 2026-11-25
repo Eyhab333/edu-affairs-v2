@@ -270,8 +270,12 @@ function buildParentWebLink(notification: NotificationLogData): string {
         : "?tab=transport";
       return `${base}/students/${encodeURIComponent(studentId)}${query}`;
     }
-    case "ANNOUNCEMENT":
-      return `${base}/announcements`;
+    case "ANNOUNCEMENT": {
+      const announcementId = read("announcementId");
+      return announcementId
+        ? `${base}/announcements?announcementId=${encodeURIComponent(announcementId)}`
+        : `${base}/announcements`;
+    }
     case "VIRTUAL_CLASS_SESSION": {
       const studentId = read("studentId");
       return studentId ? `${base}/students/${encodeURIComponent(studentId)}` : `${base}/notifications`;

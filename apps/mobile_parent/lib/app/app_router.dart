@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/router/go_router_refresh_stream.dart';
-import '../features/announcements/presentation/parent_announcements_screen.dart';
+import '../features/announcements/presentation/parent_announcements_tabs.dart';
 import '../features/activities/presentation/student_activities_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/splash_screen.dart';
@@ -51,7 +51,9 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: '/announcements',
-              builder: (context, state) => const ParentAnnouncementsScreen(),
+              builder: (context, state) => ParentAnnouncementsScreen(
+                announcementId: state.uri.queryParameters['announcementId'],
+              ),
             ),
           ],
         ),

@@ -22,7 +22,12 @@ String resolveParentNotificationPath({
           ? '/messages'
           : '/messages/${Uri.encodeComponent(threadId)}';
     case 'ANNOUNCEMENT':
-      return '/announcements';
+      final announcementId = value('announcementId').isNotEmpty
+          ? value('announcementId')
+          : value('sourceId');
+      return announcementId.isEmpty
+          ? '/announcements'
+          : '/announcements?${Uri(queryParameters: {'announcementId': announcementId}).query}';
     case 'VIRTUAL_CLASS_SESSION':
       final studentId = value('studentId');
       return studentId.isEmpty

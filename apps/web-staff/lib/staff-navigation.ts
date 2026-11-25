@@ -319,14 +319,7 @@ export function getStaffNavigationAccess(
       scopes: supervisionScopes,
     }),
     canAccessReports: canAccessFullReports,
-    canAccessAnnouncements:
-      actor.schools.length > 0 ||
-      actor.teacherAssignments.some(
-        (assignment) =>
-          assignment.isActive !== false &&
-          assignment.isArchived !== true &&
-          !!assignment.schoolId,
-      ),
+    canAccessAnnouncements: actor.roles.includes("platform_owner"),
   };
 }
 

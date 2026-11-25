@@ -28,6 +28,7 @@ export type SchoolAnnouncementDraftInput = {
   }>;
   audience: {
     scope: "SCHOOL" | "GRADES" | "CLASSES" | "STUDENTS";
+    schoolIds?: string[];
     gradeIds: string[];
     classIds: string[];
     studentIds: string[];
@@ -49,7 +50,7 @@ async function call<T>(input: Record<string, unknown>) {
 
 function parseAnnouncement(value: unknown) {
   const parsed = SchoolAnnouncementSchema.safeParse(value);
-  if (!parsed.success) throw new Error("تعذر قراءة بيانات الإعلان.");
+  if (!parsed.success) throw new Error("تعذر قراءة استجابة الإعلان. تحقق من تحديث خدمة الإعلانات.");
   return parsed.data;
 }
 
@@ -67,7 +68,7 @@ export async function listAnnouncementSchools(orgId: string) {
 
 export async function listSchoolAnnouncements(params: {
   orgId: string;
-  schoolId: string;
+  schoolId?: string;
   status?: SchoolAnnouncementStatus | "";
 }) {
   const response = await call<{ items?: unknown[] }>({ action: "list", ...params });
@@ -84,8 +85,7 @@ export async function listSchoolAnnouncements(params: {
 
 export async function getAnnouncementAudienceOptions(params: {
   orgId: string;
-  schoolId: string;
-  cursor?: string | null;
+  schoolIds: string[];
 }): Promise<AnnouncementAudienceOptions> {
   const response = await call<Partial<AnnouncementAudienceOptions>>({
     action: "audienceOptions",
@@ -101,7 +101,6 @@ export async function getAnnouncementAudienceOptions(params: {
 
 export async function createSchoolAnnouncement(params: {
   orgId: string;
-  schoolId: string;
   item: SchoolAnnouncementDraftInput;
 }) {
   const response = await call<{ item: unknown }>({ action: "create", ...params });
